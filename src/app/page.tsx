@@ -529,14 +529,13 @@ export default function Home() {
       </nav>
 
       {/* Page Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="h-[calc(100vh-12rem)]">
-          <div className="mb-4 text-center">
-            <h1 className="mb-2 text-indigo-600 dark:text-indigo-400">AI Learning Assistant</h1>
-            <p className="text-gray-600 dark:text-gray-400">Upload transcripts, get quizzed, and ask questions</p>
-          </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
+        <div className="mb-4 text-center">
+          <h1 className="mb-2 text-indigo-600 dark:text-indigo-400">AI Learning Assistant</h1>
+          <p className="text-gray-600 dark:text-gray-400">Upload transcripts, get quizzed, and ask questions</p>
+        </div>
 
-          <div className="relative flex gap-6 h-full max-w-[1600px] mx-auto">
+        <div className="relative flex gap-6 min-h-[calc(100vh-16rem)] max-w-[1600px] mx-auto">
             {/* Floating Toggle Button (shown when sidebar is closed) */}
             {!isSidebarOpen && (
               <Button
@@ -646,7 +645,7 @@ export default function Home() {
             </div>
 
             {/* Main Chat Area */}
-            <Card className="h-full flex flex-col dark:bg-gray-900 dark:border-gray-800 flex-1 transition-all duration-300">
+            <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 flex-1 transition-all duration-300">
             {/* Header with file info and upload button */}
             <div className={`p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950 transition-all duration-300 ${
               !isSidebarOpen ? 'pl-16' : ''
@@ -710,7 +709,7 @@ export default function Home() {
                     <div
                       className={`px-4 py-3 max-w-[80%] ${
                         message.role === 'user'
-                          ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-lg'
+                          ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl'
                           : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl'
                       }`}
                     >
@@ -776,7 +775,6 @@ export default function Home() {
             </div>
           </Card>
           </div>
-        </div>
       </main>
     </div>
   )
