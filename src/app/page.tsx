@@ -13,7 +13,7 @@ import { Badge } from '@/app/components/ui/badge'
 import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { isAuthenticated, removeAccessToken } from '@/app/lib/auth'
 
 interface Message {
@@ -38,6 +38,7 @@ interface TranscriptSession {
 
 export default function Home() {
   const router = useRouter()
+  const pathname = usePathname()
   
   // Theme state
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -498,28 +499,44 @@ export default function Home() {
               <div className="hidden md:flex items-center gap-6">
                 <Link 
                   href="/" 
-                  className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2"
+                  className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                    pathname === "/" 
+                      ? "text-indigo-600 dark:text-indigo-400" 
+                      : "text-gray-700 dark:text-gray-300"
+                  }`}
                 >
                   <BookOpen className="h-4 w-4" />
                   AI Tutor
                 </Link>
                 <Link 
                   href="/transcript" 
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
+                  className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                    pathname === "/transcript" 
+                      ? "text-indigo-600 dark:text-indigo-400" 
+                      : "text-gray-700 dark:text-gray-300"
+                  }`}
                 >
                   <FileText className="h-4 w-4" />
                   Transcript
                 </Link>
                 <Link 
                   href="/calendar" 
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
+                  className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                    pathname === "/calendar" 
+                      ? "text-indigo-600 dark:text-indigo-400" 
+                      : "text-gray-700 dark:text-gray-300"
+                  }`}
                 >
                   <Calendar className="h-4 w-4" />
                   Calendar
                 </Link>
                 <Link 
                   href="/todo" 
-                  className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
+                  className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                    pathname === "/todo" 
+                      ? "text-indigo-600 dark:text-indigo-400" 
+                      : "text-gray-700 dark:text-gray-300"
+                  }`}
                 >
                   <CheckSquare className="h-4 w-4" />
                   Todo

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import {
   BookOpen,
@@ -18,6 +18,7 @@ import { toast } from "sonner";
 
 export default function Topbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
@@ -70,28 +71,44 @@ export default function Topbar() {
             <div className="hidden md:flex items-center gap-6">
               <Link
                 href="/"
-                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2"
+                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                  pathname === "/" 
+                    ? "text-indigo-600 dark:text-indigo-400" 
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
               >
                 <BookOpen className="h-4 w-4" />
                 AI Tutor
               </Link>
               <Link
                 href="/transcript"
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
+                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                  pathname === "/transcript" 
+                    ? "text-indigo-600 dark:text-indigo-400" 
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
               >
                 <FileText className="h-4 w-4" />
                 Transcript
               </Link>
               <Link
                 href="/calendar"
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
+                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                  pathname === "/calendar" 
+                    ? "text-indigo-600 dark:text-indigo-400" 
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
               >
                 <CalendarIcon className="h-4 w-4" />
                 Calendar
               </Link>
               <Link
                 href="/todo"
-                className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
+                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                  pathname === "/todo" 
+                    ? "text-indigo-600 dark:text-indigo-400" 
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
               >
                 <CheckSquare className="h-4 w-4" />
                 Todo
