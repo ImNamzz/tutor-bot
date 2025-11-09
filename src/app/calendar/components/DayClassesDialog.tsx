@@ -153,7 +153,7 @@ export default function DayClassesDialog({
                             }
                           }}
                           className={cn(
-                            "p-1 rounded hover:bg-black/10 dark:hover:bg-white/10 transition-colors",
+                            "p-1 rounded transition-colors",
                             colors.text
                           )}
                           aria-label="Remove deadline"
@@ -228,7 +228,7 @@ export default function DayClassesDialog({
                             }
                           }}
                           className={cn(
-                            "p-1 rounded hover:bg-black/10 dark:hover:bg-white/10 transition-colors",
+                            "p-1 rounded transition-colors",
                             colorClasses.text
                           )}
                           aria-label="Unschedule class"

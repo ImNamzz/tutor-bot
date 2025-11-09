@@ -42,6 +42,7 @@ export default function CalendarGrid({
     const d = date || new Date();
     return new Date(d.getFullYear(), d.getMonth(), 1);
   });
+  // View dialog state restored
   const [selectedDayForDialog, setSelectedDayForDialog] = useState<Date | null>(
     null
   );
@@ -245,7 +246,7 @@ export default function CalendarGrid({
               onClick={() => handleDateClick(day)}
               className={cn(
                 "min-h-[120px] p-2.5 border rounded-lg cursor-pointer transition-all duration-200",
-                "flex flex-col hover:bg-accent/50 hover:border-primary/40 hover:shadow-sm",
+                "flex flex-col hover:border-primary/40 hover:shadow-sm",
                 "relative group",
                 day.isSelected
                   ? "bg-primary text-primary-foreground border-primary shadow-md ring-2 ring-primary/20"
@@ -290,24 +291,7 @@ export default function CalendarGrid({
                   <Plus className="size-3" />
                 </button>
 
-                {/* View button when there are events */}
-                {hasAnyEvents && (
-                  <button
-                    onClick={(e) => handleOpenViewDialog(day, e)}
-                    className={cn(
-                      "absolute top-1 right-1 size-5 rounded-full flex items-center justify-center",
-                      "transition-all duration-200",
-                      "hover:scale-110 active:scale-95",
-                      "bg-blue-500/10 hover:bg-blue-500/20 shadow-sm",
-                      "text-blue-600 dark:text-blue-400",
-                      "opacity-0 group-hover:opacity-100"
-                    )}
-                    aria-label="View events for this day"
-                    title="View all events"
-                  >
-                    <X className="size-3 rotate-45" />
-                  </button>
-                )}
+                {/* Removed view-all (+) button */}
               </div>
 
               {/* Events/Classes area */}

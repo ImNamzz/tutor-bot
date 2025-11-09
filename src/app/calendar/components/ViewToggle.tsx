@@ -22,8 +22,8 @@ export default function ViewToggle({ value, onChange }: ViewToggleProps) {
         onClick={handleToggle}
         className={cn(
           "relative w-32 h-10 rounded-full transition-all duration-300 ease-in-out",
-          "flex items-center justify-between px-3",
-          "shadow-lg hover:shadow-xl active:scale-95",
+          "flex items-center justify-between px-2 gap-2",
+          "shadow-lg active:scale-95",
           isClassSelected
             ? "bg-gradient-to-b from-green-500 to-green-600 dark:from-green-600 dark:to-green-700"
             : "bg-gradient-to-b from-red-500 to-red-600 dark:from-red-600 dark:to-red-700"
@@ -43,10 +43,10 @@ export default function ViewToggle({ value, onChange }: ViewToggleProps) {
         <span
           className={cn(
             "relative z-10 text-xs font-bold uppercase transition-all duration-300",
-            "leading-tight tracking-wide",
+            "leading-none tracking-tight px-1",
             isClassSelected
-              ? "text-green-800 dark:text-green-900 opacity-100"
-              : "text-gray-400 dark:text-gray-500 opacity-40"
+              ? "text-black dark:text-black opacity-100"
+              : "text-gray-300 dark:text-gray-400 opacity-50"
           )}
         >
           Class
@@ -54,10 +54,10 @@ export default function ViewToggle({ value, onChange }: ViewToggleProps) {
         <span
           className={cn(
             "relative z-10 text-xs font-bold uppercase transition-all duration-300",
-            "leading-tight tracking-wide",
+            "leading-none tracking-tight px-1",
             !isClassSelected
-              ? "text-red-800 dark:text-red-900 opacity-100"
-              : "text-gray-400 dark:text-gray-500 opacity-40"
+              ? "text-black dark:text-black opacity-100"
+              : "text-gray-300 dark:text-gray-400 opacity-50"
           )}
         >
           Deadline
