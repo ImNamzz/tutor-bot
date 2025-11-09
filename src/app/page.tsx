@@ -10,9 +10,11 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { isAuthenticated, removeAccessToken } from '@/app/lib/auth'
 
 interface Message {
   id: string
@@ -35,8 +37,11 @@ interface TranscriptSession {
 }
 
 export default function Home() {
+  const router = useRouter()
+  
   // Theme state
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
   
   // Chat state
   const [messages, setMessages] = useState<Message[]>([])
@@ -60,6 +65,11 @@ export default function Home() {
   // Handle client-side only mounting
   useEffect(() => {
     setMounted(true)
+    
+    // Check authentication (but don't require it)
+    const authenticated = isAuthenticated()
+    setIsAuth(authenticated)
+    
     const savedTheme = localStorage.getItem('theme')
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     setIsDarkMode(savedTheme === 'dark' || (!savedTheme && prefersDark))
@@ -96,6 +106,12 @@ export default function Home() {
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
+  }
+
+  const handleLogout = () => {
+    removeAccessToken()
+    toast.success('Logged out successfully')
+    router.push('/auth/login')
   }
 
   const addMessage = (role: 'user' | 'assistant', content: string) => {
@@ -511,19 +527,46 @@ export default function Home() {
               </div>
             </div>
             
-            <Button
-              onClick={toggleTheme}
-              variant="ghost"
-              size="sm"
-              className="rounded-full w-9 h-9 p-0"
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? (
-                <Sun className="h-5 w-5 text-gray-300" />
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={toggleTheme}
+                variant="ghost"
+                size="sm"
+                className="rounded-full w-9 h-9 p-0"
+                aria-label="Toggle theme"
+              >
+                {isDarkMode ? (
+                  <Sun className="h-5 w-5 text-gray-300" />
+                ) : (
+                  <Moon className="h-5 w-5 text-gray-600" />
+                )}
+              </Button>
+              
+              {isAuth ? (
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Logout</span>
+                </Button>
               ) : (
-                <Moon className="h-5 w-5 text-gray-600" />
+                <div className="flex items-center gap-2">
+                  <Link href="/auth/login">
+                    <Button variant="ghost" size="sm">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href="/auth/register">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
               )}
-            </Button>
+            </div>
           </div>
         </div>
       </nav>

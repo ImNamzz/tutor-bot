@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import {
   BookOpen,
@@ -10,14 +11,24 @@ import {
   CheckSquare,
   Moon,
   Sun,
+  LogOut,
 } from "lucide-react";
+import { isAuthenticated, removeAccessToken } from "@/app/lib/auth";
+import { toast } from "sonner";
 
 export default function Topbar() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Check authentication
+    const authenticated = isAuthenticated();
+    setIsAuth(authenticated);
+    
     const savedTheme = localStorage.getItem("theme");
     const prefersDark =
       window.matchMedia &&
@@ -35,6 +46,13 @@ export default function Topbar() {
       localStorage.setItem("theme", "light");
     }
   }, [isDarkMode, mounted]);
+
+  const handleLogout = () => {
+    removeAccessToken();
+    setIsAuth(false);
+    toast.success("Logged out successfully");
+    router.push("/auth/login");
+  };
 
   return (
     <nav className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-800 transition-colors">
@@ -81,19 +99,46 @@ export default function Topbar() {
             </div>
           </div>
 
-          <Button
-            onClick={() => setIsDarkMode((v) => !v)}
-            variant="ghost"
-            size="sm"
-            className="rounded-full w-9 h-9 p-0"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? (
-              <Sun className="h-5 w-5 text-gray-300" />
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => setIsDarkMode((v) => !v)}
+              variant="ghost"
+              size="sm"
+              className="rounded-full w-9 h-9 p-0"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? (
+                <Sun className="h-5 w-5 text-gray-300" />
+              ) : (
+                <Moon className="h-5 w-5 text-gray-600" />
+              )}
+            </Button>
+            
+            {isAuth ? (
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Logout</span>
+              </Button>
             ) : (
-              <Moon className="h-5 w-5 text-gray-600" />
+              <div className="flex items-center gap-2">
+                <Link href="/auth/login">
+                  <Button variant="ghost" size="sm">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button size="sm">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
             )}
-          </Button>
+          </div>
         </div>
       </div>
     </nav>
