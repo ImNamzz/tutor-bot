@@ -846,7 +846,7 @@ export default function Home() {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-4 border-t dark:border-gray-800 bg-white dark:bg-gray-950">
+            <div className="p-4">
               <div className="flex gap-2 max-w-3xl mx-auto">
                 <Textarea
                   ref={textareaRef}
@@ -861,7 +861,7 @@ export default function Home() {
                       : "Type a message..."
                   }
                   rows={1}
-                  className="resize-none min-h-11 max-h-32 overflow-y-auto"
+                  className="resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600"
                 />
                 <Button 
                   onClick={handleSendMessage} 
