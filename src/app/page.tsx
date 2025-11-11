@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -221,9 +221,16 @@ export default function Home() {
     await new Promise(resolve => setTimeout(resolve, 1000))
 
     if (chatState === 'idle') {
+      // User is starting a new session without uploading a file
+      // Create a new session with their message as the topic
+      setFileName('Chat Session')
+      setCurrentSessionId(`session_${Date.now()}`)
+      setChatState('completed') // Skip quiz and go straight to conversation mode
+      
       addMessage('assistant', 
-        "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!"
+        `Hi! I'm your AI learning assistant. 👋\n\nI see you want to discuss: "${userMessage}"\n\nI'm here to help! Feel free to ask me anything, and I'll do my best to assist you with your learning. You can also upload a lecture transcript anytime using the upload button if you'd like me to quiz you on specific material.`
       )
+      
       setIsLoading(false)
       return
     }
@@ -398,6 +405,24 @@ export default function Home() {
     localStorage.setItem('chatSessions', JSON.stringify(filtered))
     setSessions(filtered)
     
+    // If user is deleting the currently active session, create a new session
+    if (sessionId === currentSessionId) {
+      setMessages([])
+      setChatState('idle')
+      setFileName('')
+      setTranscriptContent('')
+      setCurrentQuestionIndex(0)
+      setCorrectAnswers(0)
+      setKeyPoints([])
+      setCurrentSessionId('')
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+      addMessage('assistant', 
+        "Your previous session has been deleted. Feel free to start a new conversation or upload a file! 📚"
+      )
+    }
+    
     toast.success('Session deleted')
   }
 
@@ -444,6 +469,50 @@ export default function Home() {
     }
   }
 
+  const categorizeSessionsByTime = () => {
+    const now = new Date()
+    const categories: { [key: string]: TranscriptSession[] } = {
+      'Today': [],
+      'Yesterday': [],
+      '7 Days': [],
+      '30 Days': [],
+    }
+    
+    // Add month categories dynamically
+    const months: { [key: string]: TranscriptSession[] } = {}
+    
+    sessions.forEach(session => {
+      const sessionDate = session.updatedAt instanceof Date ? session.updatedAt : new Date(session.updatedAt)
+      const diffMs = now.getTime() - sessionDate.getTime()
+      const diffDays = Math.floor(diffMs / 86400000)
+      
+      if (diffDays === 0) {
+        categories['Today'].push(session)
+      } else if (diffDays === 1) {
+        categories['Yesterday'].push(session)
+      } else if (diffDays <= 7) {
+        categories['7 Days'].push(session)
+      } else if (diffDays <= 30) {
+        categories['30 Days'].push(session)
+      } else {
+        const monthKey = sessionDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit' })
+        if (!months[monthKey]) {
+          months[monthKey] = []
+        }
+        months[monthKey].push(session)
+      }
+    })
+    
+    // Remove empty categories
+    Object.keys(categories).forEach(key => {
+      if (categories[key].length === 0) {
+        delete categories[key]
+      }
+    })
+    
+    return { ...categories, ...months }
+  }
+
   // Load sessions on mount
   useEffect(() => {
     if (mounted) {
@@ -485,8 +554,120 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
-      {/* Navigation */}
-      <nav className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-800 transition-colors">
+      {/* Session History Sidebar - Fixed Left Side, Full Height */}
+      <div
+        className={`fixed left-0 top-0 h-screen z-40 transition-all duration-300 ease-in-out bg-gray-950 border-r border-gray-800 flex flex-col ${
+          isSidebarOpen ? 'w-[280px]' : 'w-16'
+        }`}
+      >
+        {/* Sidebar Header with Toggle */}
+        <div className="p-3 border-b border-gray-800 flex items-center justify-between shrink-0">
+          {isSidebarOpen && (
+            <span className="text-white font-medium text-sm">EduAssist</span>
+          )}
+          <Button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 hover:bg-gray-800 text-gray-400"
+            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+          >
+            {isSidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
+          </Button>
+        </div>
+
+        {/* New Chat Button */}
+        <div className="p-3 border-b border-gray-800 shrink-0">
+          <Button
+            onClick={handleReset}
+            className={`w-full justify-start gap-2 bg-gray-800 hover:bg-gray-700 text-white border-gray-700 ${
+              !isSidebarOpen ? 'px-2' : ''
+            }`}
+            variant="outline"
+          >
+            <Plus className="h-4 w-4 shrink-0" />
+            {isSidebarOpen && <span>New chat</span>}
+          </Button>
+        </div>
+        
+        {/* Sessions List - Scrollable */}
+        <div className="flex-1 overflow-hidden">
+          <ScrollArea className="h-full">
+            {isSidebarOpen ? (
+              <div className="p-3 space-y-4">
+                {sessions.length === 0 ? (
+                  <div className="text-center text-gray-500 py-8">
+                    <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-xs">No chat history</p>
+                  </div>
+                ) : (
+                  Object.entries(categorizeSessionsByTime()).map(([category, categorySessions]) => (
+                    <div key={category} className="space-y-2">
+                      <h4 className="text-xs font-medium text-gray-500 px-2">{category}</h4>
+                      {categorySessions.map((session) => {
+                        const isActive = session.id === currentSessionId
+                        
+                        return (
+                          <div
+                            key={session.id}
+                            className={`group relative p-2.5 rounded-lg cursor-pointer transition-all ${
+                              isActive 
+                                ? 'bg-gray-800' 
+                                : 'hover:bg-gray-800/50'
+                            }`}
+                          onClick={() => handleLoadSession(session)}
+                        >
+                          <div className="flex items-start gap-2">
+                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-400 mt-0.5" />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm text-gray-200 truncate">
+                                {session.fileName}
+                              </p>
+                            </div>
+                            <Button
+                              onClick={(e: React.MouseEvent) => handleDeleteSession(e, session.id)}
+                              variant="ghost"
+                              size="sm"
+                              className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-700 absolute right-2 top-2"
+                            >
+                              <Trash2 className="h-3 w-3 text-gray-400" />
+                            </Button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                ))
+              )}
+            </div>
+          ) : (
+            // Minimized view - just icons
+            <div className="p-2 space-y-2">
+              {sessions.slice(0, 5).map((session) => {
+                const isActive = session.id === currentSessionId
+                return (
+                  <div
+                    key={session.id}
+                    className={`p-2 rounded-lg cursor-pointer transition-all ${
+                      isActive ? 'bg-gray-800' : 'hover:bg-gray-800/50'
+                    }`}
+                    onClick={() => handleLoadSession(session)}
+                    title={session.fileName}
+                  >
+                    <MessageSquare className="h-4 w-4 text-gray-400 mx-auto" />
+                  </div>
+                )
+              })}
+            </div>
+          )}
+          </ScrollArea>
+        </div>
+      </div>
+
+      {/* Main Content Area - Adjusted for sidebar */}
+      <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-[280px]' : 'ml-16'}`}>
+        {/* Navigation */}
+        <nav className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
@@ -589,127 +770,17 @@ export default function Home() {
       </nav>
 
       {/* Page Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
+      <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
         <div className="mb-4 text-center">
           <h1 className="mb-2 text-indigo-600 dark:text-indigo-400">AI Learning Assistant</h1>
           <p className="text-gray-600 dark:text-gray-400">Upload transcripts, get quizzed, and ask questions</p>
         </div>
 
-        <div className="relative flex gap-6 min-h-[calc(100vh-16rem)] max-w-[1600px] mx-auto">
-            {/* Floating Toggle Button (shown when sidebar is closed) */}
-            {!isSidebarOpen && (
-              <Button
-                onClick={() => setIsSidebarOpen(true)}
-                variant="outline"
-                size="sm"
-                className="absolute top-4 left-4 z-10 shadow-md dark:bg-gray-900"
-                aria-label="Open sidebar"
-              >
-                <PanelLeftOpen className="h-4 w-4" />
-              </Button>
-            )}
-
-            {/* Session History Sidebar */}
-            <div
-              className={`transition-all duration-300 ease-in-out flex-shrink-0 ${
-                isSidebarOpen ? 'w-[350px] opacity-100' : 'w-0 opacity-0 overflow-hidden'
-              }`}
-            >
-              <Card className="p-6 h-full flex flex-col overflow-hidden dark:bg-gray-900 dark:border-gray-800">
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex-1">
-                    <h3 className="dark:text-white">User Sessions</h3>
-                  </div>
-                  <Button
-                    onClick={() => setIsSidebarOpen(false)}
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 flex-shrink-0"
-                    aria-label="Close sidebar"
-                  >
-                    <PanelLeftClose className="h-4 w-4" />
-                  </Button>
-                </div>
-              
-              {sessions.length === 0 ? (
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="text-center text-gray-500 dark:text-gray-400">
-                    <MessageSquare className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">No previous sessions</p>
-                    <p className="text-xs mt-1">Your chat history will appear here</p>
-                  </div>
-                </div>
-              ) : (
-                <ScrollArea className="flex-1 -mx-6 px-6">
-                  <div className="space-y-2">
-                    {sessions.map((session) => {
-                      const isActive = session.id === currentSessionId
-                      const messageCount = session.messages.filter(m => m.role === 'user').length
-                      
-                      return (
-                        <div
-                          key={session.id}
-                          className={`p-3 border rounded-lg transition-all cursor-pointer group ${
-                            isActive 
-                              ? 'bg-indigo-50 dark:bg-indigo-950 border-indigo-300 dark:border-indigo-700 shadow-sm' 
-                              : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-700 dark:border-gray-800'
-                          }`}
-                          onClick={() => handleLoadSession(session)}
-                        >
-                          <div className="flex items-start gap-3">
-                            <FileText className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
-                              isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'
-                            }`} />
-                            <div className="flex-1 min-w-0">
-                              <p className={`text-sm truncate ${
-                                isActive ? 'text-indigo-900 dark:text-indigo-300' : 'text-gray-900 dark:text-gray-200'
-                              }`}>
-                                {session.fileName}
-                              </p>
-                              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                                  <Clock className="h-3 w-3 mr-1" />
-                                  {formatRelativeTime(session.updatedAt)}
-                                </div>
-                                {messageCount > 0 && (
-                                  <Badge variant="secondary" className="text-xs h-5">
-                                    {messageCount} {messageCount === 1 ? 'msg' : 'msgs'}
-                                  </Badge>
-                                )}
-                                {session.score !== undefined && (
-                                  <Badge 
-                                    variant={session.score >= 70 ? 'default' : 'outline'} 
-                                    className="text-xs h-5"
-                                  >
-                                    {session.score}%
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                            <Button
-                              onClick={(e: React.MouseEvent) => handleDeleteSession(e, session.id)}
-                              variant="ghost"
-                              size="sm"
-                              className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
-                            >
-                              <Trash2 className="h-3 w-3 text-red-600 dark:text-red-400" />
-                            </Button>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </ScrollArea>
-              )}
-            </Card>
-            </div>
-
+        <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
-            <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 flex-1 transition-all duration-300">
+            <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 transition-all duration-300">
             {/* Header with file info and upload button */}
-            <div className={`p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950 transition-all duration-300 ${
-              !isSidebarOpen ? 'pl-16' : ''
-            }`}>
+            <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
               <div className="flex items-center gap-2">
                 {fileName ? (
                   <>
@@ -777,7 +848,7 @@ export default function Home() {
                       <span className={`text-xs mt-2 block ${
                         message.role === 'user' ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'
                       }`}>
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
 
@@ -834,8 +905,9 @@ export default function Home() {
               </p>
             </div>
           </Card>
-          </div>
+        </div>
       </main>
+      </div>
     </div>
   )
 }
