@@ -1,0 +1,5 @@
+[00:00:27.877] Server  LOG      ✓ Ready in 17.8s
+[00:00:30.926] Server  LOG      ○ Compiling / ...
+[00:00:39.305] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:57.436] Browser ERROR   Error sending message: {}
+[00:01:12.115] Browser ERROR   Error starting session: {}
