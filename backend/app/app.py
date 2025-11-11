@@ -10,7 +10,7 @@ from .ai_client import get_socratic_response, SYSTEM_PROMPT
 Base.metadata.create_all(bind=engine)
 app = Flask(__name__)
 
-origins = ["http://localhost:8000"]
+origins = ["http://localhost:3000"]
 CORS(app, resources={r"/api/*": {"origins": origins}}, supports_credentials=True)
 app.config["JWT_SECRET_KEY"] = "123456789"
 bcrypt = Bcrypt(app)
