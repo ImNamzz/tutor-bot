@@ -16,6 +16,22 @@ app.config["JWT_SECRET_KEY"] = "123456789"
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
+# JWT error handlers
+@jwt.unauthorized_loader
+def unauthorized_callback(error):
+    print(f"JWT UNAUTHORIZED: {error}")
+    return jsonify({"detail": "Missing or invalid token"}), 401
+
+@jwt.invalid_token_loader
+def invalid_token_callback(error):
+    print(f"JWT INVALID TOKEN: {error}")
+    return jsonify({"detail": "Invalid token"}), 422
+
+@jwt.expired_token_loader
+def expired_token_callback(jwt_header, jwt_payload):
+    print("JWT EXPIRED")
+    return jsonify({"detail": "Token has expired"}), 401
+
 @app.route("/api/register", methods=["POST"])
 def register():
     db = SessionLocal()
@@ -122,29 +138,65 @@ def start_session():
 @app.route("/api/chat", methods=["POST"])
 @jwt_required()
 def chat():
+    print("=== CHAT ENDPOINT HIT ===")
     try:
         current_user_id = get_jwt_identity()
         data = request.json
-        session_id = data['session_id']
-        user_message_content = data['message']
+        
+        # Debug logging
+        print(f"Received data: {data}")
+        print(f"User ID: {current_user_id}")
+        
+        session_id = data.get('session_id')
+        user_message_content = data.get('message')
+        
+        if not user_message_content:
+            print("ERROR: No message content")
+            return jsonify({"detail": "Message is required"}), 422
+        
+        # If session_id is a string starting with "session_", it's a frontend-only session
+        # Create a new backend session for it
+        if session_id and isinstance(session_id, str) and session_id.startswith('session_'):
+            session_id = None
+            
     except Exception as e:
-        return jsonify({"detail": f"Invalid request body: {e}"}), 400
+        print(f"Error parsing request: {e}")
+        return jsonify({"detail": f"Invalid request body: {e}"}), 422
 
     db = SessionLocal()
     try:
-        session = db.query(SessionModel).filter_by(
-            id=session_id, 
-            user_id=current_user_id
-        ).first()
+        # If no valid session_id, create a new one
+        if not session_id:
+            session = SessionModel(
+                title="Chat Session",
+                transcript="No transcript provided - general conversation",
+                user_id=current_user_id
+            )
+            db.add(session)
+            db.flush()
+            session_id = session.id
+            
+            # Add system message
+            system_msg = MessageModel(session_id=session_id, role="system", content=SYSTEM_PROMPT)
+            db.add(system_msg)
+            message_history = [{"role": "system", "content": SYSTEM_PROMPT}]
+        else:
+            # Load existing session
+            session = db.query(SessionModel).filter_by(
+                id=session_id, 
+                user_id=current_user_id
+            ).first()
 
-        if not session:
-            return jsonify({"detail": "Session not found or not authorized."}), 404
+            if not session:
+                return jsonify({"detail": "Session not found or not authorized."}), 404
 
-        messages_db = db.query(MessageModel).filter(
-            MessageModel.session_id == session_id
-        ).order_by(MessageModel.created_at).all()
+            messages_db = db.query(MessageModel).filter(
+                MessageModel.session_id == session_id
+            ).order_by(MessageModel.created_at).all()
+            
+            message_history = [{"role": msg.role, "content": msg.content} for msg in messages_db]
         
-        message_history = [{"role": msg.role, "content": msg.content} for msg in messages_db]
+        # Add user message to history
         message_history.append({"role": "user", "content": user_message_content})
 
         ai_response_content = get_socratic_response(message_history)
@@ -157,7 +209,8 @@ def chat():
         db.commit()
 
         return jsonify({
-            "response": ai_response_content
+            "response": ai_response_content,
+            "session_id": session_id
         })
 
     except Exception as e:
