@@ -265,8 +265,9 @@ export default function Home() {
     if (chatState === 'idle') {
       // User is starting a new session without uploading a file
       // Create a new session with their message as the topic
-      setFileName('Chat Session')
-      setCurrentSessionId(`session_${Date.now()}`)
+  setFileName('Chat Session')
+  // Use a numeric session id (stringified) so the backend receives a proper number when possible
+  setCurrentSessionId(Date.now().toString())
       setChatState('completed') // Skip quiz and go straight to conversation mode
       
       addMessage('assistant', 
@@ -286,8 +287,10 @@ export default function Home() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${getAccessToken()}`
           },
+          // Ensure we send a numeric id if the currentSessionId can be coerced to a number,
+          // otherwise send the raw string. This avoids sending NaN which can cause a 422.
           body: JSON.stringify({
-            session_id: parseInt(currentSessionId),
+            session_id: Number.isFinite(Number(currentSessionId)) ? Number(currentSessionId) : currentSessionId,
             message: userMessage
           })
         })
