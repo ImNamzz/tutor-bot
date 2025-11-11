@@ -405,6 +405,24 @@ export default function Home() {
     localStorage.setItem('chatSessions', JSON.stringify(filtered))
     setSessions(filtered)
     
+    // If user is deleting the currently active session, create a new session
+    if (sessionId === currentSessionId) {
+      setMessages([])
+      setChatState('idle')
+      setFileName('')
+      setTranscriptContent('')
+      setCurrentQuestionIndex(0)
+      setCorrectAnswers(0)
+      setKeyPoints([])
+      setCurrentSessionId('')
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+      addMessage('assistant', 
+        "Your previous session has been deleted. Feel free to start a new conversation or upload a file! 📚"
+      )
+    }
+    
     toast.success('Session deleted')
   }
 
