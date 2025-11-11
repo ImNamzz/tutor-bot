@@ -10,11 +10,12 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { isAuthenticated, removeAccessToken } from '@/app/lib/auth'
+import { isAuthenticated, removeAccessToken, getAccessToken, handleAuthError } from '@/app/lib/auth'
+import { API_ENDPOINTS } from '@/app/lib/config'
 
 interface Message {
   id: string
@@ -59,9 +60,13 @@ export default function Home() {
   const [currentSessionId, setCurrentSessionId] = useState<string>('')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [showUploadMenu, setShowUploadMenu] = useState(false)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const uploadMenuRef = useRef<HTMLDivElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -105,6 +110,23 @@ export default function Home() {
     }
   }, [isSidebarOpen, mounted])
 
+  // Close upload menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (uploadMenuRef.current && !uploadMenuRef.current.contains(event.target as Node)) {
+        setShowUploadMenu(false)
+      }
+    }
+
+    if (showUploadMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showUploadMenu])
+
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
   }
@@ -144,7 +166,6 @@ export default function Home() {
     setCurrentQuestionIndex(0)
     setCorrectAnswers(0)
     setFileName(file.name)
-    setCurrentSessionId(`session_${Date.now()}`)
     setIsLoading(true)
     
     const reader = new FileReader()
@@ -154,60 +175,83 @@ export default function Home() {
       
       addMessage('user', `📎 Uploaded: ${file.name}`)
       
-      // Simulate processing
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      // Generate mock key points and questions
-      const mockKeyPoints = generateMockKeyPoints(content)
-      setKeyPoints(mockKeyPoints)
-      
-      const numQuestions = Math.min(Math.max(Math.floor(content.split(/\s+/).length / 150), 3), 5)
-      setTotalQuestions(numQuestions)
-      
-      addMessage('assistant', 
-        `Great! I've analyzed your lecture transcript "${file.name}". I found several key concepts that we should discuss.\n\nBefore I show you the main points, let me ask you a few questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's question 1 of ${numQuestions}:`
-      )
-      
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      // Ask first question
-      const firstQuestion = generateQuestion(content, 0)
-      addMessage('assistant', firstQuestion)
-      
-      setChatState('quizzing')
-      setIsLoading(false)
-      toast.success('Transcript processed! Answer the questions to proceed.')
+      try {
+        // Call the real backend API to start a session
+        const response = await fetch(API_ENDPOINTS.startSession, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: JSON.stringify({
+            title: file.name,
+            transcript: content
+          })
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to start session')
+        }
+
+        const data = await response.json()
+        
+        // Set the session ID from backend
+        setCurrentSessionId(data.session_id.toString())
+        
+        addMessage('assistant', 
+          `Great! I've analyzed your lecture transcript "${file.name}". I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
+        )
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Use the first question from the backend
+        addMessage('assistant', data.first_question)
+        
+        setChatState('quizzing')
+        setIsLoading(false)
+        toast.success('Transcript processed! Answer the questions to proceed.')
+        
+      } catch (error) {
+        console.error('Error starting session:', error)
+        toast.error('Failed to process transcript. Please try again.')
+        setIsLoading(false)
+        
+        // Reset to idle state on error
+        setMessages([])
+        setChatState('idle')
+        setFileName('')
+        addMessage('assistant', 
+          "Sorry, I encountered an error processing your file. Please make sure the backend server is running and try again."
+        )
+      }
     }
     
     reader.readAsText(file)
   }
 
-  const generateMockKeyPoints = (content: string): string[] => {
-    const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 30)
-    const numPoints = Math.min(Math.max(Math.floor(sentences.length / 10), 3), 6)
-    return sentences.slice(0, numPoints).map(s => s.trim()).filter(s => s.length > 0)
-  }
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
 
-  const generateQuestion = (content: string, index: number): string => {
-    const questions = [
-      "What do you think is the main topic or theme discussed in this material? Please explain in your own words.",
-      "Can you identify 2-3 key concepts or ideas that were emphasized in the lecture?",
-      "How would you apply what you learned from this material to a real-world situation?",
-      "What connections can you make between this material and other topics you've studied?",
-      "If you had to explain the most important takeaway to a friend, what would you say?",
-    ]
-    return questions[index] || questions[0]
-  }
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file')
+      return
+    }
 
-  const evaluateAnswer = (answer: string): boolean => {
-    // Mock evaluation - in real app would use AI
-    const wordCount = answer.trim().split(/\s+/).length
-    const hasKeywords = answer.toLowerCase().includes('key') || 
-                       answer.toLowerCase().includes('main') ||
-                       answer.toLowerCase().includes('important') ||
-                       answer.toLowerCase().includes('concept')
+    addMessage('user', `🖼️ Uploaded image: ${file.name}`)
     
-    return wordCount >= 15 || hasKeywords
+    // For now, just show a message that image processing is coming soon
+    // You can implement actual image processing with your backend later
+    addMessage('assistant', 
+      `I've received your image "${file.name}". Image analysis functionality will be available soon! For now, you can describe what you'd like to know about this image, and I'll help you with that.`
+    )
+    
+    setShowUploadMenu(false)
+    toast.success('Image uploaded!')
   }
 
   const handleSendMessage = async () => {
@@ -217,8 +261,6 @@ export default function Home() {
     setInputMessage('')
     addMessage('user', userMessage)
     setIsLoading(true)
-
-    await new Promise(resolve => setTimeout(resolve, 1000))
 
     if (chatState === 'idle') {
       // User is starting a new session without uploading a file
@@ -235,87 +277,50 @@ export default function Home() {
       return
     }
 
-    if (chatState === 'quizzing') {
-      // Check if this is a question or an answer
-      if (userMessage.toLowerCase().includes('?') || 
-          userMessage.toLowerCase().startsWith('what') ||
-          userMessage.toLowerCase().startsWith('how') ||
-          userMessage.toLowerCase().startsWith('why') ||
-          userMessage.toLowerCase().startsWith('can you')) {
-        // User is asking a question during quiz
-        addMessage('assistant', 
-          `That's a great question! Based on the material, ${generateContextualAnswer(userMessage, transcriptContent)}\n\nNow, let's continue with the quiz question. Please provide your answer to the previous question.`
-        )
+    // For both quizzing and completed states, use the /api/chat endpoint
+    if (chatState === 'quizzing' || chatState === 'completed') {
+      try {
+        const response = await fetch(API_ENDPOINTS.chat, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: JSON.stringify({
+            session_id: parseInt(currentSessionId),
+            message: userMessage
+          })
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to send message')
+        }
+
+        const data = await response.json()
+        
+        // Display AI's response
+        addMessage('assistant', data.response)
+        
         setIsLoading(false)
-        return
-      }
-
-      // It's an answer to the quiz question
-      const isCorrect = evaluateAnswer(userMessage)
-      if (isCorrect) {
-        setCorrectAnswers(prev => prev + 1)
-      }
-
-      const feedback = isCorrect 
-        ? "✅ Great answer! You've demonstrated good understanding of the material."
-        : "🤔 That's a good attempt, but let me provide some additional context to help clarify..."
-
-      addMessage('assistant', feedback)
-
-      await new Promise(resolve => setTimeout(resolve, 800))
-
-      const nextIndex = currentQuestionIndex + 1
-      
-      if (nextIndex < totalQuestions) {
-        setCurrentQuestionIndex(nextIndex)
-        addMessage('assistant', 
-          `Question ${nextIndex + 1} of ${totalQuestions}:\n\n${generateQuestion(transcriptContent, nextIndex)}`
-        )
-      } else {
-        // Quiz complete
-        const score = Math.round(((correctAnswers + (isCorrect ? 1 : 0)) / totalQuestions) * 100)
-        setChatState('completed')
+        
+      } catch (error) {
+        console.error('Error sending message:', error)
+        toast.error('Failed to send message. Please try again.')
         
         addMessage('assistant', 
-          `🎉 Quiz complete! You scored ${score}%\n\n${score >= 70 ? 'Excellent work!' : score >= 50 ? 'Good effort!' : 'Keep studying!'}\n\nHere are the key points from the material:`
+          "Sorry, I encountered an error processing your message. Please make sure the backend server is running and try again."
         )
-
-        await new Promise(resolve => setTimeout(resolve, 500))
-
-        const keyPointsText = keyPoints.map((point, index) => `${index + 1}. ${point}`).join('\n\n')
-        addMessage('assistant', keyPointsText)
-
-        await new Promise(resolve => setTimeout(resolve, 500))
-
-        addMessage('assistant', 
-          "Feel free to ask me any questions about the material! I'm here to help clarify concepts or provide more information. 💡"
-        )
+        
+        setIsLoading(false)
       }
-      setIsLoading(false)
-      return
-    }
-
-    if (chatState === 'completed') {
-      // Post-quiz conversation
-      const response = generateContextualAnswer(userMessage, transcriptContent)
-      addMessage('assistant', response)
-      setIsLoading(false)
       return
     }
 
     setIsLoading(false)
-  }
-
-  const generateContextualAnswer = (question: string, context: string): string => {
-    // Mock AI response
-    const responses = [
-      "Based on the lecture material, this concept relates to the fundamental principles discussed. The key idea is that these elements work together to form a comprehensive understanding.",
-      "That's an excellent question! In the context of what we studied, this refers to how the various components interact. Let me break it down further...",
-      "From the material we covered, we can see that this topic is important because it connects to several other key concepts. The relationship between these ideas is crucial for your understanding.",
-      "Good observation! The lecture emphasized this point because it forms the foundation for more advanced topics. Think of it as a building block for the larger concept.",
-      "Let me clarify that based on the transcript. This concept is explained through examples and demonstrations that show its practical application.",
-    ]
-    return responses[Math.floor(Math.random() * responses.length)]
   }
 
   const saveCurrentSession = () => {
@@ -547,6 +552,23 @@ export default function Home() {
     }
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputMessage(e.target.value)
+    
+    // Auto-resize textarea
+    const textarea = e.target
+    textarea.style.height = 'auto'
+    textarea.style.height = `${textarea.scrollHeight}px`
+  }
+
+  // Auto-resize on mount and when inputMessage changes
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }, [inputMessage])
+
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return null
@@ -690,17 +712,6 @@ export default function Home() {
                   AI Tutor
                 </Link>
                 <Link 
-                  href="/transcript" 
-                  className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                    pathname === "/transcript" 
-                      ? "text-indigo-600 dark:text-indigo-400" 
-                      : "text-gray-700 dark:text-gray-300"
-                  }`}
-                >
-                  <FileText className="h-4 w-4" />
-                  Transcript
-                </Link>
-                <Link 
                   href="/calendar" 
                   className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
                     pathname === "/calendar" 
@@ -779,49 +790,33 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
             <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 transition-all duration-300">
-            {/* Header with file info and upload button */}
-            <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
-              <div className="flex items-center gap-2">
-                {fileName ? (
-                  <>
-                    <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                    <span className="text-gray-700 dark:text-gray-300">{fileName}</span>
-                    {chatState === 'completed' && (
-                      <Badge variant="outline" className="ml-2">
-                        <Sparkles className="h-3 w-3 mr-1" />
-                        Quiz Complete
-                      </Badge>
-                    )}
-                  </>
-                ) : (
-                  <span className="text-gray-500 dark:text-gray-400">No file uploaded</span>
-                )}
+            {/* Header with file info - only show when there's a file or messages */}
+            {fileName && (
+              <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                  <span className="text-gray-700 dark:text-gray-300">{fileName}</span>
+                </div>
               </div>
-              
-              <div className="flex gap-2">
-                {chatState !== 'idle' && (
-                  <Button onClick={handleReset} variant="outline" size="sm">
-                    New Session
-                  </Button>
-                )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".txt"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                  id="file-upload"
-                />
-                <label htmlFor="file-upload">
-                  <Button asChild size="sm">
-                    <span className="cursor-pointer">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload File
-                    </span>
-                  </Button>
-                </label>
-              </div>
-            </div>
+            )}
+            
+            {/* Hidden file inputs */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".txt"
+              onChange={handleFileUpload}
+              className="hidden"
+              id="file-upload"
+            />
+            <input
+              ref={imageInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+              id="image-upload"
+            />
 
             {/* Chat Messages */}
             <ScrollArea className="flex-1 p-4">
@@ -876,11 +871,50 @@ export default function Home() {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-4 border-t dark:border-gray-800 bg-white dark:bg-gray-950">
+            <div className="p-4">
               <div className="flex gap-2 max-w-3xl mx-auto">
+                {/* Upload button with menu */}
+                <div className="relative" ref={uploadMenuRef}>
+                  <Button 
+                    type="button"
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => setShowUploadMenu(!showUploadMenu)}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                  
+                  {/* Upload menu */}
+                  {showUploadMenu && (
+                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
+                      <button
+                        onClick={() => {
+                          fileInputRef.current?.click()
+                          setShowUploadMenu(false)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload file</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          imageInputRef.current?.click()
+                          setShowUploadMenu(false)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload image</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+                
                 <Textarea
+                  ref={textareaRef}
                   value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder={
                     chatState === 'quizzing' 
@@ -890,12 +924,12 @@ export default function Home() {
                       : "Type a message..."
                   }
                   rows={1}
-                  className="resize-none min-h-[44px] max-h-32"
+                  className="resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600"
                 />
                 <Button 
                   onClick={handleSendMessage} 
                   disabled={!inputMessage.trim() || isLoading}
-                  className="flex-shrink-0"
+                  className="shrink-0"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
