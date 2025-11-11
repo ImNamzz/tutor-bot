@@ -74,7 +74,7 @@ def login():
         user = db.query(UserModel).filter_by(email=email).first()
 
         if user and bcrypt.check_password_hash(user.hashed_password, password):
-            access_token = create_access_token(identity=user.id)
+            access_token = create_access_token(identity=str(user.id))
             return jsonify(access_token=access_token), 200
         else:
             return jsonify({"detail": "Invalid email or password."}), 401
@@ -89,7 +89,7 @@ def login():
 @jwt_required()
 def start_session():
     try:
-        current_user_id = get_jwt_identity()
+        current_user_id = int(get_jwt_identity())
         data = request.json
         transcript = data['transcript']
         title = data.get('title', 'Untitled Session')
@@ -140,7 +140,7 @@ def start_session():
 def chat():
     print("=== CHAT ENDPOINT HIT ===")
     try:
-        current_user_id = get_jwt_identity()
+        current_user_id = int(get_jwt_identity())
         data = request.json
         
         # Debug logging
@@ -154,10 +154,13 @@ def chat():
             print("ERROR: No message content")
             return jsonify({"detail": "Message is required"}), 422
         
-        # If session_id is a string starting with "session_", it's a frontend-only session
-        # Create a new backend session for it
-        if session_id and isinstance(session_id, str) and session_id.startswith('session_'):
-            session_id = None
+        # If session_id is a string starting with "session_" or a large number (timestamp), 
+        # it's a frontend-only session - create a new backend session
+        if session_id:
+            if isinstance(session_id, str) and session_id.startswith('session_'):
+                session_id = None
+            elif isinstance(session_id, int) and session_id > 1000000000000:  # Likely a timestamp
+                session_id = None
             
     except Exception as e:
         print(f"Error parsing request: {e}")
