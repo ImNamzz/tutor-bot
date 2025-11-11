@@ -720,6 +720,10 @@
     left: 50%;
   }
 
+  .isolate {
+    isolation: isolate;
+  }
+
   .z-10 {
     z-index: 10;
   }
