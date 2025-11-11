@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -60,10 +60,13 @@ export default function Home() {
   const [currentSessionId, setCurrentSessionId] = useState<string>('')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [showUploadMenu, setShowUploadMenu] = useState(false)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const uploadMenuRef = useRef<HTMLDivElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -106,6 +109,23 @@ export default function Home() {
       localStorage.setItem('sidebarOpen', String(isSidebarOpen))
     }
   }, [isSidebarOpen, mounted])
+
+  // Close upload menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (uploadMenuRef.current && !uploadMenuRef.current.contains(event.target as Node)) {
+        setShowUploadMenu(false)
+      }
+    }
+
+    if (showUploadMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showUploadMenu])
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
@@ -211,6 +231,27 @@ export default function Home() {
     }
     
     reader.readAsText(file)
+  }
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file')
+      return
+    }
+
+    addMessage('user', `🖼️ Uploaded image: ${file.name}`)
+    
+    // For now, just show a message that image processing is coming soon
+    // You can implement actual image processing with your backend later
+    addMessage('assistant', 
+      `I've received your image "${file.name}". Image analysis functionality will be available soon! For now, you can describe what you'd like to know about this image, and I'll help you with that.`
+    )
+    
+    setShowUploadMenu(false)
+    toast.success('Image uploaded!')
   }
 
   const handleSendMessage = async () => {
@@ -777,7 +818,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Hidden file input */}
+            {/* Hidden file inputs */}
             <input
               ref={fileInputRef}
               type="file"
@@ -785,6 +826,14 @@ export default function Home() {
               onChange={handleFileUpload}
               className="hidden"
               id="file-upload"
+            />
+            <input
+              ref={imageInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+              id="image-upload"
             />
 
             {/* Chat Messages */}
@@ -842,28 +891,42 @@ export default function Home() {
             {/* Input Area */}
             <div className="p-4">
               <div className="flex gap-2 max-w-3xl mx-auto">
-                {/* Upload button with tooltip */}
-                <div className="relative group">
-                  <label htmlFor="file-upload">
-                    <Button 
-                      type="button"
-                      variant="outline" 
-                      size="icon"
-                      className="cursor-pointer"
-                      asChild
-                    >
-                      <span>
-                        <Plus className="h-4 w-4" />
-                      </span>
-                    </Button>
-                  </label>
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block z-50">
-                    <div className="bg-gray-900 dark:bg-gray-700 text-white text-sm px-3 py-2 rounded-md whitespace-nowrap shadow-lg">
-                      Add photos & files
-                      <div className="absolute top-full left-4 -mt-1 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                {/* Upload button with menu */}
+                <div className="relative" ref={uploadMenuRef}>
+                  <Button 
+                    type="button"
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => setShowUploadMenu(!showUploadMenu)}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                  
+                  {/* Upload menu */}
+                  {showUploadMenu && (
+                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
+                      <button
+                        onClick={() => {
+                          fileInputRef.current?.click()
+                          setShowUploadMenu(false)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload file</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          imageInputRef.current?.click()
+                          setShowUploadMenu(false)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload image</span>
+                      </button>
                     </div>
-                  </div>
+                  )}
                 </div>
                 
                 <Textarea
