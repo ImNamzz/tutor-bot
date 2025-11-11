@@ -221,9 +221,16 @@ export default function Home() {
     await new Promise(resolve => setTimeout(resolve, 1000))
 
     if (chatState === 'idle') {
+      // User is starting a new session without uploading a file
+      // Create a new session with their message as the topic
+      setFileName('Chat Session')
+      setCurrentSessionId(`session_${Date.now()}`)
+      setChatState('completed') // Skip quiz and go straight to conversation mode
+      
       addMessage('assistant', 
-        "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!"
+        `Hi! I'm your AI learning assistant. 👋\n\nI see you want to discuss: "${userMessage}"\n\nI'm here to help! Feel free to ask me anything, and I'll do my best to assist you with your learning. You can also upload a lecture transcript anytime using the upload button if you'd like me to quiz you on specific material.`
       )
+      
       setIsLoading(false)
       return
     }
@@ -612,7 +619,7 @@ export default function Home() {
             {/* Session History Sidebar */}
             <div
               className={`transition-all duration-300 ease-in-out flex-shrink-0 ${
-                isSidebarOpen ? 'w-[350px] opacity-100' : 'w-0 opacity-0 overflow-hidden'
+                isSidebarOpen ? 'w-[380px] opacity-100' : 'w-0 opacity-0 overflow-hidden'
               }`}
             >
               <Card className="p-6 h-full flex flex-col overflow-hidden dark:bg-gray-900 dark:border-gray-800">
@@ -640,8 +647,8 @@ export default function Home() {
                   </div>
                 </div>
               ) : (
-                <ScrollArea className="flex-1 -mx-6 px-6">
-                  <div className="space-y-2">
+                <ScrollArea className="flex-1 -mx-6 px-6 py-2">
+                  <div className="space-y-2 pr-2">
                     {sessions.map((session) => {
                       const isActive = session.id === currentSessionId
                       const messageCount = session.messages.filter(m => m.role === 'user').length
@@ -649,10 +656,10 @@ export default function Home() {
                       return (
                         <div
                           key={session.id}
-                          className={`p-3 border rounded-lg transition-all cursor-pointer group ${
+                          className={`p-3 border border-solid rounded-lg transition-all cursor-pointer group ${
                             isActive 
                               ? 'bg-indigo-50 dark:bg-indigo-950 border-indigo-300 dark:border-indigo-700 shadow-sm' 
-                              : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-700 dark:border-gray-800'
+                              : 'border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-700 dark:border-gray-700'
                           }`}
                           onClick={() => handleLoadSession(session)}
                         >
@@ -777,7 +784,7 @@ export default function Home() {
                       <span className={`text-xs mt-2 block ${
                         message.role === 'user' ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'
                       }`}>
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
 
