@@ -9,6 +9,7 @@ import { Label } from "@/app/components/ui/label";
 import { Card } from "@/app/components/ui/card";
 import { toast } from "sonner";
 import { BookOpen, Loader2 } from "lucide-react";
+import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function LoginPage() {
     setNeedsVerification(false);
 
     try {
-      const response = await fetch("http://localhost:8000/api/login", {
+      const response = await fetch(API_ENDPOINTS.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -58,7 +59,7 @@ export default function LoginPage() {
   const handleResendVerification = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/resend_verification", {
+      const response = await fetch(API_ENDPOINTS.resendVerification, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

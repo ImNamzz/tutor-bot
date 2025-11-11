@@ -9,6 +9,7 @@ import { Label } from "@/app/components/ui/label";
 import { Card } from "@/app/components/ui/card";
 import { toast } from "sonner";
 import { BookOpen, Loader2, CheckCircle } from "lucide-react";
+import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/register", {
+      const response = await fetch(API_ENDPOINTS.register, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
