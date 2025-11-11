@@ -264,22 +264,9 @@ export default function Home() {
 
     if (chatState === 'idle') {
       // User is starting a new session without uploading a file
-      // Create a new session with their message as the topic
-  setFileName('Chat Session')
-  // Use a numeric session id (stringified) so the backend receives a proper number when possible
-  setCurrentSessionId(Date.now().toString())
-      setChatState('completed') // Skip quiz and go straight to conversation mode
+      // Send to backend to create a proper session
+      setFileName('Chat Session')
       
-      addMessage('assistant', 
-        `Hi! I'm your AI learning assistant. 👋\n\nI see you want to discuss: "${userMessage}"\n\nI'm here to help! Feel free to ask me anything, and I'll do my best to assist you with your learning. You can also upload a lecture transcript anytime using the upload button if you'd like me to quiz you on specific material.`
-      )
-      
-      setIsLoading(false)
-      return
-    }
-
-    // For both quizzing and completed states, use the /api/chat endpoint
-    if (chatState === 'quizzing' || chatState === 'completed') {
       try {
         const response = await fetch(API_ENDPOINTS.chat, {
           method: 'POST',
@@ -287,10 +274,8 @@ export default function Home() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${getAccessToken()}`
           },
-          // Ensure we send a numeric id if the currentSessionId can be coerced to a number,
-          // otherwise send the raw string. This avoids sending NaN which can cause a 422.
           body: JSON.stringify({
-            session_id: Number.isFinite(Number(currentSessionId)) ? Number(currentSessionId) : currentSessionId,
+            session_id: null, // Let backend create a new session
             message: userMessage
           })
         })
@@ -304,6 +289,58 @@ export default function Home() {
         }
 
         const data = await response.json()
+        
+        // Update session ID from backend and set state to completed
+        setCurrentSessionId(data.session_id.toString())
+        setChatState('completed') // Now in conversation mode
+        
+        // Display AI's response
+        addMessage('assistant', data.response)
+        
+        setIsLoading(false)
+        
+      } catch (error) {
+        console.error('Error sending message:', error)
+        toast.error('Failed to send message. Please try again.')
+        
+        addMessage('assistant', 
+          "Sorry, I encountered an error processing your message. Please make sure the backend server is running and try again."
+        )
+        
+        setIsLoading(false)
+      }
+      return
+    }
+
+    // For both quizzing and completed states, use the /api/chat endpoint
+    if (chatState === 'quizzing' || chatState === 'completed') {
+      try {
+        const response = await fetch(API_ENDPOINTS.chat, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: JSON.stringify({
+            session_id: currentSessionId ? Number(currentSessionId) : null,
+            message: userMessage
+          })
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to send message')
+        }
+
+        const data = await response.json()
+        
+        // Update session ID from backend (in case it was created or changed)
+        if (data.session_id) {
+          setCurrentSessionId(data.session_id.toString())
+        }
         
         // Display AI's response
         addMessage('assistant', data.response)
