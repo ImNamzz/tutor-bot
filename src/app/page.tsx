@@ -749,7 +749,7 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
             <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 transition-all duration-300">
-            {/* Header with file info and upload button */}
+            {/* Header with file info */}
             <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
               <div className="flex items-center gap-2">
                 {fileName ? (
@@ -774,24 +774,18 @@ export default function Home() {
                     New Session
                   </Button>
                 )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".txt"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                  id="file-upload"
-                />
-                <label htmlFor="file-upload">
-                  <Button asChild size="sm">
-                    <span className="cursor-pointer">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload File
-                    </span>
-                  </Button>
-                </label>
               </div>
             </div>
+            
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".txt"
+              onChange={handleFileUpload}
+              className="hidden"
+              id="file-upload"
+            />
 
             {/* Chat Messages */}
             <ScrollArea className="flex-1 p-4">
@@ -848,6 +842,30 @@ export default function Home() {
             {/* Input Area */}
             <div className="p-4">
               <div className="flex gap-2 max-w-3xl mx-auto">
+                {/* Upload button with tooltip */}
+                <div className="relative group">
+                  <label htmlFor="file-upload">
+                    <Button 
+                      type="button"
+                      variant="outline" 
+                      size="icon"
+                      className="cursor-pointer"
+                      asChild
+                    >
+                      <span>
+                        <Plus className="h-4 w-4" />
+                      </span>
+                    </Button>
+                  </label>
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block z-50">
+                    <div className="bg-gray-900 dark:bg-gray-700 text-white text-sm px-3 py-2 rounded-md whitespace-nowrap shadow-lg">
+                      Add photos & files
+                      <div className="absolute top-full left-4 -mt-1 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                    </div>
+                  </div>
+                </div>
+                
                 <Textarea
                   ref={textareaRef}
                   value={inputMessage}
