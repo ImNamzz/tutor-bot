@@ -790,33 +790,15 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
             <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 transition-all duration-300">
-            {/* Header with file info */}
-            <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
-              <div className="flex items-center gap-2">
-                {fileName ? (
-                  <>
-                    <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                    <span className="text-gray-700 dark:text-gray-300">{fileName}</span>
-                    {chatState === 'completed' && (
-                      <Badge variant="outline" className="ml-2">
-                        <Sparkles className="h-3 w-3 mr-1" />
-                        Quiz Complete
-                      </Badge>
-                    )}
-                  </>
-                ) : (
-                  <span className="text-gray-500 dark:text-gray-400">No file uploaded</span>
-                )}
+            {/* Header with file info - only show when there's a file or messages */}
+            {fileName && (
+              <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                  <span className="text-gray-700 dark:text-gray-300">{fileName}</span>
+                </div>
               </div>
-              
-              <div className="flex gap-2">
-                {chatState !== 'idle' && (
-                  <Button onClick={handleReset} variant="outline" size="sm">
-                    New Session
-                  </Button>
-                )}
-              </div>
-            </div>
+            )}
             
             {/* Hidden file inputs */}
             <input
