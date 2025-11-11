@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { CheckCircle, XCircle, Loader2, BookOpen } from "lucide-react";
+import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function VerifyEmailPage({ params }: { params: { token: string } }) {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function VerifyEmailPage({ params }: { params: { token: string } 
     const verifyEmail = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/verify_email/${params.token}`
+          API_ENDPOINTS.verifyEmail(params.token)
         );
 
         if (response.ok) {

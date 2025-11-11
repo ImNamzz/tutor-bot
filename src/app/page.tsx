@@ -14,7 +14,8 @@ import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSqu
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { isAuthenticated, removeAccessToken } from '@/app/lib/auth'
+import { isAuthenticated, removeAccessToken, getAccessToken, handleAuthError } from '@/app/lib/auth'
+import { API_ENDPOINTS } from '@/app/lib/config'
 
 interface Message {
   id: string
@@ -144,7 +145,6 @@ export default function Home() {
     setCurrentQuestionIndex(0)
     setCorrectAnswers(0)
     setFileName(file.name)
-    setCurrentSessionId(`session_${Date.now()}`)
     setIsLoading(true)
     
     const reader = new FileReader()
@@ -154,60 +154,62 @@ export default function Home() {
       
       addMessage('user', `📎 Uploaded: ${file.name}`)
       
-      // Simulate processing
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      // Generate mock key points and questions
-      const mockKeyPoints = generateMockKeyPoints(content)
-      setKeyPoints(mockKeyPoints)
-      
-      const numQuestions = Math.min(Math.max(Math.floor(content.split(/\s+/).length / 150), 3), 5)
-      setTotalQuestions(numQuestions)
-      
-      addMessage('assistant', 
-        `Great! I've analyzed your lecture transcript "${file.name}". I found several key concepts that we should discuss.\n\nBefore I show you the main points, let me ask you a few questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's question 1 of ${numQuestions}:`
-      )
-      
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      // Ask first question
-      const firstQuestion = generateQuestion(content, 0)
-      addMessage('assistant', firstQuestion)
-      
-      setChatState('quizzing')
-      setIsLoading(false)
-      toast.success('Transcript processed! Answer the questions to proceed.')
+      try {
+        // Call the real backend API to start a session
+        const response = await fetch(API_ENDPOINTS.startSession, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: JSON.stringify({
+            title: file.name,
+            transcript: content
+          })
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to start session')
+        }
+
+        const data = await response.json()
+        
+        // Set the session ID from backend
+        setCurrentSessionId(data.session_id.toString())
+        
+        addMessage('assistant', 
+          `Great! I've analyzed your lecture transcript "${file.name}". I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
+        )
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Use the first question from the backend
+        addMessage('assistant', data.first_question)
+        
+        setChatState('quizzing')
+        setIsLoading(false)
+        toast.success('Transcript processed! Answer the questions to proceed.')
+        
+      } catch (error) {
+        console.error('Error starting session:', error)
+        toast.error('Failed to process transcript. Please try again.')
+        setIsLoading(false)
+        
+        // Reset to idle state on error
+        setMessages([])
+        setChatState('idle')
+        setFileName('')
+        addMessage('assistant', 
+          "Sorry, I encountered an error processing your file. Please make sure the backend server is running and try again."
+        )
+      }
     }
     
     reader.readAsText(file)
-  }
-
-  const generateMockKeyPoints = (content: string): string[] => {
-    const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 30)
-    const numPoints = Math.min(Math.max(Math.floor(sentences.length / 10), 3), 6)
-    return sentences.slice(0, numPoints).map(s => s.trim()).filter(s => s.length > 0)
-  }
-
-  const generateQuestion = (content: string, index: number): string => {
-    const questions = [
-      "What do you think is the main topic or theme discussed in this material? Please explain in your own words.",
-      "Can you identify 2-3 key concepts or ideas that were emphasized in the lecture?",
-      "How would you apply what you learned from this material to a real-world situation?",
-      "What connections can you make between this material and other topics you've studied?",
-      "If you had to explain the most important takeaway to a friend, what would you say?",
-    ]
-    return questions[index] || questions[0]
-  }
-
-  const evaluateAnswer = (answer: string): boolean => {
-    // Mock evaluation - in real app would use AI
-    const wordCount = answer.trim().split(/\s+/).length
-    const hasKeywords = answer.toLowerCase().includes('key') || 
-                       answer.toLowerCase().includes('main') ||
-                       answer.toLowerCase().includes('important') ||
-                       answer.toLowerCase().includes('concept')
-    
-    return wordCount >= 15 || hasKeywords
   }
 
   const handleSendMessage = async () => {
@@ -217,8 +219,6 @@ export default function Home() {
     setInputMessage('')
     addMessage('user', userMessage)
     setIsLoading(true)
-
-    await new Promise(resolve => setTimeout(resolve, 1000))
 
     if (chatState === 'idle') {
       // User is starting a new session without uploading a file
@@ -235,87 +235,50 @@ export default function Home() {
       return
     }
 
-    if (chatState === 'quizzing') {
-      // Check if this is a question or an answer
-      if (userMessage.toLowerCase().includes('?') || 
-          userMessage.toLowerCase().startsWith('what') ||
-          userMessage.toLowerCase().startsWith('how') ||
-          userMessage.toLowerCase().startsWith('why') ||
-          userMessage.toLowerCase().startsWith('can you')) {
-        // User is asking a question during quiz
-        addMessage('assistant', 
-          `That's a great question! Based on the material, ${generateContextualAnswer(userMessage, transcriptContent)}\n\nNow, let's continue with the quiz question. Please provide your answer to the previous question.`
-        )
+    // For both quizzing and completed states, use the /api/chat endpoint
+    if (chatState === 'quizzing' || chatState === 'completed') {
+      try {
+        const response = await fetch(API_ENDPOINTS.chat, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: JSON.stringify({
+            session_id: parseInt(currentSessionId),
+            message: userMessage
+          })
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to send message')
+        }
+
+        const data = await response.json()
+        
+        // Display AI's response
+        addMessage('assistant', data.response)
+        
         setIsLoading(false)
-        return
-      }
-
-      // It's an answer to the quiz question
-      const isCorrect = evaluateAnswer(userMessage)
-      if (isCorrect) {
-        setCorrectAnswers(prev => prev + 1)
-      }
-
-      const feedback = isCorrect 
-        ? "✅ Great answer! You've demonstrated good understanding of the material."
-        : "🤔 That's a good attempt, but let me provide some additional context to help clarify..."
-
-      addMessage('assistant', feedback)
-
-      await new Promise(resolve => setTimeout(resolve, 800))
-
-      const nextIndex = currentQuestionIndex + 1
-      
-      if (nextIndex < totalQuestions) {
-        setCurrentQuestionIndex(nextIndex)
-        addMessage('assistant', 
-          `Question ${nextIndex + 1} of ${totalQuestions}:\n\n${generateQuestion(transcriptContent, nextIndex)}`
-        )
-      } else {
-        // Quiz complete
-        const score = Math.round(((correctAnswers + (isCorrect ? 1 : 0)) / totalQuestions) * 100)
-        setChatState('completed')
+        
+      } catch (error) {
+        console.error('Error sending message:', error)
+        toast.error('Failed to send message. Please try again.')
         
         addMessage('assistant', 
-          `🎉 Quiz complete! You scored ${score}%\n\n${score >= 70 ? 'Excellent work!' : score >= 50 ? 'Good effort!' : 'Keep studying!'}\n\nHere are the key points from the material:`
+          "Sorry, I encountered an error processing your message. Please make sure the backend server is running and try again."
         )
-
-        await new Promise(resolve => setTimeout(resolve, 500))
-
-        const keyPointsText = keyPoints.map((point, index) => `${index + 1}. ${point}`).join('\n\n')
-        addMessage('assistant', keyPointsText)
-
-        await new Promise(resolve => setTimeout(resolve, 500))
-
-        addMessage('assistant', 
-          "Feel free to ask me any questions about the material! I'm here to help clarify concepts or provide more information. 💡"
-        )
+        
+        setIsLoading(false)
       }
-      setIsLoading(false)
-      return
-    }
-
-    if (chatState === 'completed') {
-      // Post-quiz conversation
-      const response = generateContextualAnswer(userMessage, transcriptContent)
-      addMessage('assistant', response)
-      setIsLoading(false)
       return
     }
 
     setIsLoading(false)
-  }
-
-  const generateContextualAnswer = (question: string, context: string): string => {
-    // Mock AI response
-    const responses = [
-      "Based on the lecture material, this concept relates to the fundamental principles discussed. The key idea is that these elements work together to form a comprehensive understanding.",
-      "That's an excellent question! In the context of what we studied, this refers to how the various components interact. Let me break it down further...",
-      "From the material we covered, we can see that this topic is important because it connects to several other key concepts. The relationship between these ideas is crucial for your understanding.",
-      "Good observation! The lecture emphasized this point because it forms the foundation for more advanced topics. Think of it as a building block for the larger concept.",
-      "Let me clarify that based on the transcript. This concept is explained through examples and demonstrations that show its practical application.",
-    ]
-    return responses[Math.floor(Math.random() * responses.length)]
   }
 
   const saveCurrentSession = () => {
