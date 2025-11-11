@@ -63,6 +63,7 @@ export default function Home() {
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -510,6 +511,23 @@ export default function Home() {
     }
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputMessage(e.target.value)
+    
+    // Auto-resize textarea
+    const textarea = e.target
+    textarea.style.height = 'auto'
+    textarea.style.height = `${textarea.scrollHeight}px`
+  }
+
+  // Auto-resize on mount and when inputMessage changes
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }, [inputMessage])
+
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return null
@@ -831,8 +849,9 @@ export default function Home() {
             <div className="p-4 border-t dark:border-gray-800 bg-white dark:bg-gray-950">
               <div className="flex gap-2 max-w-3xl mx-auto">
                 <Textarea
+                  ref={textareaRef}
                   value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
+                  onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder={
                     chatState === 'quizzing' 
@@ -842,12 +861,12 @@ export default function Home() {
                       : "Type a message..."
                   }
                   rows={1}
-                  className="resize-none min-h-[44px] max-h-32"
+                  className="resize-none min-h-11 max-h-32 overflow-y-auto"
                 />
                 <Button 
                   onClick={handleSendMessage} 
                   disabled={!inputMessage.trim() || isLoading}
-                  className="flex-shrink-0"
+                  className="shrink-0"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
