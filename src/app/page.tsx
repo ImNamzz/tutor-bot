@@ -1131,7 +1131,7 @@ export default function Home() {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-4">
+            <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
               <div className="flex gap-2 max-w-3xl mx-auto">
                 {/* Upload button with menu or Lock icon */}
                 <div className="relative" ref={uploadMenuRef}>

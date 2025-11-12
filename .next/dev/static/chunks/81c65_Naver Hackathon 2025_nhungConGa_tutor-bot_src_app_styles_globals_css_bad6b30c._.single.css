@@ -568,6 +568,10 @@
     position: relative;
   }
 
+  .sticky {
+    position: sticky;
+  }
+
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
@@ -614,6 +618,10 @@
 
   .right-4 {
     right: calc(var(--spacing) * 4);
+  }
+
+  .bottom-0 {
+    bottom: calc(var(--spacing) * 0);
   }
 
   .bottom-1 {
@@ -855,6 +863,10 @@
 
   .h-16 {
     height: calc(var(--spacing) * 16);
+  }
+
+  .h-\[calc\(100vh-12rem\)\] {
+    height: calc(100vh - 12rem);
   }
 
   .h-\[var\(--radix-select-trigger-height\)\] {

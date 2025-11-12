@@ -112,3 +112,8 @@ Import traces:
 [02:31:31.936] Server  LOG      ✓ Compiled in 448ms
 [02:31:45.264] Server  LOG      ✓ Compiled in 368ms
 [02:31:54.957] Server  LOG      ✓ Compiled in 758ms
+[02:33:46.360] Server  LOG      ✓ Compiled in 446ms
+[02:33:53.270] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:34:03.333] Server  LOG      ✓ Compiled in 255ms
+[02:34:20.324] Server  LOG      ✓ Compiled in 329ms
+[02:35:24.279] Server  LOG      ✓ Compiled in 777ms
