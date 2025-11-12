@@ -623,15 +623,16 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
+    <div className="min-h-screen transition-colors" style={{ backgroundColor: '#0f0f0f' }}>
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-40 transition-all duration-300 ease-in-out bg-gray-950 border-r border-gray-800 flex flex-col ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col ${
           isSidebarOpen ? 'w-[280px]' : 'w-16'
         }`}
+        style={{ backgroundColor: '#000000', borderRight: '1px solid #212121' }}
       >
         {/* Sidebar Header with Toggle */}
-        <div className="p-3 border-b border-gray-800 flex items-center justify-between shrink-0">
+        <div className="p-4 border-b border-gray-800 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
             <span className="text-white font-medium text-sm">EduAssist</span>
           )}
@@ -737,7 +738,7 @@ export default function Home() {
       {/* Main Content Area - Adjusted for sidebar */}
       <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-[280px]' : 'ml-16'}`}>
         {/* Navigation */}
-        <nav className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-800 transition-colors">
+        <nav className="shadow-sm transition-colors" style={{ backgroundColor: '#000000', borderBottom: '1px solid #212121' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
@@ -878,9 +879,12 @@ export default function Home() {
                     <div
                       className={`px-4 py-3 max-w-[80%] ${
                         message.role === 'user'
-                          ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl'
-                          : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl'
+                          ? 'text-white rounded-2xl'
+                          : 'text-gray-900 dark:text-gray-100 rounded-2xl'
                       }`}
+                      style={{
+                        backgroundColor: message.role === 'user' ? '#4f46e5' : '#212121'
+                      }}
                     >
                       <p className="whitespace-pre-wrap break-words">{message.content}</p>
                       <span className={`text-xs mt-2 block ${
@@ -903,7 +907,7 @@ export default function Home() {
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 flex items-center justify-center">
                       <Bot className="h-5 w-5 text-white" />
                     </div>
-                    <div className="rounded-2xl px-4 py-3 bg-gray-100 dark:bg-gray-800">
+                    <div className="rounded-2xl px-4 py-3" style={{ backgroundColor: '#212121' }}>
                       <Loader2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 animate-spin" />
                     </div>
                   </div>
@@ -972,7 +976,8 @@ export default function Home() {
                   }
                   rows={1}
                   disabled={!isAuth}
-                  className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 ${
+                  style={{ backgroundColor: '#212121' }}
+                  className={`resize-none min-h-11 max-h-32 overflow-y-auto border-2 border-gray-600 text-white ${
                     !isAuth ? "cursor-not-allowed opacity-50" : ""
                   }`}
                 />
