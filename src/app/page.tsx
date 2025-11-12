@@ -1061,16 +1061,6 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
             <Card className="min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
-            {/* Header with file info - only show when there's a file or messages */}
-            {fileName && (
-              <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <span className="text-gray-700 dark:text-gray-300">{fileName}</span>
-                </div>
-              </div>
-            )}
-            
             {/* Hidden file inputs */}
             <input
               ref={fileInputRef}

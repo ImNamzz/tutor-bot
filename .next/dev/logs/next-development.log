@@ -75,3 +75,31 @@ Incoming: %s useEffect [false] [false, ]
 [02:14:37.187] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [02:16:05.552] Server  LOG      ✓ Compiled in 695ms
 [02:16:40.875] Server  LOG      ✓ Compiled in 922ms
+[02:19:12.267] Server  LOG      ✓ Compiled in 895ms
+[02:20:28.684] Server  LOG      ✓ Compiled in 471ms
+[02:20:29.131] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:1227:14
+Parsing ecmascript source code failed
+  1225 |           </Card>
+  1226 |         </div>
+> 1227 |       </main>
+       |              ^
+> 1228 |       </div>
+       | ^^^^^^^
+  1229 |     </div>
+  1230 |   )
+  1231 | }
+
+Expected '</', got 'jsx text (
+      )'
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+[02:20:56.649] Server  LOG      ✓ Compiled in 4.2s
+[02:21:49.970] Server  LOG      ✓ Compiled in 935ms
+[02:22:21.024] Server  LOG      ✓ Compiled in 1279ms

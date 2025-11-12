@@ -2,7 +2,7 @@
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
   "static/chunks/61fcf_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_src_app_b65e0c01._.js",
-  "static/chunks/359e0_a837cb4d._.js"
+  "static/chunks/359e0_ea8cf477._.js"
 ],
     source: "dynamic"
 });
