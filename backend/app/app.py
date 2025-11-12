@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 origins = ["http://localhost:3000"]
 CORS(app, resources={r"/api/*": {"origins": origins}}, supports_credentials=True)
-app.config["JWT_SECRET_KEY"] = "123456789"
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
@@ -75,6 +75,7 @@ def login():
 
         if user and bcrypt.check_password_hash(user.hashed_password, password):
             access_token = create_access_token(identity=str(user.id))
+            print(access_token)
             return jsonify(access_token=access_token), 200
         else:
             return jsonify({"detail": "Invalid email or password."}), 401
@@ -138,7 +139,6 @@ def start_session():
 @app.route("/api/chat", methods=["POST"])
 @jwt_required()
 def chat():
-    print("=== CHAT ENDPOINT HIT ===")
     try:
         current_user_id = int(get_jwt_identity())
         data = request.json
@@ -153,9 +153,6 @@ def chat():
         if not user_message_content:
             print("ERROR: No message content")
             return jsonify({"detail": "Message is required"}), 422
-        
-        # If session_id is a string starting with "session_" or a large number (timestamp), 
-        # it's a frontend-only session - create a new backend session
         if session_id:
             if isinstance(session_id, str) and session_id.startswith('session_'):
                 session_id = None
