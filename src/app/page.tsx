@@ -822,14 +822,9 @@ export default function Home() {
 
       {/* Page Content */}
       <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
-        <div className="mb-4 text-center">
-          <h1 className="mb-2 text-indigo-600 dark:text-indigo-400">AI Learning Assistant</h1>
-          <p className="text-gray-600 dark:text-gray-400">Upload transcripts, get quizzed, and ask questions</p>
-        </div>
-
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
-            <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 transition-all duration-300">
+            <Card className="min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
             {/* Header with file info - only show when there's a file or messages */}
             {fileName && (
               <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
