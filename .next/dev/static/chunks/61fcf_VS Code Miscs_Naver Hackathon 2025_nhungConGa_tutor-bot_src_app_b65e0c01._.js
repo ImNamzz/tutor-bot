@@ -870,6 +870,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$Col
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/lucide-react/dist/esm/icons/plus.js [app-client] (ecmascript) <export default as Plus>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$paperclip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Paperclip$3e$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/lucide-react/dist/esm/icons/paperclip.js [app-client] (ecmascript) <export default as Paperclip>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Image$3e$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/lucide-react/dist/esm/icons/image.js [app-client] (ecmascript) <export default as Image>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/lucide-react/dist/esm/icons/lock.js [app-client] (ecmascript) <export default as Lock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/sonner/dist/index.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/node_modules/next/navigation.js [app-client] (ecmascript)");
@@ -1381,11 +1382,18 @@ function Home() {
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Home.useEffect": ()=>{
             if (mounted && messages.length === 0) {
-                addMessage('assistant', "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!");
+                if (!isAuth) {
+                    // Show login prompt if user is not authenticated
+                    addMessage('assistant', "Hi! I'm your AI learning assistant. 👋\n\n🔒 You need to log in to use the chatbot.\n\nPlease sign in or create an account to:\n\n1. Upload lecture transcripts and study materials\n2. Get personalized quizzes based on your content\n3. Receive AI-powered explanations and summaries\n4. Save your learning sessions and track progress\n\nClick the 'Login' or 'Sign Up' button in the top right to get started!");
+                } else {
+                    // Show normal greeting if user is authenticated
+                    addMessage('assistant', "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!");
+                }
             }
         }
     }["Home.useEffect"], [
-        mounted
+        mounted,
+        isAuth
     ]);
     const handleKeyPress = (e_1)=>{
         if (e_1.key === 'Enter' && !e_1.shiftKey) {
@@ -1429,7 +1437,7 @@ function Home() {
                                 children: "EduAssist"
                             }, void 0, false, {
                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                lineNumber: 547,
+                                lineNumber: 553,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1442,24 +1450,24 @@ function Home() {
                                     className: "h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                    lineNumber: 549,
+                                    lineNumber: 555,
                                     columnNumber: 30
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftOpen$3e$__["PanelLeftOpen"], {
                                     className: "h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                    lineNumber: 549,
+                                    lineNumber: 555,
                                     columnNumber: 71
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                lineNumber: 548,
+                                lineNumber: 554,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                        lineNumber: 546,
+                        lineNumber: 552,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1473,25 +1481,25 @@ function Home() {
                                     className: "h-4 w-4 shrink-0"
                                 }, void 0, false, {
                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                    lineNumber: 556,
+                                    lineNumber: 562,
                                     columnNumber: 13
                                 }, this),
                                 isSidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "New chat"
                                 }, void 0, false, {
                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                    lineNumber: 557,
+                                    lineNumber: 563,
                                     columnNumber: 31
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                            lineNumber: 555,
+                            lineNumber: 561,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                        lineNumber: 554,
+                        lineNumber: 560,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1507,7 +1515,7 @@ function Home() {
                                             className: "h-8 w-8 mx-auto mb-2 opacity-50"
                                         }, void 0, false, {
                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                            lineNumber: 566,
+                                            lineNumber: 572,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1515,13 +1523,13 @@ function Home() {
                                             children: "No chat history"
                                         }, void 0, false, {
                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                            lineNumber: 567,
+                                            lineNumber: 573,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                    lineNumber: 565,
+                                    lineNumber: 571,
                                     columnNumber: 42
                                 }, this) : Object.entries(categorizeSessionsByTime()).map(([category, categorySessions])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "space-y-2",
@@ -1531,7 +1539,7 @@ function Home() {
                                                 children: category
                                             }, void 0, false, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 569,
+                                                lineNumber: 575,
                                                 columnNumber: 23
                                             }, this),
                                             categorySessions.map((session_2)=>{
@@ -1546,7 +1554,7 @@ function Home() {
                                                                 className: "h-4 w-4 shrink-0 text-gray-400 mt-0.5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 574,
+                                                                lineNumber: 580,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1556,12 +1564,12 @@ function Home() {
                                                                     children: session_2.fileName
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                    lineNumber: 576,
+                                                                    lineNumber: 582,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 575,
+                                                                lineNumber: 581,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1573,35 +1581,35 @@ function Home() {
                                                                     className: "h-3 w-3 text-gray-400"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                    lineNumber: 581,
+                                                                    lineNumber: 587,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 580,
+                                                                lineNumber: 586,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 573,
+                                                        lineNumber: 579,
                                                         columnNumber: 27
                                                     }, this)
                                                 }, session_2.id, false, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 572,
+                                                    lineNumber: 578,
                                                     columnNumber: 24
                                                 }, this);
                                             })
                                         ]
                                     }, category, true, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 568,
+                                        lineNumber: 574,
                                         columnNumber: 109
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                lineNumber: 564,
+                                lineNumber: 570,
                                 columnNumber: 30
                             }, this) : // Minimized view - just icons
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1616,34 +1624,34 @@ function Home() {
                                             className: "h-4 w-4 text-gray-400 mx-auto"
                                         }, void 0, false, {
                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                            lineNumber: 593,
+                                            lineNumber: 599,
                                             columnNumber: 21
                                         }, this)
                                     }, session_3.id, false, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 592,
+                                        lineNumber: 598,
                                         columnNumber: 22
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                lineNumber: 589,
+                                lineNumber: 595,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                            lineNumber: 563,
+                            lineNumber: 569,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                        lineNumber: 562,
+                        lineNumber: 568,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                lineNumber: 544,
+                lineNumber: 550,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1667,7 +1675,7 @@ function Home() {
                                                         className: "h-8 w-8 text-indigo-600 dark:text-indigo-400"
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 609,
+                                                        lineNumber: 615,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1675,13 +1683,13 @@ function Home() {
                                                         children: "EduAssist"
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 610,
+                                                        lineNumber: 616,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 608,
+                                                lineNumber: 614,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1695,14 +1703,14 @@ function Home() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 616,
+                                                                lineNumber: 622,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "AI Tutor"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 615,
+                                                        lineNumber: 621,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1713,14 +1721,14 @@ function Home() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 620,
+                                                                lineNumber: 626,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Calendar"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 619,
+                                                        lineNumber: 625,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1731,26 +1739,26 @@ function Home() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 624,
+                                                                lineNumber: 630,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Todo"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 623,
+                                                        lineNumber: 629,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 614,
+                                                lineNumber: 620,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 607,
+                                        lineNumber: 613,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1766,18 +1774,18 @@ function Home() {
                                                     className: "h-5 w-5 text-gray-300"
                                                 }, void 0, false, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 632,
+                                                    lineNumber: 638,
                                                     columnNumber: 31
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Moon$3e$__["Moon"], {
                                                     className: "h-5 w-5 text-gray-600"
                                                 }, void 0, false, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 632,
+                                                    lineNumber: 638,
                                                     columnNumber: 75
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 631,
+                                                lineNumber: 637,
                                                 columnNumber: 15
                                             }, this),
                                             isAuth ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1790,7 +1798,7 @@ function Home() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 636,
+                                                        lineNumber: 642,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1798,13 +1806,13 @@ function Home() {
                                                         children: "Logout"
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 637,
+                                                        lineNumber: 643,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 635,
+                                                lineNumber: 641,
                                                 columnNumber: 25
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex items-center gap-2",
@@ -1817,12 +1825,12 @@ function Home() {
                                                             children: "Login"
                                                         }, void 0, false, {
                                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                            lineNumber: 640,
+                                                            lineNumber: 646,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 639,
+                                                        lineNumber: 645,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1832,40 +1840,40 @@ function Home() {
                                                             children: "Sign Up"
                                                         }, void 0, false, {
                                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                            lineNumber: 645,
+                                                            lineNumber: 651,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 644,
+                                                        lineNumber: 650,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 638,
+                                                lineNumber: 644,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 630,
+                                        lineNumber: 636,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                lineNumber: 606,
+                                lineNumber: 612,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                            lineNumber: 605,
+                            lineNumber: 611,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                        lineNumber: 604,
+                        lineNumber: 610,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1884,7 +1892,7 @@ function Home() {
                                                     className: "h-5 w-5 text-indigo-600 dark:text-indigo-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 663,
+                                                    lineNumber: 669,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1892,18 +1900,18 @@ function Home() {
                                                     children: fileName
                                                 }, void 0, false, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 664,
+                                                    lineNumber: 670,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                            lineNumber: 662,
+                                            lineNumber: 668,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 661,
+                                        lineNumber: 667,
                                         columnNumber: 26
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1915,7 +1923,7 @@ function Home() {
                                         id: "file-upload"
                                     }, void 0, false, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 669,
+                                        lineNumber: 675,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1927,7 +1935,7 @@ function Home() {
                                         id: "image-upload"
                                     }, void 0, false, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 670,
+                                        lineNumber: 676,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$src$2f$app$2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollArea"], {
@@ -1944,12 +1952,12 @@ function Home() {
                                                                     className: "h-5 w-5 text-white"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                    lineNumber: 677,
+                                                                    lineNumber: 683,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 676,
+                                                                lineNumber: 682,
                                                                 columnNumber: 54
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1960,7 +1968,7 @@ function Home() {
                                                                         children: message.content
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                        lineNumber: 681,
+                                                                        lineNumber: 687,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1971,13 +1979,13 @@ function Home() {
                                                                         })
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                        lineNumber: 682,
+                                                                        lineNumber: 688,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 680,
+                                                                lineNumber: 686,
                                                                 columnNumber: 21
                                                             }, this),
                                                             message.role === 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1986,18 +1994,18 @@ function Home() {
                                                                     className: "h-5 w-5 text-white"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                    lineNumber: 691,
+                                                                    lineNumber: 697,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 690,
+                                                                lineNumber: 696,
                                                                 columnNumber: 49
                                                             }, this)
                                                         ]
                                                     }, message.id, true, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 675,
+                                                        lineNumber: 681,
                                                         columnNumber: 42
                                                     }, this)),
                                                 isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2009,12 +2017,12 @@ function Home() {
                                                                 className: "h-5 w-5 text-white"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 697,
+                                                                lineNumber: 703,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                            lineNumber: 696,
+                                                            lineNumber: 702,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2023,36 +2031,36 @@ function Home() {
                                                                 className: "h-5 w-5 text-indigo-600 dark:text-indigo-400 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 700,
+                                                                lineNumber: 706,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                            lineNumber: 699,
+                                                            lineNumber: 705,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 695,
+                                                    lineNumber: 701,
                                                     columnNumber: 31
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     ref: messagesEndRef
                                                 }, void 0, false, {
                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                    lineNumber: 704,
+                                                    lineNumber: 710,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                            lineNumber: 674,
+                                            lineNumber: 680,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 673,
+                                        lineNumber: 679,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2069,20 +2077,28 @@ function Home() {
                                                                 type: "button",
                                                                 variant: "outline",
                                                                 size: "icon",
-                                                                onClick: ()=>setShowUploadMenu(!showUploadMenu),
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                                                onClick: ()=>isAuth && setShowUploadMenu(!showUploadMenu),
+                                                                disabled: !isAuth,
+                                                                className: !isAuth ? "cursor-not-allowed opacity-50" : "",
+                                                                children: isAuth ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
                                                                     className: "h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                    lineNumber: 714,
-                                                                    columnNumber: 21
+                                                                    lineNumber: 720,
+                                                                    columnNumber: 31
+                                                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
+                                                                    className: "h-4 w-4"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
+                                                                    lineNumber: 720,
+                                                                    columnNumber: 62
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 713,
+                                                                lineNumber: 719,
                                                                 columnNumber: 19
                                                             }, this),
-                                                            showUploadMenu && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            showUploadMenu && isAuth && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]",
                                                                 children: [
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2096,7 +2112,7 @@ function Home() {
                                                                                 className: "h-4 w-4 text-gray-600 dark:text-gray-400"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                                lineNumber: 723,
+                                                                                lineNumber: 729,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2104,13 +2120,13 @@ function Home() {
                                                                                 children: "Upload file"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                                lineNumber: 724,
+                                                                                lineNumber: 730,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                        lineNumber: 719,
+                                                                        lineNumber: 725,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2124,7 +2140,7 @@ function Home() {
                                                                                 className: "h-4 w-4 text-gray-600 dark:text-gray-400"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                                lineNumber: 730,
+                                                                                lineNumber: 736,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2132,25 +2148,25 @@ function Home() {
                                                                                 children: "Upload image"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                                lineNumber: 731,
+                                                                                lineNumber: 737,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                        lineNumber: 726,
+                                                                        lineNumber: 732,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                                lineNumber: 718,
-                                                                columnNumber: 38
+                                                                lineNumber: 724,
+                                                                columnNumber: 48
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 712,
+                                                        lineNumber: 718,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$src$2f$app$2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2158,76 +2174,83 @@ function Home() {
                                                         value: inputMessage,
                                                         onChange: handleInputChange,
                                                         onKeyDown: handleKeyPress,
-                                                        placeholder: chatState === 'quizzing' ? "Type your answer or ask a question..." : chatState === 'completed' ? "Ask me anything about the material..." : "Type a message...",
+                                                        placeholder: !isAuth ? "You need to log in to use the chatbot." : chatState === 'quizzing' ? "Type your answer or ask a question..." : chatState === 'completed' ? "Ask me anything about the material..." : "Type a message...",
                                                         rows: 1,
-                                                        className: "resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600"
+                                                        disabled: !isAuth,
+                                                        className: `resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 736,
+                                                        lineNumber: 742,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                         onClick: handleSendMessage,
-                                                        disabled: !inputMessage.trim() || isLoading,
-                                                        className: "shrink-0",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__["Send"], {
+                                                        disabled: !isAuth || !inputMessage.trim() || isLoading,
+                                                        className: `shrink-0 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`,
+                                                        children: isAuth ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__["Send"], {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                            lineNumber: 738,
-                                                            columnNumber: 19
+                                                            lineNumber: 744,
+                                                            columnNumber: 29
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
+                                                            className: "h-4 w-4"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
+                                                            lineNumber: 744,
+                                                            columnNumber: 60
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                        lineNumber: 737,
+                                                        lineNumber: 743,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 710,
+                                                lineNumber: 716,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$College$2f$miscellaneous$2f$VS__Code__Miscs$2f$Naver__Hackathon__2025$2f$nhungConGa$2f$tutor$2d$bot$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 className: "text-xs text-gray-500 dark:text-gray-400 text-center mt-2",
-                                                children: "Press Enter to send, Shift+Enter for new line"
+                                                children: isAuth ? "Press Enter to send, Shift+Enter for new line" : "Please log in to start chatting"
                                             }, void 0, false, {
                                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                                lineNumber: 741,
+                                                lineNumber: 747,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                        lineNumber: 709,
+                                        lineNumber: 715,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                                lineNumber: 659,
+                                lineNumber: 665,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                            lineNumber: 657,
+                            lineNumber: 663,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                        lineNumber: 656,
+                        lineNumber: 662,
                         columnNumber: 7
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-                lineNumber: 602,
+                lineNumber: 608,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx",
-        lineNumber: 542,
+        lineNumber: 548,
         columnNumber: 10
     }, this);
 }

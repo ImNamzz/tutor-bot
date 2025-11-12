@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -579,11 +579,19 @@ export default function Home() {
   // Initial greeting
   useEffect(() => {
     if (mounted && messages.length === 0) {
-      addMessage('assistant', 
-        "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!"
-      )
+      if (!isAuth) {
+        // Show login prompt if user is not authenticated
+        addMessage('assistant', 
+          "Hi! I'm your AI learning assistant. 👋\n\n🔒 You need to log in to use the chatbot.\n\nPlease sign in or create an account to:\n\n1. Upload lecture transcripts and study materials\n2. Get personalized quizzes based on your content\n3. Receive AI-powered explanations and summaries\n4. Save your learning sessions and track progress\n\nClick the 'Login' or 'Sign Up' button in the top right to get started!"
+        )
+      } else {
+        // Show normal greeting if user is authenticated
+        addMessage('assistant', 
+          "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!"
+        )
+      }
     }
-  }, [mounted])
+  }, [mounted, isAuth])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -908,19 +916,21 @@ export default function Home() {
             {/* Input Area */}
             <div className="p-4">
               <div className="flex gap-2 max-w-3xl mx-auto">
-                {/* Upload button with menu */}
+                {/* Upload button with menu or Lock icon */}
                 <div className="relative" ref={uploadMenuRef}>
                   <Button 
                     type="button"
                     variant="outline" 
                     size="icon"
-                    onClick={() => setShowUploadMenu(!showUploadMenu)}
+                    onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
+                    disabled={!isAuth}
+                    className={!isAuth ? "cursor-not-allowed opacity-50" : ""}
                   >
-                    <Plus className="h-4 w-4" />
+                    {isAuth ? <Plus className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
                   </Button>
                   
                   {/* Upload menu */}
-                  {showUploadMenu && (
+                  {showUploadMenu && isAuth && (
                     <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
                       <button
                         onClick={() => {
@@ -952,25 +962,30 @@ export default function Home() {
                   onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder={
-                    chatState === 'quizzing' 
+                    !isAuth
+                      ? "You need to log in to use the chatbot."
+                      : chatState === 'quizzing' 
                       ? "Type your answer or ask a question..." 
                       : chatState === 'completed'
                       ? "Ask me anything about the material..."
                       : "Type a message..."
                   }
                   rows={1}
-                  className="resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600"
+                  disabled={!isAuth}
+                  className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 ${
+                    !isAuth ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 />
                 <Button 
                   onClick={handleSendMessage} 
-                  disabled={!inputMessage.trim() || isLoading}
-                  className="shrink-0"
+                  disabled={!isAuth || !inputMessage.trim() || isLoading}
+                  className={`shrink-0 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                  <Send className="h-4 w-4" />
+                  {isAuth ? <Send className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
                 </Button>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-                Press Enter to send, Shift+Enter for new line
+                {isAuth ? "Press Enter to send, Shift+Enter for new line" : "Please log in to start chatting"}
               </p>
             </div>
           </Card>

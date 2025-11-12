@@ -1,7 +1,13 @@
-[00:00:21.779] Server  LOG      ✓ Ready in 14.8s
-[00:06:01.289] Server  LOG      ○ Compiling / ...
-[00:06:51.241] Browser ERROR   Error sending message: {}
-[00:10:29.905] Browser ERROR   Error sending message: {}
-[00:10:34.848] Browser ERROR   Error sending message: {}
-[01:03:37.259] Browser ERROR   Login error: {}
-[00:24:52.116] Server  LOG      ✓ Compiled in 315ms
+[00:00:01.499] Server  LOG      ✓ Ready in 1064ms
+[00:00:04.541] Server  LOG      ○ Compiling / ...
+[00:00:07.644] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:26.237] Server  LOG      ✓ Compiled in 360ms
+[00:06:27.276] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [true] [true, false]
+[00:06:57.428] Server  LOG      ✓ Compiled in 1018ms
+[00:07:08.615] Server  LOG      ✓ Compiled in 467ms
+[00:07:18.495] Server  LOG      ✓ Compiled in 161ms
+[00:11:31.845] Browser ERROR   Login error: {}
+[00:13:00.931] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
