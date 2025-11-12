@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2 } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -33,6 +33,7 @@ interface TranscriptSession {
   keyPoints: string[]
   messages: Message[]
   score?: number
+  pinned?: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -61,12 +62,16 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [mounted, setMounted] = useState(false)
   const [showUploadMenu, setShowUploadMenu] = useState(false)
+  const [openSessionMenu, setOpenSessionMenu] = useState<string | null>(null)
+  const [renamingSessionId, setRenamingSessionId] = useState<string | null>(null)
+  const [newSessionName, setNewSessionName] = useState('')
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const uploadMenuRef = useRef<HTMLDivElement>(null)
+  const sessionMenuRef = useRef<HTMLDivElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -116,16 +121,19 @@ export default function Home() {
       if (uploadMenuRef.current && !uploadMenuRef.current.contains(event.target as Node)) {
         setShowUploadMenu(false)
       }
+      if (sessionMenuRef.current && !sessionMenuRef.current.contains(event.target as Node)) {
+        setOpenSessionMenu(null)
+      }
     }
 
-    if (showUploadMenu) {
+    if (showUploadMenu || openSessionMenu) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [showUploadMenu])
+  }, [showUploadMenu, openSessionMenu])
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
@@ -133,7 +141,7 @@ export default function Home() {
 
   const handleLogout = () => {
     removeAccessToken()
-    toast.success('Logged out successfully')
+    toast.success('Signed out successfully')
     router.push('/auth/login')
   }
 
@@ -147,12 +155,47 @@ export default function Home() {
     setMessages(prev => [...prev, newMessage])
   }
 
+  const generateSessionName = async (content: string): Promise<string> => {
+    try {
+      // Generate a concise session name based on content
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          session_id: null,
+          message: `Generate a very short, concise title (3-5 words max) for a chat session based on this content: "${content.substring(0, 200)}...". Only respond with the title, nothing else.`
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Clean up the response and limit length
+        let title = data.response.replace(/['"]/g, '').trim()
+        if (title.length > 50) {
+          title = title.substring(0, 47) + '...'
+        }
+        return title
+      }
+    } catch (error) {
+      console.error('Error generating session name:', error)
+    }
+    
+    // Fallback to a default name with timestamp
+    return `Chat Session ${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
+  }
+
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    if (!file.name.endsWith('.txt')) {
-      toast.error('Please upload a .txt file')
+    const validExtensions = ['.txt', '.doc', '.docx']
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    
+    if (!validExtensions.includes(fileExtension)) {
+      toast.error('Please upload a .txt, .doc, or .docx file')
       return
     }
 
@@ -168,6 +211,73 @@ export default function Home() {
     setFileName(file.name)
     setIsLoading(true)
     
+    addMessage('user', `📎 Uploaded: ${file.name}`)
+    
+    // For .doc and .docx files, send directly to backend for processing
+    if (fileExtension === '.doc' || fileExtension === '.docx') {
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        
+        // Send file to backend - backend should handle doc/docx parsing
+        const response = await fetch(API_ENDPOINTS.startSession, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: formData
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to start session')
+        }
+
+        const data = await response.json()
+        
+        // Set the session ID from backend
+        setCurrentSessionId(data.session_id.toString())
+        
+        // Generate AI-based session name in the background
+        generateSessionName(data.transcript || file.name).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
+        setTranscriptContent(data.transcript || '')
+        
+        addMessage('assistant', 
+          `Great! I've analyzed your document. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
+        )
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Use the first question from the backend
+        addMessage('assistant', data.first_question)
+        
+        setChatState('quizzing')
+        setIsLoading(false)
+        toast.success('Document processed! Answer the questions to proceed.')
+        
+      } catch (error) {
+        console.error('Error processing document:', error)
+        toast.error('Failed to process document. Please try again.')
+        setIsLoading(false)
+        
+        // Reset to idle state on error
+        setMessages([])
+        setChatState('idle')
+        setFileName('')
+        addMessage('assistant', 
+          "Sorry, I encountered an error processing your document. Please make sure the backend server is running and supports .doc/.docx files."
+        )
+      }
+      return
+    }
+    
+    // For .txt files, read as text
     const reader = new FileReader()
     reader.onload = async (e) => {
       const content = e.target?.result as string
@@ -202,8 +312,13 @@ export default function Home() {
         // Set the session ID from backend
         setCurrentSessionId(data.session_id.toString())
         
+        // Generate AI-based session name in the background
+        generateSessionName(content).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
         addMessage('assistant', 
-          `Great! I've analyzed your lecture transcript "${file.name}". I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
+          `Great! I've analyzed your lecture transcript. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
         )
         
         await new Promise(resolve => setTimeout(resolve, 500))
@@ -293,6 +408,11 @@ export default function Home() {
         // Update session ID from backend and set state to completed
         setCurrentSessionId(data.session_id.toString())
         setChatState('completed') // Now in conversation mode
+        
+        // Generate AI-based session name from the first message
+        generateSessionName(userMessage).then(generatedName => {
+          setFileName(generatedName)
+        })
         
         // Display AI's response
         addMessage('assistant', data.response)
@@ -471,6 +591,58 @@ export default function Home() {
     toast.success('Session deleted')
   }
 
+  const handlePinSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation()
+    setOpenSessionMenu(null)
+    
+    if (!mounted) return
+    
+    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const updated = savedSessions.map((s: TranscriptSession) => 
+      s.id === sessionId ? { ...s, pinned: !s.pinned } : s
+    )
+    localStorage.setItem('chatSessions', JSON.stringify(updated))
+    setSessions(updated)
+    
+    const session = updated.find((s: TranscriptSession) => s.id === sessionId)
+    toast.success(session?.pinned ? 'Session pinned' : 'Session unpinned')
+  }
+
+  const handleRenameSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation()
+    setOpenSessionMenu(null)
+    
+    const session = sessions.find(s => s.id === sessionId)
+    if (session) {
+      setRenamingSessionId(sessionId)
+      setNewSessionName(session.fileName)
+    }
+  }
+
+  const saveRename = (sessionId: string) => {
+    if (!mounted || !newSessionName.trim()) return
+    
+    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const updated = savedSessions.map((s: TranscriptSession) => 
+      s.id === sessionId ? { ...s, fileName: newSessionName.trim() } : s
+    )
+    localStorage.setItem('chatSessions', JSON.stringify(updated))
+    setSessions(updated)
+    
+    if (sessionId === currentSessionId) {
+      setFileName(newSessionName.trim())
+    }
+    
+    setRenamingSessionId(null)
+    setNewSessionName('')
+    toast.success('Session renamed')
+  }
+
+  const cancelRename = () => {
+    setRenamingSessionId(null)
+    setNewSessionName('')
+  }
+
   const handleReset = () => {
     saveCurrentSession()
     
@@ -580,9 +752,9 @@ export default function Home() {
   useEffect(() => {
     if (mounted && messages.length === 0) {
       if (!isAuth) {
-        // Show login prompt if user is not authenticated
+        // Show sign in prompt if user is not authenticated
         addMessage('assistant', 
-          "Hi! I'm your AI learning assistant. 👋\n\n🔒 You need to log in to use the chatbot.\n\nPlease sign in or create an account to:\n\n1. Upload lecture transcripts and study materials\n2. Get personalized quizzes based on your content\n3. Receive AI-powered explanations and summaries\n4. Save your learning sessions and track progress\n\nClick the 'Login' or 'Sign Up' button in the top right to get started!"
+          "Hi! I'm your AI learning assistant. 👋\n\n🔒 You need to sign in to use the chatbot.\n\nPlease sign in or create an account to:\n\n1. Upload lecture transcripts and study materials\n2. Get personalized quizzes based on your content\n3. Receive AI-powered explanations and summaries\n4. Save your learning sessions and track progress\n\nClick the 'Sign In' or 'Sign Up' button in the top right to get started!"
         )
       } else {
         // Show normal greeting if user is authenticated
@@ -690,19 +862,74 @@ export default function Home() {
                         >
                           <div className="flex items-start gap-2">
                             <MessageSquare className="h-4 w-4 shrink-0 text-gray-400 mt-0.5" />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm text-gray-200 truncate">
-                                {session.fileName}
-                              </p>
+                            <div className="flex-1 min-w-0 pr-8">
+                              {renamingSessionId === session.id ? (
+                                <input
+                                  type="text"
+                                  value={newSessionName}
+                                  onChange={(e) => setNewSessionName(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') saveRename(session.id)
+                                    if (e.key === 'Escape') cancelRename()
+                                  }}
+                                  onBlur={() => saveRename(session.id)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="w-full text-sm bg-gray-700 text-gray-200 px-2 py-1 rounded border border-gray-600 focus:outline-none focus:border-indigo-500"
+                                  autoFocus
+                                />
+                              ) : (
+                                <div className="flex items-center gap-1">
+                                  {session.pinned && <Pin className="h-3 w-3 text-indigo-400" />}
+                                  <p className="text-sm text-gray-200 break-words">
+                                    {session.fileName}
+                                  </p>
+                                </div>
+                              )}
                             </div>
-                            <Button
-                              onClick={(e: React.MouseEvent) => handleDeleteSession(e, session.id)}
-                              variant="ghost"
-                              size="sm"
-                              className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-700 absolute right-2 top-2"
-                            >
-                              <Trash2 className="h-3 w-3 text-gray-400" />
-                            </Button>
+                            <div className="relative">
+                              <Button
+                                onClick={(e: React.MouseEvent) => {
+                                  e.stopPropagation()
+                                  setOpenSessionMenu(openSessionMenu === session.id ? null : session.id)
+                                }}
+                                variant="ghost"
+                                size="sm"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-700 absolute right-0 top-0"
+                              >
+                                <MoreVertical className="h-3 w-3 text-gray-400" />
+                              </Button>
+                              
+                              {/* Dropdown Menu */}
+                              {openSessionMenu === session.id && (
+                                <div 
+                                  ref={sessionMenuRef}
+                                  className="absolute right-0 top-6 bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <button
+                                    onClick={(e) => handlePinSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-800 transition-colors text-left text-sm text-gray-200"
+                                  >
+                                    <Pin className="h-3 w-3" />
+                                    <span>{session.pinned ? 'Unpin' : 'Pin'}</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleRenameSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-800 transition-colors text-left text-sm text-gray-200"
+                                  >
+                                    <Edit2 className="h-3 w-3" />
+                                    <span>Rename</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleDeleteSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-800 transition-colors text-left text-sm text-red-400"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                    <span>Delete</span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       )
@@ -808,13 +1035,13 @@ export default function Home() {
                   className="flex items-center gap-2"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <span className="hidden sm:inline">Sign Out</span>
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
                   <Link href="/auth/login">
                     <Button variant="ghost" size="sm">
-                      Login
+                      Sign In
                     </Button>
                   </Link>
                   <Link href="/auth/register">
@@ -848,7 +1075,7 @@ export default function Home() {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".txt"
+              accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={handleFileUpload}
               className="hidden"
               id="file-upload"
@@ -928,9 +1155,9 @@ export default function Home() {
                     size="icon"
                     onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
                     disabled={!isAuth}
-                    className={!isAuth ? "cursor-not-allowed opacity-50" : ""}
+                    className={`min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
                   >
-                    {isAuth ? <Plus className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+                    {isAuth ? <Plus className="h-4 w-4" /> : <Lock className="h-5 w-5" />}
                   </Button>
                   
                   {/* Upload menu */}
@@ -967,7 +1194,7 @@ export default function Home() {
                   onKeyDown={handleKeyPress}
                   placeholder={
                     !isAuth
-                      ? "You need to log in to use the chatbot."
+                      ? "You need to sign in to use the chatbot."
                       : chatState === 'quizzing' 
                       ? "Type your answer or ask a question..." 
                       : chatState === 'completed'
@@ -984,13 +1211,13 @@ export default function Home() {
                 <Button 
                   onClick={handleSendMessage} 
                   disabled={!isAuth || !inputMessage.trim() || isLoading}
-                  className={`shrink-0 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
+                  className={`shrink-0 min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
                 >
                   {isAuth ? <Send className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
                 </Button>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-                {isAuth ? "Press Enter to send, Shift+Enter for new line" : "Please log in to start chatting"}
+                {isAuth ? "Press Enter to send, Shift+Enter for new line" : "Please sign in to start chatting"}
               </p>
             </div>
           </Card>

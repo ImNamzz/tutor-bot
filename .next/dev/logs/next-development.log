@@ -32,3 +32,46 @@ Incoming: %s useEffect [true] [true, false]
 [01:03:22.729] Server  LOG      ✓ Compiled in 422ms
 [01:03:29.872] Server  LOG      ✓ Compiled in 471ms
 [01:03:34.047] Server  LOG      ✓ Compiled in 141ms
+[01:53:05.310] Server  LOG      ✓ Compiled in 648ms
+[01:53:09.569] Server  LOG      ✓ Compiled in 248ms
+[01:53:19.751] Server  LOG      ✓ Compiled in 668ms
+[01:53:26.411] Server  LOG      ✓ Compiled in 497ms
+[01:53:35.936] Server  LOG      ✓ Compiled in 266ms
+[01:53:43.502] Server  LOG      ✓ Compiled in 147ms
+[01:53:45.423] Server  LOG      ✓ Compiled in 300ms
+[01:53:46.890] Server  LOG      ✓ Compiled in 151ms
+[01:53:55.117] Server  LOG      ✓ Compiled in 140ms
+[01:53:56.894] Server  LOG      ✓ Compiled in 230ms
+[01:53:58.934] Server  LOG      ✓ Compiled in 155ms
+[01:54:11.995] Server  LOG      ✓ Compiled in 202ms
+[01:54:13.510] Server  LOG      ✓ Compiled in 282ms
+[01:54:15.482] Server  LOG      ✓ Compiled in 137ms
+[01:54:18.167] Server  LOG      ✓ Compiled in 444ms
+[01:54:27.392] Server  LOG      ✓ Compiled in 299ms
+[01:55:27.357] Server  LOG      ✓ Compiled in 649ms
+[01:55:40.249] Server  LOG      ✓ Compiled in 600ms
+[01:58:01.199] Server  LOG      ✓ Compiled in 633ms
+[01:58:47.639] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:00:12.935] Server  LOG      ✓ Compiled in 350ms
+[02:00:26.455] Server  LOG      ✓ Compiled in 793ms
+[02:00:37.383] Server  LOG      ✓ Compiled in 530ms
+[02:00:50.285] Server  LOG      ✓ Compiled in 782ms
+[02:01:03.963] Server  LOG      ✓ Compiled in 258ms
+[02:06:16.681] Server  LOG      ✓ Compiled in 611ms
+[02:06:57.125] Server  LOG      ✓ Compiled in 524ms
+[02:07:15.839] Server  LOG      ✓ Compiled in 490ms
+[02:07:53.992] Server  LOG      ✓ Compiled in 1378ms
+[02:08:15.909] Server  LOG      ✓ Compiled in 438ms
+[02:08:16.963] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [false] [false, ]
+[02:10:20.225] Server  LOG      ✓ Compiled in 822ms
+[02:10:50.078] Server  LOG      ✓ Compiled in 479ms
+[02:12:04.687] Server  LOG      ✓ Compiled in 863ms
+[02:12:44.848] Server  LOG      ✓ Compiled in 632ms
+[02:13:09.074] Server  LOG      ✓ Compiled in 453ms
+[02:13:29.169] Server  LOG      ✓ Compiled in 874ms
+[02:14:37.187] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:16:05.552] Server  LOG      ✓ Compiled in 695ms
+[02:16:40.875] Server  LOG      ✓ Compiled in 922ms
