@@ -795,24 +795,23 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen transition-colors" style={{ backgroundColor: '#0f0f0f' }}>
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] transition-colors">
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-white dark:bg-black border-r border-gray-200 dark:border-[#212121] ${
           isSidebarOpen ? 'w-[280px]' : 'w-16'
         }`}
-        style={{ backgroundColor: '#000000', borderRight: '1px solid #212121' }}
       >
         {/* Sidebar Header with Toggle */}
-        <div className="p-4 border-b border-gray-800 flex items-center justify-between shrink-0">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
-            <span className="text-white font-medium text-sm">EduAssist</span>
+            <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
           )}
           <Button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             variant="ghost"
             size="sm"
-            className="h-8 w-8 p-0 hover:bg-gray-800 text-gray-400"
+            className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
             aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
             {isSidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
@@ -820,10 +819,10 @@ export default function Home() {
         </div>
 
         {/* New Chat Button */}
-        <div className="p-3 border-b border-gray-800 shrink-0">
+        <div className="p-3 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <Button
             onClick={handleReset}
-            className={`w-full justify-start gap-2 bg-gray-800 hover:bg-gray-700 text-white border-gray-700 ${
+            className={`w-full justify-start gap-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 ${
               !isSidebarOpen ? 'px-2' : ''
             }`}
             variant="outline"
@@ -839,14 +838,14 @@ export default function Home() {
             {isSidebarOpen ? (
               <div className="p-3 space-y-4">
                 {sessions.length === 0 ? (
-                  <div className="text-center text-gray-500 py-8">
+                  <div className="text-center text-gray-500 dark:text-gray-500 py-8">
                     <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
                     <p className="text-xs">No chat history</p>
                   </div>
                 ) : (
                   Object.entries(categorizeSessionsByTime()).map(([category, categorySessions]) => (
                     <div key={category} className="space-y-2">
-                      <h4 className="text-xs font-medium text-gray-500 px-2">{category}</h4>
+                      <h4 className="text-xs font-medium text-gray-600 dark:text-gray-500 px-2">{category}</h4>
                       {categorySessions.map((session) => {
                         const isActive = session.id === currentSessionId
                         
@@ -855,13 +854,13 @@ export default function Home() {
                             key={session.id}
                             className={`group relative p-2.5 rounded-lg cursor-pointer transition-all ${
                               isActive 
-                                ? 'bg-gray-800' 
-                                : 'hover:bg-gray-800/50'
+                                ? 'bg-gray-200 dark:bg-gray-800' 
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
                             }`}
                           onClick={() => handleLoadSession(session)}
                         >
                           <div className="flex items-start gap-2">
-                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-400 mt-0.5" />
+                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-600 dark:text-gray-400 mt-0.5" />
                             <div className="flex-1 min-w-0 pr-8">
                               {renamingSessionId === session.id ? (
                                 <input
@@ -874,13 +873,13 @@ export default function Home() {
                                   }}
                                   onBlur={() => saveRename(session.id)}
                                   onClick={(e) => e.stopPropagation()}
-                                  className="w-full text-sm bg-gray-700 text-gray-200 px-2 py-1 rounded border border-gray-600 focus:outline-none focus:border-indigo-500"
+                                  className="w-full text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:border-indigo-500"
                                   autoFocus
                                 />
                               ) : (
                                 <div className="flex items-center gap-1">
-                                  {session.pinned && <Pin className="h-3 w-3 text-indigo-400" />}
-                                  <p className="text-sm text-gray-200 break-words">
+                                  {session.pinned && <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
+                                  <p className="text-sm text-gray-900 dark:text-gray-200 break-words">
                                     {session.fileName}
                                   </p>
                                 </div>
@@ -894,35 +893,35 @@ export default function Home() {
                                 }}
                                 variant="ghost"
                                 size="sm"
-                                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-700 absolute right-0 top-0"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-200 dark:hover:bg-gray-700 absolute right-0 top-0"
                               >
-                                <MoreVertical className="h-3 w-3 text-gray-400" />
+                                <MoreVertical className="h-3 w-3 text-gray-600 dark:text-gray-400" />
                               </Button>
                               
                               {/* Dropdown Menu */}
                               {openSessionMenu === session.id && (
                                 <div 
                                   ref={sessionMenuRef}
-                                  className="absolute right-0 top-6 bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
+                                  className="absolute right-0 top-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <button
                                     onClick={(e) => handlePinSession(e, session.id)}
-                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-800 transition-colors text-left text-sm text-gray-200"
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
                                   >
                                     <Pin className="h-3 w-3" />
                                     <span>{session.pinned ? 'Unpin' : 'Pin'}</span>
                                   </button>
                                   <button
                                     onClick={(e) => handleRenameSession(e, session.id)}
-                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-800 transition-colors text-left text-sm text-gray-200"
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
                                   >
                                     <Edit2 className="h-3 w-3" />
                                     <span>Rename</span>
                                   </button>
                                   <button
                                     onClick={(e) => handleDeleteSession(e, session.id)}
-                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-800 transition-colors text-left text-sm text-red-400"
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-red-600 dark:text-red-400"
                                   >
                                     <Trash2 className="h-3 w-3" />
                                     <span>Delete</span>
@@ -965,7 +964,7 @@ export default function Home() {
       {/* Main Content Area - Adjusted for sidebar */}
       <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-[280px]' : 'ml-16'}`}>
         {/* Navigation */}
-        <nav className="shadow-sm transition-colors" style={{ backgroundColor: '#000000', borderBottom: '1px solid #212121' }}>
+        <nav className="bg-white dark:bg-black shadow-sm border-b border-gray-200 dark:border-[#212121] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
@@ -1094,14 +1093,11 @@ export default function Home() {
                     )}
                     
                     <div
-                      className={`px-4 py-3 max-w-[80%] ${
+                      className={`px-4 py-3 max-w-[80%] rounded-2xl ${
                         message.role === 'user'
-                          ? 'text-white rounded-2xl'
-                          : 'text-gray-900 dark:text-gray-100 rounded-2xl'
+                          ? 'bg-indigo-600 dark:bg-indigo-700 text-white'
+                          : 'bg-gray-200 dark:bg-[#212121] text-gray-900 dark:text-gray-100'
                       }`}
-                      style={{
-                        backgroundColor: message.role === 'user' ? '#4f46e5' : '#212121'
-                      }}
                     >
                       <p className="whitespace-pre-wrap break-words">{message.content}</p>
                       <span className={`text-xs mt-2 block ${
@@ -1124,7 +1120,7 @@ export default function Home() {
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 flex items-center justify-center">
                       <Bot className="h-5 w-5 text-white" />
                     </div>
-                    <div className="rounded-2xl px-4 py-3" style={{ backgroundColor: '#212121' }}>
+                    <div className="rounded-2xl px-4 py-3 bg-gray-200 dark:bg-[#212121]">
                       <Loader2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 animate-spin" />
                     </div>
                   </div>
@@ -1193,8 +1189,7 @@ export default function Home() {
                   }
                   rows={1}
                   disabled={!isAuth}
-                  style={{ backgroundColor: '#212121' }}
-                  className={`resize-none min-h-11 max-h-32 overflow-y-auto border-2 border-gray-600 text-white ${
+                  className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-[#212121] border-2 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white ${
                     !isAuth ? "cursor-not-allowed opacity-50" : ""
                   }`}
                 />
