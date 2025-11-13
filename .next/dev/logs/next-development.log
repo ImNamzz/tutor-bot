@@ -1,96 +1,27 @@
-[00:00:01.499] Server  LOG      ✓ Ready in 1064ms
-[00:00:04.541] Server  LOG      ○ Compiling / ...
-[00:00:07.644] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:06:26.237] Server  LOG      ✓ Compiled in 360ms
-[00:06:27.276] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
-
-Previous: %s
-Incoming: %s useEffect [true] [true, false]
-[00:06:57.428] Server  LOG      ✓ Compiled in 1018ms
-[00:07:08.615] Server  LOG      ✓ Compiled in 467ms
-[00:07:18.495] Server  LOG      ✓ Compiled in 161ms
-[00:11:31.845] Browser ERROR   Login error: {}
-[00:13:00.931] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:24:51.238] Server  LOG      ✓ Compiled in 350ms
-[00:25:03.614] Server  LOG      ✓ Compiled in 530ms
-[00:25:30.311] Server  LOG      ✓ Compiled in 480ms
-[00:25:55.459] Server  LOG      ✓ Compiled in 953ms
-[00:26:28.585] Server  LOG      ✓ Compiled in 455ms
-[00:26:57.258] Server  LOG      ✓ Compiled in 488ms
-[00:27:21.009] Server  LOG      ✓ Compiled in 304ms
-[00:28:05.920] Server  LOG      ✓ Compiled in 637ms
-[00:30:15.018] Server  LOG      ✓ Compiled in 713ms
-[00:30:25.400] Server  LOG      ✓ Compiled in 502ms
-[00:30:37.658] Server  LOG      ✓ Compiled in 603ms
-[00:32:05.840] Server  LOG      ✓ Compiled in 528ms
-[00:37:55.800] Server  LOG      ✓ Compiled in 430ms
-[00:47:15.335] Server  LOG      ✓ Compiled in 411ms
-[00:47:28.797] Server  LOG      ✓ Compiled in 457ms
-[00:47:41.150] Server  LOG      ✓ Compiled in 423ms
-[00:49:17.365] Server  LOG      ✓ Compiled in 504ms
-[00:49:30.285] Server  LOG      ✓ Compiled in 376ms
-[01:03:22.729] Server  LOG      ✓ Compiled in 422ms
-[01:03:29.872] Server  LOG      ✓ Compiled in 471ms
-[01:03:34.047] Server  LOG      ✓ Compiled in 141ms
-[01:53:05.310] Server  LOG      ✓ Compiled in 648ms
-[01:53:09.569] Server  LOG      ✓ Compiled in 248ms
-[01:53:19.751] Server  LOG      ✓ Compiled in 668ms
-[01:53:26.411] Server  LOG      ✓ Compiled in 497ms
-[01:53:35.936] Server  LOG      ✓ Compiled in 266ms
-[01:53:43.502] Server  LOG      ✓ Compiled in 147ms
-[01:53:45.423] Server  LOG      ✓ Compiled in 300ms
-[01:53:46.890] Server  LOG      ✓ Compiled in 151ms
-[01:53:55.117] Server  LOG      ✓ Compiled in 140ms
-[01:53:56.894] Server  LOG      ✓ Compiled in 230ms
-[01:53:58.934] Server  LOG      ✓ Compiled in 155ms
-[01:54:11.995] Server  LOG      ✓ Compiled in 202ms
-[01:54:13.510] Server  LOG      ✓ Compiled in 282ms
-[01:54:15.482] Server  LOG      ✓ Compiled in 137ms
-[01:54:18.167] Server  LOG      ✓ Compiled in 444ms
-[01:54:27.392] Server  LOG      ✓ Compiled in 299ms
-[01:55:27.357] Server  LOG      ✓ Compiled in 649ms
-[01:55:40.249] Server  LOG      ✓ Compiled in 600ms
-[01:58:01.199] Server  LOG      ✓ Compiled in 633ms
-[01:58:47.639] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:00:12.935] Server  LOG      ✓ Compiled in 350ms
-[02:00:26.455] Server  LOG      ✓ Compiled in 793ms
-[02:00:37.383] Server  LOG      ✓ Compiled in 530ms
-[02:00:50.285] Server  LOG      ✓ Compiled in 782ms
-[02:01:03.963] Server  LOG      ✓ Compiled in 258ms
-[02:06:16.681] Server  LOG      ✓ Compiled in 611ms
-[02:06:57.125] Server  LOG      ✓ Compiled in 524ms
-[02:07:15.839] Server  LOG      ✓ Compiled in 490ms
-[02:07:53.992] Server  LOG      ✓ Compiled in 1378ms
-[02:08:15.909] Server  LOG      ✓ Compiled in 438ms
-[02:08:16.963] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
-
-Previous: %s
-Incoming: %s useEffect [false] [false, ]
-[02:10:20.225] Server  LOG      ✓ Compiled in 822ms
-[02:10:50.078] Server  LOG      ✓ Compiled in 479ms
-[02:12:04.687] Server  LOG      ✓ Compiled in 863ms
-[02:12:44.848] Server  LOG      ✓ Compiled in 632ms
-[02:13:09.074] Server  LOG      ✓ Compiled in 453ms
-[02:13:29.169] Server  LOG      ✓ Compiled in 874ms
-[02:14:37.187] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:16:05.552] Server  LOG      ✓ Compiled in 695ms
-[02:16:40.875] Server  LOG      ✓ Compiled in 922ms
-[02:19:12.267] Server  LOG      ✓ Compiled in 895ms
-[02:20:28.684] Server  LOG      ✓ Compiled in 471ms
-[02:20:29.131] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:1227:14
+[00:00:51.247] Server  LOG      ✓ Ready in 30.7s
+[00:01:25.852] Server  LOG      ○ Compiling / ...
+[00:01:36.901] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:01.652] Server  LOG      ✓ Compiled in 4s
+[00:08:46.174] Server  LOG      ✓ Compiled in 4.9s
+[00:09:29.000] Server  LOG      ✓ Compiled in 5s
+[00:10:09.002] Server  LOG      ✓ Compiled in 2.5s
+[00:13:00.460] Server  LOG      ✓ Compiled in 13.1s
+[00:18:27.021] Server  LOG      ✓ Compiled in 1170ms
+[00:22:03.709] Server  LOG      ✓ Compiled in 519ms
+[00:22:04.017] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:1348:18
 Parsing ecmascript source code failed
-  1225 |           </Card>
-  1226 |         </div>
-> 1227 |       </main>
-       |              ^
-> 1228 |       </div>
-       | ^^^^^^^
-  1229 |     </div>
-  1230 |   )
-  1231 | }
+  1346 |               </p>
+  1347 |             </div>
+> 1348 |           </Card>
+       |                  ^
+> 1349 |         </div>
+       | ^^^^^^^^^
+  1350 |       </main>
+  1351 |       </div>
+  1352 |     </div>
 
 Expected '</', got 'jsx text (
-      )'
+        )'
 
 Import traces:
   Client Component Browser:
@@ -100,20 +31,25 @@ Import traces:
   Client Component SSR:
     ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component SSR]
     ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
-[02:20:56.649] Server  LOG      ✓ Compiled in 4.2s
-[02:21:49.970] Server  LOG      ✓ Compiled in 935ms
-[02:22:21.024] Server  LOG      ✓ Compiled in 1279ms
-[02:24:36.699] Server  LOG      ✓ Compiled in 728ms
-[02:25:03.216] Server  LOG      ✓ Compiled in 591ms
-[02:25:37.101] Server  LOG      ✓ Compiled in 693ms
-[02:25:52.618] Server  LOG      ✓ Compiled in 453ms
-[02:26:18.892] Server  LOG      ✓ Compiled in 379ms
-[02:29:03.439] Server  LOG      ✓ Compiled in 518ms
-[02:31:31.936] Server  LOG      ✓ Compiled in 448ms
-[02:31:45.264] Server  LOG      ✓ Compiled in 368ms
-[02:31:54.957] Server  LOG      ✓ Compiled in 758ms
-[02:33:46.360] Server  LOG      ✓ Compiled in 446ms
-[02:33:53.270] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:34:03.333] Server  LOG      ✓ Compiled in 255ms
-[02:34:20.324] Server  LOG      ✓ Compiled in 329ms
-[02:35:24.279] Server  LOG      ✓ Compiled in 777ms
+[00:22:22.800] Server  LOG      ✓ Compiled in 232ms
+[00:22:23.618] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:1353:1
+Parsing ecmascript source code failed
+  1351 |     </div>
+  1352 |   )
+> 1353 | }
+       | ^
+
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+[00:23:30.212] Server  LOG      ✓ Compiled in 439ms
+[00:24:24.898] Server  LOG      ✓ Compiled in 897ms
+[00:24:44.521] Server  LOG      ✓ Compiled in 1022ms
+[00:34:52.426] Server  LOG      ✓ Compiled in 336ms

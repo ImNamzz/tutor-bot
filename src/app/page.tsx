@@ -65,6 +65,9 @@ export default function Home() {
   const [openSessionMenu, setOpenSessionMenu] = useState<string | null>(null)
   const [renamingSessionId, setRenamingSessionId] = useState<string | null>(null)
   const [newSessionName, setNewSessionName] = useState('')
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
+  const [editedMessageContent, setEditedMessageContent] = useState('')
+  const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
@@ -72,6 +75,7 @@ export default function Home() {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const uploadMenuRef = useRef<HTMLDivElement>(null)
   const sessionMenuRef = useRef<HTMLDivElement>(null)
+  const editTextareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -481,6 +485,81 @@ export default function Home() {
     }
 
     setIsLoading(false)
+  }
+
+  const handleCopyMessage = (content: string) => {
+    navigator.clipboard.writeText(content)
+    toast.success('Message copied to clipboard!')
+  }
+
+  const handleStartEditMessage = (messageId: string, content: string) => {
+    setEditingMessageId(messageId)
+    setEditedMessageContent(content)
+  }
+
+  const handleCancelEdit = () => {
+    setEditingMessageId(null)
+    setEditedMessageContent('')
+  }
+
+  const handleSaveEdit = async (messageId: string) => {
+    if (!editedMessageContent.trim()) return
+
+    // Find the message index
+    const messageIndex = messages.findIndex(m => m.id === messageId)
+    if (messageIndex === -1) return
+
+    // Update the message
+    const updatedMessages = [...messages]
+    updatedMessages[messageIndex] = {
+      ...updatedMessages[messageIndex],
+      content: editedMessageContent.trim()
+    }
+
+    // Remove all messages after the edited one
+    const messagesToKeep = updatedMessages.slice(0, messageIndex + 1)
+    setMessages(messagesToKeep)
+    
+    setEditingMessageId(null)
+    setEditedMessageContent('')
+    setIsLoading(true)
+
+    // Get AI response to the edited message
+    try {
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          session_id: currentSessionId ? Number(currentSessionId) : null,
+          message: editedMessageContent.trim()
+        })
+      })
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401)
+          return
+        }
+        throw new Error('Failed to get response')
+      }
+
+      const data = await response.json()
+      
+      // Add AI response
+      addMessage('assistant', data.response)
+      
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error getting AI response:', error)
+      toast.error('Failed to get AI response. Please try again.')
+      addMessage('assistant', 
+        "Sorry, I encountered an error processing your edited message. Please try again."
+      )
+      setIsLoading(false)
+    }
   }
 
   const saveCurrentSession = () => {
@@ -1080,47 +1159,98 @@ export default function Home() {
 
             {/* Chat Messages */}
             <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4 max-w-3xl mx-auto">
-                {messages.map((message) => (
+              <div className="space-y-6 max-w-3xl mx-auto">
+                {messages.map((message, index) => (
                   <div
                     key={message.id}
-                    className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`group relative ${message.role === 'user' ? 'flex justify-end' : ''}`}
+                    onMouseEnter={() => setHoveredMessageId(message.id)}
+                    onMouseLeave={() => setHoveredMessageId(null)}
                   >
-                    {message.role === 'assistant' && (
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 flex items-center justify-center">
-                        <Bot className="h-5 w-5 text-white" />
+                    {editingMessageId === message.id ? (
+                      // Edit mode
+                      <div className="w-full">
+                        <Textarea
+                          ref={editTextareaRef}
+                          value={editedMessageContent}
+                          onChange={(e) => setEditedMessageContent(e.target.value)}
+                          className="w-full resize-none min-h-[100px] bg-white dark:bg-[#212121] border-2 border-indigo-500 text-gray-900 dark:text-white"
+                          autoFocus
+                        />
+                        <div className="flex gap-2 mt-2 justify-end">
+                          <Button
+                            onClick={handleCancelEdit}
+                            variant="outline"
+                            size="sm"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={() => handleSaveEdit(message.id)}
+                            size="sm"
+                          >
+                            Save & Submit
+                          </Button>
+                        </div>
                       </div>
-                    )}
-                    
-                    <div
-                      className={`px-4 py-3 max-w-[80%] rounded-2xl ${
-                        message.role === 'user'
-                          ? 'bg-indigo-600 dark:bg-indigo-700 text-white'
-                          : 'bg-gray-200 dark:bg-[#212121] text-gray-900 dark:text-gray-100'
-                      }`}
-                    >
-                      <p className="whitespace-pre-wrap break-words">{message.content}</p>
-                      <span className={`text-xs mt-2 block ${
-                        message.role === 'user' ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'
-                      }`}>
-                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
+                    ) : (
+                      // Display mode
+                      <>
+                        <div
+                          className={`px-4 py-3 ${
+                            message.role === 'user'
+                              ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl max-w-[80%]'
+                              : 'text-gray-900 dark:text-gray-100 max-w-full'
+                          }`}
+                        >
+                          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                        </div>
 
-                    {message.role === 'user' && (
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-600 dark:bg-gray-700 flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
+                        {/* Action buttons on hover */}
+                        {(hoveredMessageId === message.id || message.role === 'user') && (
+                          <div className={`absolute top-0 flex gap-1 transition-opacity ${
+                            hoveredMessageId === message.id ? 'opacity-100' : 'opacity-0'
+                          } ${
+                            message.role === 'user' 
+                              ? 'right-0 translate-x-full ml-2 pl-2' 
+                              : 'left-0 -translate-x-full mr-2 pr-2'
+                          }`}>
+                            <Button
+                              onClick={() => handleCopyMessage(message.content)}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
+                              title="Copy"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                              </svg>
+                            </Button>
+                            {message.role === 'user' && (
+                              <Button
+                                onClick={() => handleStartEditMessage(message.id, message.content)}
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                title="Edit"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 ))}
                 
                 {isLoading && (
-                  <div className="flex gap-3 justify-start">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 flex items-center justify-center">
-                      <Bot className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="rounded-2xl px-4 py-3 bg-gray-200 dark:bg-[#212121]">
+                  <div className="flex justify-start">
+                    <div className="px-4 py-3">
                       <Loader2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 animate-spin" />
                     </div>
                   </div>
