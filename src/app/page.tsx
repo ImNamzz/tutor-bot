@@ -1159,11 +1159,11 @@ export default function Home() {
 
             {/* Chat Messages */}
             <ScrollArea className="flex-1 p-4">
-              <div className="space-y-6 max-w-3xl mx-auto">
+              <div className="space-y-6">
                 {messages.map((message, index) => (
                   <div
                     key={message.id}
-                    className={`group relative ${message.role === 'user' ? 'flex justify-end' : ''}`}
+                    className={`group relative ${message.role === 'user' ? 'flex justify-end' : 'flex justify-start'}`}
                     onMouseEnter={() => setHoveredMessageId(message.id)}
                     onMouseLeave={() => setHoveredMessageId(null)}
                   >
@@ -1199,8 +1199,8 @@ export default function Home() {
                         <div
                           className={`px-4 py-3 ${
                             message.role === 'user'
-                              ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl max-w-[80%]'
-                              : 'text-gray-900 dark:text-gray-100 max-w-full'
+                              ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl max-w-[70%] ml-auto'
+                              : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
                           }`}
                         >
                           <p className="whitespace-pre-wrap break-words">{message.content}</p>
