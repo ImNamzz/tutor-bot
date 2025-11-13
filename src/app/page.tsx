@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2 } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -68,6 +68,7 @@ export default function Home() {
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   const [editedMessageContent, setEditedMessageContent] = useState('')
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null)
+  const [showScrollButton, setShowScrollButton] = useState(false)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
@@ -76,6 +77,7 @@ export default function Home() {
   const uploadMenuRef = useRef<HTMLDivElement>(null)
   const sessionMenuRef = useRef<HTMLDivElement>(null)
   const editTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -110,7 +112,13 @@ export default function Home() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    setShowScrollButton(false)
   }, [messages])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    setShowScrollButton(false)
+  }
 
   // Save sidebar state to localStorage
   useEffect(() => {
@@ -868,6 +876,21 @@ export default function Home() {
     }
   }, [inputMessage])
 
+  // Handle scroll detection for scroll-to-bottom button
+  useEffect(() => {
+    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    if (!scrollContainer) return
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 20
+      setShowScrollButton(!isNearBottom && messages.length > 0)
+    }
+
+    scrollContainer.addEventListener('scroll', handleScroll)
+    return () => scrollContainer.removeEventListener('scroll', handleScroll)
+  }, [messages.length])
+
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return null
@@ -1158,7 +1181,7 @@ export default function Home() {
             />
 
             {/* Chat Messages */}
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
               <div className="space-y-6">
                 {messages.map((message, index) => (
                   <div
@@ -1196,25 +1219,57 @@ export default function Home() {
                     ) : (
                       // Display mode
                       <>
-                        <div
-                          className={`px-4 py-3 ${
-                            message.role === 'user'
-                              ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl max-w-[70%] ml-auto'
-                              : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
-                          }`}
-                        >
-                          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                        <div className={message.role === 'user' ? 'flex flex-col items-end gap-1' : ''}>
+                          <div
+                            className={`px-4 py-3 ${
+                              message.role === 'user'
+                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] break-all'
+                                : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
+                            }`}
+                          >
+                            <p className="whitespace-pre-wrap">{message.content}</p>
+                            {message.role === 'assistant' && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                {message.timestamp instanceof Date 
+                                  ? message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                  : new Date(message.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                }
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Action buttons below user messages */}
+                          {message.role === 'user' && (
+                            <div className="flex gap-2 px-2">
+                              <button
+                                onClick={() => handleCopyMessage(message.content)}
+                                className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+                                title="Copy"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                              </button>
+                              <button
+                                onClick={() => handleStartEditMessage(message.id, message.content)}
+                                className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+                                title="Edit"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit
+                              </button>
+                            </div>
+                          )}
                         </div>
 
-                        {/* Action buttons on hover */}
-                        {(hoveredMessageId === message.id || message.role === 'user') && (
-                          <div className={`absolute top-0 flex gap-1 transition-opacity ${
-                            hoveredMessageId === message.id ? 'opacity-100' : 'opacity-0'
-                          } ${
-                            message.role === 'user' 
-                              ? 'right-0 translate-x-full ml-2 pl-2' 
-                              : 'left-0 -translate-x-full mr-2 pr-2'
-                          }`}>
+                        {/* Action buttons on hover for AI messages */}
+                        {message.role === 'assistant' && hoveredMessageId === message.id && (
+                          <div className="absolute top-0 left-0 -translate-x-full mr-2 pr-2 flex gap-1 transition-opacity opacity-100">
                             <Button
                               onClick={() => handleCopyMessage(message.content)}
                               variant="ghost"
@@ -1227,20 +1282,6 @@ export default function Home() {
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                               </svg>
                             </Button>
-                            {message.role === 'user' && (
-                              <Button
-                                onClick={() => handleStartEditMessage(message.id, message.content)}
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
-                                title="Edit"
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                              </Button>
-                            )}
                           </div>
                         )}
                       </>
@@ -1262,6 +1303,22 @@ export default function Home() {
 
             {/* Input Area */}
             <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
+              {/* Scroll to bottom button - positioned in input area */}
+              {messages.length > 0 && (
+                <div className="flex justify-end mb-2">
+                  <Button
+                    onClick={scrollToBottom}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 text-xs"
+                    title="Scroll to latest message"
+                  >
+                    <ArrowDown className="h-4 w-4" />
+                    Latest message
+                  </Button>
+                </div>
+              )}
+              
               <div className="flex gap-2 max-w-3xl mx-auto">
                 {/* Upload button with menu or Lock icon */}
                 <div className="relative" ref={uploadMenuRef}>
