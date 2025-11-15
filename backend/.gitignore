@@ -27,3 +27,4 @@ env/
 .vscode/
 .DS_Store
 node_modules/
+.app/test_speech.py/

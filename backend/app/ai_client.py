@@ -10,6 +10,10 @@ CLOVA_REQUEST_ID = os.getenv("CLOVA_REQUEST_ID")
 CLOVA_HOST = os.getenv("CLOVA_API_HOST", "https://clovastudio.stream.ntruss.com")
 CLOVA_MODEL = "HCX-005"
 SYSTEM_PROMPT = os.getenv("SYSTEM_PROMPT")
+ACTION_ITEM_PROMPT = os.getenv("ACTION_ITEM_PROMPT")
+SUMMARY_PROMPT = os.getenv("SUMMARY_PROMPT")
+CLOVA_SPEECH_URL = os.getenv("CLOVA_SPEECH_URL")
+CLOVA_SPEECH_SECRET = os.getenv("CLOVA_SPEECH_SECRET")
 
 def generate_request_id():
     return str(uuid.uuid4()).replace("-", "")
@@ -25,6 +29,93 @@ def format_messages_for_api(messages):
         })
     return api_messages
 
+def transcribe_audio(file_path: str, language: str):
+    if not CLOVA_SPEECH_URL or not CLOVA_SPEECH_SECRET:
+        print("Error: Clova Speech credentials are not set in .env")
+        raise Exception("Speech transcription service is not configured.")
+
+    request_body = {
+        'language': language,
+        'completion': 'sync', 
+        'wordAlignment': True,
+        'fullText': True,
+    }
+    
+    headers = {
+        'Accept': 'application/json;UTF-8',
+        'X-CLOVASPEECH-API-KEY': CLOVA_SPEECH_SECRET
+    }
+
+    try:
+        with open(file_path, 'rb') as audio_file:
+            files = {
+                'media': audio_file,
+                'params': (None, json.dumps(request_body, ensure_ascii=False).encode('UTF-8'), 'application/json')
+            }
+            
+            print(f"Sending audio to Clova Speech API (Language: {language})...")
+            response = requests.post(headers=headers, url=CLOVA_SPEECH_URL + '/recognizer/upload', files=files)
+        
+        response.raise_for_status() 
+        
+        response_json = response.json()
+        transcript_text = response_json.get('text')
+        
+        if transcript_text is None:
+            print(f"Clova Speech API response did not contain 'text': {response_json}")
+            raise Exception("Transcription failed: invalid API response.")
+            
+        print("Transcription successful.")
+        return transcript_text
+        
+    except requests.exceptions.RequestException as e:
+        print(f"CANT GET API REQ: {e}")
+        if e.response is not None:
+            print(f"RES BODY: {e.response.text}")
+        raise Exception(f"Audio transcription failed: {e}")
+    except json.JSONDecodeError:
+        print(f"Clova Speech API did not return valid JSON: {response.text}")
+        raise Exception("Transcription failed: server returned invalid JSON.")
+    except FileNotFoundError:
+        print(f"Error: The file was not found at {file_path}")
+        raise Exception(f"Transcription failed: file not found.")
+
+def get_summary(transcript: str):
+    url = f"{CLOVA_HOST}/v3/chat-completions/{CLOVA_MODEL}"
+    headers = {
+        "Authorization": f"Bearer {CLOVA_API_KEY}",
+        "X-NCP-CLOVASTUDIO-REQUEST-ID": generate_request_id(),
+        "Content-Type": "application/json; charset=utf-8",
+        "Accept": "application/json",
+    }
+
+    messages = [
+        {"role": "system", "content": SUMMARY_PROMPT},
+        {"role": "user", "content": transcript}
+    ]
+    
+    api_formatted_messages = format_messages_for_api(messages)
+    payload = {
+        "messages": api_formatted_messages,
+        "maxTokens": 1024,
+        "temperature": 0.5,
+        "includeAiFilters": True
+    }
+    try:
+        response = requests.post(url, headers=headers, json=payload, stream=False)
+        response.raise_for_status()
+        data = response.json()
+        summary_text = data.get("result", {}).get("message", {}).get("content", "Error: Could not generate summary.")
+        return summary_text
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling Summary API: {e}")
+        if e.response is not None:
+            print(f"Response Body: {e.response.text}")
+        return "Error: Could not contact AI server."
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return "Error: An unknown error occurred."
+
 def get_socratic_response(messages: list):
     url = f"{CLOVA_HOST}/v3/chat-completions/{CLOVA_MODEL}"
     headers = {
@@ -33,7 +124,6 @@ def get_socratic_response(messages: list):
         "Content-Type": "application/json; charset=utf-8",
         "Accept": "text/event-stream",
     }
-    
     api_formatted_messages = format_messages_for_api(messages)
     payload = {
         "messages": api_formatted_messages,
@@ -46,7 +136,6 @@ def get_socratic_response(messages: list):
         "seed": 0,
         "includeAiFilters": True
     }
-
     output_text = ""
     print("\nPARSING AI REQ")
     try:
@@ -104,3 +193,54 @@ def get_socratic_response(messages: list):
 
     print(f"{output_text}\n")
     return output_text
+
+def extract_action_items(transcript: str):
+    url = f"{CLOVA_HOST}/v3/chat-completions/{CLOVA_MODEL}"
+    headers = {
+        "Authorization": f"Bearer {CLOVA_API_KEY}",
+        "X-NCP-CLOVASTUDIO-REQUEST-ID": generate_request_id(),
+        "Content-Type": "application/json; charset=utf-8",
+        "Accept": "application/json", 
+    }
+
+    messages = [
+        {"role": "system", "content": ACTION_ITEM_PROMPT},
+        {"role": "user", "content": transcript}
+    ]
+    
+    api_formatted_messages = format_messages_for_api(messages)
+    payload = {
+        "messages": api_formatted_messages,
+        "topP": 0.8,
+        "topK": 0,
+        "maxTokens": 553,
+        "temperature": 0.5,
+        "repetitionPenalty": 1.1,
+        "stop": [],
+        "seed": 0,
+        "includeAiFilters": True
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=payload, stream=False)
+        response.raise_for_status()
+        data = response.json()
+        ai_message_content = data.get("result", {}).get("message", {}).get("content", "[]")
+        action_items = json.loads(ai_message_content)
+        if not isinstance(action_items, list):
+             print(f"AI did not return a list: {action_items}")
+             return []
+        return action_items
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling Action Item API: {e}")
+        if e.response is not None:
+            print(f"Response Body: {e.response.text}")
+        return []
+    except json.JSONDecodeError as e:
+        print(f"Error decoding AI response as JSON: {e}")
+        print(f"Received content: {ai_message_content}")
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return []
