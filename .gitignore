@@ -53,3 +53,5 @@ ENV/
 *.egg-info/
 .installed.cfg
 *.egg
+
+.next/

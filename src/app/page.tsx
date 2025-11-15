@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -33,6 +33,7 @@ interface TranscriptSession {
   keyPoints: string[]
   messages: Message[]
   score?: number
+  pinned?: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -61,12 +62,22 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [mounted, setMounted] = useState(false)
   const [showUploadMenu, setShowUploadMenu] = useState(false)
+  const [openSessionMenu, setOpenSessionMenu] = useState<string | null>(null)
+  const [renamingSessionId, setRenamingSessionId] = useState<string | null>(null)
+  const [newSessionName, setNewSessionName] = useState('')
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
+  const [editedMessageContent, setEditedMessageContent] = useState('')
+  const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null)
+  const [showScrollButton, setShowScrollButton] = useState(false)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const uploadMenuRef = useRef<HTMLDivElement>(null)
+  const sessionMenuRef = useRef<HTMLDivElement>(null)
+  const editTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Handle client-side only mounting
   useEffect(() => {
@@ -101,7 +112,13 @@ export default function Home() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    setShowScrollButton(false)
   }, [messages])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    setShowScrollButton(false)
+  }
 
   // Save sidebar state to localStorage
   useEffect(() => {
@@ -116,16 +133,19 @@ export default function Home() {
       if (uploadMenuRef.current && !uploadMenuRef.current.contains(event.target as Node)) {
         setShowUploadMenu(false)
       }
+      if (sessionMenuRef.current && !sessionMenuRef.current.contains(event.target as Node)) {
+        setOpenSessionMenu(null)
+      }
     }
 
-    if (showUploadMenu) {
+    if (showUploadMenu || openSessionMenu) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [showUploadMenu])
+  }, [showUploadMenu, openSessionMenu])
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
@@ -133,7 +153,7 @@ export default function Home() {
 
   const handleLogout = () => {
     removeAccessToken()
-    toast.success('Logged out successfully')
+    toast.success('Signed out successfully')
     router.push('/auth/login')
   }
 
@@ -147,12 +167,47 @@ export default function Home() {
     setMessages(prev => [...prev, newMessage])
   }
 
+  const generateSessionName = async (content: string): Promise<string> => {
+    try {
+      // Generate a concise session name based on content
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          session_id: null,
+          message: `Generate a very short, concise title (3-5 words max) for a chat session based on this content: "${content.substring(0, 200)}...". Only respond with the title, nothing else.`
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Clean up the response and limit length
+        let title = data.response.replace(/['"]/g, '').trim()
+        if (title.length > 50) {
+          title = title.substring(0, 47) + '...'
+        }
+        return title
+      }
+    } catch (error) {
+      console.error('Error generating session name:', error)
+    }
+    
+    // Fallback to a default name with timestamp
+    return `Chat Session ${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
+  }
+
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    if (!file.name.endsWith('.txt')) {
-      toast.error('Please upload a .txt file')
+    const validExtensions = ['.txt', '.doc', '.docx']
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    
+    if (!validExtensions.includes(fileExtension)) {
+      toast.error('Please upload a .txt, .doc, or .docx file')
       return
     }
 
@@ -168,6 +223,73 @@ export default function Home() {
     setFileName(file.name)
     setIsLoading(true)
     
+    addMessage('user', `📎 Uploaded: ${file.name}`)
+    
+    // For .doc and .docx files, send directly to backend for processing
+    if (fileExtension === '.doc' || fileExtension === '.docx') {
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        
+        // Send file to backend - backend should handle doc/docx parsing
+        const response = await fetch(API_ENDPOINTS.startSession, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: formData
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to start session')
+        }
+
+        const data = await response.json()
+        
+        // Set the session ID from backend
+        setCurrentSessionId(data.session_id.toString())
+        
+        // Generate AI-based session name in the background
+        generateSessionName(data.transcript || file.name).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
+        setTranscriptContent(data.transcript || '')
+        
+        addMessage('assistant', 
+          `Great! I've analyzed your document. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
+        )
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Use the first question from the backend
+        addMessage('assistant', data.first_question)
+        
+        setChatState('quizzing')
+        setIsLoading(false)
+        toast.success('Document processed! Answer the questions to proceed.')
+        
+      } catch (error) {
+        console.error('Error processing document:', error)
+        toast.error('Failed to process document. Please try again.')
+        setIsLoading(false)
+        
+        // Reset to idle state on error
+        setMessages([])
+        setChatState('idle')
+        setFileName('')
+        addMessage('assistant', 
+          "Sorry, I encountered an error processing your document. Please make sure the backend server is running and supports .doc/.docx files."
+        )
+      }
+      return
+    }
+    
+    // For .txt files, read as text
     const reader = new FileReader()
     reader.onload = async (e) => {
       const content = e.target?.result as string
@@ -202,8 +324,13 @@ export default function Home() {
         // Set the session ID from backend
         setCurrentSessionId(data.session_id.toString())
         
+        // Generate AI-based session name in the background
+        generateSessionName(content).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
         addMessage('assistant', 
-          `Great! I've analyzed your lecture transcript "${file.name}". I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
+          `Great! I've analyzed your lecture transcript. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
         )
         
         await new Promise(resolve => setTimeout(resolve, 500))
@@ -294,6 +421,11 @@ export default function Home() {
         setCurrentSessionId(data.session_id.toString())
         setChatState('completed') // Now in conversation mode
         
+        // Generate AI-based session name from the first message
+        generateSessionName(userMessage).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
         // Display AI's response
         addMessage('assistant', data.response)
         
@@ -361,6 +493,81 @@ export default function Home() {
     }
 
     setIsLoading(false)
+  }
+
+  const handleCopyMessage = (content: string) => {
+    navigator.clipboard.writeText(content)
+    toast.success('Message copied to clipboard!')
+  }
+
+  const handleStartEditMessage = (messageId: string, content: string) => {
+    setEditingMessageId(messageId)
+    setEditedMessageContent(content)
+  }
+
+  const handleCancelEdit = () => {
+    setEditingMessageId(null)
+    setEditedMessageContent('')
+  }
+
+  const handleSaveEdit = async (messageId: string) => {
+    if (!editedMessageContent.trim()) return
+
+    // Find the message index
+    const messageIndex = messages.findIndex(m => m.id === messageId)
+    if (messageIndex === -1) return
+
+    // Update the message
+    const updatedMessages = [...messages]
+    updatedMessages[messageIndex] = {
+      ...updatedMessages[messageIndex],
+      content: editedMessageContent.trim()
+    }
+
+    // Remove all messages after the edited one
+    const messagesToKeep = updatedMessages.slice(0, messageIndex + 1)
+    setMessages(messagesToKeep)
+    
+    setEditingMessageId(null)
+    setEditedMessageContent('')
+    setIsLoading(true)
+
+    // Get AI response to the edited message
+    try {
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          session_id: currentSessionId ? Number(currentSessionId) : null,
+          message: editedMessageContent.trim()
+        })
+      })
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401)
+          return
+        }
+        throw new Error('Failed to get response')
+      }
+
+      const data = await response.json()
+      
+      // Add AI response
+      addMessage('assistant', data.response)
+      
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error getting AI response:', error)
+      toast.error('Failed to get AI response. Please try again.')
+      addMessage('assistant', 
+        "Sorry, I encountered an error processing your edited message. Please try again."
+      )
+      setIsLoading(false)
+    }
   }
 
   const saveCurrentSession = () => {
@@ -471,6 +678,58 @@ export default function Home() {
     toast.success('Session deleted')
   }
 
+  const handlePinSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation()
+    setOpenSessionMenu(null)
+    
+    if (!mounted) return
+    
+    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const updated = savedSessions.map((s: TranscriptSession) => 
+      s.id === sessionId ? { ...s, pinned: !s.pinned } : s
+    )
+    localStorage.setItem('chatSessions', JSON.stringify(updated))
+    setSessions(updated)
+    
+    const session = updated.find((s: TranscriptSession) => s.id === sessionId)
+    toast.success(session?.pinned ? 'Session pinned' : 'Session unpinned')
+  }
+
+  const handleRenameSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation()
+    setOpenSessionMenu(null)
+    
+    const session = sessions.find(s => s.id === sessionId)
+    if (session) {
+      setRenamingSessionId(sessionId)
+      setNewSessionName(session.fileName)
+    }
+  }
+
+  const saveRename = (sessionId: string) => {
+    if (!mounted || !newSessionName.trim()) return
+    
+    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const updated = savedSessions.map((s: TranscriptSession) => 
+      s.id === sessionId ? { ...s, fileName: newSessionName.trim() } : s
+    )
+    localStorage.setItem('chatSessions', JSON.stringify(updated))
+    setSessions(updated)
+    
+    if (sessionId === currentSessionId) {
+      setFileName(newSessionName.trim())
+    }
+    
+    setRenamingSessionId(null)
+    setNewSessionName('')
+    toast.success('Session renamed')
+  }
+
+  const cancelRename = () => {
+    setRenamingSessionId(null)
+    setNewSessionName('')
+  }
+
   const handleReset = () => {
     saveCurrentSession()
     
@@ -579,11 +838,19 @@ export default function Home() {
   // Initial greeting
   useEffect(() => {
     if (mounted && messages.length === 0) {
-      addMessage('assistant', 
-        "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!"
-      )
+      if (!isAuth) {
+        // Show sign in prompt if user is not authenticated
+        addMessage('assistant', 
+          "Hi! I'm your AI learning assistant. 👋\n\n🔒 You need to sign in to use the chatbot.\n\nPlease sign in or create an account to:\n\n1. Upload lecture transcripts and study materials\n2. Get personalized quizzes based on your content\n3. Receive AI-powered explanations and summaries\n4. Save your learning sessions and track progress\n\nClick the 'Sign In' or 'Sign Up' button in the top right to get started!"
+        )
+      } else {
+        // Show normal greeting if user is authenticated
+        addMessage('assistant', 
+          "Hi! I'm your AI learning assistant. 👋\n\nTo get started, please upload a lecture transcript or study material using the upload button above. I'll help you understand the content by:\n\n1. Asking you questions to test your comprehension\n2. Grading your understanding\n3. Providing key summaries and clarifications\n4. Answering any questions you have about the material\n\nReady to learn? Upload your file to begin!"
+        )
+      }
     }
-  }, [mounted])
+  }, [mounted, isAuth])
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -609,29 +876,44 @@ export default function Home() {
     }
   }, [inputMessage])
 
+  // Handle scroll detection for scroll-to-bottom button
+  useEffect(() => {
+    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    if (!scrollContainer) return
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 20
+      setShowScrollButton(!isNearBottom && messages.length > 0)
+    }
+
+    scrollContainer.addEventListener('scroll', handleScroll)
+    return () => scrollContainer.removeEventListener('scroll', handleScroll)
+  }, [messages.length])
+
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return null
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] transition-colors">
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-40 transition-all duration-300 ease-in-out bg-gray-950 border-r border-gray-800 flex flex-col ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-white dark:bg-black border-r border-gray-200 dark:border-[#212121] ${
           isSidebarOpen ? 'w-[280px]' : 'w-16'
         }`}
       >
         {/* Sidebar Header with Toggle */}
-        <div className="p-3 border-b border-gray-800 flex items-center justify-between shrink-0">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
-            <span className="text-white font-medium text-sm">EduAssist</span>
+            <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
           )}
           <Button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             variant="ghost"
             size="sm"
-            className="h-8 w-8 p-0 hover:bg-gray-800 text-gray-400"
+            className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
             aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
             {isSidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
@@ -639,10 +921,10 @@ export default function Home() {
         </div>
 
         {/* New Chat Button */}
-        <div className="p-3 border-b border-gray-800 shrink-0">
+        <div className="p-3 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <Button
             onClick={handleReset}
-            className={`w-full justify-start gap-2 bg-gray-800 hover:bg-gray-700 text-white border-gray-700 ${
+            className={`w-full justify-start gap-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 ${
               !isSidebarOpen ? 'px-2' : ''
             }`}
             variant="outline"
@@ -658,14 +940,14 @@ export default function Home() {
             {isSidebarOpen ? (
               <div className="p-3 space-y-4">
                 {sessions.length === 0 ? (
-                  <div className="text-center text-gray-500 py-8">
+                  <div className="text-center text-gray-500 dark:text-gray-500 py-8">
                     <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
                     <p className="text-xs">No chat history</p>
                   </div>
                 ) : (
                   Object.entries(categorizeSessionsByTime()).map(([category, categorySessions]) => (
                     <div key={category} className="space-y-2">
-                      <h4 className="text-xs font-medium text-gray-500 px-2">{category}</h4>
+                      <h4 className="text-xs font-medium text-gray-600 dark:text-gray-500 px-2">{category}</h4>
                       {categorySessions.map((session) => {
                         const isActive = session.id === currentSessionId
                         
@@ -674,26 +956,81 @@ export default function Home() {
                             key={session.id}
                             className={`group relative p-2.5 rounded-lg cursor-pointer transition-all ${
                               isActive 
-                                ? 'bg-gray-800' 
-                                : 'hover:bg-gray-800/50'
+                                ? 'bg-gray-200 dark:bg-gray-800' 
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
                             }`}
                           onClick={() => handleLoadSession(session)}
                         >
                           <div className="flex items-start gap-2">
-                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-400 mt-0.5" />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm text-gray-200 truncate">
-                                {session.fileName}
-                              </p>
+                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-600 dark:text-gray-400 mt-0.5" />
+                            <div className="flex-1 min-w-0 pr-8">
+                              {renamingSessionId === session.id ? (
+                                <input
+                                  type="text"
+                                  value={newSessionName}
+                                  onChange={(e) => setNewSessionName(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') saveRename(session.id)
+                                    if (e.key === 'Escape') cancelRename()
+                                  }}
+                                  onBlur={() => saveRename(session.id)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="w-full text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:border-indigo-500"
+                                  autoFocus
+                                />
+                              ) : (
+                                <div className="flex items-center gap-1">
+                                  {session.pinned && <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
+                                  <p className="text-sm text-gray-900 dark:text-gray-200 break-words">
+                                    {session.fileName}
+                                  </p>
+                                </div>
+                              )}
                             </div>
-                            <Button
-                              onClick={(e: React.MouseEvent) => handleDeleteSession(e, session.id)}
-                              variant="ghost"
-                              size="sm"
-                              className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-700 absolute right-2 top-2"
-                            >
-                              <Trash2 className="h-3 w-3 text-gray-400" />
-                            </Button>
+                            <div className="relative">
+                              <Button
+                                onClick={(e: React.MouseEvent) => {
+                                  e.stopPropagation()
+                                  setOpenSessionMenu(openSessionMenu === session.id ? null : session.id)
+                                }}
+                                variant="ghost"
+                                size="sm"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-200 dark:hover:bg-gray-700 absolute right-0 top-0"
+                              >
+                                <MoreVertical className="h-3 w-3 text-gray-600 dark:text-gray-400" />
+                              </Button>
+                              
+                              {/* Dropdown Menu */}
+                              {openSessionMenu === session.id && (
+                                <div 
+                                  ref={sessionMenuRef}
+                                  className="absolute right-0 top-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <button
+                                    onClick={(e) => handlePinSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
+                                  >
+                                    <Pin className="h-3 w-3" />
+                                    <span>{session.pinned ? 'Unpin' : 'Pin'}</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleRenameSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
+                                  >
+                                    <Edit2 className="h-3 w-3" />
+                                    <span>Rename</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleDeleteSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-red-600 dark:text-red-400"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                    <span>Delete</span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       )
@@ -729,7 +1066,7 @@ export default function Home() {
       {/* Main Content Area - Adjusted for sidebar */}
       <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-[280px]' : 'ml-16'}`}>
         {/* Navigation */}
-        <nav className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-800 transition-colors">
+        <nav className="bg-white dark:bg-black shadow-sm border-b border-gray-200 dark:border-[#212121] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
@@ -799,13 +1136,13 @@ export default function Home() {
                   className="flex items-center gap-2"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <span className="hidden sm:inline">Sign Out</span>
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
                   <Link href="/auth/login">
                     <Button variant="ghost" size="sm">
-                      Login
+                      Sign In
                     </Button>
                   </Link>
                   <Link href="/auth/register">
@@ -822,29 +1159,14 @@ export default function Home() {
 
       {/* Page Content */}
       <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
-        <div className="mb-4 text-center">
-          <h1 className="mb-2 text-indigo-600 dark:text-indigo-400">AI Learning Assistant</h1>
-          <p className="text-gray-600 dark:text-gray-400">Upload transcripts, get quizzed, and ask questions</p>
-        </div>
-
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
-            <Card className="min-h-[600px] flex flex-col dark:bg-gray-900 dark:border-gray-800 transition-all duration-300">
-            {/* Header with file info - only show when there's a file or messages */}
-            {fileName && (
-              <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-950">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <span className="text-gray-700 dark:text-gray-300">{fileName}</span>
-                </div>
-              </div>
-            )}
-            
+            <Card className="min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
             {/* Hidden file inputs */}
             <input
               ref={fileInputRef}
               type="file"
-              accept=".txt"
+              accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={handleFileUpload}
               className="hidden"
               id="file-upload"
@@ -859,48 +1181,117 @@ export default function Home() {
             />
 
             {/* Chat Messages */}
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4 max-w-3xl mx-auto">
-                {messages.map((message) => (
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+              <div className="space-y-6">
+                {messages.map((message, index) => (
                   <div
                     key={message.id}
-                    className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`group relative ${message.role === 'user' ? 'flex justify-end' : 'flex justify-start'}`}
+                    onMouseEnter={() => setHoveredMessageId(message.id)}
+                    onMouseLeave={() => setHoveredMessageId(null)}
                   >
-                    {message.role === 'assistant' && (
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 flex items-center justify-center">
-                        <Bot className="h-5 w-5 text-white" />
+                    {editingMessageId === message.id ? (
+                      // Edit mode
+                      <div className="w-full">
+                        <Textarea
+                          ref={editTextareaRef}
+                          value={editedMessageContent}
+                          onChange={(e) => setEditedMessageContent(e.target.value)}
+                          className="w-full resize-none min-h-[100px] bg-white dark:bg-[#212121] border-2 border-indigo-500 text-gray-900 dark:text-white"
+                          autoFocus
+                        />
+                        <div className="flex gap-2 mt-2 justify-end">
+                          <Button
+                            onClick={handleCancelEdit}
+                            variant="outline"
+                            size="sm"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={() => handleSaveEdit(message.id)}
+                            size="sm"
+                          >
+                            Save & Submit
+                          </Button>
+                        </div>
                       </div>
-                    )}
-                    
-                    <div
-                      className={`px-4 py-3 max-w-[80%] ${
-                        message.role === 'user'
-                          ? 'bg-indigo-600 dark:bg-indigo-700 text-white rounded-2xl'
-                          : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl'
-                      }`}
-                    >
-                      <p className="whitespace-pre-wrap break-words">{message.content}</p>
-                      <span className={`text-xs mt-2 block ${
-                        message.role === 'user' ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'
-                      }`}>
-                        {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
+                    ) : (
+                      // Display mode
+                      <>
+                        <div className={message.role === 'user' ? 'flex flex-col items-end gap-1' : ''}>
+                          <div
+                            className={`px-4 py-3 ${
+                              message.role === 'user'
+                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] break-all'
+                                : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
+                            }`}
+                          >
+                            <p className="whitespace-pre-wrap">{message.content}</p>
+                            {message.role === 'assistant' && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                {message.timestamp instanceof Date 
+                                  ? message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                  : new Date(message.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                }
+                              </p>
+                            )}
+                          </div>
 
-                    {message.role === 'user' && (
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-600 dark:bg-gray-700 flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
+                          {/* Action buttons below user messages */}
+                          {message.role === 'user' && (
+                            <div className="flex gap-2 px-2">
+                              <button
+                                onClick={() => handleCopyMessage(message.content)}
+                                className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+                                title="Copy"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                              </button>
+                              <button
+                                onClick={() => handleStartEditMessage(message.id, message.content)}
+                                className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+                                title="Edit"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action buttons on hover for AI messages */}
+                        {message.role === 'assistant' && hoveredMessageId === message.id && (
+                          <div className="absolute top-0 left-0 -translate-x-full mr-2 pr-2 flex gap-1 transition-opacity opacity-100">
+                            <Button
+                              onClick={() => handleCopyMessage(message.content)}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
+                              title="Copy"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                              </svg>
+                            </Button>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 ))}
                 
                 {isLoading && (
-                  <div className="flex gap-3 justify-start">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 dark:bg-indigo-500 flex items-center justify-center">
-                      <Bot className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="rounded-2xl px-4 py-3 bg-gray-100 dark:bg-gray-800">
+                  <div className="flex justify-start">
+                    <div className="px-4 py-3">
                       <Loader2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 animate-spin" />
                     </div>
                   </div>
@@ -911,21 +1302,39 @@ export default function Home() {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-4">
+            <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
+              {/* Scroll to bottom button - positioned in input area */}
+              {messages.length > 0 && (
+                <div className="flex justify-end mb-2">
+                  <Button
+                    onClick={scrollToBottom}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 text-xs"
+                    title="Scroll to latest message"
+                  >
+                    <ArrowDown className="h-4 w-4" />
+                    Latest message
+                  </Button>
+                </div>
+              )}
+              
               <div className="flex gap-2 max-w-3xl mx-auto">
-                {/* Upload button with menu */}
+                {/* Upload button with menu or Lock icon */}
                 <div className="relative" ref={uploadMenuRef}>
                   <Button 
                     type="button"
                     variant="outline" 
                     size="icon"
-                    onClick={() => setShowUploadMenu(!showUploadMenu)}
+                    onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
+                    disabled={!isAuth}
+                    className={`min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
                   >
-                    <Plus className="h-4 w-4" />
+                    {isAuth ? <Plus className="h-4 w-4" /> : <Lock className="h-5 w-5" />}
                   </Button>
                   
                   {/* Upload menu */}
-                  {showUploadMenu && (
+                  {showUploadMenu && isAuth && (
                     <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
                       <button
                         onClick={() => {
@@ -957,25 +1366,30 @@ export default function Home() {
                   onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder={
-                    chatState === 'quizzing' 
+                    !isAuth
+                      ? "You need to sign in to use the chatbot."
+                      : chatState === 'quizzing' 
                       ? "Type your answer or ask a question..." 
                       : chatState === 'completed'
                       ? "Ask me anything about the material..."
                       : "Type a message..."
                   }
                   rows={1}
-                  className="resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600"
+                  disabled={!isAuth}
+                  className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-[#212121] border-2 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white ${
+                    !isAuth ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 />
                 <Button 
                   onClick={handleSendMessage} 
-                  disabled={!inputMessage.trim() || isLoading}
-                  className="shrink-0"
+                  disabled={!isAuth || !inputMessage.trim() || isLoading}
+                  className={`shrink-0 min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                  <Send className="h-4 w-4" />
+                  {isAuth ? <Send className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
                 </Button>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-                Press Enter to send, Shift+Enter for new line
+                {isAuth ? "Press Enter to send, Shift+Enter for new line" : "Please sign in to start chatting"}
               </p>
             </div>
           </Card>
