@@ -6,7 +6,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import {
   BookOpen,
-  FileText,
   Calendar as CalendarIcon,
   CheckSquare,
   Moon,
@@ -22,14 +21,15 @@ export default function Topbar() {
   const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
+  // Transcript button removed globally
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Check authentication
     const authenticated = isAuthenticated();
     setIsAuth(authenticated);
-    
+
     const savedTheme = localStorage.getItem("theme");
     const prefersDark =
       window.matchMedia &&
@@ -72,30 +72,20 @@ export default function Topbar() {
               <Link
                 href="/"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
+                  pathname === "/"
+                    ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 dark:text-gray-300"
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
                 AI Tutor
               </Link>
-              <Link
-                href="/transcript"
-                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/transcript" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                <FileText className="h-4 w-4" />
-                Transcript
-              </Link>
+              {/* Transcript button removed */}
               <Link
                 href="/calendar"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/calendar" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
+                  pathname === "/calendar"
+                    ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 dark:text-gray-300"
                 }`}
               >
@@ -105,8 +95,8 @@ export default function Topbar() {
               <Link
                 href="/todo"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/todo" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
+                  pathname === "/todo"
+                    ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 dark:text-gray-300"
                 }`}
               >
@@ -130,7 +120,7 @@ export default function Topbar() {
                 <Moon className="h-5 w-5 text-gray-600" />
               )}
             </Button>
-            
+
             {isAuth ? (
               <Button
                 onClick={handleLogout}
@@ -149,9 +139,7 @@ export default function Topbar() {
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button size="sm">
-                    Sign Up
-                  </Button>
+                  <Button size="sm">Sign Up</Button>
                 </Link>
               </div>
             )}
