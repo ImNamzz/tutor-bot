@@ -61,7 +61,7 @@ export default function Topbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link
-              href="/"
+              href="/dashboard"
               className="flex items-center hover:opacity-80 transition-opacity"
             >
               <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />

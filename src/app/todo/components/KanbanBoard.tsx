@@ -129,12 +129,19 @@ export default function KanbanBoard() {
   const allDone = todos.length > 0 && todos.every((t) => t.completed);
 
   function startFocus(id: string, seconds: number) {
+    // Starts timer (used only by Start button)
     setFocusId(id);
     setSecondsLeft(seconds);
     setRunning(true);
     updateTodo(id, {
       focusCount: (todos.find((t) => t.id === id)?.focusCount || 0) + 1,
     });
+  }
+
+  function selectFocus(id: string) {
+    // Select a task to focus without starting timer yet
+    setFocusId(id);
+    // Do not modify secondsLeft or running state here
   }
 
   function parseCustomTime(): number {
@@ -165,14 +172,16 @@ export default function KanbanBoard() {
   function startCustomFocus() {
     const seconds = parseCustomTime();
     if (!seconds) return;
-    startFocus(focusId || todos[0]?.id, seconds);
+    const targetId = focusId || todos[0]?.id;
+    if (!targetId) return;
+    startFocus(targetId, seconds);
   }
 
   function setPreset(minutes: number) {
     setHInput("00");
     setMInput(String(minutes).padStart(2, "0"));
     setSInput("00");
-    startFocus(focusId || todos[0]?.id, minutes * 60);
+    // Do not auto-start; user must press Start
   }
 
   function stopFocus() {
@@ -220,71 +229,74 @@ export default function KanbanBoard() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              min={0}
-              value={hInput}
-              onChange={(e) => setHInput(e.target.value.slice(0, 2))}
-              className="w-14 border rounded px-2 py-1 font-mono text-sm"
-              placeholder="HH"
-            />
-            <span className="font-mono">:</span>
-            <input
-              type="number"
-              min={0}
-              max={59}
-              value={mInput}
-              onChange={(e) => setMInput(e.target.value.slice(0, 2))}
-              className="w-14 border rounded px-2 py-1 font-mono text-sm"
-              placeholder="MM"
-            />
-            <span className="font-mono">:</span>
-            <input
-              type="number"
-              min={0}
-              max={59}
-              value={sInput}
-              onChange={(e) => setSInput(e.target.value.slice(0, 2))}
-              className="w-14 border rounded px-2 py-1 font-mono text-sm"
-              placeholder="SS"
-            />
-            <Button variant="outline" onClick={startCustomFocus} disabled={!!timeError}>
-              <Play className="size-4 mr-1" /> Start
-            </Button>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min={0}
+                value={hInput}
+                onChange={(e) => setHInput(e.target.value.slice(0, 2))}
+                className="w-14 border rounded px-2 py-1 font-mono text-sm"
+                placeholder="HH"
+              />
+              <span className="font-mono">:</span>
+              <input
+                type="number"
+                min={0}
+                max={59}
+                value={mInput}
+                onChange={(e) => setMInput(e.target.value.slice(0, 2))}
+                className="w-14 border rounded px-2 py-1 font-mono text-sm"
+                placeholder="MM"
+              />
+              <span className="font-mono">:</span>
+              <input
+                type="number"
+                min={0}
+                max={59}
+                value={sInput}
+                onChange={(e) => setSInput(e.target.value.slice(0, 2))}
+                className="w-14 border rounded px-2 py-1 font-mono text-sm"
+                placeholder="SS"
+              />
+              <Button
+                variant="outline"
+                onClick={startCustomFocus}
+                disabled={!!timeError}
+              >
+                <Play className="size-4 mr-1" /> Start
+              </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setPreset(25)}>
+                25m
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setPreset(50)}>
+                50m
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setRunning((v) => !v)}
+                disabled={!focusId}
+              >
+                {running ? (
+                  <Pause className="size-4 mr-1" />
+                ) : (
+                  <Play className="size-4 mr-1" />
+                )}{" "}
+                {running ? "Pause" : "Resume"}
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setSecondsLeft(0);
+                  stopFocus();
+                }}
+              >
+                <RotateCcw className="size-4" />
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => setPreset(25)}>
-              25m
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => setPreset(50)}>
-              50m
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setRunning((v) => !v)}
-              disabled={!focusId}
-            >
-              {running ? (
-                <Pause className="size-4 mr-1" />
-              ) : (
-                <Play className="size-4 mr-1" />
-              )} {running ? "Pause" : "Resume"}
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setSecondsLeft(0);
-                stopFocus();
-              }}
-            >
-              <RotateCcw className="size-4" />
-            </Button>
-          </div>
-        </div>
-        {timeError && (
-          <div className="text-xs text-red-600">{timeError}</div>
-        )}
+          {timeError && <div className="text-xs text-red-600">{timeError}</div>}
         </div>
       )}
 
@@ -379,7 +391,7 @@ export default function KanbanBoard() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => startFocus(t.id, 25 * 60)}
+                          onClick={() => selectFocus(t.id)}
                         >
                           <Play className="size-4 mr-1" /> Focus
                         </Button>
