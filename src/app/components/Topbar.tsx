@@ -81,17 +81,6 @@ export default function Topbar() {
                 AI Tutor
               </Link>
               <Link
-                href="/transcript"
-                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/transcript" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                <FileText className="h-4 w-4" />
-                Transcript
-              </Link>
-              <Link
                 href="/calendar"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
                   pathname === "/calendar" 

@@ -69,3 +69,41 @@
 [00:53:35.801] Server  LOG      ✓ Compiled in 609ms
 [00:53:39.096] Browser ERROR   Error sending message: {}
 [00:54:36.319] Server  LOG      ✓ Compiled in 886ms
+[00:27:42.239] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:28:30.830] Server  LOG      ○ Compiling /calendar ...
+[00:29:00.814] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:00.814] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:15.442] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:15.442] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:20.046] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:20.046] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:37.756] Server  ERROR    ⨯ Error: The default export is not a React Component in "/transcript/page"
+[00:29:38.237] Server  ERROR    ⨯ Error: The default export is not a React Component in "/transcript/page"
+[00:29:41.244] Server  LOG      ○ Compiling /_error ...
+[00:31:28.396] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:31:28.396] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:31:39.522] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:31:39.522] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:31:42.916] Server  LOG      ✓ Compiled in 710ms
+[00:32:04.907] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:04.907] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:06.482] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:06.482] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:16.308] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:16.308] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:31.402] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:31.403] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:49.126] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:49.126] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:33:18.235] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:34:01.833] Server  ERROR    ⨯ Error: The default export is not a React Component in "/todo/page"
+[00:34:02.303] Server  ERROR    ⨯ Error: The default export is not a React Component in "/todo/page"
+[00:34:02.952] Server  ERROR    ⨯ Error: The default export is not a React Component in "/todo/page"
+[00:34:03.447] Server  ERROR    ⨯ Error: The default export is not a React Component in "/todo/page"
+[00:34:03.816] Browser ERROR   uncaughtError: Error: The default export is not a React Component in "/todo/page"
+[00:34:06.920] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:35:18.461] Server  LOG      ✓ Compiled in 153ms
+[00:37:01.727] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:39:14.906] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:39:14.906] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:39:28.777] Server  LOG      ✓ Compiled in 637ms
