@@ -177,7 +177,7 @@ export default function Home() {
           'Authorization': `Bearer ${getAccessToken()}`
         },
         body: JSON.stringify({
-          session_id: null,
+          chat_session_id: null,
           message: `Generate a very short, concise title (3-5 words max) for a chat session based on this content: "${content.substring(0, 200)}...". Only respond with the title, nothing else.`
         })
       })
@@ -188,6 +188,10 @@ export default function Home() {
         let title = data.response.replace(/['"]/g, '').trim()
         if (title.length > 50) {
           title = title.substring(0, 47) + '...'
+        }
+        // Store the session ID if returned
+        if (data.chat_session_id) {
+          setCurrentSessionId(data.chat_session_id.toString())
         }
         return title
       }
@@ -251,7 +255,7 @@ export default function Home() {
         const data = await response.json()
         
         // Set the session ID from backend
-        setCurrentSessionId(data.session_id.toString())
+        setCurrentSessionId(data.chat_session_id.toString())
         
         // Generate AI-based session name in the background
         generateSessionName(data.transcript || file.name).then(generatedName => {
@@ -322,7 +326,7 @@ export default function Home() {
         const data = await response.json()
         
         // Set the session ID from backend
-        setCurrentSessionId(data.session_id.toString())
+        setCurrentSessionId(data.chat_session_id.toString())
         
         // Generate AI-based session name in the background
         generateSessionName(content).then(generatedName => {
@@ -402,7 +406,7 @@ export default function Home() {
             'Authorization': `Bearer ${getAccessToken()}`
           },
           body: JSON.stringify({
-            session_id: null, // Let backend create a new session
+            chat_session_id: null, // Let backend create a new session
             message: userMessage
           })
         })
@@ -418,7 +422,7 @@ export default function Home() {
         const data = await response.json()
         
         // Update session ID from backend and set state to completed
-        setCurrentSessionId(data.session_id.toString())
+        setCurrentSessionId(data.chat_session_id.toString())
         setChatState('completed') // Now in conversation mode
         
         // Generate AI-based session name from the first message
@@ -454,7 +458,7 @@ export default function Home() {
             'Authorization': `Bearer ${getAccessToken()}`
           },
           body: JSON.stringify({
-            session_id: currentSessionId ? Number(currentSessionId) : null,
+            chat_session_id: currentSessionId ? Number(currentSessionId) : null,
             message: userMessage
           })
         })
@@ -470,8 +474,8 @@ export default function Home() {
         const data = await response.json()
         
         // Update session ID from backend (in case it was created or changed)
-        if (data.session_id) {
-          setCurrentSessionId(data.session_id.toString())
+        if (data.chat_session_id) {
+          setCurrentSessionId(data.chat_session_id.toString())
         }
         
         // Display AI's response
@@ -541,7 +545,7 @@ export default function Home() {
           'Authorization': `Bearer ${getAccessToken()}`
         },
         body: JSON.stringify({
-          session_id: currentSessionId ? Number(currentSessionId) : null,
+          chat_session_id: currentSessionId ? Number(currentSessionId) : null,
           message: editedMessageContent.trim()
         })
       })
