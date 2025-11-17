@@ -92,6 +92,80 @@ def login():
     finally:
         db.close()
 
+@app.route("/api/user/profile", methods=["GET"])
+@jwt_required()
+def get_user_profile():
+    db = SessionLocal()
+    try:
+        current_user_id = int(get_jwt_identity())
+        user = db.query(UserModel).filter_by(id=current_user_id).first()
+        
+        if not user:
+            return jsonify({"detail": "User not found"}), 404
+        
+        return jsonify({
+            "username": user.username,
+            "email": user.email
+        }), 200
+    
+    except Exception as e:
+        return jsonify({"detail": f"Server error: {e}"}), 500
+    finally:
+        db.close()
+
+@app.route("/api/user/profile", methods=["PUT"])
+@jwt_required()
+def update_user_profile():
+    db = SessionLocal()
+    try:
+        current_user_id = int(get_jwt_identity())
+        user = db.query(UserModel).filter_by(id=current_user_id).first()
+        
+        if not user:
+            return jsonify({"detail": "User not found"}), 404
+        
+        data = request.json
+        username = data.get('username')
+        email = data.get('email')
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        
+        # Update username if provided and different
+        if username and username != user.username:
+            # Check if username already exists
+            existing_user = db.query(UserModel).filter_by(username=username).first()
+            if existing_user:
+                return jsonify({"detail": "Username already taken"}), 400
+            user.username = username
+        
+        # Update email if provided and different
+        if email and email != user.email:
+            # Check if email already exists
+            existing_user = db.query(UserModel).filter_by(email=email).first()
+            if existing_user:
+                return jsonify({"detail": "Email already registered"}), 400
+            user.email = email
+        
+        # Update password if both current and new password provided
+        if current_password and new_password:
+            if not bcrypt.check_password_hash(user.hashed_password, current_password):
+                return jsonify({"detail": "Current password is incorrect"}), 400
+            user.hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        
+        db.commit()
+        
+        return jsonify({
+            "message": "Profile updated successfully",
+            "username": user.username,
+            "email": user.email
+        }), 200
+    
+    except Exception as e:
+        db.rollback()
+        return jsonify({"detail": f"Server error: {e}"}), 500
+    finally:
+        db.close()
+
 @app.route("/api/chat", methods=["POST"])
 @jwt_required()
 def chat():

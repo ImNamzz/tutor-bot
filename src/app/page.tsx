@@ -10,7 +10,9 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X } from 'lucide-react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
+import { Label } from '@/app/components/ui/label'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -71,6 +73,14 @@ export default function Home() {
   const [showScrollButton, setShowScrollButton] = useState(false)
   const [attachedFile, setAttachedFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [settingsData, setSettingsData] = useState({
+    username: '',
+    email: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
   
   const audioInputRef = useRef<HTMLInputElement>(null)
   const textInputRef = useRef<HTMLInputElement>(null)
@@ -98,6 +108,34 @@ export default function Home() {
       setIsSidebarOpen(savedSidebar === 'true')
     }
   }, [])
+
+  // Fetch user profile when settings dialog opens
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isSettingsOpen && isAuth) {
+        try {
+          const response = await fetch(API_ENDPOINTS.getUserProfile, {
+            headers: {
+              'Authorization': `Bearer ${getAccessToken()}`
+            }
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            setSettingsData(prev => ({
+              ...prev,
+              username: data.username,
+              email: data.email
+            }))
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error)
+        }
+      }
+    }
+    
+    fetchUserProfile()
+  }, [isSettingsOpen, isAuth])
 
   // Handle theme changes
   useEffect(() => {
@@ -1380,6 +1418,201 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-3">
+              {isAuth && (
+                <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-full w-9 h-9 p-0"
+                      aria-label="Settings"
+                    >
+                      <Settings className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-semibold">Account Settings</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-6 py-4">
+                      {/* Username */}
+                      <div className="space-y-2">
+                        <Label htmlFor="username" className="text-sm font-medium">
+                          Username
+                        </Label>
+                        <Input
+                          id="username"
+                          type="text"
+                          placeholder="Enter new username"
+                          value={settingsData.username}
+                          onChange={(e) => setSettingsData({...settingsData, username: e.target.value})}
+                          className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Leave unchanged to keep current username</p>
+                      </div>
+
+                      {/* Email */}
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="Enter new email"
+                          value={settingsData.email}
+                          onChange={(e) => setSettingsData({...settingsData, email: e.target.value})}
+                          className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Leave unchanged to keep current email</p>
+                      </div>
+
+                      {/* Password Section */}
+                      <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <h3 className="text-sm font-semibold mb-4">Change Password</h3>
+                        
+                        {/* Current Password */}
+                        <div className="space-y-2 mb-4">
+                          <Label htmlFor="currentPassword" className="text-sm font-medium">
+                            Current Password
+                          </Label>
+                          <Input
+                            id="currentPassword"
+                            type="password"
+                            placeholder="Enter current password"
+                            value={settingsData.currentPassword}
+                            onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
+                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                          />
+                        </div>
+
+                        {/* New Password */}
+                        <div className="space-y-2 mb-4">
+                          <Label htmlFor="newPassword" className="text-sm font-medium">
+                            New Password
+                          </Label>
+                          <Input
+                            id="newPassword"
+                            type="password"
+                            placeholder="Enter new password"
+                            value={settingsData.newPassword}
+                            onChange={(e) => setSettingsData({...settingsData, newPassword: e.target.value})}
+                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                          />
+                        </div>
+
+                        {/* Confirm New Password */}
+                        <div className="space-y-2">
+                          <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                            Confirm New Password
+                          </Label>
+                          <Input
+                            id="confirmPassword"
+                            type="password"
+                            placeholder="Confirm new password"
+                            value={settingsData.confirmPassword}
+                            onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
+                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                          />
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Leave blank to keep current password</p>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex justify-end gap-3 pt-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setIsSettingsOpen(false)
+                            setSettingsData({
+                              username: '',
+                              email: '',
+                              currentPassword: '',
+                              newPassword: '',
+                              confirmPassword: ''
+                            })
+                          }}
+                          className="border-gray-300 dark:border-gray-700"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={async () => {
+                            // Validate password fields if user wants to change password
+                            if (settingsData.newPassword || settingsData.confirmPassword || settingsData.currentPassword) {
+                              if (!settingsData.currentPassword) {
+                                toast.error('Please enter your current password to change it')
+                                return
+                              }
+                              if (!settingsData.newPassword) {
+                                toast.error('Please enter a new password')
+                                return
+                              }
+                              if (settingsData.newPassword !== settingsData.confirmPassword) {
+                                toast.error('New passwords do not match')
+                                return
+                              }
+                              if (settingsData.newPassword.length < 6) {
+                                toast.error('Password must be at least 6 characters')
+                                return
+                              }
+                            }
+
+                            try {
+                              const updateData: any = {}
+                              
+                              // Only include fields that should be updated
+                              if (settingsData.username) updateData.username = settingsData.username
+                              if (settingsData.email) updateData.email = settingsData.email
+                              if (settingsData.currentPassword && settingsData.newPassword) {
+                                updateData.current_password = settingsData.currentPassword
+                                updateData.new_password = settingsData.newPassword
+                              }
+
+                              const response = await fetch(API_ENDPOINTS.updateUserProfile, {
+                                method: 'PUT',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Bearer ${getAccessToken()}`
+                                },
+                                body: JSON.stringify(updateData)
+                              })
+
+                              const data = await response.json()
+
+                              if (!response.ok) {
+                                if (response.status === 401) {
+                                  handleAuthError(401)
+                                  return
+                                }
+                                toast.error(data.detail || 'Failed to update profile')
+                                return
+                              }
+
+                              toast.success('Profile updated successfully!')
+                              setIsSettingsOpen(false)
+                              setSettingsData({
+                                username: data.username,
+                                email: data.email,
+                                currentPassword: '',
+                                newPassword: '',
+                                confirmPassword: ''
+                              })
+                            } catch (error) {
+                              console.error('Error updating profile:', error)
+                              toast.error('Failed to update profile')
+                            }
+                          }}
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                        >
+                          Save Changes
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )}
+              
               <Button
                 onClick={toggleTheme}
                 variant="ghost"

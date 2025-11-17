@@ -11,6 +11,10 @@ export const API_ENDPOINTS = {
   verifyEmail: (token: string) => `${config.apiUrl}/api/verify_email/${token}`,
   resendVerification: `${config.apiUrl}/api/resend_verification`,
   
+  // User Profile
+  getUserProfile: `${config.apiUrl}/api/user/profile`,
+  updateUserProfile: `${config.apiUrl}/api/user/profile`,
+  
   // Chat
   chat: `${config.apiUrl}/api/chat`,
   
