@@ -12,6 +12,10 @@ export const API_ENDPOINTS = {
   resendVerification: `${config.apiUrl}/api/resend_verification`,
   
   // Chat
-  startSession: `${config.apiUrl}/api/start_session`,
   chat: `${config.apiUrl}/api/chat`,
+  
+  // Lectures
+  uploadAudio: `${config.apiUrl}/api/lectures/upload-audio`,
+  uploadLecture: `${config.apiUrl}/api/lectures`,
+  startChatFromLecture: (lectureId: number) => `${config.apiUrl}/api/lectures/${lectureId}/start-chat`,
 }

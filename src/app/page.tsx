@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -69,9 +69,11 @@ export default function Home() {
   const [editedMessageContent, setEditedMessageContent] = useState('')
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null)
   const [showScrollButton, setShowScrollButton] = useState(false)
+  const [attachedFile, setAttachedFile] = useState<File | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
   
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const imageInputRef = useRef<HTMLInputElement>(null)
+  const audioInputRef = useRef<HTMLInputElement>(null)
+  const textInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const uploadMenuRef = useRef<HTMLDivElement>(null)
@@ -215,16 +217,6 @@ export default function Home() {
       return
     }
 
-    // Save current session before starting new one
-    if (chatState !== 'idle') {
-      saveCurrentSession()
-    }
-
-    // Reset for new session
-    setMessages([])
-    setCurrentQuestionIndex(0)
-    setCorrectAnswers(0)
-    setFileName(file.name)
     setIsLoading(true)
     
     addMessage('user', `📎 Uploaded: ${file.name}`)
@@ -235,60 +227,107 @@ export default function Home() {
         const formData = new FormData()
         formData.append('file', file)
         
-        // Send file to backend - backend should handle doc/docx parsing
-        const response = await fetch(API_ENDPOINTS.startSession, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${getAccessToken()}`
-          },
-          body: formData
-        })
+        // Note: Backend may need to support .doc/.docx parsing
+        // For now, sending as is - backend should handle extraction
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+          const content = e.target?.result as string
+          
+          try {
+            // Step 1: Upload lecture to create lecture resource
+            const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getAccessToken()}`
+              },
+              body: JSON.stringify({
+                title: file.name,
+                transcript: content // Backend may need document parser
+              })
+            })
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            handleAuthError(401)
-            return
+            if (!uploadResponse.ok) {
+              if (uploadResponse.status === 401) {
+                handleAuthError(401)
+                return
+              }
+              throw new Error('Failed to upload document')
+            }
+
+            const lectureData = await uploadResponse.json()
+            const lectureId = lectureData.id
+            
+            // Step 2: Start chat session from the lecture
+            const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getAccessToken()}`
+              }
+            })
+
+            if (!chatResponse.ok) {
+              if (chatResponse.status === 401) {
+                handleAuthError(401)
+                return
+              }
+              throw new Error('Failed to start chat')
+            }
+
+            const chatData = await chatResponse.json()
+            
+            // Set the session ID from backend
+            setCurrentSessionId(chatData.chat_session_id.toString())
+            
+            // Generate AI-based session name in the background
+            generateSessionName(lectureData.transcript || file.name).then(generatedName => {
+              setFileName(generatedName)
+            })
+            
+            setTranscriptContent(lectureData.transcript || '')
+            
+            // Use the first question from the backend
+            addMessage('assistant', chatData.first_question)
+            
+            setChatState('quizzing')
+            setIsLoading(false)
+            toast.success('Document processed! Answer the questions to proceed.')
+            
+          } catch (error) {
+            console.error('Error processing document:', error)
+            toast.error('Failed to process document. Please try again.')
+            setIsLoading(false)
+            
+            // Reset to idle state on error
+            setMessages([])
+            setChatState('idle')
+            setFileName('')
+            addMessage('assistant', 
+              "Sorry, I encountered an error processing your document. Please make sure the backend server is running."
+            )
           }
-          throw new Error('Failed to start session')
         }
-
-        const data = await response.json()
         
-        // Set the session ID from backend
-        setCurrentSessionId(data.chat_session_id.toString())
+        reader.onerror = () => {
+          toast.error('Failed to read file')
+          setIsLoading(false)
+          setMessages([])
+          setChatState('idle')
+          setFileName('')
+        }
         
-        // Generate AI-based session name in the background
-        generateSessionName(data.transcript || file.name).then(generatedName => {
-          setFileName(generatedName)
-        })
-        
-        setTranscriptContent(data.transcript || '')
-        
-        addMessage('assistant', 
-          `Great! I've analyzed your document. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
-        )
-        
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        // Use the first question from the backend
-        addMessage('assistant', data.first_question)
-        
-        setChatState('quizzing')
-        setIsLoading(false)
-        toast.success('Document processed! Answer the questions to proceed.')
+        reader.readAsText(file)
         
       } catch (error) {
-        console.error('Error processing document:', error)
-        toast.error('Failed to process document. Please try again.')
+        console.error('Error reading document:', error)
+        toast.error('Failed to read document. Please try again.')
         setIsLoading(false)
         
         // Reset to idle state on error
         setMessages([])
         setChatState('idle')
         setFileName('')
-        addMessage('assistant', 
-          "Sorry, I encountered an error processing your document. Please make sure the backend server is running and supports .doc/.docx files."
-        )
       }
       return
     }
@@ -302,8 +341,8 @@ export default function Home() {
       addMessage('user', `📎 Uploaded: ${file.name}`)
       
       try {
-        // Call the real backend API to start a session
-        const response = await fetch(API_ENDPOINTS.startSession, {
+        // Step 1: Upload lecture to create lecture resource
+        const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -315,32 +354,46 @@ export default function Home() {
           })
         })
 
-        if (!response.ok) {
-          if (response.status === 401) {
+        if (!uploadResponse.ok) {
+          if (uploadResponse.status === 401) {
             handleAuthError(401)
             return
           }
-          throw new Error('Failed to start session')
+          throw new Error('Failed to upload lecture')
         }
 
-        const data = await response.json()
+        const lectureData = await uploadResponse.json()
+        const lectureId = lectureData.id
+        
+        // Step 2: Start chat session from the lecture
+        const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          }
+        })
+
+        if (!chatResponse.ok) {
+          if (chatResponse.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to start chat')
+        }
+
+        const chatData = await chatResponse.json()
         
         // Set the session ID from backend
-        setCurrentSessionId(data.chat_session_id.toString())
+        setCurrentSessionId(chatData.chat_session_id.toString())
         
         // Generate AI-based session name in the background
         generateSessionName(content).then(generatedName => {
           setFileName(generatedName)
         })
         
-        addMessage('assistant', 
-          `Great! I've analyzed your lecture transcript. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
-        )
-        
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
         // Use the first question from the backend
-        addMessage('assistant', data.first_question)
+        addMessage('assistant', chatData.first_question)
         
         setChatState('quizzing')
         setIsLoading(false)
@@ -364,28 +417,231 @@ export default function Home() {
     reader.readAsText(file)
   }
 
+  const processFileUpload = async (file: File, userMessage: string = '') => {
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    const validTextExtensions = ['.txt', '.doc', '.docx']
+    const validAudioExtensions = ['.mp3', '.m4a', '.wav', '.ogg', '.flac', '.aac', '.wma']
+
+    setIsLoading(true)
+    
+    const fileTypeIcon = validAudioExtensions.includes(fileExtension) ? '🎵' : '📄'
+    const messageContent = userMessage ? `${fileTypeIcon} ${file.name}\n\n${userMessage}` : `${fileTypeIcon} Uploaded: ${file.name}`
+    addMessage('user', messageContent)
+    
+    // Handle audio files
+    if (validAudioExtensions.includes(fileExtension)) {
+      try {
+        const formData = new FormData()
+        formData.append('media', file)
+        formData.append('title', file.name)
+        formData.append('language', 'en-US') // Default to English
+        
+        const response = await fetch(API_ENDPOINTS.uploadAudio, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: formData
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to process audio')
+        }
+
+        const data = await response.json()
+        const lectureId = data.id
+        
+        // Now start a chat session with this lecture
+        const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          }
+        })
+
+        if (!chatResponse.ok) {
+          throw new Error('Failed to start chat session')
+        }
+
+        const chatData = await chatResponse.json()
+        setCurrentSessionId(chatData.chat_session_id.toString())
+        setTranscriptContent(data.transcript || '')
+        
+        generateSessionName(file.name).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
+        addMessage('assistant', chatData.first_question)
+        
+        setChatState('quizzing')
+        setIsLoading(false)
+        toast.success('Audio transcribed successfully!')
+        
+      } catch (error) {
+        console.error('Error processing audio:', error)
+        toast.error('Failed to process audio. Please try again.')
+        setIsLoading(false)
+        setMessages([])
+        setChatState('idle')
+        setFileName('')
+      }
+      return
+    }
+    
+    // For text files, use existing handleFileUpload logic by reading the file
+    if (validTextExtensions.includes(fileExtension)) {
+      // Create a synthetic event to reuse existing logic
+      const reader = new FileReader()
+      reader.onload = async (e) => {
+        const content = e.target?.result as string
+        setTranscriptContent(content)
+        
+        try {
+          // Upload the lecture first
+          const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getAccessToken()}`
+            },
+            body: JSON.stringify({
+              title: file.name,
+              transcript: content
+            })
+          })
+
+          if (!uploadResponse.ok) {
+            if (uploadResponse.status === 401) {
+              handleAuthError(401)
+              return
+            }
+            throw new Error('Failed to upload lecture')
+          }
+
+          const lectureData = await uploadResponse.json()
+          const lectureId = lectureData.id
+          
+          // Start chat session with the lecture
+          const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${getAccessToken()}`
+            }
+          })
+
+          if (!chatResponse.ok) {
+            throw new Error('Failed to start chat session')
+          }
+
+          const chatData = await chatResponse.json()
+          setCurrentSessionId(chatData.chat_session_id.toString())
+          
+          generateSessionName(content).then(generatedName => {
+            setFileName(generatedName)
+          })
+          
+          addMessage('assistant', chatData.first_question)
+          
+          setChatState('quizzing')
+          setIsLoading(false)
+          toast.success('Transcript processed! Answer the questions to proceed.')
+          
+        } catch (error) {
+          console.error('Error starting session:', error)
+          toast.error('Failed to process transcript. Please try again.')
+          setIsLoading(false)
+          setMessages([])
+          setChatState('idle')
+          setFileName('')
+        }
+      }
+      
+      reader.readAsText(file)
+    }
+  }
+
+  const removeAttachedFile = () => {
+    setAttachedFile(null)
+    if (audioInputRef.current) audioInputRef.current.value = ''
+    if (textInputRef.current) textInputRef.current.value = ''
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isAuth) {
+      setIsDragging(true)
+    }
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    if (!isAuth) {
+      toast.error('Please sign in to upload files')
+      return
+    }
+
+    const file = e.dataTransfer.files?.[0]
+    if (!file) return
+
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    const validExtensions = ['.txt', '.doc', '.docx', '.mp3', '.m4a', '.wav', '.ogg', '.flac', '.aac', '.wma']
+    
+    if (!validExtensions.includes(fileExtension)) {
+      toast.error('Unsupported file format. Please upload audio (mp3, m4a, wav, etc.) or text files (txt, doc, docx)')
+      return
+    }
+
+    setAttachedFile(file)
+  }
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file')
+    const validAudioExtensions = ['.mp3', '.m4a', '.wav', '.ogg', '.flac', '.aac', '.wma']
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    
+    if (!validAudioExtensions.includes(fileExtension)) {
+      toast.error('Please upload a valid audio file (mp3, m4a, wav, ogg, flac, aac, wma)')
       return
     }
 
-    addMessage('user', `🖼️ Uploaded image: ${file.name}`)
-    
-    // For now, just show a message that image processing is coming soon
-    // You can implement actual image processing with your backend later
-    addMessage('assistant', 
-      `I've received your image "${file.name}". Image analysis functionality will be available soon! For now, you can describe what you'd like to know about this image, and I'll help you with that.`
-    )
-    
+    // Attach file and allow user to add a message
+    setAttachedFile(file)
     setShowUploadMenu(false)
-    toast.success('Image uploaded!')
   }
 
   const handleSendMessage = async () => {
+    // If there's an attached file, process it with the message
+    if (attachedFile) {
+      const userMessage = inputMessage.trim()
+      const fileToUpload = attachedFile
+      
+      // Clear UI immediately
+      setAttachedFile(null)
+      setInputMessage('')
+      if (audioInputRef.current) audioInputRef.current.value = ''
+      if (textInputRef.current) textInputRef.current.value = ''
+      toast.dismiss() // Dismiss all toast notifications
+      
+      await processFileUpload(fileToUpload, userMessage)
+      return
+    }
+
     if (!inputMessage.trim()) return
 
     const userMessage = inputMessage.trim()
@@ -671,8 +927,11 @@ export default function Home() {
       setCorrectAnswers(0)
       setKeyPoints([])
       setCurrentSessionId('')
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
+      if (textInputRef.current) {
+        textInputRef.current.value = ''
+      }
+      if (audioInputRef.current) {
+        audioInputRef.current.value = ''
       }
       addMessage('assistant', 
         "Your previous session has been deleted. Feel free to start a new conversation or upload a file! 📚"
@@ -745,8 +1004,11 @@ export default function Home() {
     setCorrectAnswers(0)
     setKeyPoints([])
     setCurrentSessionId('')
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+    if (textInputRef.current) {
+      textInputRef.current.value = ''
+    }
+    if (audioInputRef.current) {
+      audioInputRef.current.value = ''
     }
     addMessage('assistant', 
       "Welcome back! Upload a new lecture transcript to start a fresh learning session. 📚"
@@ -985,7 +1247,7 @@ export default function Home() {
                               ) : (
                                 <div className="flex items-center gap-1">
                                   {session.pinned && <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
-                                  <p className="text-sm text-gray-900 dark:text-gray-200 break-words">
+                                  <p className="text-sm text-gray-900 dark:text-gray-200 wrap-break-word">
                                     {session.fileName}
                                   </p>
                                 </div>
@@ -1165,10 +1427,17 @@ export default function Home() {
       <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
-            <Card className="min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
+            <Card 
+              className={`min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none relative ${
+                isDragging ? 'ring-2 ring-indigo-500 ring-offset-2' : ''
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
             {/* Hidden file inputs */}
             <input
-              ref={fileInputRef}
+              ref={textInputRef}
               type="file"
               accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={handleFileUpload}
@@ -1176,12 +1445,12 @@ export default function Home() {
               id="file-upload"
             />
             <input
-              ref={imageInputRef}
+              ref={audioInputRef}
               type="file"
-              accept="image/*"
+              accept="audio/*,.mp3,.m4a,.wav,.ogg,.flac,.aac,.wma"
               onChange={handleImageUpload}
               className="hidden"
-              id="image-upload"
+              id="audio-upload"
             />
 
             {/* Chat Messages */}
@@ -1227,11 +1496,11 @@ export default function Home() {
                           <div
                             className={`px-4 py-3 ${
                               message.role === 'user'
-                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] break-all'
+                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] min-w-[200px] overflow-wrap-break-word'
                                 : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
                             }`}
                           >
-                            <p className="whitespace-pre-wrap">{message.content}</p>
+                            <p className="whitespace-pre-wrap overflow-wrap-break-word">{message.content}</p>
                             {message.role === 'assistant' && (
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                                 {message.timestamp instanceof Date 
@@ -1323,6 +1592,28 @@ export default function Home() {
                 </div>
               )}
               
+              {/* Attached file indicator */}
+              {attachedFile && (
+                <div className="max-w-3xl mx-auto mb-2">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg">
+                    {attachedFile.name.match(/\.(mp3|m4a|wav|ogg|flac|aac|wma)$/i) ? (
+                      <Music className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    ) : (
+                      <File className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    )}
+                    <span className="flex-1 text-sm text-indigo-900 dark:text-indigo-100 truncate">{attachedFile.name}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={removeAttachedFile}
+                      className="h-6 w-6 p-0 hover:bg-indigo-100 dark:hover:bg-indigo-900/40"
+                    >
+                      <X className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex gap-2 max-w-3xl mx-auto">
                 {/* Upload button with menu or Lock icon */}
                 <div className="relative" ref={uploadMenuRef}>
@@ -1339,26 +1630,26 @@ export default function Home() {
                   
                   {/* Upload menu */}
                   {showUploadMenu && isAuth && (
-                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
+                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[200px]">
                       <button
                         onClick={() => {
-                          fileInputRef.current?.click()
+                          audioInputRef.current?.click()
                           setShowUploadMenu(false)
                         }}
                         className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
                       >
-                        <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload file</span>
+                        <Music className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload audio transcript</span>
                       </button>
                       <button
                         onClick={() => {
-                          imageInputRef.current?.click()
+                          textInputRef.current?.click()
                           setShowUploadMenu(false)
                         }}
                         className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
                       >
-                        <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload image</span>
+                        <File className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload text transcript</span>
                       </button>
                     </div>
                   )}
