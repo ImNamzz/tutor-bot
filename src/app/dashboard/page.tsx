@@ -1,62 +1,52 @@
-import React from "react";
-import { LectureCard } from "./components/LectureCard";
-import { UploadLectureModal } from "./components/UploadLectureModal";
-import { ToDoSidebar } from "./components/ToDoSidebar";
+"use client";
+import React, { useEffect, useState } from "react";
 import Topbar from "../components/Topbar";
+import { ToDoSidebar } from "./components/ToDoSidebar";
+import { AddClassModal } from "./components/AddClassModal";
+import { ClassCard } from "./components/ClassCard";
+import { ClassItem } from "@/app/lib/types/class";
 
-// Placeholder lecture data
-const lectures = [
-  {
-    title: "Introduction to Algorithms",
-    code: "CS101",
-    description: "Complexity & Big-O",
-    color: "bg-indigo-500",
-  },
-  {
-    title: "Data Structures",
-    code: "CS102",
-    description: "Trees & Graphs overview",
-    color: "bg-emerald-500",
-  },
-  {
-    title: "Discrete Math",
-    code: "MATH210",
-    description: "Logic, sets, and proofs",
-    color: "bg-rose-500",
-  },
-  {
-    title: "Operating Systems",
-    code: "CS220",
-    description: "Processes & Scheduling",
-    color: "bg-amber-500",
-  },
-  {
-    title: "Database Systems",
-    code: "CS330",
-    description: "SQL & normalization",
-    color: "bg-sky-500",
-  },
-  {
-    title: "Computer Networks",
-    code: "CS340",
-    description: "OSI model layers",
-    color: "bg-fuchsia-500",
-  },
-  {
-    title: "Machine Learning",
-    code: "CS450",
-    description: "Intro to supervised models",
-    color: "bg-teal-500",
-  },
-  {
-    title: "Software Engineering",
-    code: "CS460",
-    description: "Design patterns basics",
-    color: "bg-purple-500",
-  },
-];
+const STORAGE_KEY = "eduassist_classes";
 
 export default function DashboardPage() {
+  const [classes, setClasses] = useState<ClassItem[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) setClasses(JSON.parse(raw));
+    } catch (e) {
+      console.error("Failed to load classes", e);
+    }
+  }, []);
+
+  const persist = (next: ClassItem[]) => {
+    setClasses(next);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch (e) {
+      console.error("Failed to save classes", e);
+    }
+  };
+
+  const handleAddClass = (item: ClassItem) => {
+    persist([item, ...classes]);
+  };
+
+  const handleRenameClass = (id: string, newName: string) => {
+    const next = classes.map((c) =>
+      c.id === id ? { ...c, name: newName } : c
+    );
+    persist(next);
+  };
+
+  const handleDeleteClass = (id: string) => {
+    const next = classes.filter((c) => c.id !== id);
+    persist(next);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
       <Topbar />
@@ -66,11 +56,21 @@ export default function DashboardPage() {
           <div className="md:w-[72%] space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-              <UploadLectureModal />
+              <AddClassModal onAdd={handleAddClass} />
             </div>
+            {mounted && classes.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                No classes yet. Create one to get started.
+              </p>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-              {lectures.map((l) => (
-                <LectureCard key={l.title} {...l} />
+              {classes.map((c) => (
+                <ClassCard
+                  key={c.id}
+                  item={c}
+                  onRename={handleRenameClass}
+                  onDelete={handleDeleteClass}
+                />
               ))}
             </div>
           </div>
