@@ -179,15 +179,23 @@ export default function LectureDetailPage() {
 
   if (!classId || !lectureId) return null;
 
+  // --- Derived progress (placeholder): percent actions done ---
+  const progressPct = useMemo(() => {
+    if (!data.actions.length) return 0;
+    const done = data.actions.filter((a) => a.done).length;
+    return Math.round((done / data.actions.length) * 100);
+  }, [data.actions]);
+
   return (
-    <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <div className="text-sm text-muted-foreground">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <div className="space-y-2 flex-1">
+          <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-1">
             <Link href="/dashboard" className="hover:underline">
               Dashboard
             </Link>
-            <span className="mx-1">/</span>
+            <span>/</span>
             {cls ? (
               <Link
                 href={`/dashboard/class/${cls.id}`}
@@ -198,14 +206,18 @@ export default function LectureDetailPage() {
             ) : (
               <span>Class</span>
             )}
-            <span className="mx-1">/</span>
+            <span>/</span>
             <span className="text-foreground">Lecture</span>
           </div>
-          <h1 className="text-2xl font-semibold">
-            {lectureTitle || "Lecture"}
-          </h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {lectureTitle || "Lecture"}
+            </h1>
+            {/* Progress Ring */}
+            <ProgressRing percent={progressPct} label={`${progressPct}%`} />
+          </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <Button variant="outline" onClick={resetAll}>
             Reset
           </Button>
@@ -213,39 +225,54 @@ export default function LectureDetailPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left: Summary (wide) + Action Items under it */}
-        <div className="lg:col-span-2 space-y-6">
-          <Card className="p-4 space-y-3">
+      {/* Main grid */}
+      <div className="grid grid-cols-12 gap-6">
+        {/* Left column (span 8) */}
+        <div className="col-span-12 lg:col-span-8 space-y-6">
+          {/* Summary */}
+          <Card className="p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Summary</h3>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={regenerateSummary}
-                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
-                >
-                  Generate
-                </Button>
-              </div>
+              <h3 className="font-medium text-lg">Summary</h3>
+              <Button
+                size="sm"
+                onClick={regenerateSummary}
+                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
+              >
+                Generate
+              </Button>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {data.summary}
             </p>
           </Card>
 
-          <Card className="p-4 space-y-3">
+          {/* Concept Map */}
+          <Card className="p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Action Items</h3>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={extractActions}
-                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
-                >
-                  Extract
-                </Button>
-              </div>
+              <h3 className="font-medium text-lg">Concept Map</h3>
+            </div>
+            <ConceptMap
+              keywords={[
+                "Perceptron",
+                "MLP",
+                "Activation",
+                "Backprop",
+                "Regularization",
+              ]}
+            />
+          </Card>
+
+          {/* Action Items */}
+          <Card className="p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-lg">Action Items</h3>
+              <Button
+                size="sm"
+                onClick={extractActions}
+                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
+              >
+                Extract
+              </Button>
             </div>
             <div className="space-y-2">
               {data.actions.map((a) => (
@@ -330,9 +357,9 @@ export default function LectureDetailPage() {
           </Card>
 
           {/* Socratic Chat */}
-          <Card className="p-4 space-y-3">
+          <Card className="p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Socratic Chat</h3>
+              <h3 className="font-medium text-lg">Socratic Chat</h3>
             </div>
             <p className="text-sm text-muted-foreground">
               Start an interactive, guided conversation based on this lecture.
@@ -350,48 +377,220 @@ export default function LectureDetailPage() {
           </Card>
         </div>
 
-        {/* Right: Transcript editor (narrow) */}
-        <Card className="p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="font-medium">Transcript</h2>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  Expand
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-3xl">
-                <DialogHeader>
-                  <DialogTitle>Full Transcript</DialogTitle>
-                </DialogHeader>
-                <Textarea
-                  autoFocus
-                  className="min-h-[60vh]"
-                  value={transcriptDraft}
-                  onChange={(e) => setTranscriptDraft(e.target.value)}
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
-          <Textarea
-            className="min-h-[240px]"
-            value={transcriptDraft}
-            onChange={(e) => setTranscriptDraft(e.target.value)}
+        {/* Right column (span 4) */}
+        <div className="col-span-12 lg:col-span-4 space-y-6">
+          {/* Audio Player Card */}
+          <Card className="p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-lg">Audio Player</h3>
+            </div>
+            <AudioPlayer transcript={transcriptDraft} />
+          </Card>
+
+          {/* Transcript */}
+          <Card className="p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-lg">Transcript</h3>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    Expand
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle>Full Transcript</DialogTitle>
+                  </DialogHeader>
+                  <Textarea
+                    autoFocus
+                    className="min-h-[60vh]"
+                    value={transcriptDraft}
+                    onChange={(e) => setTranscriptDraft(e.target.value)}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+            <Textarea
+              className="min-h-[260px]"
+              value={transcriptDraft}
+              onChange={(e) => setTranscriptDraft(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <Button
+                variant="secondary"
+                onClick={() => setTranscriptDraft("")}
+              >
+                Clear
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() =>
+                  setTranscriptDraft(DUMMY_LECTURE_DERIVATIVES.transcript)
+                }
+              >
+                Restore Sample
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      {/* Personal Notes full-width */}
+      <Card className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-medium text-lg">Lecture Notes</h3>
+          <Badge variant="secondary" className="hidden sm:inline">
+            Draft
+          </Badge>
+        </div>
+        <PersonalNotes />
+      </Card>
+    </div>
+  );
+}
+
+// --- Placeholder Components ---
+function ProgressRing({ percent, label }: { percent: number; label?: string }) {
+  const clamped = Math.min(100, Math.max(0, percent));
+  const radius = 22;
+  const stroke = 4;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (clamped / 100) * circumference;
+  return (
+    <div className="relative h-12 w-12">
+      <svg className="h-12 w-12 rotate-[-90deg]" viewBox="0 0 52 52">
+        <circle
+          cx="26"
+          cy="26"
+          r={radius}
+          strokeWidth={stroke}
+          className="stroke-muted fill-none"
+        />
+        <circle
+          cx="26"
+          cy="26"
+          r={radius}
+          strokeWidth={stroke}
+          className="stroke-violet-500 fill-none transition-all duration-300"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center text-[10px] font-medium">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function AudioPlayer({ transcript }: { transcript: string }) {
+  const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-3">
+        <Button
+          size="sm"
+          onClick={() => setPlaying((p) => !p)}
+          className="px-4"
+        >
+          {playing ? "Pause" : "Play"}
+        </Button>
+        <select
+          value={speed}
+          onChange={(e) => setSpeed(Number(e.target.value))}
+          className="text-xs rounded-md border bg-background px-2 py-1"
+        >
+          <option value={1}>1x</option>
+          <option value={1.25}>1.25x</option>
+          <option value={1.5}>1.5x</option>
+          <option value={2}>2x</option>
+        </select>
+      </div>
+      {/* Waveform placeholder */}
+      <div className="h-20 w-full flex items-end gap-1">
+        {Array.from({ length: 64 }).map((_, i) => (
+          <div
+            key={i}
+            className="flex-1 bg-gradient-to-t from-violet-500/40 to-fuchsia-500/70 rounded-sm"
+            style={{
+              height: `${(Math.sin(i * 0.35) * 0.5 + 0.5) * 70 + 10}px`,
+            }}
           />
-          <div className="flex gap-2">
-            <Button variant="secondary" onClick={() => setTranscriptDraft("")}>
-              Clear
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() =>
-                setTranscriptDraft(DUMMY_LECTURE_DERIVATIVES.transcript)
-              }
-            >
-              Restore Sample
-            </Button>
+        ))}
+      </div>
+      <div className="text-xs text-muted-foreground">
+        Placeholder audio waveform • {Math.min(transcript.length, 120)} chars of
+        transcript
+      </div>
+    </div>
+  );
+}
+
+function ConceptMap({ keywords }: { keywords: string[] }) {
+  // Simple radial layout placeholder
+  return (
+    <div className="relative w-full min-h-[200px]">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-xs font-medium">
+          Core
+        </div>
+      </div>
+      {keywords.map((k, i) => {
+        const angle = (i / keywords.length) * Math.PI * 2;
+        const r = 90;
+        const x = Math.cos(angle) * r;
+        const y = Math.sin(angle) * r;
+        return (
+          <div
+            key={k}
+            className="absolute px-2 py-1 rounded-md bg-white shadow-sm text-[11px] border"
+            style={{
+              left: `calc(50% + ${x}px)`,
+              top: `calc(50% + ${y}px)`,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            {k}
           </div>
-        </Card>
+        );
+      })}
+      {/* connecting lines placeholder */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        stroke="rgba(139,92,246,0.4)"
+        fill="none"
+      >
+        {keywords.map((_, i) => {
+          const angle = (i / keywords.length) * Math.PI * 2;
+          const r = 90;
+          const x = 26 + Math.cos(angle) * (r / 2.2);
+          const y = 26 + Math.sin(angle) * (r / 2.2);
+          return <circle key={i} cx={x} cy={y} r={2} />;
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function PersonalNotes() {
+  const [notes, setNotes] = useState("");
+  return (
+    <div className="space-y-3">
+      <Textarea
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        placeholder="Write your personal notes or markdown here..."
+        className="min-h-[220px]"
+      />
+      <div className="flex justify-end gap-2">
+        <Button variant="outline" size="sm" onClick={() => setNotes("")}>
+          Clear
+        </Button>
+        <Button size="sm" disabled>
+          Save (placeholder)
+        </Button>
       </div>
     </div>
   );

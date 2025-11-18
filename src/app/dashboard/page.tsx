@@ -5,12 +5,14 @@ import { ToDoSidebar } from "./components/ToDoSidebar";
 import { AddClassModal } from "./components/AddClassModal";
 import { ClassCard } from "./components/ClassCard";
 import { ClassItem } from "@/app/lib/types/class";
+import { PanelRightOpen, PanelRightClose } from "lucide-react";
 
 const STORAGE_KEY = "eduassist_classes";
 
 export default function DashboardPage() {
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -51,9 +53,9 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
       <Topbar />
       <main className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row md:items-start gap-8">
+        <div className="relative">
           {/* Left main content */}
-          <div className="md:w-[72%] space-y-6">
+          <div className={`space-y-6`}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
               <AddClassModal onAdd={handleAddClass} />
@@ -74,9 +76,49 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-          {/* Right sidebar */}
-          <div className="md:w-[28%]">
-            <ToDoSidebar />
+          {/* Captured Events right rail (zip in/out like Tutor chat) */}
+          <div className="fixed top-24 right-4 z-20 w-[320px] max-w-[80vw]">
+            {/* Expanded panel kept mounted for slide animation */}
+            <div
+              className={`absolute top-0 right-0 w-[320px] max-w-[80vw] rounded-xl border bg-card shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
+                eventsOpen
+                  ? "translate-x-0 opacity-100"
+                  : "translate-x-full opacity-0 pointer-events-none"
+              }`}
+            >
+              <div className="flex items-center justify-between px-3 py-2 border-b">
+                <span className="text-sm font-semibold">Captured Events</span>
+                <button
+                  type="button"
+                  aria-label="Collapse Captured Events"
+                  className="h-8 w-8 rounded-md border bg-white/60 hover:bg-white flex items-center justify-center"
+                  onClick={() => setEventsOpen(false)}
+                >
+                  <PanelRightClose className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="p-3 max-h-[60vh]">
+                <ToDoSidebar hideHeader className="space-y-3" />
+              </div>
+            </div>
+
+            {/* Collapsed rail kept mounted for slide animation */}
+            <div
+              className={`absolute top-0 right-0 w-12 rounded-xl border bg-card shadow-xl flex flex-col items-center p-2 transition-all duration-300 ease-in-out ${
+                eventsOpen
+                  ? "translate-x-full opacity-0 pointer-events-none"
+                  : "translate-x-0 opacity-100"
+              }`}
+            >
+              <button
+                type="button"
+                aria-label="Open Captured Events"
+                className="h-9 w-9 rounded-md border bg-white/60 hover:bg-white flex items-center justify-center"
+                onClick={() => setEventsOpen(true)}
+              >
+                <PanelRightOpen className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </main>

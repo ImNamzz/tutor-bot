@@ -26,6 +26,11 @@ export const ClassCard: React.FC<ClassCardProps> = ({
             alt="class cover"
             className="h-24 w-full object-cover"
           />
+        ) : item.color.startsWith("#") ? (
+          <div
+            className="h-24 w-full"
+            style={{ backgroundColor: item.color }}
+          />
         ) : (
           <div className={`${item.color} h-24 w-full`} />
         )}
@@ -71,18 +76,23 @@ export const ClassCard: React.FC<ClassCardProps> = ({
             </button>
           </div>
         )}
-        <div className="p-4 space-y-2">
-          <h3 className="font-semibold text-sm line-clamp-2 leading-snug">
+        <div className="p-5 flex flex-col">
+          <h3 className="font-semibold text-base leading-tight mb-2 line-clamp-2 min-h-[38px]">
             {item.name}
           </h3>
-          {item.code && (
-            <p className="text-xs text-muted-foreground font-medium">
-              {item.code}
-            </p>
-          )}
-          <p className="text-[11px] text-muted-foreground">
-            {item.lectures.length} lecture(s)
-          </p>
+          <div className="min-h-[20px] mb-2">
+            {item.code ? (
+              <p className="text-sm text-muted-foreground font-medium leading-none">
+                {item.code}
+              </p>
+            ) : null}
+          </div>
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-2">
+            <span>Created {new Date(item.createdAt).toLocaleDateString()}</span>
+            <span>{item.lectures.length} lecture(s)</span>
+          </div>
+          {/* Footer bar for subtle separation */}
+          <div className="mt-auto h-1 rounded bg-muted/40" />
         </div>
       </div>
     </Link>

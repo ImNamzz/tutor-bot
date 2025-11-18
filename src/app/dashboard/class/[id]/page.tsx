@@ -162,9 +162,16 @@ export default function ClassDetailPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="space-y-1">
               <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-                <span
-                  className={`inline-block h-6 w-6 rounded-md ${cls.color}`}
-                />
+                {cls.color.startsWith("#") ? (
+                  <span
+                    className="inline-block h-6 w-6 rounded-md"
+                    style={{ backgroundColor: cls.color }}
+                  />
+                ) : (
+                  <span
+                    className={`inline-block h-6 w-6 rounded-md ${cls.color}`}
+                  />
+                )}
                 {cls.name}
               </h1>
               {cls.code && (
@@ -172,6 +179,9 @@ export default function ClassDetailPage() {
               )}
               <p className="text-xs text-muted-foreground">
                 {cls.lectures.length} lecture(s)
+              </p>
+              <p className="text-[10px] text-muted-foreground">
+                Created {new Date(cls.createdAt).toLocaleString()}
               </p>
             </div>
             <Dialog open={openLectureModal} onOpenChange={setOpenLectureModal}>

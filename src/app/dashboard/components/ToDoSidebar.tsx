@@ -1,11 +1,23 @@
 import React from "react";
 
-export const ToDoSidebar: React.FC = () => {
+type Props = {
+  hideHeader?: boolean;
+  className?: string;
+};
+
+export const ToDoSidebar: React.FC<Props> = ({
+  hideHeader = false,
+  className,
+}) => {
   // Placeholder list items; integrate with real todo data later.
   const items: string[] = [];
   return (
-    <aside className="sticky top-4 space-y-4">
-      <h2 className="text-lg font-semibold tracking-tight">Captured Events</h2>
+    <aside className={("space-y-4 " + (className || "")).trim()}>
+      {!hideHeader && (
+        <h2 className="text-lg font-semibold tracking-tight">
+          Captured Events
+        </h2>
+      )}
       {items.length === 0 ? (
         <p className="text-sm text-muted-foreground">No items yet</p>
       ) : (

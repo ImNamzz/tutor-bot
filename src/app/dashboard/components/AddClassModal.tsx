@@ -10,7 +10,7 @@ import {
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { CLASS_COLORS, ClassItem, generateId } from "@/app/lib/types/class";
-import { ScrollArea } from "@/app/components/ui/scroll-area";
+import ColorPicker from "@/app/components/ColorPicker";
 
 interface AddClassModalProps {
   onAdd: (item: ClassItem) => void;
@@ -108,38 +108,34 @@ export const AddClassModal: React.FC<AddClassModalProps> = ({ onAdd }) => {
   const isValidHex = (v: string) =>
     /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(v);
 
-  // Recent colors persistence
-  const RECENTS_KEY = "eduassist_recent_colors";
-  const loadRecents = () => {
+  // Recent colors are derived from existing classes in storage (max 5)
+  const CLASSES_KEY = "eduassist_classes";
+  const loadRecentFromClasses = (): string[] => {
     try {
-      const raw = localStorage.getItem(RECENTS_KEY);
-      if (!raw) return [] as string[];
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? (arr as string[]) : [];
+      const raw = localStorage.getItem(CLASSES_KEY);
+      if (!raw) return [];
+      const arr = JSON.parse(raw) as ClassItem[];
+      const seen = new Set<string>();
+      const list: string[] = [];
+      for (const c of arr) {
+        const col = c.color;
+        if (!col) continue;
+        const key = col.startsWith("#") ? col.toLowerCase() : col;
+        if (!seen.has(key)) {
+          seen.add(key);
+          list.push(col);
+        }
+        if (list.length >= 5) break;
+      }
+      return list;
     } catch {
-      return [] as string[];
+      return [];
     }
-  };
-  const saveRecents = (list: string[]) => {
-    try {
-      localStorage.setItem(RECENTS_KEY, JSON.stringify(list));
-    } catch {}
-  };
-  const addRecent = (hex: string) => {
-    if (!isValidHex(hex)) return;
-    setRecentColors((prev) => {
-      const next = [
-        hex,
-        ...prev.filter((c) => c.toLowerCase() !== hex.toLowerCase()),
-      ].slice(0, 10);
-      saveRecents(next);
-      return next;
-    });
   };
 
   useEffect(() => {
     if (colorDialog) {
-      setRecentColors(loadRecents());
+      setRecentColors(loadRecentFromClasses());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colorDialog]);
@@ -164,224 +160,146 @@ export const AddClassModal: React.FC<AddClassModalProps> = ({ onAdd }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" className="font-medium">
-          Add Class
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create a Class</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4 py-2">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Class Name</label>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Data Structures"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Code (optional)</label>
-            <Input
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="e.g. CS102"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Background</label>
-            {/* Preview + actions */}
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-20 rounded-md border border-border overflow-hidden">
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="default">Add Class</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Add Class</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid gap-2">
+              <label className="text-sm font-medium">Name</label>
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Linear Algebra"
+              />
+            </div>
+            <div className="grid gap-2">
+              <label className="text-sm font-medium">Code (optional)</label>
+              <Input
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="e.g. MATH-201"
+              />
+            </div>
+            <div className="grid gap-2">
+              <label className="text-sm font-medium">Background</label>
+              <div className="flex items-center gap-4">
+                {/* Preview */}
                 {bgImage ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={bgImage}
                     alt="preview"
-                    className="h-full w-full object-cover"
+                    className="h-12 w-20 rounded-md object-cover border"
                   />
                 ) : (
                   <div
-                    className="h-full w-full"
+                    className={`h-12 w-20 rounded-md border ${
+                      colorValue.startsWith("#") ? "" : colorValue
+                    }`}
                     style={
                       colorValue.startsWith("#")
                         ? { backgroundColor: colorValue }
                         : undefined
                     }
-                  >
-                    {!colorValue.startsWith("#") && (
-                      <div className={`${colorValue} h-full w-full`} />
-                    )}
-                  </div>
+                  />
                 )}
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setColorDialog(true)}
+                  >
+                    Change Color
+                  </Button>
+                  <input
+                    id="class-image-input"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) onPickImage(file);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      document.getElementById("class-image-input")?.click()
+                    }
+                  >
+                    Upload Image
+                  </Button>
+                  {bgImage && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="text-red-600"
+                      onClick={() => setBgImage(undefined)}
+                    >
+                      Remove Image
+                    </Button>
+                  )}
+                </div>
               </div>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setColorDialog(true)}
-              >
-                Change
-              </Button>
-              {bgImage ? (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setBgImage(undefined)}
-                >
-                  Remove Image
-                </Button>
-              ) : null}
             </div>
-            <div className="flex items-center gap-3 pt-2">
-              <label className="text-sm">Or upload an image</label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) onPickImage(f);
-                }}
-              />
+            <div className="flex justify-end">
+              <Button onClick={handleCreate} disabled={!name.trim()}>
+                Create
+              </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
 
-          {/* Color picker dialog */}
-          <Dialog open={colorDialog} onOpenChange={setColorDialog}>
-            <DialogContent className="w-[80vw] sm:w-[80vw] max-w-[80vw] sm:max-w-[80vw] lg:max-w-[80vw]">
-              <DialogHeader>
-                <DialogTitle>Select a color</DialogTitle>
-              </DialogHeader>
-              {recentColors.length > 0 && (
-                <div className="mb-2">
-                  <div className="text-xs text-muted-foreground mb-2">
-                    Recent
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    {recentColors.map((hex) => (
-                      <button
-                        key={hex}
-                        type="button"
-                        className="flex items-center gap-2"
-                        onClick={() => {
-                          setColorValue(hex);
-                          setColorDialog(false);
-                        }}
-                        title={hex}
-                      >
-                        <span
-                          className="h-8 w-8 rounded-full border"
-                          style={{ backgroundColor: hex }}
-                        />
-                        <span className="text-[11px] text-muted-foreground">
-                          {hex}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <ScrollArea className="h-[60vh] pr-2">
-                <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-14 xl:grid-cols-16 gap-4">
-                  {EXTENDED_COLORS.map((c) => (
+      {/* Color picker dialog */}
+      <Dialog open={colorDialog} onOpenChange={setColorDialog}>
+        <DialogContent className="w-[90vw] max-w-[520px]">
+          <DialogHeader>
+            <DialogTitle>Select a color</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-4">
+            <ColorPicker
+              value={colorValue.startsWith("#") ? colorValue : "#ffffff"}
+              onColorSelect={(hex) => {
+                setColorValue(hex);
+              }}
+            />
+            {recentColors.length > 0 && (
+              <div>
+                <div className="text-xs text-muted-foreground mb-2">Recent</div>
+                <div className="flex flex-wrap gap-2">
+                  {recentColors.map((col) => (
                     <button
-                      key={c.hex}
+                      key={col}
                       type="button"
-                      className="flex flex-col items-center gap-2"
-                      onClick={() => {
-                        setColorValue(c.hex);
-                        addRecent(c.hex);
-                        setColorDialog(false);
-                      }}
-                    >
-                      <span
-                        className="block h-10 w-10 rounded-full border"
-                        style={{ backgroundColor: c.hex }}
-                        aria-label={c.name}
-                        title={`${c.name} (${c.hex})`}
-                      />
-                      <span className="text-[10px] text-muted-foreground text-center leading-tight">
-                        {c.name}
-                      </span>
-                    </button>
+                      className={`${
+                        col.startsWith("#") ? "" : col
+                      } h-6 w-6 rounded-full border`}
+                      style={
+                        col.startsWith("#")
+                          ? { backgroundColor: col }
+                          : undefined
+                      }
+                      title={col}
+                      onClick={() => setColorValue(col)}
+                    />
                   ))}
-                  {/* Custom Color tile */}
-                  <div className="flex flex-col items-center gap-2">
-                    <span
-                      className="block h-10 w-10 rounded-full border"
-                      style={{
-                        backgroundColor: isValidHex(customHex)
-                          ? customHex
-                          : "transparent",
-                      }}
-                      title={isValidHex(customHex) ? customHex : "Custom"}
-                    />
-                    <span className="text-[10px] text-muted-foreground leading-tight">
-                      Custom
-                    </span>
-                    <Input
-                      value={customHex}
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        setCustomHex(v);
-                        if (isValidHex(v)) {
-                          setColorValue(v);
-                          addRecent(v);
-                        }
-                      }}
-                      placeholder="#RRGGBB"
-                      className="h-8 w-24 text-xs"
-                    />
-                    <div className="flex gap-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-7 px-2 text-xs"
-                        onClick={async () => {
-                          const v = isValidHex(customHex)
-                            ? customHex
-                            : colorValue;
-                          try {
-                            await navigator.clipboard.writeText(v);
-                          } catch {}
-                        }}
-                      >
-                        Copy
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-7 px-2 text-xs"
-                        onClick={async () => {
-                          try {
-                            const v = await navigator.clipboard.readText();
-                            if (isValidHex(v)) {
-                              setCustomHex(v);
-                              setColorValue(v);
-                              addRecent(v);
-                            }
-                          } catch {}
-                        }}
-                      >
-                        Paste
-                      </Button>
-                    </div>
-                  </div>
                 </div>
-              </ScrollArea>
-            </DialogContent>
-          </Dialog>
-          <Button
-            onClick={handleCreate}
-            disabled={!name.trim()}
-            className="w-full"
-          >
-            Create
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+              </div>
+            )}
+            <div className="flex justify-end">
+              <Button onClick={() => setColorDialog(false)}>Done</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
