@@ -11,6 +11,7 @@ export interface ClassItem {
   name: string;
   code?: string;
   color: string; // tailwind bg color class
+  bgImage?: string; // optional data URL for background image
   lectures: Lecture[];
   createdAt: string;
 }

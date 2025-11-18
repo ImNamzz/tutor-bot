@@ -19,7 +19,16 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   return (
     <Link href={`/dashboard/class/${item.id}`} className="group">
       <div className="group relative rounded-xl shadow-sm border border-border/50 overflow-hidden bg-card hover:ring-2 ring-indigo-400 transition">
-        <div className={`${item.color} h-24 w-full`} />
+        {item.bgImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.bgImage}
+            alt="class cover"
+            className="h-24 w-full object-cover"
+          />
+        ) : (
+          <div className={`${item.color} h-24 w-full`} />
+        )}
         <button
           className="absolute top-2 right-2 p-1 rounded-md bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition"
           aria-label="Class actions"
