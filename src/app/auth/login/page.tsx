@@ -13,25 +13,28 @@ import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [needsVerification, setNeedsVerification] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setNeedsVerification(false);
+    setLoginError("");
 
     try {
       const response = await fetch(API_ENDPOINTS.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email_or_username: emailOrUsername, password }),
       });
 
       const data = await response.json();
+      console.log("Login response:", { status: response.status, data });
 
       if (response.ok) {
         // Success - store token and redirect
@@ -40,17 +43,23 @@ export default function LoginPage() {
         router.push("/");
       } else if (response.status === 401) {
         // Check if email not verified
+        console.log("401 error, needs_verification:", data.needs_verification);
         if (data.needs_verification) {
           setNeedsVerification(true);
           toast.error("Email not verified. Please check your email.");
         } else {
+          console.log("Setting login error for invalid credentials");
+          setLoginError("Invalid email or password. Please try again.");
           toast.error(data.detail || "Invalid email or password.");
         }
       } else {
+        console.log("Other error status:", response.status);
+        setLoginError("Login failed. Please try again.");
         toast.error(data.detail || "Login failed. Please try again.");
       }
     } catch (error) {
       console.error("Login error:", error);
+      setLoginError("Network error. Please check if the server is running.");
       toast.error("Network error. Please check if the server is running.");
     } finally {
       setIsLoading(false);
@@ -63,7 +72,7 @@ export default function LoginPage() {
       const response = await fetch(API_ENDPOINTS.resendVerification, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: emailOrUsername }),
       });
 
       if (response.ok) {
@@ -116,14 +125,14 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <Label htmlFor="email" className="dark:text-gray-200">
-              Email
+              Email or Username
             </Label>
             <Input
               id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="you@example.com or username"
+              value={emailOrUsername}
+              onChange={(e) => setEmailOrUsername(e.target.value)}
               required
               disabled={isLoading}
               className="mt-1"
@@ -159,6 +168,15 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+
+          {/* Login Error Message */}
+          {loginError && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+              <p className="text-sm text-red-600 dark:text-red-400 text-center">
+                {loginError}
+              </p>
+            </div>
+          )}
 
           {/* Resend Verification Button */}
           {needsVerification && (

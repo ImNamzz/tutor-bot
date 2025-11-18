@@ -1227,7 +1227,7 @@ export default function Home() {
         </div>
 
         {/* New Chat Button */}
-        <div className="p-3 border-b border-gray-200 dark:border-gray-800 shrink-0">
+        <div className="p-3 shrink-0">
           <Button
             onClick={handleReset}
             className={`w-full justify-start gap-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 ${

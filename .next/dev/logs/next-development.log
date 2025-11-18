@@ -1,43 +1,29 @@
-[00:00:15.023] Server  LOG      ✓ Ready in 10.4s
-[00:00:28.343] Server  LOG      ○ Compiling / ...
-[00:00:35.631] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:51.321] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:51.441] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-%s%s https://react.dev/link/hydration-mismatch 
-
-  ...
-    <RenderFromTemplateContext>
-      <ScrollAndFocusHandler segmentPath={[...]}>
-        <InnerScrollAndFocusHandler segmentPath={[...]} focusAndScrollRef={{apply:false, ...}}>
-          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
-            <LoadingBoundary name="auth-callb..." loading={null}>
-              <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
-                <RedirectBoundary>
-                  <RedirectErrorBoundary router={{...}}>
-                    <InnerLayoutRouter url="/auth-call..." tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} ...>
-                      <SegmentViewNode type="page" pagePath="/OneDrive/...">
-                        <SegmentTrieNode>
-                        <ClientPageRoot Component={function AuthCallbackPage} serverProvidedParams={{...}}>
-                          <AuthCallbackPage params={Promise} searchParams={Promise}>
-                            <div
-                              className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 ..."
-                              style={{
-+                               background: "linear-gradient(to bottom right, rgb(17, 24, 39), rgb(31, 41, 55))"
-                              }}
-                            >
-                      ...
-                    ...
-          ...
-
-[00:01:37.023] Server  LOG      ✓ Compiled in 187ms
-[00:01:52.160] Server  LOG      ✓ Compiled in 230ms
-[00:02:39.198] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:03.246] Server  LOG      ✓ Ready in 2.3s
+[00:05:29.854] Server  LOG      ○ Compiling / ...
+[00:05:33.020] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:57.269] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:01.451] Server  LOG      ✓ Compiled in 336ms
+[00:07:26.998] Server  LOG      ✓ Compiled in 188ms
+[00:07:37.068] Server  LOG      ✓ Compiled in 163ms
+[00:07:46.734] Server  LOG      ✓ Compiled in 170ms
+[00:08:54.289] Server  LOG      ✓ Compiled in 90ms
+[00:09:41.837] Server  LOG      ✓ Compiled in 259ms
+[00:14:23.326] Server  LOG      ✓ Compiled in 178ms
+[00:18:13.093] Server  LOG      ✓ Compiled in 163ms
+[00:18:51.045] Server  LOG      ✓ Compiled in 97ms
+[00:19:23.286] Server  LOG      ✓ Compiled in 166ms
+[00:19:36.685] Server  LOG      ✓ Compiled in 234ms
+[00:19:46.350] Server  LOG      ✓ Compiled in 163ms
+[00:24:30.600] Server  LOG      ✓ Compiled in 191ms
+[00:25:30.044] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:26:27.835] Server  LOG      ✓ Compiled in 103ms
+[00:27:51.106] Browser LOG     Login response: {"data":{"detail":"Invalid email or password."},"status":401}
+[00:27:51.106] Browser LOG     401 error, needs_verification: undefined
+[00:27:51.106] Browser LOG     Setting login error for invalid credentials
+[00:35:08.264] Server  LOG      ✓ Compiled in 188ms
+[00:35:40.447] Browser LOG     Login response: {"data":{"detail":"Invalid email or password."},"status":401}
+[00:35:40.447] Browser LOG     401 error, needs_verification: undefined
+[00:35:40.447] Browser LOG     Setting login error for invalid credentials
+[00:37:52.128] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:37:54.796] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:37:54.796] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.

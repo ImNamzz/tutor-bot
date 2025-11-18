@@ -91,9 +91,13 @@ def login():
     db = SessionLocal()
     try:
         data = request.json
-        email = data['email']
+        email_or_username = data.get('email_or_username') or data.get('email')  # Support both keys
         password = data['password']
-        user = db.query(UserModel).filter_by(email=email).first()
+        
+        # Try to find user by email or username
+        user = db.query(UserModel).filter(
+            (UserModel.email == email_or_username) | (UserModel.username == email_or_username)
+        ).first()
         
         if user and user.hashed_password and bcrypt.check_password_hash(user.hashed_password, password):
             
