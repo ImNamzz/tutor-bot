@@ -82,17 +82,8 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = () => {
-    // For demo purposes - you would integrate with Google OAuth here
-    toast.info("Google Sign-In coming soon! Please use email/password for now.");
-    
-    // In production, you would:
-    // 1. Redirect to Google OAuth URL or open popup
-    // 2. Get authorization code
-    // 3. Exchange for tokens
-    // 4. Send to backend for verification and account creation/login
-    // Example:
-    // const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=YOUR_CLIENT_ID&redirect_uri=${encodeURIComponent(window.location.origin + '/auth/callback')}&response_type=code&scope=email profile`;
-    // window.location.href = googleAuthUrl;
+    // Redirect to backend Google OAuth endpoint
+    window.location.href = API_ENDPOINTS.googleLogin;
   };
 
   return (
@@ -228,7 +219,7 @@ export default function LoginPage() {
         <Button
           type="button"
           variant="outline"
-          className="w-full"
+          className="w-full transition-transform hover:scale-105 duration-200"
           onClick={handleGoogleSignIn}
           disabled={isLoading}
         >

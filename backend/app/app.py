@@ -130,6 +130,7 @@ def google_callback():
         google_id = user_info.get('sub')
         email = user_info.get('email')
         full_name = user_info.get('name', 'User')
+        is_new_user = False
         user = db.query(UserModel).filter_by(google_id=google_id).first()
         if user:
             pass 
@@ -155,14 +156,19 @@ def google_callback():
                     hashed_password=None 
                 )
                 db.add(new_user)
-                user = new_user 
+                user = new_user
+                is_new_user = True
         
         db.commit()
         db.refresh(user)
         
         access_token = create_access_token(identity=user.id)
         frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
-        return app.redirect(f"{frontend_url}/auth-callback?token={access_token}")
+        
+        if is_new_user:
+            return app.redirect(f"{frontend_url}/auth-callback?token={access_token}&setup=true")
+        else:
+            return app.redirect(f"{frontend_url}/auth-callback?token={access_token}")
 
     except Exception as e:
         db.rollback()
@@ -240,14 +246,21 @@ def update_password():
     db = SessionLocal()
     try:
         user = db.query(UserModel).filter_by(id=current_user_id).first()
-        if not user or not user.hashed_password:
-            return jsonify({"detail": "User not found or cannot change password."}), 404
+        if not user:
+            return jsonify({"detail": "User not found."}), 404
 
+        # If user has no password (Google OAuth user), allow setting initial password
+        if not user.hashed_password:
+            new_hashed_password = bcrypt.generate_password_hash(passwords.new_password).decode('utf-8')
+            user.hashed_password = new_hashed_password
+            db.commit()
+            return jsonify({"message": "Password set successfully."}), 200
         
+        # If user has password, verify old password
         if not bcrypt.check_password_hash(user.hashed_password, passwords.old_password):
             return jsonify({"detail": "Old password incorrect."}), 401
         
-        
+        # Update to new password
         new_hashed_password = bcrypt.generate_password_hash(passwords.new_password).decode('utf-8')
         user.hashed_password = new_hashed_password
         db.commit()
@@ -659,7 +672,7 @@ def start_chat_from_lecture(lecture_id):
 def get_user_profile():
     db = SessionLocal()
     try:
-        current_user_id = int(get_jwt_identity())
+        current_user_id = get_jwt_identity()
         user = db.query(UserModel).filter_by(id=current_user_id).first()
         
         if not user:
@@ -667,7 +680,8 @@ def get_user_profile():
         
         return jsonify({
             "username": user.username,
-            "email": user.email
+            "email": user.email,
+            "has_password": user.hashed_password is not None
         }), 200
     
     except Exception as e:
@@ -680,7 +694,7 @@ def get_user_profile():
 def update_user_profile():
     db = SessionLocal()
     try:
-        current_user_id = int(get_jwt_identity())
+        current_user_id = get_jwt_identity()
         user = db.query(UserModel).filter_by(id=current_user_id).first()
         
         if not user:

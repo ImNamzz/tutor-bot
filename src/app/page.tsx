@@ -79,7 +79,8 @@ export default function Home() {
     email: '',
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    hasPassword: true
   })
   
   const audioInputRef = useRef<HTMLInputElement>(null)
@@ -125,7 +126,8 @@ export default function Home() {
             setSettingsData(prev => ({
               ...prev,
               username: data.username,
-              email: data.email
+              email: data.email,
+              hasPassword: data.has_password
             }))
           }
         } catch (error) {
@@ -1435,6 +1437,25 @@ export default function Home() {
                       <DialogTitle className="text-xl font-semibold">Account Settings</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-6 py-4">
+                      {/* Google Account Notice */}
+                      {!settingsData.hasPassword && (
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <div className="text-blue-600 dark:text-blue-400 mt-0.5">
+                              ℹ️
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                                Complete Your Profile
+                              </h4>
+                              <p className="text-sm text-blue-800 dark:text-blue-200">
+                                You signed in with Google. Set a password to enable email/password login as a backup.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
                       {/* Username */}
                       <div className="space-y-2">
                         <Label htmlFor="username" className="text-sm font-medium">
@@ -1469,22 +1490,26 @@ export default function Home() {
 
                       {/* Password Section */}
                       <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                        <h3 className="text-sm font-semibold mb-4">Change Password</h3>
+                        <h3 className="text-sm font-semibold mb-4">
+                          {settingsData.hasPassword ? 'Change Password' : 'Set Password'}
+                        </h3>
                         
-                        {/* Current Password */}
-                        <div className="space-y-2 mb-4">
-                          <Label htmlFor="currentPassword" className="text-sm font-medium">
-                            Current Password
-                          </Label>
-                          <Input
-                            id="currentPassword"
-                            type="password"
-                            placeholder="Enter current password"
-                            value={settingsData.currentPassword}
-                            onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
-                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                          />
-                        </div>
+                        {/* Current Password - only show if user has password */}
+                        {settingsData.hasPassword && (
+                          <div className="space-y-2 mb-4">
+                            <Label htmlFor="currentPassword" className="text-sm font-medium">
+                              Current Password
+                            </Label>
+                            <Input
+                              id="currentPassword"
+                              type="password"
+                              placeholder="Enter current password"
+                              value={settingsData.currentPassword}
+                              onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
+                              className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                            />
+                          </div>
+                        )}
 
                         {/* New Password */}
                         <div className="space-y-2 mb-4">
@@ -1514,7 +1539,11 @@ export default function Home() {
                             onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
                             className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
                           />
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Leave blank to keep current password</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {settingsData.hasPassword 
+                              ? 'Leave blank to keep current password' 
+                              : 'Set a password to enable email/password login'}
+                          </p>
                         </div>
                       </div>
 
@@ -1524,13 +1553,13 @@ export default function Home() {
                           variant="outline"
                           onClick={() => {
                             setIsSettingsOpen(false)
-                            setSettingsData({
-                              username: '',
-                              email: '',
+                            // Only reset password fields, keep username and email
+                            setSettingsData(prev => ({
+                              ...prev,
                               currentPassword: '',
                               newPassword: '',
                               confirmPassword: ''
-                            })
+                            }))
                           }}
                           className="border-gray-300 dark:border-gray-700"
                         >
@@ -1540,7 +1569,8 @@ export default function Home() {
                           onClick={async () => {
                             // Validate password fields if user wants to change password
                             if (settingsData.newPassword || settingsData.confirmPassword || settingsData.currentPassword) {
-                              if (!settingsData.currentPassword) {
+                              // If user has a password, require current password
+                              if (settingsData.hasPassword && !settingsData.currentPassword) {
                                 toast.error('Please enter your current password to change it')
                                 return
                               }
@@ -1564,8 +1594,9 @@ export default function Home() {
                               // Only include fields that should be updated
                               if (settingsData.username) updateData.username = settingsData.username
                               if (settingsData.email) updateData.email = settingsData.email
-                              if (settingsData.currentPassword && settingsData.newPassword) {
-                                updateData.current_password = settingsData.currentPassword
+                              if (settingsData.newPassword) {
+                                // For Google users without password, old_password can be empty
+                                updateData.current_password = settingsData.currentPassword || ''
                                 updateData.new_password = settingsData.newPassword
                               }
 
@@ -1592,11 +1623,12 @@ export default function Home() {
                               toast.success('Profile updated successfully!')
                               setIsSettingsOpen(false)
                               setSettingsData({
-                                username: data.username,
-                                email: data.email,
+                                username: data.username || settingsData.username,
+                                email: data.email || settingsData.email,
                                 currentPassword: '',
                                 newPassword: '',
-                                confirmPassword: ''
+                                confirmPassword: '',
+                                hasPassword: settingsData.hasPassword || (settingsData.newPassword ? true : settingsData.hasPassword)
                               })
                             } catch (error) {
                               console.error('Error updating profile:', error)
