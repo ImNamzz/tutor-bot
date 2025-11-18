@@ -19,7 +19,6 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -51,9 +50,9 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.status === 201) {
-        // Success
-        setRegistrationSuccess(true);
-        toast.success("Registration successful! Please check your email.");
+        // Success - redirect to login
+        toast.success("Registration successful! You can now log in.");
+        router.push("/auth/login");
       } else if (response.status === 400) {
         // Email or username already exists
         toast.error(data.detail || "Email or username already taken.");
@@ -72,33 +71,6 @@ export default function RegisterPage() {
     // Redirect to backend Google OAuth endpoint
     window.location.href = API_ENDPOINTS.googleLogin;
   };
-
-  // Show success screen after registration
-  if (registrationSuccess) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
-        <Card className="w-full max-w-md p-8 dark:bg-gray-900 dark:border-gray-800 text-center">
-          <div className="flex justify-center mb-4">
-            <CheckCircle className="h-16 w-16 text-green-500" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Check Your Email
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            We've sent a verification link to <strong>{email}</strong>.
-            <br />
-            Please check your inbox and click the link to verify your account.
-          </p>
-          <Button
-            onClick={() => router.push("/auth/login")}
-            className="w-full"
-          >
-            Go to Login
-          </Button>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-8">

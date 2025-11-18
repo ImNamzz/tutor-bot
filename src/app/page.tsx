@@ -75,13 +75,18 @@ export default function Home() {
   const [attachedFile, setAttachedFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [settingsTab, setSettingsTab] = useState<'customization' | 'security'>('customization')
+  const [isChangingEmail, setIsChangingEmail] = useState(false)
+  const [tempTheme, setTempTheme] = useState<boolean>(false) // Temporary theme state for preview
   const [settingsData, setSettingsData] = useState({
     username: '',
     email: '',
+    newEmail: '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    hasPassword: true
+    hasPassword: true,
+    isGoogleAccount: false
   })
   
   const audioInputRef = useRef<HTMLInputElement>(null)
@@ -128,8 +133,13 @@ export default function Home() {
               ...prev,
               username: data.username,
               email: data.email,
-              hasPassword: data.has_password
+              newEmail: '',
+              hasPassword: data.has_password,
+              isGoogleAccount: !data.has_password
             }))
+            setIsChangingEmail(false)
+            setSettingsTab('customization')
+            setTempTheme(isDarkMode) // Initialize temp theme with current theme
           }
         } catch (error) {
           console.error('Error fetching user profile:', error)
@@ -1433,231 +1443,395 @@ export default function Home() {
                       <Settings className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
+                  <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-hidden bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
                     <DialogHeader>
                       <DialogTitle className="text-xl font-semibold">Account Settings</DialogTitle>
                     </DialogHeader>
-                    <div className="space-y-6 py-4">
-                      {/* Google Account Notice */}
-                      {!settingsData.hasPassword && (
-                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                          <div className="flex items-start gap-3">
-                            <div className="text-blue-600 dark:text-blue-400 mt-0.5">
-                              ℹ️
-                            </div>
+                    
+                    <div className="flex h-[500px]">
+                      {/* Left Sidebar - Tabs */}
+                      <div className="w-48 border-r border-gray-200 dark:border-gray-700 pr-4">
+                        <nav className="space-y-1">
+                          <button
+                            onClick={() => setSettingsTab('customization')}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              settingsTab === 'customization'
+                                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                            }`}
+                          >
+                            Customization
+                          </button>
+                          <button
+                            onClick={() => setSettingsTab('security')}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              settingsTab === 'security'
+                                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                            }`}
+                          >
+                            Security
+                          </button>
+                        </nav>
+                      </div>
+
+                      {/* Right Content Area */}
+                      <div className="flex-1 pl-6 pr-5 overflow-y-auto">
+                        {settingsTab === 'customization' && (
+                          <div className="space-y-6">
                             <div>
-                              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
-                                Complete Your Profile
-                              </h4>
-                              <p className="text-sm text-blue-800 dark:text-blue-200">
-                                You signed in with Google. Set a password to enable email/password login as a backup.
-                              </p>
+                              <h3 className="text-lg font-semibold mb-4">Customization</h3>
+                              
+                              {/* Username */}
+                              <div className="space-y-2 mb-6">
+                                <Label htmlFor="username" className="text-sm font-medium">
+                                  Username
+                                </Label>
+                                <Input
+                                  id="username"
+                                  type="text"
+                                  placeholder="Enter username"
+                                  value={settingsData.username}
+                                  onChange={(e) => setSettingsData({...settingsData, username: e.target.value})}
+                                  className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                                />
+                              </div>
+
+                              {/* Theme Toggle */}
+                              <div className="space-y-2">
+                                <Label className="text-sm font-medium">
+                                  Appearance
+                                </Label>
+                                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#212121] rounded-lg border border-gray-300 dark:border-gray-700">
+                                  <span className="text-sm">Dark Mode</span>
+                                  <button
+                                    onClick={() => setTempTheme(!tempTheme)}
+                                    className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    style={{
+                                      backgroundColor: tempTheme ? '#6366f1' : '#d1d5db'
+                                    }}
+                                  >
+                                    <span
+                                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                        tempTheme ? 'translate-x-6' : 'translate-x-1'
+                                      }`}
+                                    />
+                                  </button>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Username */}
-                      <div className="space-y-2">
-                        <Label htmlFor="username" className="text-sm font-medium">
-                          Username
-                        </Label>
-                        <Input
-                          id="username"
-                          type="text"
-                          placeholder="Enter new username"
-                          value={settingsData.username}
-                          onChange={(e) => setSettingsData({...settingsData, username: e.target.value})}
-                          className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                        />
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Leave unchanged to keep current username</p>
-                      </div>
 
-                      {/* Email */}
-                      <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium">
-                          Email
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="Enter new email"
-                          value={settingsData.email}
-                          onChange={(e) => setSettingsData({...settingsData, email: e.target.value})}
-                          className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                        />
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Leave unchanged to keep current email</p>
-                      </div>
+                            {/* Save Button */}
+                            <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                              <Button
+                                variant="outline"
+                                onClick={() => {
+                                  setIsSettingsOpen(false)
+                                  setTempTheme(isDarkMode) // Reset temp theme on cancel
+                                }}
+                                className="border-gray-300 dark:border-gray-700"
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                onClick={async () => {
+                                  try {
+                                    // Apply theme change
+                                    if (tempTheme !== isDarkMode) {
+                                      setIsDarkMode(tempTheme)
+                                      localStorage.setItem('theme', tempTheme ? 'dark' : 'light')
+                                      if (tempTheme) {
+                                        document.documentElement.classList.add('dark')
+                                      } else {
+                                        document.documentElement.classList.remove('dark')
+                                      }
+                                    }
+                                    const updateData: any = {}
+                                    if (settingsData.username) updateData.username = settingsData.username
 
-                      {/* Password Section */}
-                      <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                        <h3 className="text-sm font-semibold mb-4">
-                          {settingsData.hasPassword ? 'Change Password' : 'Set Password'}
-                        </h3>
-                        
-                        {/* Current Password - only show if user has password */}
-                        {settingsData.hasPassword && (
-                          <div className="space-y-2 mb-4">
-                            <Label htmlFor="currentPassword" className="text-sm font-medium">
-                              Current Password
-                            </Label>
-                            <Input
-                              id="currentPassword"
-                              type="password"
-                              placeholder="Enter current password"
-                              value={settingsData.currentPassword}
-                              onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
-                              className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                            />
+                                    const response = await fetch(API_ENDPOINTS.updateUserProfile, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${getAccessToken()}`
+                                      },
+                                      body: JSON.stringify(updateData)
+                                    })
+
+                                    const data = await response.json()
+
+                                    if (!response.ok) {
+                                      if (response.status === 401) {
+                                        handleAuthError(401)
+                                        return
+                                      }
+                                      toast.error(data.detail || 'Failed to update profile')
+                                      return
+                                    }
+
+                                    toast.success('Profile updated successfully!')
+                                    setIsSettingsOpen(false)
+                                  } catch (error) {
+                                    console.error('Error updating profile:', error)
+                                    toast.error('Failed to update profile')
+                                  }
+                                }}
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                              >
+                                Save Changes
+                              </Button>
+                            </div>
                           </div>
                         )}
 
-                        {/* New Password */}
-                        <div className="space-y-2 mb-4">
-                          <Label htmlFor="newPassword" className="text-sm font-medium">
-                            New Password
-                          </Label>
-                          <Input
-                            id="newPassword"
-                            type="password"
-                            placeholder="Enter new password"
-                            value={settingsData.newPassword}
-                            onChange={(e) => setSettingsData({...settingsData, newPassword: e.target.value})}
-                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                          />
-                        </div>
+                        {settingsTab === 'security' && (
+                          <div className="space-y-6">
+                            <div>
+                              <h3 className="text-lg font-semibold mb-4">Security</h3>
+                              
+                              {/* Email Section */}
+                              <div className="space-y-2 mb-6">
+                                <Label htmlFor="current-email" className="text-sm font-medium">
+                                  Current Email
+                                </Label>
+                                {!isChangingEmail ? (
+                                  <div className="flex items-center gap-2">
+                                    <Input
+                                      id="current-email"
+                                      type="email"
+                                      value={settingsData.email}
+                                      readOnly
+                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default"
+                                    />
+                                    {!settingsData.isGoogleAccount && (
+                                      <Button
+                                        variant="outline"
+                                        onClick={() => setIsChangingEmail(true)}
+                                        className="border-gray-300 dark:border-gray-700 whitespace-nowrap"
+                                      >
+                                        Change Email
+                                      </Button>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <div className="space-y-2">
+                                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                      Current: {settingsData.email}
+                                    </div>
+                                    <Input
+                                      id="new-email"
+                                      type="email"
+                                      placeholder="Enter new email"
+                                      value={settingsData.newEmail}
+                                      onChange={(e) => setSettingsData({...settingsData, newEmail: e.target.value})}
+                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                                    />
+                                    <div className="flex gap-2">
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => {
+                                          setIsChangingEmail(false)
+                                          setSettingsData({...settingsData, newEmail: ''})
+                                        }}
+                                        className="border-gray-300 dark:border-gray-700"
+                                      >
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  </div>
+                                )}
+                                {settingsData.isGoogleAccount && (
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    Email cannot be changed for Google accounts
+                                  </p>
+                                )}
+                              </div>
 
-                        {/* Confirm New Password */}
-                        <div className="space-y-2">
-                          <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                            Confirm New Password
-                          </Label>
-                          <Input
-                            id="confirmPassword"
-                            type="password"
-                            placeholder="Confirm new password"
-                            value={settingsData.confirmPassword}
-                            onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
-                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                          />
-                          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                            {settingsData.hasPassword ? (
-                              <p>Leave blank to keep current password</p>
-                            ) : (
-                              <>
-                                <p className="font-medium">Password must contain:</p>
-                                <ul className="list-disc list-inside pl-2">
-                                  <li>At least 6 characters</li>
-                                  <li>One uppercase letter</li>
-                                  <li>One number</li>
-                                  <li>One special character (@, #, $, etc.)</li>
-                                  <li>Different from username/email</li>
-                                </ul>
-                              </>
-                            )}
+                              {/* Password Section */}
+                              <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-6">
+                                <h4 className="text-sm font-semibold">
+                                  {settingsData.hasPassword ? 'Change Password' : 'Set Password'}
+                                </h4>
+                                
+                                {!settingsData.hasPassword && (
+                                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-sm text-blue-800 dark:text-blue-200">
+                                    You signed in with Google. Set a password to enable email/password login as a backup.
+                                  </div>
+                                )}
+
+                                {/* Current Password - only show if user has password */}
+                                {settingsData.hasPassword && (
+                                  <div className="space-y-2">
+                                    <Label htmlFor="currentPassword" className="text-sm font-medium">
+                                      Current Password
+                                    </Label>
+                                    <Input
+                                      id="currentPassword"
+                                      type="password"
+                                      placeholder="Enter current password"
+                                      value={settingsData.currentPassword}
+                                      onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
+                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                                    />
+                                  </div>
+                                )}
+
+                                {/* New Password */}
+                                <div className="space-y-2">
+                                  <Label htmlFor="newPassword" className="text-sm font-medium">
+                                    New Password
+                                  </Label>
+                                  <Input
+                                    id="newPassword"
+                                    type="password"
+                                    placeholder="Enter new password"
+                                    value={settingsData.newPassword}
+                                    onChange={(e) => setSettingsData({...settingsData, newPassword: e.target.value})}
+                                    className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                                  />
+                                </div>
+
+                                {/* Confirm New Password */}
+                                <div className="space-y-2">
+                                  <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                                    Confirm New Password
+                                  </Label>
+                                  <Input
+                                    id="confirmPassword"
+                                    type="password"
+                                    placeholder="Confirm new password"
+                                    value={settingsData.confirmPassword}
+                                    onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
+                                    className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                                  />
+                                  <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                                    <p className="font-medium">Password must contain:</p>
+                                    <ul className="list-disc list-inside pl-2">
+                                      <li>At least 6 characters</li>
+                                      <li>One uppercase letter</li>
+                                      <li>One number</li>
+                                      <li>One special character (@, #, $, etc.)</li>
+                                      <li>Different from username/email</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Save Button */}
+                            <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                              <Button
+                                variant="outline"
+                                onClick={() => {
+                                  setIsSettingsOpen(false)
+                                  setIsChangingEmail(false)
+                                  setTempTheme(isDarkMode) // Reset temp theme on cancel
+                                  setSettingsData(prev => ({
+                                    ...prev,
+                                    newEmail: '',
+                                    currentPassword: '',
+                                    newPassword: '',
+                                    confirmPassword: ''
+                                  }))
+                                }}
+                                className="border-gray-300 dark:border-gray-700"
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                onClick={async () => {
+                                  try {
+                                    const updateData: any = {}
+                                    
+                                    // Handle email change
+                                    if (isChangingEmail && settingsData.newEmail) {
+                                      if (settingsData.newEmail === settingsData.email) {
+                                        toast.error('New email must be different from current email')
+                                        return
+                                      }
+                                      updateData.email = settingsData.newEmail
+                                    }
+
+                                    // Handle password change
+                                    if (settingsData.newPassword || settingsData.confirmPassword || settingsData.currentPassword) {
+                                      if (settingsData.hasPassword && !settingsData.currentPassword) {
+                                        toast.error('Please enter your current password to change it')
+                                        return
+                                      }
+                                      if (!settingsData.newPassword) {
+                                        toast.error('Please enter a new password')
+                                        return
+                                      }
+                                      if (settingsData.newPassword !== settingsData.confirmPassword) {
+                                        toast.error('New passwords do not match')
+                                        return
+                                      }
+                                      
+                                      // Validate password requirements
+                                      const validation = validatePassword(
+                                        settingsData.newPassword, 
+                                        settingsData.username, 
+                                        settingsData.newEmail || settingsData.email
+                                      )
+                                      if (!validation.isValid) {
+                                        validation.errors.forEach(error => toast.error(error))
+                                        return
+                                      }
+
+                                      updateData.current_password = settingsData.currentPassword || ''
+                                      updateData.new_password = settingsData.newPassword
+                                    }
+
+                                    if (Object.keys(updateData).length === 0) {
+                                      toast.error('No changes to save')
+                                      return
+                                    }
+
+                                    const response = await fetch(API_ENDPOINTS.updateUserProfile, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${getAccessToken()}`
+                                      },
+                                      body: JSON.stringify(updateData)
+                                    })
+
+                                    const data = await response.json()
+
+                                    if (!response.ok) {
+                                      if (response.status === 401) {
+                                        handleAuthError(401)
+                                        return
+                                      }
+                                      toast.error(data.detail || 'Failed to update security settings')
+                                      return
+                                    }
+
+                                    toast.success('Security settings updated successfully!')
+                                    setIsSettingsOpen(false)
+                                    setIsChangingEmail(false)
+                                    setSettingsData(prev => ({
+                                      ...prev,
+                                      email: data.email || prev.email,
+                                      newEmail: '',
+                                      currentPassword: '',
+                                      newPassword: '',
+                                      confirmPassword: '',
+                                      hasPassword: prev.hasPassword || (settingsData.newPassword ? true : prev.hasPassword)
+                                    }))
+                                  } catch (error) {
+                                    console.error('Error updating security settings:', error)
+                                    toast.error('Failed to update security settings')
+                                  }
+                                }}
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                              >
+                                Save Changes
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex justify-end gap-3 pt-4">
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            setIsSettingsOpen(false)
-                            // Only reset password fields, keep username and email
-                            setSettingsData(prev => ({
-                              ...prev,
-                              currentPassword: '',
-                              newPassword: '',
-                              confirmPassword: ''
-                            }))
-                          }}
-                          className="border-gray-300 dark:border-gray-700"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          onClick={async () => {
-                            // Validate password fields if user wants to change password
-                            if (settingsData.newPassword || settingsData.confirmPassword || settingsData.currentPassword) {
-                              // If user has a password, require current password
-                              if (settingsData.hasPassword && !settingsData.currentPassword) {
-                                toast.error('Please enter your current password to change it')
-                                return
-                              }
-                              if (!settingsData.newPassword) {
-                                toast.error('Please enter a new password')
-                                return
-                              }
-                              if (settingsData.newPassword !== settingsData.confirmPassword) {
-                                toast.error('New passwords do not match')
-                                return
-                              }
-                              
-                              // Validate password requirements
-                              const validation = validatePassword(
-                                settingsData.newPassword, 
-                                settingsData.username, 
-                                settingsData.email
-                              )
-                              if (!validation.isValid) {
-                                validation.errors.forEach(error => toast.error(error))
-                                return
-                              }
-                            }
-
-                            try {
-                              const updateData: any = {}
-                              
-                              // Only include fields that should be updated
-                              if (settingsData.username) updateData.username = settingsData.username
-                              if (settingsData.email) updateData.email = settingsData.email
-                              if (settingsData.newPassword) {
-                                // For Google users without password, old_password can be empty
-                                updateData.current_password = settingsData.currentPassword || ''
-                                updateData.new_password = settingsData.newPassword
-                              }
-
-                              const response = await fetch(API_ENDPOINTS.updateUserProfile, {
-                                method: 'PUT',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  'Authorization': `Bearer ${getAccessToken()}`
-                                },
-                                body: JSON.stringify(updateData)
-                              })
-
-                              const data = await response.json()
-
-                              if (!response.ok) {
-                                if (response.status === 401) {
-                                  handleAuthError(401)
-                                  return
-                                }
-                                toast.error(data.detail || 'Failed to update profile')
-                                return
-                              }
-
-                              toast.success('Profile updated successfully!')
-                              setIsSettingsOpen(false)
-                              setSettingsData({
-                                username: data.username || settingsData.username,
-                                email: data.email || settingsData.email,
-                                currentPassword: '',
-                                newPassword: '',
-                                confirmPassword: '',
-                                hasPassword: settingsData.hasPassword || (settingsData.newPassword ? true : settingsData.hasPassword)
-                              })
-                            } catch (error) {
-                              console.error('Error updating profile:', error)
-                              toast.error('Failed to update profile')
-                            }
-                          }}
-                          className="bg-indigo-600 hover:bg-indigo-700 text-white"
-                        >
-                          Save Changes
-                        </Button>
+                        )}
                       </div>
                     </div>
                   </DialogContent>

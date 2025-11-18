@@ -39,3 +39,39 @@
 [01:18:17.154] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 [01:21:06.087] Server  LOG      ✓ Compiled in 428ms
 [01:21:39.482] Server  LOG      ✓ Compiled in 120ms
+[01:25:45.607] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:29:43.062] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:29:43.062] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:48:49.892] Server  LOG      ✓ Compiled in 800ms
+[01:48:59.633] Server  LOG      ✓ Compiled in 665ms
+[01:50:19.591] Server  LOG      ✓ Compiled in 1310ms
+[01:51:29.512] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:51:29.512] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:51:46.764] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:54:28.323] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:54:28.323] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:55:22.485] Server  LOG      ✓ Compiled in 1424ms
+[01:59:18.244] Server  LOG      ✓ Compiled in 645ms
+[02:01:01.896] Server  LOG      ✓ Compiled in 1198ms
+[02:01:23.233] Server  LOG      ✓ Compiled in 1213ms
+[02:01:49.455] Server  LOG      ✓ Compiled in 805ms
+[02:02:30.837] Server  LOG      ✓ Compiled in 638ms
+[02:04:10.933] Server  LOG      ✓ Compiled in 294ms
+[02:04:22.219] Server  LOG      ✓ Compiled in 182ms
+[02:04:23.266] Browser ERROR   uncaughtError: ReferenceError: registrationSuccess is not defined
+[02:04:36.379] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[02:04:36.397] Server  LOG      ✓ Compiled in 215ms
+[02:04:37.443] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:05:35.469] Browser LOG     Login response: {"data":{"detail":"Invalid email or password."},"status":401}
+[02:05:35.469] Browser LOG     401 error, needs_verification: undefined
+[02:05:35.469] Browser LOG     Setting login error for invalid credentials
+[02:05:42.961] Browser LOG     Login response: {"data":{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2MzQ5MDIyMiwianRpIjoiMjJhZjg1N2UtNmFmYi00MjBhLWE2MjktNDM5M2JhZjdmMzRkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjQ1MTVlNWRjLTE4NDMtNDk4NC1hOTY2LWY4MWZiMTcxMzJhMCIsIm5iZiI6MTc2MzQ5MDIyMiwiY3NyZiI6IjUxMzJiMWQ1LWQyZjMtNDZkMS04ODJhLTBmZDIwMmI4MmVmNyIsImV4cCI6MTc2MzQ5MTEyMn0.2-n6PNx1H_NPtbI4DLeM1Mo7HWv9LjUGfyU8I8v90wk"},"status":200}
+[02:05:46.920] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:05:46.920] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:05:50.049] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:05:50.049] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:05:52.310] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:05:52.310] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:09:10.878] Server  LOG      ✓ Compiled in 1218ms
+[02:13:41.112] Server  LOG      ✓ Compiled in 1711ms
+[02:14:42.337] Server  LOG      ✓ Compiled in 1402ms
