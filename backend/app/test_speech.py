@@ -40,13 +40,11 @@ if __name__ == '__main__':
     
     print(f"Testing with file: {file_path}")
     
-    # This 'sync' mode is good for a quick test
     res = ClovaSpeechClient().req_upload(file=file_path, completion='sync')
     
     print("\n--- API Response ---")
     print(res.text)
 
-    # Pretty-print the JSON if it's successful
     try:
         json_res = json.loads(res.text)
         print("\n--- Formatted JSON ---")
