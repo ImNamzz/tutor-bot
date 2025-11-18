@@ -136,7 +136,10 @@ def google_callback():
         else:
             user = db.query(UserModel).filter_by(email=email).first()
             if user:
-                user.google_id = google_id
+                if user.email != email:
+                    user.email = email
+                    db.add(user)
+                pass
             else:
                 base_username = re.sub(r'[^a-zA-Z0-9]', '', full_name.lower())
                 if not base_username: 
