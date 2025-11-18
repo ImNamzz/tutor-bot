@@ -1222,7 +1222,7 @@ export default function Home() {
         }`}
       >
         {/* Sidebar Header with Toggle */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
+        <div className="h-16 px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
             <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
           )}
