@@ -1,73 +1,43 @@
-[00:00:01.612] Server  LOG      ✓ Ready in 1149ms
-[00:00:06.424] Server  LOG      ○ Compiling / ...
-[00:00:11.520] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:14:16.995] Server  LOG      ✓ Compiled in 379ms
-[00:14:34.527] Server  LOG      ✓ Compiled in 187ms
-[00:16:48.512] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:16:51.715] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:16:51.715] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:16:53.688] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:16:53.688] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:16:56.573] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:16:57.533] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:16:57.533] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:17:12.084] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:18:13.218] Server  LOG      ✓ Compiled in 381ms
-[00:19:30.299] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:19:32.537] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:19:32.537] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:21:00.345] Server  LOG      ✓ Compiled in 235ms
-[00:21:11.892] Server  LOG      ✓ Compiled in 84ms
-[00:23:43.546] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:23:46.265] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:23:46.265] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:24:26.176] Server  LOG      ✓ Compiled in 74ms
-[00:25:19.325] Server  LOG      ✓ Compiled in 80ms
-[00:25:31.249] Server  LOG      ✓ Compiled in 88ms
-[00:27:09.271] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:27:19.153] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:19.153] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:41.593] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:41.594] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:29:38.043] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:29:38.043] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:31:40.223] Server  LOG      ✓ Compiled in 696ms
-[00:32:06.970] Server  LOG      ✓ Compiled in 1159ms
-[00:32:18.030] Server  LOG      ✓ Compiled in 872ms
-[00:32:27.654] Server  LOG      ✓ Compiled in 860ms
-[00:32:42.452] Server  LOG      ✓ Compiled in 1135ms
-[00:32:51.563] Server  LOG      ✓ Compiled in 584ms
-[00:34:31.995] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:34:45.731] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:35:10.379] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:10.379] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:11.984] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:11.985] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:13.710] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:13.711] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:27.577] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:35:35.668] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:35.668] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:41.654] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:41.654] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:44.568] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:44.568] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:45.608] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:45.608] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:47.385] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:47.385] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:49.018] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:49.018] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:50.790] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:50.790] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:52.573] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:52.574] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:37:12.294] Server  LOG      ✓ Compiled in 536ms
-[00:37:31.840] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:37:42.377] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:37:42.377] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:38:00.587] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:38:08.724] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:38:23.975] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:38:26.927] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:38:26.928] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:15.023] Server  LOG      ✓ Ready in 10.4s
+[00:00:28.343] Server  LOG      ○ Compiling / ...
+[00:00:35.631] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:51.321] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:51.441] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollAndFocusHandler segmentPath={[...]}>
+        <InnerScrollAndFocusHandler segmentPath={[...]} focusAndScrollRef={{apply:false, ...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="auth-callb..." loading={null}>
+              <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <InnerLayoutRouter url="/auth-call..." tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} ...>
+                      <SegmentViewNode type="page" pagePath="/OneDrive/...">
+                        <SegmentTrieNode>
+                        <ClientPageRoot Component={function AuthCallbackPage} serverProvidedParams={{...}}>
+                          <AuthCallbackPage params={Promise} searchParams={Promise}>
+                            <div
+                              className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 ..."
+                              style={{
++                               background: "linear-gradient(to bottom right, rgb(17, 24, 39), rgb(31, 41, 55))"
+                              }}
+                            >
+                      ...
+                    ...
+          ...
+
+[00:01:37.023] Server  LOG      ✓ Compiled in 187ms
+[00:01:52.160] Server  LOG      ✓ Compiled in 230ms
+[00:02:39.198] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

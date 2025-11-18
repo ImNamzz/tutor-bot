@@ -1432,7 +1432,7 @@ export default function Home() {
                       <Settings className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
+                  <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
                     <DialogHeader>
                       <DialogTitle className="text-xl font-semibold">Account Settings</DialogTitle>
                     </DialogHeader>

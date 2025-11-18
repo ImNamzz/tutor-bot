@@ -25,6 +25,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

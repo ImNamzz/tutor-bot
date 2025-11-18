@@ -20,6 +20,18 @@ export default function SetupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Apply theme on mount
+  useEffect(() => {
+    setMounted(true);
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   useEffect(() => {
     // Check if user is authenticated

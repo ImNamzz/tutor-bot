@@ -9,8 +9,22 @@ export default function AuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Apply theme synchronously on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const token = searchParams.get("token");
     const needsSetup = searchParams.get("setup");
 
@@ -41,7 +55,7 @@ export default function AuthCallbackPage() {
         router.push("/auth/login");
       }, 2000);
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, mounted]);
 
   if (error) {
     return (
