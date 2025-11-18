@@ -16,6 +16,40 @@ from authlib.integrations.flask_client import OAuth
 from dateutil.parser import parse as date_parse
 from datetime import datetime
 
+# Password validation function
+def validate_password(password: str, username: str = None, email: str = None) -> tuple[bool, list[str]]:
+    """
+    Validate password based on requirements:
+    - At least 6 characters
+    - At least one uppercase letter
+    - At least one number
+    - At least one special character
+    - Different from username and email
+    
+    Returns (is_valid, list_of_errors)
+    """
+    errors = []
+    
+    if len(password) < 6:
+        errors.append("Password must be at least 6 characters long")
+    
+    if not re.search(r'[A-Z]', password):
+        errors.append("Password must contain at least one uppercase letter")
+    
+    if not re.search(r'\d', password):
+        errors.append("Password must contain at least one number")
+    
+    if not re.search(r'[@#$%^&*()_+\-=\[\]{};:\'",.<>/?!~`\\|]', password):
+        errors.append("Password must contain at least one special character (@, #, $, etc.)")
+    
+    if username and password.lower() == username.lower():
+        errors.append("Password cannot be the same as username")
+    
+    if email and password.lower() == email.lower():
+        errors.append("Password cannot be the same as email")
+    
+    return (len(errors) == 0, errors)
+
 Base.metadata.create_all(bind=engine)
 app = Flask(__name__)
 
@@ -67,6 +101,11 @@ def register():
             return jsonify({"detail": "Email already registered."}), 400
         if db.query(UserModel).filter_by(username=username).first():
             return jsonify({"detail": "Username already taken."}), 400
+
+        # Validate password
+        is_valid, errors = validate_password(password, username, email)
+        if not is_valid:
+            return jsonify({"detail": "; ".join(errors)}), 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         
@@ -252,6 +291,11 @@ def update_password():
         user = db.query(UserModel).filter_by(id=current_user_id).first()
         if not user:
             return jsonify({"detail": "User not found."}), 404
+
+        # Validate new password
+        is_valid, errors = validate_password(passwords.new_password, user.username, user.email)
+        if not is_valid:
+            return jsonify({"detail": "; ".join(errors)}), 400
 
         # If user has no password (Google OAuth user), allow setting initial password
         if not user.hashed_password:
@@ -727,9 +771,17 @@ def update_user_profile():
             user.email = email
         
         # Update password if both current and new password provided
-        if current_password and new_password:
-            if not bcrypt.check_password_hash(user.hashed_password, current_password):
-                return jsonify({"detail": "Current password is incorrect"}), 400
+        if new_password:
+            # Validate new password
+            is_valid, errors = validate_password(new_password, username or user.username, email or user.email)
+            if not is_valid:
+                return jsonify({"detail": "; ".join(errors)}), 400
+            
+            # If user has a password, verify current password
+            if user.hashed_password and current_password:
+                if not bcrypt.check_password_hash(user.hashed_password, current_password):
+                    return jsonify({"detail": "Current password is incorrect"}), 400
+            
             user.hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
         
         db.commit()

@@ -8,8 +8,9 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card } from "@/app/components/ui/card";
 import { toast } from "sonner";
-import { BookOpen, Loader2, CheckCircle, Eye, EyeOff } from "lucide-react";
+import { Loader2, CheckCircle, Eye, EyeOff } from "lucide-react";
 import { API_ENDPOINTS } from "@/app/lib/config";
+import { validatePassword } from "@/app/lib/passwordValidation";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -31,9 +32,10 @@ export default function RegisterPage() {
       return;
     }
 
-    // Validate password length
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
+    // Validate password requirements
+    const validation = validatePassword(password, username, email);
+    if (!validation.isValid) {
+      validation.errors.forEach(error => toast.error(error));
       return;
     }
 
@@ -100,9 +102,9 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-8">
-      <Card className="w-full max-w-md p-8 dark:bg-gray-900 dark:border-gray-800">
+      <Card className="w-full max-w-md p-6 dark:bg-gray-900 dark:border-gray-800">
         {/* Back to Home Link */}
-        <div className="mb-4">
+        <div className="mb-3">
           <Link
             href="/"
             className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1"
@@ -112,10 +114,7 @@ export default function RegisterPage() {
         </div>
         
         {/* Logo and Title */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <BookOpen className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
-          </div>
+        <div className="text-center mb-5">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Create Account
           </h1>
@@ -125,7 +124,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Register Form */}
-        <form onSubmit={handleRegister} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-3">
           <div>
             <Label htmlFor="username" className="dark:text-gray-200">
               Username
@@ -188,9 +187,16 @@ export default function RegisterPage() {
                 )}
               </button>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              At least 6 characters
-            </p>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 space-y-0.5">
+              <p>Password must contain:</p>
+              <ul className="list-disc list-inside pl-2">
+                <li>At least 6 characters</li>
+                <li>One uppercase letter</li>
+                <li>One number</li>
+                <li>One special character (@, #, $, etc.)</li>
+                <li>Different from username/email</li>
+              </ul>
+            </div>
           </div>
 
           <div>
@@ -242,7 +248,7 @@ export default function RegisterPage() {
         </form>
 
         {/* Divider */}
-        <div className="relative my-6">
+        <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
           </div>
@@ -283,7 +289,7 @@ export default function RegisterPage() {
         </Button>
 
         {/* Login Link */}
-        <div className="mt-6 text-center text-sm">
+        <div className="mt-4 text-center text-sm">
           <span className="text-gray-600 dark:text-gray-400">
             Already have an account?{" "}
           </span>

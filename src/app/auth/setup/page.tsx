@@ -9,6 +9,7 @@ import { Card } from "@/app/components/ui/card";
 import { toast } from "sonner";
 import { BookOpen, Loader2, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { API_ENDPOINTS } from "@/app/lib/config";
+import { validatePassword } from "@/app/lib/passwordValidation";
 
 export default function SetupPage() {
   const router = useRouter();
@@ -78,9 +79,10 @@ export default function SetupPage() {
       return;
     }
 
-    // Validate password length
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
+    // Validate password requirements
+    const validation = validatePassword(password, username);
+    if (!validation.isValid) {
+      validation.errors.forEach(error => toast.error(error));
       return;
     }
 
@@ -245,9 +247,16 @@ export default function SetupPage() {
                 )}
               </button>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              At least 6 characters
-            </p>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 space-y-0.5">
+              <p>Password must contain:</p>
+              <ul className="list-disc list-inside pl-2">
+                <li>At least 6 characters</li>
+                <li>One uppercase letter</li>
+                <li>One number</li>
+                <li>One special character (@, #, $, etc.)</li>
+                <li>Different from username</li>
+              </ul>
+            </div>
           </div>
 
           <div>

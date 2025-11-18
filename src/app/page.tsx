@@ -18,6 +18,7 @@ import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { isAuthenticated, removeAccessToken, getAccessToken, handleAuthError } from '@/app/lib/auth'
 import { API_ENDPOINTS } from '@/app/lib/config'
+import { validatePassword } from '@/app/lib/passwordValidation'
 
 interface Message {
   id: string
@@ -1539,11 +1540,22 @@ export default function Home() {
                             onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
                             className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
                           />
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {settingsData.hasPassword 
-                              ? 'Leave blank to keep current password' 
-                              : 'Set a password to enable email/password login'}
-                          </p>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                            {settingsData.hasPassword ? (
+                              <p>Leave blank to keep current password</p>
+                            ) : (
+                              <>
+                                <p className="font-medium">Password must contain:</p>
+                                <ul className="list-disc list-inside pl-2">
+                                  <li>At least 6 characters</li>
+                                  <li>One uppercase letter</li>
+                                  <li>One number</li>
+                                  <li>One special character (@, #, $, etc.)</li>
+                                  <li>Different from username/email</li>
+                                </ul>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
 
@@ -1582,8 +1594,15 @@ export default function Home() {
                                 toast.error('New passwords do not match')
                                 return
                               }
-                              if (settingsData.newPassword.length < 6) {
-                                toast.error('Password must be at least 6 characters')
+                              
+                              // Validate password requirements
+                              const validation = validatePassword(
+                                settingsData.newPassword, 
+                                settingsData.username, 
+                                settingsData.email
+                              )
+                              if (!validation.isValid) {
+                                validation.errors.forEach(error => toast.error(error))
                                 return
                               }
                             }

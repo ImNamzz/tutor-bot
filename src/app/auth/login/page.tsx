@@ -8,7 +8,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card } from "@/app/components/ui/card";
 import { toast } from "sonner";
-import { BookOpen, Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function LoginPage() {
@@ -110,9 +110,6 @@ export default function LoginPage() {
         
         {/* Logo and Title */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <BookOpen className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
-          </div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Welcome Back
           </h1>
