@@ -5,6 +5,11 @@ export interface PasswordValidationResult {
   errors: string[];
 }
 
+export interface PasswordRequirement {
+  label: string;
+  isSatisfied: boolean;
+}
+
 export function validatePassword(
   password: string,
   username?: string,
@@ -55,5 +60,36 @@ export function getPasswordRequirements(): string[] {
     "At least one number",
     "At least one special character (@, #, $, etc.)",
     "Different from username and email",
+  ];
+}
+
+export function checkPasswordRequirements(
+  password: string,
+  username?: string,
+  email?: string
+): PasswordRequirement[] {
+  return [
+    {
+      label: "At least 6 characters",
+      isSatisfied: password.length >= 6,
+    },
+    {
+      label: "One uppercase letter",
+      isSatisfied: /[A-Z]/.test(password),
+    },
+    {
+      label: "One number",
+      isSatisfied: /\d/.test(password),
+    },
+    {
+      label: "One special character (@, #, $, etc.)",
+      isSatisfied: /[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?!~`]/.test(password),
+    },
+    {
+      label: "Different from username/email",
+      isSatisfied: 
+        (!username || password.toLowerCase() !== username.toLowerCase()) &&
+        (!email || password.toLowerCase() !== email.toLowerCase()),
+    },
   ];
 }

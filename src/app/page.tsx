@@ -13,13 +13,13 @@ import { Badge } from '@/app/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
 import { Label } from '@/app/components/ui/label'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/components/ui/tooltip'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { isAuthenticated, removeAccessToken, getAccessToken, handleAuthError } from '@/app/lib/auth'
 import { API_ENDPOINTS } from '@/app/lib/config'
-import { validatePassword } from '@/app/lib/passwordValidation'
+import { validatePassword, checkPasswordRequirements } from '@/app/lib/passwordValidation'
 
 interface Message {
   id: string
@@ -1743,14 +1743,21 @@ export default function Home() {
                                         </TooltipTrigger>
                                         <TooltipContent className="max-w-xs">
                                           <div className="text-xs space-y-1">
-                                            <p className="font-medium">Password must contain:</p>
-                                            <ul className="list-disc list-inside pl-2 space-y-0.5">
-                                              <li>At least 6 characters</li>
-                                              <li>One uppercase letter</li>
-                                              <li>One number</li>
-                                              <li>One special character (@, #, $, etc.)</li>
-                                              <li>Different from username/email</li>
-                                            </ul>
+                                            <p className="font-medium mb-2">Password must contain:</p>
+                                            <div className="space-y-1.5">
+                                              {checkPasswordRequirements(settingsData.newPassword, settingsData.username, settingsData.email).map((requirement, index) => (
+                                                <div key={index} className="flex items-center gap-2">
+                                                  {requirement.isSatisfied ? (
+                                                    <Check className="h-4 w-4 text-green-500 shrink-0" />
+                                                  ) : (
+                                                    <X className="h-4 w-4 text-red-500 shrink-0" />
+                                                  )}
+                                                  <span className={requirement.isSatisfied ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                                                    {requirement.label}
+                                                  </span>
+                                                </div>
+                                              ))}
+                                            </div>
                                           </div>
                                         </TooltipContent>
                                       </Tooltip>

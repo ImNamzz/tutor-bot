@@ -8,9 +8,9 @@ import { Label } from "@/app/components/ui/label";
 import { Card } from "@/app/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/app/components/ui/tooltip";
 import { toast } from "sonner";
-import { BookOpen, Loader2, Eye, EyeOff, CheckCircle, Info } from "lucide-react";
+import { BookOpen, Loader2, Eye, EyeOff, CheckCircle, Info, Check, X } from "lucide-react";
 import { API_ENDPOINTS } from "@/app/lib/config";
-import { validatePassword } from "@/app/lib/passwordValidation";
+import { validatePassword, checkPasswordRequirements } from "@/app/lib/passwordValidation";
 
 export default function SetupPage() {
   const router = useRouter();
@@ -233,14 +233,21 @@ export default function SetupPage() {
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <div className="text-xs space-y-1">
-                      <p className="font-medium">Password must contain:</p>
-                      <ul className="list-disc list-inside pl-2 space-y-0.5">
-                        <li>At least 6 characters</li>
-                        <li>One uppercase letter</li>
-                        <li>One number</li>
-                        <li>One special character (@, #, $, etc.)</li>
-                        <li>Different from username</li>
-                      </ul>
+                      <p className="font-medium mb-2">Password must contain:</p>
+                      <div className="space-y-1.5">
+                        {checkPasswordRequirements(password, username).map((requirement, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            {requirement.isSatisfied ? (
+                              <Check className="h-4 w-4 text-green-500 shrink-0" />
+                            ) : (
+                              <X className="h-4 w-4 text-red-500 shrink-0" />
+                            )}
+                            <span className={requirement.isSatisfied ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                              {requirement.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </TooltipContent>
                 </Tooltip>
