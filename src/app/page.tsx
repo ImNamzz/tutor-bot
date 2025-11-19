@@ -12,7 +12,8 @@ import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
 import { Label } from '@/app/components/ui/label'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/components/ui/tooltip'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -1729,9 +1730,32 @@ export default function Home() {
 
                                 {/* Confirm New Password */}
                                 <div className="space-y-2">
-                                  <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                                    Confirm New Password
-                                  </Label>
+                                  <div className="flex items-center gap-2">
+                                    <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                                      Confirm New Password
+                                    </Label>
+                                    <TooltipProvider delayDuration={0}>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <button type="button" className="focus:outline-none">
+                                            <Info className="h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-help" />
+                                          </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent className="max-w-xs">
+                                          <div className="text-xs space-y-1">
+                                            <p className="font-medium">Password must contain:</p>
+                                            <ul className="list-disc list-inside pl-2 space-y-0.5">
+                                              <li>At least 6 characters</li>
+                                              <li>One uppercase letter</li>
+                                              <li>One number</li>
+                                              <li>One special character (@, #, $, etc.)</li>
+                                              <li>Different from username/email</li>
+                                            </ul>
+                                          </div>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </TooltipProvider>
+                                  </div>
                                   <div className="relative">
                                     <Input
                                       id="confirmPassword"
@@ -1756,16 +1780,6 @@ export default function Home() {
                                         <Eye className="h-5 w-5" />
                                       )}
                                     </button>
-                                  </div>
-                                  <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                                    <p className="font-medium">Password must contain:</p>
-                                    <ul className="list-disc list-inside pl-2">
-                                      <li>At least 6 characters</li>
-                                      <li>One uppercase letter</li>
-                                      <li>One number</li>
-                                      <li>One special character (@, #, $, etc.)</li>
-                                      <li>Different from username/email</li>
-                                    </ul>
                                   </div>
                                 </div>
                               </div>

@@ -13,3 +13,8 @@
 [00:04:23.255] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 [00:04:23.255] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 [00:06:03.126] Server  LOG      ✓ Compiled in 1632ms
+[00:08:23.860] Server  LOG      ✓ Compiled in 510ms
+[00:08:55.989] Server  LOG      ✓ Compiled in 1993ms
+[00:10:55.543] Server  LOG      ✓ Compiled in 467ms
+[00:13:57.108] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:15:08.241] Server  LOG      ✓ Compiled in 1217ms

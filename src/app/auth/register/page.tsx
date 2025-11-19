@@ -7,8 +7,9 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card } from "@/app/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/app/components/ui/tooltip";
 import { toast } from "sonner";
-import { Loader2, CheckCircle, Eye, EyeOff } from "lucide-react";
+import { Loader2, CheckCircle, Eye, EyeOff, Info } from "lucide-react";
 import { API_ENDPOINTS } from "@/app/lib/config";
 import { validatePassword } from "@/app/lib/passwordValidation";
 
@@ -131,9 +132,32 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <Label htmlFor="password" className="dark:text-gray-200">
-              Password
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="password" className="dark:text-gray-200">
+                Password
+              </Label>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="button" className="focus:outline-none">
+                      <Info className="h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-help" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <div className="text-xs space-y-1">
+                      <p className="font-medium">Password must contain:</p>
+                      <ul className="list-disc list-inside pl-2 space-y-0.5">
+                        <li>At least 6 characters</li>
+                        <li>One uppercase letter</li>
+                        <li>One number</li>
+                        <li>One special character (@, #, $, etc.)</li>
+                        <li>Different from username/email</li>
+                      </ul>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <div className="relative mt-1">
               <Input
                 id="password"
@@ -158,16 +182,6 @@ export default function RegisterPage() {
                   <Eye className="h-5 w-5" />
                 )}
               </button>
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 space-y-0.5">
-              <p>Password must contain:</p>
-              <ul className="list-disc list-inside pl-2">
-                <li>At least 6 characters</li>
-                <li>One uppercase letter</li>
-                <li>One number</li>
-                <li>One special character (@, #, $, etc.)</li>
-                <li>Different from username/email</li>
-              </ul>
             </div>
           </div>
 
