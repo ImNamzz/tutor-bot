@@ -1,60 +1,16 @@
-[00:00:02.298] Server  LOG      ✓ Ready in 1770ms
-[00:00:05.480] Server  LOG      ○ Compiling /dashboard/class/[id]/lecture/[lectureId] ...
-[00:00:11.476] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:12.100] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-%s%s https://react.dev/link/hydration-mismatch 
-
-  ...
-    <RedirectErrorBoundary router={{...}}>
-      <InnerLayoutRouter url="/dashboard..." tree={[...]} params={{id:"176349...", ...}} cacheNode={{lazyData:null, ...}} ...>
-        <SegmentViewNode type="page" pagePath="dashboard/...">
-          <SegmentTrieNode>
-          <ClientPageRoot Component={function LectureDetailPage} serverProvidedParams={{...}}>
-            <LectureDetailPage params={Promise} searchParams={Promise}>
-              <div className="max-w-7xl ...">
-                <div>
-                <div className="grid grid-...">
-                  <div className="col-span-1...">
-                    <Card>
-                    <Card className="p-5 space-y-4">
-                      <div data-slot="card" className="bg-card te...">
-                        <div>
-                        <ConceptMap keywords={[...]}>
-                          <div className="relative w...">
-                            <div>
-                            <div>
-                            <div>
-                            <div>
-                            <div
-                              className="absolute px-2 py-1 rounded-md bg-white shadow-sm text-[11px] border"
-                              style={{
-+                               left: "calc(50% + -72.81152949374528px)"
--                               left: "calc(50% - 72.8115px)"
-+                               top: "calc(50% + -52.900672706322574px)"
--                               top: "calc(50% - 52.9007px)"
-+                               transform: "translate(-50%, -50%)"
--                               transform: "translate(-50%, -50%)"
-                              }}
-                            >
-+                             Backprop
-                            ...
-                            ...
-                    ...
-                  ...
-                ...
-        ...
-      ...
-
-[00:01:47.596] Server  LOG      ✓ Compiled in 723ms
-[00:02:58.484] Server  LOG      ✓ Compiled in 650ms
-[00:16:37.836] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:16:37.837] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:04.631] Server  LOG      ✓ Ready in 3.6s
+[00:00:08.173] Server  LOG      ○ Compiling / ...
+[00:00:19.256] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:41.842] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:41.842] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:49.222] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:49.223] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:04:30.279] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:27.314] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:05:27.314] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:05:41.059] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:05:41.059] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:06:07.158] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:06:07.158] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:07:12.291] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:07:12.291] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.

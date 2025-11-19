@@ -187,264 +187,284 @@ export default function LectureDetailPage() {
   }, [data.actions]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-        <div className="space-y-2 flex-1">
-          <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-1">
-            <Link href="/dashboard" className="hover:underline">
-              Dashboard
-            </Link>
-            <span>/</span>
-            {cls ? (
-              <Link
-                href={`/dashboard/class/${cls.id}`}
-                className="hover:underline"
-              >
-                {cls.name}
+    <div className="relative bg-gray-50/50 bg-[radial-gradient(circle_at_1px_1px,rgba(17,24,39,0.06)_1px,transparent_1px)] [background-size:20px_20px]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div className="space-y-2 flex-1">
+            <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-1">
+              <Link href="/dashboard" className="hover:underline">
+                Dashboard
               </Link>
-            ) : (
-              <span>Class</span>
-            )}
-            <span>/</span>
-            <span className="text-foreground">Lecture</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              {lectureTitle || "Lecture"}
-            </h1>
-            {/* Progress Ring */}
-            <ProgressRing percent={progressPct} label={`${progressPct}%`} />
-          </div>
-        </div>
-        <div className="flex gap-2 shrink-0">
-          <Button variant="outline" onClick={resetAll}>
-            Reset
-          </Button>
-          <Button onClick={rerunAll}>Re-run</Button>
-        </div>
-      </div>
-
-      {/* Main grid */}
-      <div className="grid grid-cols-12 gap-6">
-        {/* Left column (span 8) */}
-        <div className="col-span-12 lg:col-span-8 space-y-6">
-          {/* Summary */}
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Summary</h3>
-              <Button
-                size="sm"
-                onClick={regenerateSummary}
-                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
-              >
-                Generate
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {data.summary}
-            </p>
-          </Card>
-
-          {/* Concept Map */}
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Concept Map</h3>
-            </div>
-            <ConceptMap
-              keywords={[
-                "Perceptron",
-                "MLP",
-                "Activation",
-                "Backprop",
-                "Regularization",
-              ]}
-            />
-          </Card>
-
-          {/* Action Items */}
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Action Items</h3>
-              <Button
-                size="sm"
-                onClick={extractActions}
-                className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
-              >
-                Extract
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {data.actions.map((a) => (
-                <div
-                  key={a.id}
-                  className="flex items-start justify-between gap-3 text-sm"
+              <span>/</span>
+              {cls ? (
+                <Link
+                  href={`/dashboard/class/${cls.id}`}
+                  className="hover:underline"
                 >
-                  <label className="flex items-start gap-3 flex-1">
-                    <Checkbox
-                      checked={!!a.done}
-                      onCheckedChange={(v) => toggleAction(a.id, !!v)}
-                      className="mt-0.5"
-                    />
-                    {editingId === a.id ? (
-                      <Input
-                        value={editingText}
-                        onChange={(e) => setEditingText(e.target.value)}
-                        autoFocus
-                      />
-                    ) : (
-                      <span
-                        className={
-                          a.done ? "line-through text-muted-foreground" : ""
-                        }
-                      >
-                        {a.text}
-                      </span>
-                    )}
-                  </label>
-                  <div className="flex items-center gap-1">
-                    {editingId === a.id ? (
-                      <>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={saveEditAction}
-                          aria-label="Save"
-                        >
-                          <Check className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={cancelEditAction}
-                          aria-label="Cancel"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => beginEditAction(a.id, a.text)}
-                          aria-label="Edit"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => deleteAction(a.id)}
-                          aria-label="Delete"
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
+                  {cls.name}
+                </Link>
+              ) : (
+                <span>Class</span>
+              )}
+              <span>/</span>
+              <span className="text-foreground">Lecture</span>
             </div>
-            <div className="flex gap-2 pt-2">
-              <Input
-                placeholder="Add action..."
-                value={newActionText}
-                onChange={(e) => setNewActionText(e.target.value)}
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                {/* decorative glow */}
+                <div className="pointer-events-none absolute -inset-x-8 -inset-y-3 -z-10 rounded-full bg-purple-500/20 blur-3xl" />
+                <h1 className="text-2xl font-semibold tracking-tight relative">
+                  {lectureTitle || "Lecture"}
+                </h1>
+              </div>
+              {/* Progress Ring */}
+              <ProgressRing percent={progressPct} label={`${progressPct}%`} />
+            </div>
+          </div>
+          <div className="flex gap-2 shrink-0">
+            <Button variant="outline" onClick={resetAll}>
+              Reset
+            </Button>
+            <Button onClick={rerunAll}>Re-run</Button>
+          </div>
+        </div>
+
+        {/* Main grid */}
+        <div className="grid grid-cols-12 gap-6">
+          {/* Left column (span 8) */}
+          <div className="col-span-12 lg:col-span-8 space-y-6">
+            {/* Summary */}
+            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-gray-100 border-l-4 border-purple-500">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Summary
+                </h3>
+                <Button
+                  size="sm"
+                  onClick={regenerateSummary}
+                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
+                >
+                  Generate
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {data.summary}
+              </p>
+            </Card>
+
+            {/* Concept Map */}
+            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Concept Map
+                </h3>
+              </div>
+              <ConceptMap
+                keywords={[
+                  "Perceptron",
+                  "MLP",
+                  "Activation",
+                  "Backprop",
+                  "Regularization",
+                ]}
               />
-              <Button onClick={addAction}>Add</Button>
-            </div>
-          </Card>
+            </Card>
 
-          {/* Socratic Chat */}
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Socratic Chat</h3>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Start an interactive, guided conversation based on this lecture.
-            </p>
-            <div className="flex items-center gap-4 pt-1">
-              <Button onClick={startSocraticChat}>Start Socratic Chat</Button>
-              <button
-                type="button"
-                onClick={copySocraticLink}
-                className="text-sm text-primary underline underline-offset-2"
-              >
-                Copy link
-              </button>
-            </div>
-          </Card>
+            {/* Action Items */}
+            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-gray-100 border-l-4 border-purple-500">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Action Items
+                </h3>
+                <Button
+                  size="sm"
+                  onClick={extractActions}
+                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
+                >
+                  Extract
+                </Button>
+              </div>
+              <div className="space-y-2">
+                {data.actions.map((a) => (
+                  <div
+                    key={a.id}
+                    className="flex items-start justify-between gap-3 text-sm"
+                  >
+                    <label className="flex items-start gap-3 flex-1">
+                      <Checkbox
+                        checked={!!a.done}
+                        onCheckedChange={(v) => toggleAction(a.id, !!v)}
+                        className="mt-0.5"
+                      />
+                      {editingId === a.id ? (
+                        <Input
+                          value={editingText}
+                          onChange={(e) => setEditingText(e.target.value)}
+                          autoFocus
+                        />
+                      ) : (
+                        <span
+                          className={
+                            a.done ? "line-through text-muted-foreground" : ""
+                          }
+                        >
+                          {a.text}
+                        </span>
+                      )}
+                    </label>
+                    <div className="flex items-center gap-1">
+                      {editingId === a.id ? (
+                        <>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={saveEditAction}
+                            aria-label="Save"
+                          >
+                            <Check className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={cancelEditAction}
+                            aria-label="Cancel"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => beginEditAction(a.id, a.text)}
+                            aria-label="Edit"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => deleteAction(a.id)}
+                            aria-label="Delete"
+                          >
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2 pt-2">
+                <Input
+                  placeholder="Add action..."
+                  value={newActionText}
+                  onChange={(e) => setNewActionText(e.target.value)}
+                />
+                <Button onClick={addAction}>Add</Button>
+              </div>
+            </Card>
+
+            {/* Socratic Chat */}
+            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Socratic Chat
+                </h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Start an interactive, guided conversation based on this lecture.
+              </p>
+              <div className="flex items-center gap-4 pt-1">
+                <Button onClick={startSocraticChat}>Start Socratic Chat</Button>
+                <button
+                  type="button"
+                  onClick={copySocraticLink}
+                  className="text-sm text-primary underline underline-offset-2"
+                >
+                  Copy link
+                </button>
+              </div>
+            </Card>
+          </div>
+
+          {/* Right column (span 4) */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            {/* Audio Player Card */}
+            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Audio Player
+                </h3>
+              </div>
+              <AudioPlayer transcript={transcriptDraft} />
+            </Card>
+
+            {/* Transcript */}
+            <Card className="p-6 space-y-4 bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Transcript
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Expand
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl">
+                    <DialogHeader>
+                      <DialogTitle>Full Transcript</DialogTitle>
+                    </DialogHeader>
+                    <Textarea
+                      autoFocus
+                      className="min-h-[60vh]"
+                      value={transcriptDraft}
+                      onChange={(e) => setTranscriptDraft(e.target.value)}
+                    />
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <Textarea
+                className="min-h-[260px]"
+                value={transcriptDraft}
+                onChange={(e) => setTranscriptDraft(e.target.value)}
+              />
+              <div className="flex gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => setTranscriptDraft("")}
+                >
+                  Clear
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setTranscriptDraft(DUMMY_LECTURE_DERIVATIVES.transcript)
+                  }
+                >
+                  Restore Sample
+                </Button>
+              </div>
+            </Card>
+          </div>
         </div>
 
-        {/* Right column (span 4) */}
-        <div className="col-span-12 lg:col-span-4 space-y-6">
-          {/* Audio Player Card */}
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Audio Player</h3>
-            </div>
-            <AudioPlayer transcript={transcriptDraft} />
-          </Card>
-
-          {/* Transcript */}
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Transcript</h3>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    Expand
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl">
-                  <DialogHeader>
-                    <DialogTitle>Full Transcript</DialogTitle>
-                  </DialogHeader>
-                  <Textarea
-                    autoFocus
-                    className="min-h-[60vh]"
-                    value={transcriptDraft}
-                    onChange={(e) => setTranscriptDraft(e.target.value)}
-                  />
-                </DialogContent>
-              </Dialog>
-            </div>
-            <Textarea
-              className="min-h-[260px]"
-              value={transcriptDraft}
-              onChange={(e) => setTranscriptDraft(e.target.value)}
-            />
-            <div className="flex gap-2">
-              <Button
-                variant="secondary"
-                onClick={() => setTranscriptDraft("")}
-              >
-                Clear
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() =>
-                  setTranscriptDraft(DUMMY_LECTURE_DERIVATIVES.transcript)
-                }
-              >
-                Restore Sample
-              </Button>
-            </div>
-          </Card>
-        </div>
+        {/* Personal Notes full-width */}
+        <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+              Lecture Notes
+            </h3>
+            <Badge variant="secondary" className="hidden sm:inline">
+              Draft
+            </Badge>
+          </div>
+          <PersonalNotes />
+        </Card>
       </div>
-
-      {/* Personal Notes full-width */}
-      <Card className="p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-medium text-lg">Lecture Notes</h3>
-          <Badge variant="secondary" className="hidden sm:inline">
-            Draft
-          </Badge>
-        </div>
-        <PersonalNotes />
-      </Card>
     </div>
   );
 }
@@ -576,22 +596,168 @@ function ConceptMap({ keywords }: { keywords: string[] }) {
 
 function PersonalNotes() {
   const [notes, setNotes] = useState("");
+  const [links, setLinks] = useState<
+    { id: string; url: string; title: string; source: string }[]
+  >([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputUrl, setInputUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Mock backend for link metadata
+  async function mockFetchMetadata(url: string): Promise<{
+    title: string;
+    source: string;
+  }> {
+    // simulate network delay
+    await new Promise((r) => setTimeout(r, 1500));
+    const lower = url.toLowerCase();
+    if (lower.includes("notion.so")) {
+      return { title: "My Notion Study Notes", source: "Notion" };
+    }
+    if (lower.includes("docs.google.com")) {
+      return { title: "Project Requirements Doc", source: "Google Docs" };
+    }
+    return { title: "External Resource", source: "Website" };
+  }
+
+  const onAddResource = async () => {
+    setError(null);
+    const url = inputUrl.trim();
+    if (!url) {
+      setError("Please paste a URL");
+      return;
+    }
+    try {
+      setLoading(true);
+      const meta = await mockFetchMetadata(url);
+      setLinks((prev) => [
+        ...prev,
+        { id: `${Date.now()}`, url, title: meta.title, source: meta.source },
+      ]);
+      setInputUrl("");
+      setIsOpen(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeLink = (id: string) => {
+    setLinks((prev) => prev.filter((l) => l.id !== id));
+  };
+
+  const iconForSource = (source: string) => {
+    if (source === "Notion") return "🅝"; // placeholder
+    if (source === "Google Docs") return "📄";
+    return "🔗";
+  };
+
   return (
     <div className="space-y-3">
+      {/* Link cards */}
+      {links.length > 0 && (
+        <div className="space-y-2">
+          {links.map((l) => (
+            <div
+              key={l.id}
+              className="flex items-center justify-between border rounded-md px-3 py-2 bg-background"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-lg" aria-hidden>
+                  {iconForSource(l.source)}
+                </span>
+                <div className="min-w-0">
+                  <div className="font-medium truncate">{l.title}</div>
+                  <a
+                    className="text-xs text-muted-foreground truncate block hover:underline"
+                    href={l.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {l.url}
+                  </a>
+                </div>
+                <span className="text-[10px] text-muted-foreground border rounded px-1 py-0.5 ml-2 whitespace-nowrap">
+                  {l.source}
+                </span>
+              </div>
+              <button
+                aria-label="Remove resource"
+                onClick={() => removeLink(l.id)}
+                className="text-xs text-muted-foreground hover:text-foreground px-2"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <Textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Write your personal notes or markdown here..."
         className="min-h-[220px]"
       />
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" size="sm" onClick={() => setNotes("")}>
-          Clear
-        </Button>
-        <Button size="sm" disabled>
-          Save (placeholder)
-        </Button>
+
+      {/* Footer toolbar */}
+      <div className="flex justify-between items-center gap-2">
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            onClick={() => setIsOpen(true)}
+          >
+            <span className="mr-2" aria-hidden>
+              🖇️
+            </span>
+            Add Resource
+          </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => setNotes("")}>
+            Clear
+          </Button>
+          <Button size="sm" disabled>
+            Save (placeholder)
+          </Button>
+        </div>
       </div>
+
+      {/* Modal for URL input */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Paste Link URL</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Input
+              placeholder="https://..."
+              value={inputUrl}
+              onChange={(e) => setInputUrl(e.target.value)}
+              autoFocus
+            />
+            {error && (
+              <p className="text-xs text-red-500" role="alert">
+                {error}
+              </p>
+            )}
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="button" onClick={onAddResource} disabled={loading}>
+                {loading ? "Adding..." : "Add"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

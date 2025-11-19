@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import Topbar from "@/app/components/Topbar";
 import { Button } from "@/app/components/ui/button";
 import { Card } from "@/app/components/ui/card";
@@ -276,47 +277,44 @@ export default function ClassDetailPage() {
             <ScrollArea className="h-[400px] pr-2">
               <ul className="space-y-3">
                 {cls.lectures.map((lec) => (
-                  <li
-                    key={lec.id}
-                    className="p-3 rounded-md border bg-card space-y-1 hover:ring-2 ring-indigo-300 transition"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <button
-                        className="text-left flex-1 cursor-pointer"
-                        onClick={() =>
-                          router.push(
-                            `/dashboard/class/${cls.id}/lecture/${lec.id}`
-                          )
-                        }
-                      >
-                        <span className="font-medium text-sm underline-offset-2 group-hover:underline">
-                          {lec.title}
-                        </span>
-                      </button>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground uppercase">
-                          {lec.type}
-                        </span>
-                        <LectureActions
-                          onRename={(newTitle: string) =>
-                            handleRenameLecture(lec.id, newTitle)
-                          }
-                          onDelete={() => handleDeleteLecture(lec.id)}
-                        />
+                  <li key={lec.id}>
+                    <Link
+                      href={`/dashboard/class/${cls.id}/lecture/${lec.id}`}
+                      className="group block w-full"
+                    >
+                      <div className="w-full rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 ease-in-out hover:border-purple-400 hover:bg-gray-50 hover:shadow-sm">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-sm text-foreground group-hover:underline underline-offset-2 truncate">
+                              {lec.title}
+                            </div>
+                            {lec.type === "text" ? (
+                              <p className="mt-1 text-xs line-clamp-2 whitespace-pre-wrap text-muted-foreground">
+                                {lec.content}
+                              </p>
+                            ) : (
+                              <p className="mt-1 text-xs italic text-muted-foreground truncate">
+                                {lec.content}
+                              </p>
+                            )}
+                            <p className="mt-1 text-[10px] text-muted-foreground">
+                              Added {new Date(lec.createdAt).toLocaleString()}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground uppercase">
+                              {lec.type}
+                            </span>
+                            <LectureActions
+                              onRename={(newTitle: string) =>
+                                handleRenameLecture(lec.id, newTitle)
+                              }
+                              onDelete={() => handleDeleteLecture(lec.id)}
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    {lec.type === "text" ? (
-                      <p className="text-xs line-clamp-3 whitespace-pre-wrap text-muted-foreground">
-                        {lec.content}
-                      </p>
-                    ) : (
-                      <p className="text-xs italic text-muted-foreground">
-                        {lec.content}
-                      </p>
-                    )}
-                    <p className="text-[10px] text-muted-foreground">
-                      Added {new Date(lec.createdAt).toLocaleString()}
-                    </p>
+                    </Link>
                   </li>
                 ))}
               </ul>
