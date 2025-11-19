@@ -49,6 +49,7 @@ export default function Home() {
   // Theme state
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isAuth, setIsAuth] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   
   // Chat state
   const [messages, setMessages] = useState<Message[]>([])
@@ -102,6 +103,11 @@ export default function Home() {
   const editTextareaRef = useRef<HTMLTextAreaElement>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
+  // Helper function to get user-specific localStorage key
+  const getChatSessionsKey = () => {
+    return userId ? `chatSessions_${userId}` : 'chatSessions_guest'
+  }
+
   // Handle client-side only mounting
   useEffect(() => {
     setMounted(true)
@@ -109,6 +115,22 @@ export default function Home() {
     // Check authentication (but don't require it)
     const authenticated = isAuthenticated()
     setIsAuth(authenticated)
+    
+    // Fetch user profile to get userId
+    if (authenticated) {
+      fetch(API_ENDPOINTS.getUserProfile, {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.id) {
+          setUserId(data.id)
+        }
+      })
+      .catch(err => console.error('Error fetching user profile:', err))
+    }
     
     const savedTheme = localStorage.getItem('theme')
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -210,6 +232,11 @@ export default function Home() {
 
   const handleLogout = () => {
     removeAccessToken()
+    setUserId(null)
+    setSessions([])
+    setMessages([])
+    setChatState('idle')
+    setCurrentSessionId('')
     toast.success('Signed out successfully')
     router.push('/auth/login')
   }
@@ -913,7 +940,7 @@ export default function Home() {
     }
 
     const trimmedSessions = existingSessions.slice(0, 20)
-    localStorage.setItem('chatSessions', JSON.stringify(trimmedSessions))
+    localStorage.setItem(getChatSessionsKey(), JSON.stringify(trimmedSessions))
     setSessions(trimmedSessions)
   }
 
@@ -921,7 +948,7 @@ export default function Home() {
     if (!mounted) return
     
     try {
-      const savedSessions = localStorage.getItem('chatSessions')
+      const savedSessions = localStorage.getItem(getChatSessionsKey())
       if (savedSessions) {
         const parsed = JSON.parse(savedSessions)
         const validSessions = parsed.map((s: any) => ({
@@ -967,9 +994,9 @@ export default function Home() {
     
     if (!mounted) return
     
-    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const savedSessions = JSON.parse(localStorage.getItem(getChatSessionsKey()) || '[]')
     const filtered = savedSessions.filter((s: TranscriptSession) => s.id !== sessionId)
-    localStorage.setItem('chatSessions', JSON.stringify(filtered))
+    localStorage.setItem(getChatSessionsKey(), JSON.stringify(filtered))
     setSessions(filtered)
     
     // If user is deleting the currently active session, create a new session
@@ -1002,11 +1029,11 @@ export default function Home() {
     
     if (!mounted) return
     
-    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const savedSessions = JSON.parse(localStorage.getItem(getChatSessionsKey()) || '[]')
     const updated = savedSessions.map((s: TranscriptSession) => 
       s.id === sessionId ? { ...s, pinned: !s.pinned } : s
     )
-    localStorage.setItem('chatSessions', JSON.stringify(updated))
+    localStorage.setItem(getChatSessionsKey(), JSON.stringify(updated))
     setSessions(updated)
     
     const session = updated.find((s: TranscriptSession) => s.id === sessionId)
@@ -1027,10 +1054,11 @@ export default function Home() {
   const saveRename = (sessionId: string) => {
     if (!mounted || !newSessionName.trim()) return
     
-    const savedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]')
+    const savedSessions = JSON.parse(localStorage.getItem(getChatSessionsKey()) || '[]')
     const updated = savedSessions.map((s: TranscriptSession) => 
       s.id === sessionId ? { ...s, fileName: newSessionName.trim() } : s
     )
+    localStorage.setItem(getChatSessionsKey(), JSON.stringify(updated))
     localStorage.setItem('chatSessions', JSON.stringify(updated))
     setSessions(updated)
     
@@ -1138,12 +1166,12 @@ export default function Home() {
     return { ...categories, ...months }
   }
 
-  // Load sessions on mount
+  // Load sessions on mount and when userId changes
   useEffect(() => {
     if (mounted) {
       loadSessions()
     }
-  }, [mounted])
+  }, [mounted, userId])
 
   // Auto-save session periodically
   useEffect(() => {
