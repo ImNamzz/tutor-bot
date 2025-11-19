@@ -20,13 +20,9 @@ class AIService:
 
     @staticmethod
     def transcribe_audio(data_key: str, language: str = "ko-KR") -> str:
-        """
-        Sends a request to Clova Speech using the Object Storage method (req_object_storage).
-        """
         if not Config.CLOVA_SPEECH_URL or not Config.CLOVA_SPEECH_SECRET:
             raise Exception("Clova Speech credentials are not configured.")
 
-        # Ensure the URL ends with /recognizer/object-storage
         invoke_url = Config.CLOVA_SPEECH_URL.rstrip('/')
         api_url = f"{invoke_url}/recognizer/object-storage"
 
@@ -36,15 +32,13 @@ class AIService:
             'X-CLOVASPEECH-API-KEY': Config.CLOVA_SPEECH_SECRET
         }
 
-        # Structure matches the reference implementation 'req_object_storage'
         request_body = {
             'dataKey': data_key,
             'language': language,
-            'completion': 'sync', # 'sync' waits for response, 'async' returns a job ID
+            'completion': 'sync',
             'wordAlignment': True,
             'fullText': True,
-            # Optional features typically available in Clova Speech:
-            'diarization': {'enable': False}, # Set True to distinguish speakers
+            'diarization': {'enable': False},
         }
 
         try:
@@ -55,7 +49,6 @@ class AIService:
                 data=json.dumps(request_body).encode('UTF-8')
             )
             
-            # Enhanced Error Handling for Clova-specific errors
             if response.status_code != 200:
                 print(f"Clova Error: {response.status_code} - {response.text}")
                 
@@ -72,7 +65,6 @@ class AIService:
             print(f"Clova Speech API Error: {e}")
             raise Exception(f"Audio transcription failed: {e}")
 
-    # ... (Keep analyze_transcript and get_socratic_response as they were) ...
     @staticmethod
     def analyze_transcript(transcript: str):
         url = f"{Config.CLOVA_API_HOST}/v3/chat-completions/{Config.CLOVA_MODEL}"
@@ -151,6 +143,6 @@ class AIService:
                             except: continue
         except Exception as e:
             print(f"Socratic Chat Error: {e}")
-            return "I'm sorry, I am having trouble thinking right now."
+            return "I'm sorry, I am dumb and cannot respond right now."
 
         return output_text

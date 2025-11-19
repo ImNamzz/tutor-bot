@@ -3,6 +3,7 @@ import uuid
 import os
 from botocore.exceptions import ClientError
 from app.core.config import Config
+import tempfile
 
 class StorageService:
     def __init__(self):
@@ -16,14 +17,15 @@ class StorageService:
 
     def upload_file(self, file_obj, original_filename: str) -> str:
         extension = original_filename.rsplit('.', 1)[1].lower() if '.' in original_filename else "bin"
-        unique_key = f"speech-input/{uuid.uuid4().hex}.{extension}"
-        
+        unique_key = f"audio-storage/{uuid.uuid4().hex}.{extension}"
+
         content_type = "application/octet-stream"
         if extension in ["mp3", "m4a", "wav", "aac"]:
             content_type = f"audio/{extension}"
 
         temp_filename = f"{uuid.uuid4().hex}.{extension}"
-        temp_path = os.path.join("/tmp", temp_filename)
+        temp_dir = tempfile.gettempdir()
+        temp_path = os.path.join(temp_dir, temp_filename)
 
         try:
             file_obj.seek(0)
@@ -51,6 +53,7 @@ class StorageService:
             if os.path.exists(temp_path):
                 os.remove(temp_path)
                 print(f"Cleaned up temp file {temp_path}")
+
 
     def delete_file(self, object_name: str):
         try:
