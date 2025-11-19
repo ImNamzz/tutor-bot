@@ -1,9 +1,15 @@
-[00:00:29.883] Server  LOG      ✓ Ready in 19.5s
-[00:01:23.776] Server  LOG      ○ Compiling / ...
-[00:01:32.346] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:02:50.540] Server  LOG      ✓ Compiled in 1497ms
-[00:06:00.317] Server  LOG      ✓ Compiled in 1312ms
-[00:07:14.177] Server  LOG      ✓ Compiled in 1241ms
-[00:07:18.094] Server  LOG      ✓ Compiled in 432ms
-[00:07:22.275] Server  LOG      ✓ Compiled in 982ms
-[00:07:28.026] Server  LOG      ✓ Compiled in 993ms
+[00:00:02.232] Server  LOG      ✓ Ready in 1671ms
+[00:00:18.367] Server  LOG      ○ Compiling / ...
+[00:00:24.007] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:38.054] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:42.782] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:42.782] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:49.213] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:49.213] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:04.206] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:04.206] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:18.192] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:28.501] Server  LOG      ✓ Compiled in 2.2s
+[00:04:23.255] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:04:23.255] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:06:03.126] Server  LOG      ✓ Compiled in 1632ms

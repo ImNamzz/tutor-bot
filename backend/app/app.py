@@ -729,7 +729,8 @@ def get_user_profile():
         return jsonify({
             "username": user.username,
             "email": user.email,
-            "has_password": user.hashed_password is not None
+            "has_password": user.hashed_password is not None,
+            "is_google_account": user.google_id is not None
         }), 200
     
     except Exception as e:

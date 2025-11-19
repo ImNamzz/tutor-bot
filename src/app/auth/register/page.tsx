@@ -182,6 +182,10 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  toast.error("Please type your password confirmation manually");
+                }}
                 required
                 disabled={isLoading}
                 className="pr-10"

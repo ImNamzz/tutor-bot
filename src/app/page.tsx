@@ -12,7 +12,7 @@ import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
 import { Label } from '@/app/components/ui/label'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -78,6 +78,9 @@ export default function Home() {
   const [settingsTab, setSettingsTab] = useState<'customization' | 'security'>('customization')
   const [isChangingEmail, setIsChangingEmail] = useState(false)
   const [tempTheme, setTempTheme] = useState<boolean>(false) // Temporary theme state for preview
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [settingsData, setSettingsData] = useState({
     username: '',
     email: '',
@@ -135,7 +138,7 @@ export default function Home() {
               email: data.email,
               newEmail: '',
               hasPassword: data.has_password,
-              isGoogleAccount: !data.has_password
+              isGoogleAccount: data.is_google_account
             }))
             setIsChangingEmail(false)
             setSettingsTab('customization')
@@ -1222,9 +1225,12 @@ export default function Home() {
         }`}
       >
         {/* Sidebar Header with Toggle */}
-        <div className="h-16 px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
+        <div className="h-16 px-4 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
-            <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
+            </div>
           )}
           <Button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -1600,8 +1606,11 @@ export default function Home() {
                                       id="current-email"
                                       type="email"
                                       value={settingsData.email}
-                                      readOnly
-                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default"
+                                      readOnly={!settingsData.isGoogleAccount}
+                                      disabled={settingsData.isGoogleAccount}
+                                      className={settingsData.isGoogleAccount 
+                                        ? "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 cursor-not-allowed text-gray-500 dark:text-gray-400" 
+                                        : "bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default"}
                                     />
                                     {!settingsData.isGoogleAccount && (
                                       <Button
@@ -1666,14 +1675,27 @@ export default function Home() {
                                     <Label htmlFor="currentPassword" className="text-sm font-medium">
                                       Current Password
                                     </Label>
-                                    <Input
-                                      id="currentPassword"
-                                      type="password"
-                                      placeholder="Enter current password"
-                                      value={settingsData.currentPassword}
-                                      onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
-                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                                    />
+                                    <div className="relative">
+                                      <Input
+                                        id="currentPassword"
+                                        type={showCurrentPassword ? "text" : "password"}
+                                        placeholder="Enter current password"
+                                        value={settingsData.currentPassword}
+                                        onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
+                                        className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 pr-10"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                      >
+                                        {showCurrentPassword ? (
+                                          <EyeOff className="h-5 w-5" />
+                                        ) : (
+                                          <Eye className="h-5 w-5" />
+                                        )}
+                                      </button>
+                                    </div>
                                   </div>
                                 )}
 
@@ -1682,14 +1704,27 @@ export default function Home() {
                                   <Label htmlFor="newPassword" className="text-sm font-medium">
                                     New Password
                                   </Label>
-                                  <Input
-                                    id="newPassword"
-                                    type="password"
-                                    placeholder="Enter new password"
-                                    value={settingsData.newPassword}
-                                    onChange={(e) => setSettingsData({...settingsData, newPassword: e.target.value})}
-                                    className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                                  />
+                                  <div className="relative">
+                                    <Input
+                                      id="newPassword"
+                                      type={showNewPassword ? "text" : "password"}
+                                      placeholder="Enter new password"
+                                      value={settingsData.newPassword}
+                                      onChange={(e) => setSettingsData({...settingsData, newPassword: e.target.value})}
+                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 pr-10"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => setShowNewPassword(!showNewPassword)}
+                                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                    >
+                                      {showNewPassword ? (
+                                        <EyeOff className="h-5 w-5" />
+                                      ) : (
+                                        <Eye className="h-5 w-5" />
+                                      )}
+                                    </button>
+                                  </div>
                                 </div>
 
                                 {/* Confirm New Password */}
@@ -1697,14 +1732,31 @@ export default function Home() {
                                   <Label htmlFor="confirmPassword" className="text-sm font-medium">
                                     Confirm New Password
                                   </Label>
-                                  <Input
-                                    id="confirmPassword"
-                                    type="password"
-                                    placeholder="Confirm new password"
-                                    value={settingsData.confirmPassword}
-                                    onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
-                                    className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
-                                  />
+                                  <div className="relative">
+                                    <Input
+                                      id="confirmPassword"
+                                      type={showConfirmPassword ? "text" : "password"}
+                                      placeholder="Confirm new password"
+                                      value={settingsData.confirmPassword}
+                                      onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
+                                      onPaste={(e) => {
+                                        e.preventDefault();
+                                        toast.error("Please type your password confirmation manually");
+                                      }}
+                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 pr-10"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                    >
+                                      {showConfirmPassword ? (
+                                        <EyeOff className="h-5 w-5" />
+                                      ) : (
+                                        <Eye className="h-5 w-5" />
+                                      )}
+                                    </button>
+                                  </div>
                                   <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
                                     <p className="font-medium">Password must contain:</p>
                                     <ul className="list-disc list-inside pl-2">
