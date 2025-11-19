@@ -13,28 +13,25 @@ import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [emailOrUsername, setEmailOrUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [needsVerification, setNeedsVerification] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setNeedsVerification(false);
     setLoginError("");
 
     try {
       const response = await fetch(API_ENDPOINTS.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email_or_username: emailOrUsername, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-      console.log("Login response:", { status: response.status, data });
 
       if (response.ok) {
         // Success - store token and redirect
@@ -42,18 +39,9 @@ export default function LoginPage() {
         toast.success("Login successful!");
         router.push("/");
       } else if (response.status === 401) {
-        // Check if email not verified
-        console.log("401 error, needs_verification:", data.needs_verification);
-        if (data.needs_verification) {
-          setNeedsVerification(true);
-          toast.error("Email not verified. Please check your email.");
-        } else {
-          console.log("Setting login error for invalid credentials");
-          setLoginError("Invalid email or password. Please try again.");
-          toast.error(data.detail || "Invalid email or password.");
-        }
+        setLoginError("Invalid email or password. Please try again.");
+        toast.error(data.detail || "Invalid email or password.");
       } else {
-        console.log("Other error status:", response.status);
         setLoginError("Login failed. Please try again.");
         toast.error(data.detail || "Login failed. Please try again.");
       }
@@ -66,29 +54,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleResendVerification = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(API_ENDPOINTS.resendVerification, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailOrUsername }),
-      });
 
-      if (response.ok) {
-        toast.success("Verification email sent! Please check your inbox.");
-        setNeedsVerification(false);
-      } else {
-        const data = await response.json();
-        toast.error(data.detail || "Failed to resend verification email.");
-      }
-    } catch (error) {
-      console.error("Resend verification error:", error);
-      toast.error("Network error. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleGoogleSignIn = () => {
     // Redirect to backend Google OAuth endpoint
@@ -122,14 +88,14 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <Label htmlFor="email" className="dark:text-gray-200">
-              Email or Username
+              Email
             </Label>
             <Input
               id="email"
-              type="text"
-              placeholder="you@example.com or username"
-              value={emailOrUsername}
-              onChange={(e) => setEmailOrUsername(e.target.value)}
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               disabled={isLoading}
               className="mt-1"
@@ -172,32 +138,6 @@ export default function LoginPage() {
               <p className="text-sm text-red-600 dark:text-red-400 text-center">
                 {loginError}
               </p>
-            </div>
-          )}
-
-          {/* Resend Verification Button */}
-          {needsVerification && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-2">
-                Your email is not verified.
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleResendVerification}
-                disabled={isLoading}
-                className="w-full"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  "Resend Verification Email"
-                )}
-              </Button>
             </div>
           )}
 

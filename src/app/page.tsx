@@ -1553,27 +1553,27 @@ export default function Home() {
                                         document.documentElement.classList.remove('dark')
                                       }
                                     }
-                                    const updateData: any = {}
-                                    if (settingsData.username) updateData.username = settingsData.username
 
-                                    const response = await fetch(API_ENDPOINTS.updateUserProfile, {
-                                      method: 'PUT',
-                                      headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${getAccessToken()}`
-                                      },
-                                      body: JSON.stringify(updateData)
-                                    })
+                                    // Update username if changed
+                                    if (settingsData.username) {
+                                      const response = await fetch(API_ENDPOINTS.updateUsername, {
+                                        method: 'PATCH',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'Authorization': `Bearer ${getAccessToken()}`
+                                        },
+                                        body: JSON.stringify({ username: settingsData.username })
+                                      })
 
-                                    const data = await response.json()
-
-                                    if (!response.ok) {
-                                      if (response.status === 401) {
-                                        handleAuthError(401)
+                                      if (!response.ok) {
+                                        const data = await response.json()
+                                        if (response.status === 401) {
+                                          handleAuthError(401)
+                                          return
+                                        }
+                                        toast.error(data.detail || 'Failed to update username')
                                         return
                                       }
-                                      toast.error(data.detail || 'Failed to update profile')
-                                      return
                                     }
 
                                     toast.success('Profile updated successfully!')
@@ -1815,15 +1815,36 @@ export default function Home() {
                               <Button
                                 onClick={async () => {
                                   try {
-                                    const updateData: any = {}
-                                    
+                                    let hasChanges = false;
+                                    let updatedEmail = settingsData.email;
+
                                     // Handle email change
                                     if (isChangingEmail && settingsData.newEmail) {
                                       if (settingsData.newEmail === settingsData.email) {
                                         toast.error('New email must be different from current email')
                                         return
                                       }
-                                      updateData.email = settingsData.newEmail
+                                      
+                                      const emailResponse = await fetch(API_ENDPOINTS.updateEmail, {
+                                        method: 'PATCH',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'Authorization': `Bearer ${getAccessToken()}`
+                                        },
+                                        body: JSON.stringify({ email: settingsData.newEmail })
+                                      })
+
+                                      if (!emailResponse.ok) {
+                                        const data = await emailResponse.json()
+                                        if (emailResponse.status === 401) {
+                                          handleAuthError(401)
+                                          return
+                                        }
+                                        toast.error(data.detail || 'Failed to update email')
+                                        return
+                                      }
+                                      updatedEmail = settingsData.newEmail
+                                      hasChanges = true
                                     }
 
                                     // Handle password change
@@ -1852,32 +1873,32 @@ export default function Home() {
                                         return
                                       }
 
-                                      updateData.current_password = settingsData.currentPassword || ''
-                                      updateData.new_password = settingsData.newPassword
-                                    }
+                                      const passwordResponse = await fetch(API_ENDPOINTS.updatePassword, {
+                                        method: 'PUT',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'Authorization': `Bearer ${getAccessToken()}`
+                                        },
+                                        body: JSON.stringify({
+                                          old_password: settingsData.currentPassword || '',
+                                          new_password: settingsData.newPassword
+                                        })
+                                      })
 
-                                    if (Object.keys(updateData).length === 0) {
-                                      toast.error('No changes to save')
-                                      return
-                                    }
-
-                                    const response = await fetch(API_ENDPOINTS.updateUserProfile, {
-                                      method: 'PUT',
-                                      headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${getAccessToken()}`
-                                      },
-                                      body: JSON.stringify(updateData)
-                                    })
-
-                                    const data = await response.json()
-
-                                    if (!response.ok) {
-                                      if (response.status === 401) {
-                                        handleAuthError(401)
+                                      if (!passwordResponse.ok) {
+                                        const data = await passwordResponse.json()
+                                        if (passwordResponse.status === 401) {
+                                          handleAuthError(401)
+                                          return
+                                        }
+                                        toast.error(data.detail || 'Failed to update password')
                                         return
                                       }
-                                      toast.error(data.detail || 'Failed to update security settings')
+                                      hasChanges = true
+                                    }
+
+                                    if (!hasChanges) {
+                                      toast.error('No changes to save')
                                       return
                                     }
 
@@ -1886,7 +1907,7 @@ export default function Home() {
                                     setIsChangingEmail(false)
                                     setSettingsData(prev => ({
                                       ...prev,
-                                      email: data.email || prev.email,
+                                      email: updatedEmail,
                                       newEmail: '',
                                       currentPassword: '',
                                       newPassword: '',

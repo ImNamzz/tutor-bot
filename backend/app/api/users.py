@@ -3,9 +3,28 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import bcrypt
 from app.core.database import SessionLocal
 from app.models.models import User as UserModel
-from app.schemas.schemas import UserUpdateUsername, UserUpdateEmail, UserUpdatePassword
+from app.schemas.schemas import User as UserSchema, UserUpdateUsername, UserUpdateEmail, UserUpdatePassword
 
 users_bp = Blueprint('users', __name__)
+
+@users_bp.route("/profile", methods=["GET"])
+@jwt_required()
+def get_profile():
+    current_user_id = get_jwt_identity()
+    db = SessionLocal()
+    try:
+        user = db.query(UserModel).filter_by(id=current_user_id).first()
+        if not user:
+            return jsonify({"detail": "User not found."}), 404
+        
+        # Create user dict and add computed fields
+        user_data = UserSchema.model_validate(user).model_dump()
+        user_data['has_password'] = bool(user.hashed_password)
+        user_data['is_google_account'] = bool(user.google_id)
+        
+        return jsonify(user_data), 200
+    finally:
+        db.close()
 
 @users_bp.route("/username", methods=["PATCH"])
 @jwt_required()
@@ -66,11 +85,19 @@ def update_password():
     try:
         user = db.query(UserModel).filter_by(id=current_user_id).first()
         
-        if not user or not user.hashed_password:
-            return jsonify({"detail": "User cannot change password."}), 404
+        if not user:
+            return jsonify({"detail": "User not found."}), 404
 
-        if not bcrypt.check_password_hash(user.hashed_password, data.old_password):
-            return jsonify({"detail": "Old password incorrect."}), 401
+        # If user has a password, verify the old password
+        if user.hashed_password:
+            if not data.old_password:
+                return jsonify({"detail": "Old password is required."}), 400
+            if not bcrypt.check_password_hash(user.hashed_password, data.old_password):
+                return jsonify({"detail": "Old password incorrect."}), 401
+        # If user doesn't have a password (Google OAuth user), allow setting first password
+        elif data.old_password:
+            # User is OAuth user trying to set password, ignore old_password
+            pass
         
         user.hashed_password = bcrypt.generate_password_hash(data.new_password).decode('utf-8')
         db.commit()

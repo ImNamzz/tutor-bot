@@ -86,6 +86,15 @@ class NotebookPage(NotebookPageBase):
     updated_at: datetime
     action_item_id: uuid.UUID
 
+class User(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    username: str
+    email: str
+    created_at: datetime
+    has_password: bool = False
+    is_google_account: bool = False
+
 class UserUpdateUsername(BaseModel):
     username: str
 

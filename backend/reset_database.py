@@ -3,15 +3,11 @@ Database Reset Script
 This script drops and recreates the entire database with the correct schema.
 WARNING: This will delete ALL data in the database!
 """
-from app.database import engine
-from app.models import Base
+from app.core.database import engine
+from app.models.models import Base
+from app.core.config import Config
 from sqlalchemy import text, create_engine
 import os
-from dotenv import load_dotenv
-
-# Load environment variables from app/.env
-env_path = os.path.join(os.path.dirname(__file__), 'app', '.env')
-load_dotenv(env_path)
 
 def reset_database():
     print("⚠️  WARNING: This will delete ALL data in the database!")
@@ -21,19 +17,18 @@ def reset_database():
         print("Aborted.")
         return
     
-    # Get database credentials
-    mysql_host = os.getenv("MYSQL_HOST", "localhost")
-    mysql_port = os.getenv("MYSQL_PORT", "3306")
-    mysql_user = os.getenv("MYSQL_USER", "root")
-    mysql_password = os.getenv("MYSQL_PASSWORD")
-    db_name = os.getenv("MYSQL_DB", "chatbot_db")
+    # Get database credentials from Config
+    mysql_host = Config.MYSQL_HOST
+    mysql_port = Config.MYSQL_PORT
+    mysql_user = Config.MYSQL_USER
+    mysql_password = Config.MYSQL_PASSWORD
+    db_name = Config.MYSQL_DB
     
     if not mysql_password:
-        print("❌ MYSQL_PASSWORD not found in .env file")
+        print("❌ MYSQL_PASSWORD not found in environment variables")
         return
     
     # Construct database URLs
-    db_url = f"mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_port}/{db_name}"
     base_url = f"mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_port}"
     
     print(f"\n🗑️  Dropping and recreating database: {db_name}...")
@@ -66,7 +61,7 @@ def reset_database():
         print(f"\n❌ Error: {e}")
         print("\nTroubleshooting:")
         print("1. Make sure MySQL server is running")
-        print("2. Check your .env file has correct DATABASE_URL")
+        print("2. Check your .env file has correct database credentials")
         print("3. Ensure your MySQL user has database creation privileges")
 
 if __name__ == "__main__":
