@@ -1,16 +1,806 @@
-[00:00:04.631] Server  LOG      ✓ Ready in 3.6s
-[00:00:08.173] Server  LOG      ○ Compiling / ...
-[00:00:19.256] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:41.842] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:41.842] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:49.222] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:49.223] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:30.279] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:05:27.314] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:27.314] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:41.059] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:41.059] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:07.158] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:07.158] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:07:12.291] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:07:12.291] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:01.518] Server  LOG      ✓ Ready in 1108ms
+[00:00:09.951] Server  LOG      ○ Compiling /dashboard ...
+[00:00:10.658] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:22.869] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:14.397] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:09:41.538] Server  LOG      ✓ Compiled in 138ms
+[00:10:59.965] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:33.759] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.762] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.765] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.768] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.773] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.774] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.775] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.777] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.780] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.813] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.825] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.826] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.829] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.830] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.832] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.834] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.836] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.838] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.841] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.844] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.846] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.848] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.849] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.851] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.853] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.855] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.856] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.857] Server  ERROR    ⨯ ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:33.859] Server  LOG      ✓ Compiled in 99ms
+[00:11:34.033] Browser ERROR   ./src/app/dashboard/page.tsx:4:1
+Module not found: Can't resolve './components/ToDoSidebar'
+  2 | import React, { useEffect, useState } from "react";
+  3 | import Topbar from "../components/Topbar";
+> 4 | import { ToDoSidebar } from "./components/ToDoSidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AddClassModal } from "./components/AddClassModal";
+  6 | import { ClassCard } from "./components/ClassCard";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:12:16.807] Server  LOG      ✓ Compiled in 170ms
+[00:12:17.034] Browser ERROR   uncaughtError: ReferenceError: ToDoSidebar is not defined
+[00:12:18.525] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:12:18.539] Server  LOG      ✓ Compiled in 131ms
+[00:12:18.630] Server  ERROR    ⨯ ReferenceError: ToDoSidebar is not defined
+[00:12:18.853] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:12:20.038] Browser ERROR   uncaughtError: ReferenceError: ToDoSidebar is not defined
+[00:12:29.783] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:12:29.824] Server  ERROR    ⨯ ReferenceError: ToDoSidebar is not defined
+[00:12:29.837] Server  LOG      ✓ Compiled in 80ms
+[00:12:29.968] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:12:31.032] Browser ERROR   uncaughtError: ReferenceError: ToDoSidebar is not defined
+[00:15:04.330] Server  ERROR    ⨯ ReferenceError: ToDoSidebar is not defined
+[00:15:04.442] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:15:04.573] Browser ERROR   uncaughtError: ReferenceError: ToDoSidebar is not defined
+[00:15:47.060] Server  LOG      ✓ Compiled in 935ms
+[00:15:47.195] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:24:31.031] Browser ERROR   uncaughtError: Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `DashboardPage`.
+[00:24:31.222] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:24:31.414] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:24:31.679] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:24:52.540] Server  LOG      ✓ Compiled in 168ms
+[00:25:07.753] Server  LOG      ✓ Compiled in 72ms
+[00:25:37.260] Server  LOG      ✓ Compiled in 114ms
+[00:27:06.310] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:27:10.470] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:28:04.977] Server  LOG      ✓ Compiled in 246ms
+[00:46:01.905] Server  LOG      ✓ Compiled in 307ms
+[00:46:33.677] Server  LOG      ✓ Compiled in 216ms
+[01:06:50.335] Server  LOG      ✓ Compiled in 783ms
+[01:07:57.870] Server  LOG      ✓ Compiled in 324ms
+[01:09:13.321] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:13.321] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:22.340] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:22.340] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:38.054] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:38.054] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:44.344] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:44.344] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:29.263] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:29.263] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:17:57.362] Server  LOG      ✓ Compiled in 420ms
+[01:19:55.784] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:20:12.895] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:20:12.895] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:22:23.428] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:22:23.433] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:22:28.021] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:22:28.022] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:22:30.097] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:22:31.090] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:22:31.090] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:25:26.789] Server  LOG      ✓ Compiled in 891ms
+[01:27:40.439] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:27:41.431] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:27:41.431] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:31:55.439] Server  LOG      ✓ Compiled in 606ms
+[01:34:29.266] Server  LOG      ✓ Compiled in 351ms
+[01:34:41.742] Server  LOG      ✓ Compiled in 372ms
+[01:35:17.153] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:35:18.123] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:35:18.123] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:35:45.944] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:35:45.944] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:36:04.579] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:36:04.579] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:40:03.042] Server  LOG      ✓ Compiled in 740ms
+[01:49:49.845] Server  LOG      ✓ Compiled in 1306ms
+[01:51:19.670] Server  LOG      ✓ Compiled in 312ms
+[01:51:57.156] Server  LOG      ✓ Compiled in 424ms
+[01:57:31.356] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:57:31.356] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:57:47.401] Server  LOG      ✓ Compiled in 395ms
+[01:59:17.221] Server  LOG      ✓ Compiled in 248ms
+[01:59:42.956] Server  LOG      ✓ Compiled in 507ms
+[02:06:32.376] Server  LOG      ✓ Compiled in 512ms
+[02:08:22.709] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:08:22.709] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:09:38.604] Server  LOG      ✓ Compiled in 426ms
+[02:11:33.124] Server  LOG      ✓ Compiled in 332ms
+[02:21:11.363] Server  LOG      ✓ Compiled in 1050ms
+[02:26:28.914] Server  LOG      ✓ Compiled in 795ms
+[02:33:17.871] Server  LOG      ✓ Compiled in 752ms
+[02:33:32.359] Server  LOG      ✓ Compiled in 288ms
+[02:39:06.637] Server  LOG      ✓ Compiled in 504ms
+[02:40:27.245] Server  LOG      ✓ Compiled in 629ms
+[02:41:50.612] Server  LOG      ✓ Compiled in 431ms
+[02:41:54.885] Server  LOG      ✓ Compiled in 516ms
+[02:41:58.084] Server  LOG      ✓ Compiled in 307ms
+[02:42:01.287] Server  LOG      ✓ Compiled in 489ms
+[02:42:04.072] Server  LOG      ✓ Compiled in 412ms
+[02:43:51.177] Server  LOG      ✓ Compiled in 601ms
+[02:44:09.811] Server  LOG      ✓ Compiled in 212ms
+[02:44:13.459] Server  LOG      ✓ Compiled in 296ms
+[02:44:23.916] Server  LOG      ✓ Compiled in 342ms
+[02:44:31.486] Server  LOG      ✓ Compiled in 301ms
+[02:44:53.231] Server  LOG      ✓ Compiled in 435ms
+[02:44:57.144] Server  LOG      ✓ Compiled in 375ms
+[02:45:03.506] Server  LOG      ✓ Compiled in 212ms
+[02:45:06.723] Server  LOG      ✓ Compiled in 567ms
+[02:45:12.078] Server  LOG      ✓ Compiled in 202ms
+[02:45:15.430] Server  LOG      ✓ Compiled in 345ms
+[02:45:22.921] Server  LOG      ✓ Compiled in 460ms
+[02:45:25.553] Server  LOG      ✓ Compiled in 292ms

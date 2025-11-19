@@ -186,60 +186,81 @@ export default function LectureDetailPage() {
     return Math.round((done / data.actions.length) * 100);
   }, [data.actions]);
 
+  const completedCount = useMemo(
+    () => data.actions.filter((a) => a.done).length,
+    [data.actions]
+  );
+
   return (
-    <div className="relative bg-gray-50/50 bg-[radial-gradient(circle_at_1px_1px,rgba(17,24,39,0.06)_1px,transparent_1px)] [background-size:20px_20px]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <div className="space-y-2 flex-1">
-            <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-1">
-              <Link href="/dashboard" className="hover:underline">
-                Dashboard
-              </Link>
-              <span>/</span>
-              {cls ? (
-                <Link
-                  href={`/dashboard/class/${cls.id}`}
-                  className="hover:underline"
-                >
-                  {cls.name}
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/20 dark:from-gray-900 dark:to-gray-800 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+      <div className="backdrop-blur-md bg-white/70 dark:bg-slate-800/70 border-b border-slate-200/70 dark:border-slate-700 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+            <div className="space-y-2 flex-1">
+              <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-1">
+                <Link href="/dashboard" className="hover:underline">
+                  Dashboard
                 </Link>
-              ) : (
-                <span>Class</span>
-              )}
-              <span>/</span>
-              <span className="text-foreground">Lecture</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                {/* decorative glow */}
-                <div className="pointer-events-none absolute -inset-x-8 -inset-y-3 -z-10 rounded-full bg-purple-500/20 blur-3xl" />
-                <h1 className="text-2xl font-semibold tracking-tight relative">
-                  {lectureTitle || "Lecture"}
-                </h1>
+                <span>/</span>
+                {cls ? (
+                  <Link
+                    href={`/dashboard/class/${cls.id}`}
+                    className="hover:underline"
+                  >
+                    {cls.name}
+                  </Link>
+                ) : (
+                  <span>Class</span>
+                )}
+                <span>/</span>
+                <span className="text-slate-700 dark:text-slate-200">
+                  Lecture
+                </span>
               </div>
-              {/* Progress Ring */}
-              <ProgressRing percent={progressPct} label={`${progressPct}%`} />
+              <div className="flex items-center gap-5 flex-wrap">
+                <div className="relative py-1">
+                  <div className="pointer-events-none absolute -inset-x-8 -inset-y-4 -z-10 rounded-full bg-violet-400/10 blur-3xl" />
+                  <h1 className="text-3xl font-bold tracking-tight leading-tight relative text-slate-800 dark:text-slate-100">
+                    {lectureTitle || "Lecture"}
+                  </h1>
+                </div>
+                <ProgressRing percent={progressPct} label={`${progressPct}%`} />
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <Button variant="outline" onClick={resetAll}>
-              Reset
-            </Button>
-            <Button onClick={rerunAll}>Re-run</Button>
+            <div className="flex gap-2 shrink-0">
+              <Button
+                variant="outline"
+                onClick={resetAll}
+                className="border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 transition-transform hover:scale-[1.03]"
+              >
+                Reset
+              </Button>
+              <Button
+                onClick={rerunAll}
+                className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-sm transition-transform hover:scale-[1.04]"
+              >
+                Re-run
+              </Button>
+            </div>
           </div>
         </div>
-
+      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6 space-y-8">
         {/* Main grid */}
         <div className="grid grid-cols-12 gap-6">
           {/* Left column (span 8) */}
           <div className="col-span-12 lg:col-span-8 space-y-6">
             {/* Summary */}
-            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-gray-100 border-l-4 border-purple-500">
+            <Card className="p-6 space-y-4 bg-violet-50/30 dark:bg-violet-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-violet-200/60 dark:border-violet-800/60 border-l-4 border-violet-400 hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Summary
-                </h3>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-lg">
+                    📝
+                  </span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
+                    Summary
+                  </h3>
+                </div>
                 <Button
                   size="sm"
                   onClick={regenerateSummary}
@@ -248,35 +269,22 @@ export default function LectureDetailPage() {
                   Generate
                 </Button>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-gray-700 leading-relaxed break-words">
                 {data.summary}
               </p>
             </Card>
 
-            {/* Concept Map */}
-            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Concept Map
-                </h3>
-              </div>
-              <ConceptMap
-                keywords={[
-                  "Perceptron",
-                  "MLP",
-                  "Activation",
-                  "Backprop",
-                  "Regularization",
-                ]}
-              />
-            </Card>
-
             {/* Action Items */}
-            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-gray-100 border-l-4 border-purple-500">
+            <Card className="p-6 space-y-4 bg-blue-50/30 dark:bg-blue-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-blue-200/60 dark:border-blue-800/60 border-l-4 border-blue-400 hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Action Items
-                </h3>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-lg">
+                    ✅
+                  </span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
+                    Action Items
+                  </h3>
+                </div>
                 <Button
                   size="sm"
                   onClick={extractActions}
@@ -285,107 +293,132 @@ export default function LectureDetailPage() {
                   Extract
                 </Button>
               </div>
-              <div className="space-y-2">
-                {data.actions.map((a) => (
-                  <div
-                    key={a.id}
-                    className="flex items-start justify-between gap-3 text-sm"
-                  >
-                    <label className="flex items-start gap-3 flex-1">
-                      <Checkbox
-                        checked={!!a.done}
-                        onCheckedChange={(v) => toggleAction(a.id, !!v)}
-                        className="mt-0.5"
-                      />
-                      {editingId === a.id ? (
-                        <Input
-                          value={editingText}
-                          onChange={(e) => setEditingText(e.target.value)}
-                          autoFocus
-                        />
-                      ) : (
-                        <span
-                          className={
-                            a.done ? "line-through text-muted-foreground" : ""
-                          }
-                        >
-                          {a.text}
-                        </span>
-                      )}
-                    </label>
-                    <div className="flex items-center gap-1">
-                      {editingId === a.id ? (
-                        <>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={saveEditAction}
-                            aria-label="Save"
-                          >
-                            <Check className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={cancelEditAction}
-                            aria-label="Cancel"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={() => beginEditAction(a.id, a.text)}
-                            aria-label="Edit"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={() => deleteAction(a.id)}
-                            aria-label="Delete"
-                          >
-                            <Trash2 className="h-4 w-4 text-red-500" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              {/* Statistics */}
+              <div
+                className="text-xs text-slate-600 dark:text-slate-300 flex justify-between items-center px-1 mb-2"
+                aria-live="polite"
+              >
+                <span>
+                  Total: {data.actions.length} item
+                  {data.actions.length !== 1 && "s"}
+                </span>
+                <span>
+                  Completed: {completedCount}/{data.actions.length || 0}
+                </span>
               </div>
-              <div className="flex gap-2 pt-2">
+              {/* Scrollable Action Items List */}
+              <ScrollArea className="h-64 max-h-96 overflow-y-auto pr-2">
+                <div className="space-y-2">
+                  {data.actions.map((a) => (
+                    <div
+                      key={a.id}
+                      className="flex items-start justify-between gap-3 text-sm group rounded-lg px-3 py-2 hover:bg-slate-100/60 dark:hover:bg-slate-700/50 transition-all duration-200"
+                    >
+                      <label className="flex items-start gap-3 flex-1">
+                        <Checkbox
+                          checked={!!a.done}
+                          onCheckedChange={(v) => toggleAction(a.id, !!v)}
+                          className="mt-0.5 h-5 w-5 border-2 border-gray-400 dark:border-slate-500 data-[state=checked]:bg-violet-500 data-[state=checked]:border-violet-600 data-[state=checked]:text-white transition-colors duration-200 focus:ring-2 focus:ring-violet-300 focus:ring-offset-1"
+                        />
+                        {editingId === a.id ? (
+                          <Input
+                            value={editingText}
+                            onChange={(e) => setEditingText(e.target.value)}
+                            autoFocus
+                            className="text-sm"
+                          />
+                        ) : (
+                          <span
+                            className={`leading-relaxed break-words ${
+                              a.done
+                                ? "line-through text-slate-600 dark:text-slate-400"
+                                : ""
+                            }`}
+                          >
+                            {a.text}
+                          </span>
+                        )}
+                      </label>
+                      <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition">
+                        {editingId === a.id ? (
+                          <>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={saveEditAction}
+                              aria-label="Save"
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={cancelEditAction}
+                              aria-label="Cancel"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={() => beginEditAction(a.id, a.text)}
+                              aria-label="Edit"
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={() => deleteAction(a.id)}
+                              aria-label="Delete"
+                            >
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+              <div className="flex gap-2 pt-1">
                 <Input
                   placeholder="Add action..."
                   value={newActionText}
                   onChange={(e) => setNewActionText(e.target.value)}
+                  className="text-sm"
                 />
                 <Button onClick={addAction}>Add</Button>
               </div>
             </Card>
 
             {/* Socratic Chat */}
-            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+            <Card className="p-6 space-y-4 bg-emerald-50/30 dark:bg-emerald-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-emerald-200/60 dark:border-emerald-800/60 border-l-4 border-emerald-400 hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Socratic Chat
-                </h3>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-lg">
+                    💬
+                  </span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
+                    Socratic Chat
+                  </h3>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-700 leading-relaxed">
                 Start an interactive, guided conversation based on this lecture.
               </p>
-              <div className="flex items-center gap-4 pt-1">
-                <Button onClick={startSocraticChat}>Start Socratic Chat</Button>
-                <button
-                  type="button"
+              <div className="flex items-center gap-3 pt-1 flex-wrap">
+                <Button onClick={startSocraticChat}>Start Chat</Button>
+                <Button
+                  variant="outline"
                   onClick={copySocraticLink}
-                  className="text-sm text-primary underline underline-offset-2"
+                  className="text-sm"
                 >
-                  Copy link
-                </button>
+                  Copy Link
+                </Button>
               </div>
             </Card>
           </div>
@@ -393,45 +426,61 @@ export default function LectureDetailPage() {
           {/* Right column (span 4) */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             {/* Audio Player Card */}
-            <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+            <Card className="p-6 space-y-4 bg-amber-50/30 dark:bg-amber-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-amber-200/60 dark:border-amber-800/60 border-l-4 border-amber-400 hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Audio Player
-                </h3>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-lg">
+                    🎧
+                  </span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
+                    Audio Player
+                  </h3>
+                </div>
               </div>
               <AudioPlayer transcript={transcriptDraft} />
             </Card>
 
             {/* Transcript */}
-            <Card className="p-6 space-y-4 bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
+            <Card className="p-6 space-y-4 bg-slate-50/30 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.05)] border-l-4 border-slate-400 hover:shadow-md transition-all duration-200 min-h-[548px] md:min-h-[648px]">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  Transcript
-                </h3>
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-lg">
+                    📰
+                  </span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
+                    Transcript
+                  </h3>
+                </div>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" size="sm">
                       Expand
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-3xl">
+                  <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Full Transcript</DialogTitle>
                     </DialogHeader>
                     <Textarea
                       autoFocus
-                      className="min-h-[60vh]"
+                      className="min-h-[40vh] max-h-[80vh] overflow-y-auto resize-y bg-muted/30"
                       value={transcriptDraft}
                       onChange={(e) => setTranscriptDraft(e.target.value)}
                     />
+                    <div className="text-[11px] text-muted-foreground mt-1">
+                      {transcriptDraft.length} chars
+                    </div>
                   </DialogContent>
                 </Dialog>
               </div>
               <Textarea
-                className="min-h-[260px]"
+                className="h-72 max-h-[420px] overflow-y-auto resize-y bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700 rounded-md px-3 py-2 scrollbar-thin"
                 value={transcriptDraft}
                 onChange={(e) => setTranscriptDraft(e.target.value)}
               />
+              <div className="text-[11px] text-muted-foreground -mt-1">
+                {transcriptDraft.length} chars
+              </div>
               <div className="flex gap-2">
                 <Button
                   variant="secondary"
@@ -453,11 +502,16 @@ export default function LectureDetailPage() {
         </div>
 
         {/* Personal Notes full-width */}
-        <Card className="p-6 space-y-4 bg-white rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+        <Card className="p-6 space-y-4 bg-rose-50/30 dark:bg-rose-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-rose-200/60 dark:border-rose-800/60 border-l-4 border-rose-400 hover:shadow-md transition-all duration-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Lecture Notes
-            </h3>
+            <div className="flex items-center gap-2">
+              <span aria-hidden className="text-lg">
+                📓
+              </span>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
+                Lecture Notes
+              </h3>
+            </div>
             <Badge variant="secondary" className="hidden sm:inline">
               Draft
             </Badge>
@@ -544,52 +598,6 @@ function AudioPlayer({ transcript }: { transcript: string }) {
         Placeholder audio waveform • {Math.min(transcript.length, 120)} chars of
         transcript
       </div>
-    </div>
-  );
-}
-
-function ConceptMap({ keywords }: { keywords: string[] }) {
-  // Simple radial layout placeholder
-  return (
-    <div className="relative w-full min-h-[200px]">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-24 w-24 rounded-full bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-xs font-medium">
-          Core
-        </div>
-      </div>
-      {keywords.map((k, i) => {
-        const angle = (i / keywords.length) * Math.PI * 2;
-        const r = 90;
-        const x = Math.cos(angle) * r;
-        const y = Math.sin(angle) * r;
-        return (
-          <div
-            key={k}
-            className="absolute px-2 py-1 rounded-md bg-white shadow-sm text-[11px] border"
-            style={{
-              left: `calc(50% + ${x}px)`,
-              top: `calc(50% + ${y}px)`,
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            {k}
-          </div>
-        );
-      })}
-      {/* connecting lines placeholder */}
-      <svg
-        className="absolute inset-0 w-full h-full"
-        stroke="rgba(139,92,246,0.4)"
-        fill="none"
-      >
-        {keywords.map((_, i) => {
-          const angle = (i / keywords.length) * Math.PI * 2;
-          const r = 90;
-          const x = 26 + Math.cos(angle) * (r / 2.2);
-          const y = 26 + Math.sin(angle) * (r / 2.2);
-          return <circle key={i} cx={x} cy={y} r={2} />;
-        })}
-      </svg>
     </div>
   );
 }
