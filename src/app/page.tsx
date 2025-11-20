@@ -314,37 +314,18 @@ export default function Home() {
           const content = e.target?.result as string
           
           try {
-            // Step 1: Upload lecture to create lecture resource
-            const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+            // Start chat session directly with the document content
+            const initialMessage = `I've uploaded a document titled "${file.name}". Here's the content:\n\n${content}\n\nPlease help me understand this content by asking me questions.`
+            
+            const chatResponse = await fetch(API_ENDPOINTS.chat, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getAccessToken()}`
               },
               body: JSON.stringify({
-                title: file.name,
-                transcript: content // Backend may need document parser
+                message: initialMessage
               })
-            })
-
-            if (!uploadResponse.ok) {
-              if (uploadResponse.status === 401) {
-                handleAuthError(401)
-                return
-              }
-              throw new Error('Failed to upload document')
-            }
-
-            const lectureData = await uploadResponse.json()
-            const lectureId = lectureData.id
-            
-            // Step 2: Start chat session from the lecture
-            const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getAccessToken()}`
-              }
             })
 
             if (!chatResponse.ok) {
@@ -352,7 +333,7 @@ export default function Home() {
                 handleAuthError(401)
                 return
               }
-              throw new Error('Failed to start chat')
+              throw new Error('Failed to start chat session')
             }
 
             const chatData = await chatResponse.json()
@@ -361,14 +342,14 @@ export default function Home() {
             setCurrentSessionId(chatData.chat_session_id.toString())
             
             // Generate AI-based session name in the background
-            generateSessionName(lectureData.transcript || file.name).then(generatedName => {
+            generateSessionName(content).then(generatedName => {
               setFileName(generatedName)
             })
             
-            setTranscriptContent(lectureData.transcript || '')
+            setTranscriptContent(content)
             
-            // Use the first question from the backend
-            addMessage('assistant', chatData.first_question)
+            // Use the response from the backend
+            addMessage('assistant', chatData.response)
             
             setChatState('quizzing')
             setIsLoading(false)
@@ -477,6 +458,46 @@ export default function Home() {
     reader.readAsText(file)
   }
 
+  // Helper function to get or create a default class for uploads
+  const getOrCreateDefaultClass = async (): Promise<string> => {
+    try {
+      // Try to fetch existing classes
+      const response = await fetch(API_ENDPOINTS.classes, {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      })
+      
+      if (response.ok) {
+        const classes = await response.json()
+        // If user has classes, return the first one
+        if (classes && classes.length > 0) {
+          return classes[0].id
+        }
+      }
+      
+      // No classes exist, create a default one
+      const createResponse = await fetch(API_ENDPOINTS.classes, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({ title: 'General' })
+      })
+      
+      if (!createResponse.ok) {
+        throw new Error('Failed to create default class')
+      }
+      
+      const newClass = await createResponse.json()
+      return newClass.id
+    } catch (error) {
+      console.error('Error getting/creating default class:', error)
+      throw error
+    }
+  }
+
   const processFileUpload = async (file: File, userMessage: string = '') => {
     const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
     const validTextExtensions = ['.txt', '.doc', '.docx']
@@ -491,8 +512,12 @@ export default function Home() {
     // Handle audio files
     if (validAudioExtensions.includes(fileExtension)) {
       try {
+        // Get or create a default class for the upload
+        const classId = await getOrCreateDefaultClass()
+        
         const formData = new FormData()
         formData.append('media', file)
+        formData.append('class_id', classId)
         formData.append('title', file.name)
         formData.append('language', 'en-US') // Default to English
         
@@ -513,29 +538,39 @@ export default function Home() {
         }
 
         const data = await response.json()
-        const lectureId = data.id
+        const transcript = data.transcript || ''
+        setTranscriptContent(transcript)
         
-        // Now start a chat session with this lecture
-        const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+        // Start a chat session with the transcript as context
+        const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
+        
+        const chatResponse = await fetch(API_ENDPOINTS.chat, {
           method: 'POST',
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${getAccessToken()}`
-          }
+          },
+          body: JSON.stringify({
+            message: initialMessage
+          })
         })
 
         if (!chatResponse.ok) {
+          if (chatResponse.status === 401) {
+            handleAuthError(401)
+            return
+          }
           throw new Error('Failed to start chat session')
         }
 
         const chatData = await chatResponse.json()
         setCurrentSessionId(chatData.chat_session_id.toString())
-        setTranscriptContent(data.transcript || '')
         
         generateSessionName(file.name).then(generatedName => {
           setFileName(generatedName)
         })
         
-        addMessage('assistant', chatData.first_question)
+        addMessage('assistant', chatData.response)
         
         setChatState('quizzing')
         setIsLoading(false)
@@ -561,39 +596,25 @@ export default function Home() {
         setTranscriptContent(content)
         
         try {
-          // Upload the lecture first
-          const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+          // Start chat session directly with the text content
+          const initialMessage = `I've uploaded a document titled "${file.name}". Here's the content:\n\n${content}\n\nPlease help me understand this content by asking me questions.`
+          
+          const chatResponse = await fetch(API_ENDPOINTS.chat, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${getAccessToken()}`
             },
             body: JSON.stringify({
-              title: file.name,
-              transcript: content
+              message: initialMessage
             })
           })
 
-          if (!uploadResponse.ok) {
-            if (uploadResponse.status === 401) {
+          if (!chatResponse.ok) {
+            if (chatResponse.status === 401) {
               handleAuthError(401)
               return
             }
-            throw new Error('Failed to upload lecture')
-          }
-
-          const lectureData = await uploadResponse.json()
-          const lectureId = lectureData.id
-          
-          // Start chat session with the lecture
-          const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${getAccessToken()}`
-            }
-          })
-
-          if (!chatResponse.ok) {
             throw new Error('Failed to start chat session')
           }
 
@@ -604,7 +625,7 @@ export default function Home() {
             setFileName(generatedName)
           })
           
-          addMessage('assistant', chatData.first_question)
+          addMessage('assistant', chatData.response)
           
           setChatState('quizzing')
           setIsLoading(false)

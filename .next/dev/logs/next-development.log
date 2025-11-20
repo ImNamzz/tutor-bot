@@ -1,3 +1,4 @@
-[00:00:04.015] Server  LOG      ✓ Ready in 2.8s
-[00:00:07.096] Server  LOG      ○ Compiling / ...
-[00:03:30.893] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:01.506] Server  LOG      ✓ Ready in 1089ms
+[00:00:04.561] Server  LOG      ○ Compiling / ...
+[00:00:10.163] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:28.108] Browser ERROR   Error processing audio: {}
