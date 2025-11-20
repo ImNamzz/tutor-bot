@@ -217,8 +217,12 @@ export default function ClassDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <Topbar />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      {/* Fixed Topbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border">
+        <Topbar />
+      </nav>
+      {/* Main content offset by topbar height */}
+      <main className="pt-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {cls && (
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="space-y-1">

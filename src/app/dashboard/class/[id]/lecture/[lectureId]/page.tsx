@@ -269,7 +269,7 @@ export default function LectureDetailPage() {
                   Generate
                 </Button>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed break-words">
+              <p className="text-sm text-foreground dark:text-white leading-relaxed break-words">
                 {data.summary}
               </p>
             </Card>

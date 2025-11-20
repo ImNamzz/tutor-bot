@@ -7,7 +7,6 @@ import { Button } from "@/app/components/ui/button";
 import {
   BookOpen,
   Calendar as CalendarIcon,
-  CheckSquare,
   Moon,
   Sun,
   LogOut,
@@ -91,17 +90,6 @@ export default function Topbar() {
               >
                 <CalendarIcon className="h-4 w-4" />
                 Calendar
-              </Link>
-              <Link
-                href="/todo"
-                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/todo"
-                    ? "text-indigo-600 dark:text-indigo-400"
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                <CheckSquare className="h-4 w-4" />
-                Todo
               </Link>
             </div>
           </div>

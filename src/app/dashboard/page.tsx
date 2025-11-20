@@ -131,8 +131,8 @@ export default function DashboardPage() {
               </div>
               <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-amber-950/40">
-                    <AlarmClock className="h-5 w-5" />
+                  <div className="h-9 w-9 rounded-lg bg-red-100 dark:bg-red-950/40 flex items-center justify-center">
+                    <AlarmClock className="h-5 w-5 text-red-600" />
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">
@@ -146,8 +146,8 @@ export default function DashboardPage() {
               </div>
               <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-emerald-950/40">
-                    <Activity className="h-5 w-5" />
+                  <div className="h-9 w-9 rounded-lg bg-green-100 dark:bg-green-950/40 flex items-center justify-center">
+                    <Activity className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">
