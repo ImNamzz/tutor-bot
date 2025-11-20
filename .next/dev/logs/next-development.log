@@ -1,4 +1,5 @@
-[00:00:01.506] Server  LOG      ✓ Ready in 1089ms
-[00:00:04.561] Server  LOG      ○ Compiling / ...
-[00:00:10.163] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:28.108] Browser ERROR   Error processing audio: {}
+[00:00:01.499] Server  LOG      ✓ Ready in 1055ms
+[00:00:13.716] Server  LOG      ○ Compiling / ...
+[00:00:19.269] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:28.251] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:28.251] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.

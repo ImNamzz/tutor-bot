@@ -123,7 +123,15 @@ export default function Home() {
           'Authorization': `Bearer ${getAccessToken()}`
         }
       })
-      .then(res => res.ok ? res.json() : null)
+      .then(res => {
+        if (res.status === 401) {
+          // Token is invalid or expired
+          handleAuthError(401)
+          setIsAuth(false)
+          return null
+        }
+        return res.ok ? res.json() : null
+      })
       .then(data => {
         if (data?.id) {
           setUserId(data.id)
