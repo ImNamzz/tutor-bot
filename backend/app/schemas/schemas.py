@@ -49,6 +49,8 @@ class Lecture(LectureBase):
     created_at: datetime
     summary: Optional[str] = None
     class_id: uuid.UUID
+    transcript: Optional[str] = ""
+    status: str = "PROCESSING"
     action_items: List[ActionItem] = []
     external_notes: List[ExternalNote] = []
 

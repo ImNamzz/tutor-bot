@@ -27,8 +27,15 @@ def chat():
         else:
             session = db.query(ChatSession).filter_by(id=session_id, user_id=user_id).first()
             if not session: return jsonify({"detail": "Session not found"}), 404
-            msgs = db.query(Message).filter_by(chat_session_id=session_id).order_by(Message.created_at).all()
+            msgs = db.query(Message).filter_by(chat_session_id=session_id)\
+                .order_by(Message.created_at.desc())\
+                .limit(20).all()
+            msgs.reverse() 
+            
             history = [{"role": m.role, "content": m.content} for m in msgs]
+            
+            if history[0]['role'] != 'system':
+                history.insert(0, {"role": "system", "content": Config.SYSTEM_PROMPT})
 
         history.append({"role": "user", "content": user_msg})
         ai_text = AIService.get_socratic_response(history)

@@ -2,6 +2,7 @@ import requests
 import json
 import uuid
 from app.core.config import Config
+from app.services.storage import StorageService
 
 class AIService:
     @staticmethod
@@ -19,7 +20,8 @@ class AIService:
         return api_messages
 
     @staticmethod
-    def transcribe_audio(data_key: str, language: str = "ko-KR") -> str:
+    def transcribe_audio(data_key: str, language: str = "en-US") -> str:
+
         if not Config.CLOVA_SPEECH_URL or not Config.CLOVA_SPEECH_SECRET:
             raise Exception("Clova Speech credentials are not configured.")
 
@@ -35,14 +37,15 @@ class AIService:
         request_body = {
             'dataKey': data_key,
             'language': language,
-            'completion': 'sync',
+            'completion': 'async',
+            'resultToObs': True,
             'wordAlignment': True,
             'fullText': True,
             'diarization': {'enable': False},
         }
 
         try:
-            print(f"Triggering Clova Speech for Object Key: {data_key}...")
+            print(f"Triggering Async Clova Speech for: {data_key}...")
             response = requests.post(
                 url=api_url,
                 headers=headers,
@@ -51,19 +54,49 @@ class AIService:
             
             if response.status_code != 200:
                 print(f"Clova Error: {response.status_code} - {response.text}")
+                raise Exception(f"Clova API Error: {response.text}")
                 
-            response.raise_for_status()
             result = response.json()
-            
-            if 'text' in result:
-                return result['text']
-            else:
-                print(f"Unexpected Speech Response: {result}")
-                raise Exception("Transcription completed but no text found.")
+            if result.get('result') != 'SUCCEEDED':
+                print(f"Warning: Clova trigger might have failed: {result}")
+            return result.get('token', '')
 
         except requests.exceptions.RequestException as e:
             print(f"Clova Speech API Error: {e}")
-            raise Exception(f"Audio transcription failed: {e}")
+            raise Exception(f"Audio transcription trigger failed: {e}")
+        
+    @staticmethod
+    def check_transcription_result(data_key: str) -> str:
+        storage = StorageService()
+        
+        try:
+            response = storage.s3_client.list_objects_v2(
+                Bucket=storage.bucket_name, 
+                Prefix=data_key
+            )
+            
+            if 'Contents' not in response:
+                return None
+
+            for obj in response['Contents']:
+                file_key = obj['Key']
+                
+                if file_key.endswith('.json') and data_key in file_key:
+                    
+                    print(f"Found transcription result: {file_key}")
+                    
+                    file_obj = storage.s3_client.get_object(Bucket=storage.bucket_name, Key=file_key)
+                    content = file_obj['Body'].read().decode('utf-8')
+                    result_json = json.loads(content)
+
+                    if 'text' in result_json:
+                        return result_json['text']
+            
+            return None
+
+        except Exception as e:
+            print(f"Error checking transcription status: {e}")
+            return None
 
     @staticmethod
     def analyze_transcript(transcript: str):
@@ -98,13 +131,17 @@ class AIService:
             
             if "```" in ai_content:
                 ai_content = ai_content.replace("```json", "").replace("```", "").strip()
+            start_index = ai_content.find('{')
+            end_index = ai_content.rfind('}')
+            if start_index != -1 and end_index != -1:
+                ai_content = ai_content[start_index : end_index + 1]
 
-            analysis_data = json.loads(ai_content)
+            analysis_data = json.loads(ai_content, strict=False)            
             return analysis_data
 
         except Exception as e:
             print(f"Analysis Error: {e}")
-            return default_response
+            return {"summary": f"DEBUG ERROR: {str(e)}", "action_items": []}
 
     @staticmethod
     def get_socratic_response(messages: list):
