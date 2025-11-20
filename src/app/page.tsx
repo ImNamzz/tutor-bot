@@ -301,8 +301,6 @@ export default function Home() {
 
     setIsLoading(true)
     
-    addMessage('user', `📎 Uploaded: ${file.name}`)
-    
     // For .doc and .docx files, send directly to backend for processing
     if (fileExtension === '.doc' || fileExtension === '.docx') {
       try {
@@ -423,37 +421,16 @@ export default function Home() {
       addMessage('user', `📎 Uploaded: ${file.name}`)
       
       try {
-        // Step 1: Upload lecture to create lecture resource
-        const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+        // Use chat endpoint directly with the transcript content
+        const chatResponse = await fetch(API_ENDPOINTS.chat, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${getAccessToken()}`
           },
           body: JSON.stringify({
-            title: file.name,
-            transcript: content
+            message: `I've uploaded a transcript file. Here's the content:\n\n${content}\n\nPlease help me understand this material by asking me questions about it.`
           })
-        })
-
-        if (!uploadResponse.ok) {
-          if (uploadResponse.status === 401) {
-            handleAuthError(401)
-            return
-          }
-          throw new Error('Failed to upload lecture')
-        }
-
-        const lectureData = await uploadResponse.json()
-        const lectureId = lectureData.id
-        
-        // Step 2: Start chat session from the lecture
-        const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getAccessToken()}`
-          }
         })
 
         if (!chatResponse.ok) {
@@ -461,25 +438,26 @@ export default function Home() {
             handleAuthError(401)
             return
           }
-          throw new Error('Failed to start chat')
+          throw new Error('Failed to process transcript')
         }
 
         const chatData = await chatResponse.json()
         
         // Set the session ID from backend
-        setCurrentSessionId(chatData.chat_session_id.toString())
+        if (chatData.chat_session_id) {
+          setCurrentSessionId(chatData.chat_session_id.toString())
+        }
         
-        // Generate AI-based session name in the background
-        generateSessionName(content).then(generatedName => {
-          setFileName(generatedName)
-        })
+        // Generate AI-based session name
+        const generatedName = await generateSessionName(content)
+        setFileName(generatedName)
         
-        // Use the first question from the backend
-        addMessage('assistant', chatData.first_question)
+        // Add AI response
+        addMessage('assistant', chatData.response)
         
         setChatState('quizzing')
         setIsLoading(false)
-        toast.success('Transcript processed! Answer the questions to proceed.')
+        toast.success('Transcript processed! Ready to discuss.')
         
       } catch (error) {
         console.error('Error starting session:', error)
