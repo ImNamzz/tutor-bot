@@ -192,8 +192,8 @@ export default function LectureDetailPage() {
   );
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/20 dark:from-gray-900 dark:to-gray-800 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-      <div className="backdrop-blur-md bg-white/70 dark:bg-slate-800/70 border-b border-slate-200/70 dark:border-slate-700 sticky top-0 z-10">
+    <div className="relative min-h-screen bg-background dark:bg-background">
+      <div className="backdrop-blur-md bg-card/70 dark:bg-card/70 border-b border-border dark:border-border sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             <div className="space-y-2 flex-1">
@@ -441,7 +441,7 @@ export default function LectureDetailPage() {
             </Card>
 
             {/* Transcript */}
-            <Card className="p-6 space-y-4 bg-slate-50/30 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-700 shadow-[0_2px_8px_rgba(0,0,0,0.05)] border-l-4 border-slate-400 hover:shadow-md transition-all duration-200 min-h-[548px] md:min-h-[648px]">
+            <Card className="p-6 space-y-4 bg-background/30 dark:bg-background/30 border border-border shadow-[0_2px_8px_rgba(0,0,0,0.05)] border-l-4 border-muted hover:shadow-md transition-all duration-200 min-h-[548px] md:min-h-[648px]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span aria-hidden className="text-lg">
@@ -474,7 +474,7 @@ export default function LectureDetailPage() {
                 </Dialog>
               </div>
               <Textarea
-                className="h-72 max-h-[420px] overflow-y-auto resize-y bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700 rounded-md px-3 py-2 scrollbar-thin"
+                className="h-72 max-h-[420px] overflow-y-auto resize-y bg-background/50 dark:bg-card/40 border border-border rounded-md px-3 py-2 scrollbar-thin"
                 value={transcriptDraft}
                 onChange={(e) => setTranscriptDraft(e.target.value)}
               />

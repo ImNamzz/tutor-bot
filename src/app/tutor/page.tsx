@@ -79,7 +79,7 @@ export default function TutorPage() {
                 <Upload className="h-4 w-4" /> Upload lecture
               </Button>
             </div>
-            <ScrollArea className="h-[50vh] border rounded-md p-4 bg-white/50 dark:bg-black/30">
+            <ScrollArea className="h-[50vh] border border-border rounded-md p-4 bg-card/50 dark:bg-card/40">
               <div className="space-y-4">
                 {messages.map((m) => (
                   <div

@@ -101,9 +101,13 @@ export default function DashboardPage() {
   }, [classes]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
-      <Topbar />
-      <main className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-background dark:bg-background transition-colors">
+      {/* Fixed Topbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border">
+        <Topbar />
+      </nav>
+      {/* Main content offset by topbar height */}
+      <main className="pt-24 max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="relative">
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -112,24 +116,26 @@ export default function DashboardPage() {
             </div>
             {/* Quick Stats Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
-              <div className="rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-indigo-950/40">
                     <CalendarDays className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500">Total Classes</div>
+                    <div className="text-xs text-muted-foreground">
+                      Total Classes
+                    </div>
                     <div className="text-lg font-semibold">{stats.total}</div>
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-amber-950/40">
                     <AlarmClock className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-muted-foreground">
                       Upcoming Classes
                     </div>
                     <div className="text-lg font-semibold">
@@ -138,13 +144,15 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-emerald-950/40">
                     <Activity className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500">Recent Activity</div>
+                    <div className="text-xs text-muted-foreground">
+                      Recent Activity
+                    </div>
                     <div className="text-lg font-semibold">
                       {stats.recentActivity}
                     </div>
@@ -161,13 +169,13 @@ export default function DashboardPage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search classes..."
-                  className="w-full rounded-lg border bg-white pl-9 pr-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+                  className="w-full rounded-lg border border-border bg-background dark:bg-card pl-9 pr-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-primary/30 focus:border-primary"
                 />
               </div>
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-gray-400" />
                 <select
-                  className="rounded-lg border bg-white px-2 py-2 text-sm"
+                  className="rounded-lg border border-border bg-background dark:bg-card px-2 py-2 text-sm"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
                 >

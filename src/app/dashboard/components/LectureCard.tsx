@@ -18,7 +18,7 @@ export const LectureCard: React.FC<LectureCardProps> = ({
     <div className="group relative rounded-xl shadow-sm border border-border/50 overflow-hidden bg-card">
       <div className={`${color} h-24 w-full`} />
       <button
-        className="absolute top-2 right-2 p-1 rounded-md bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition"
+        className="absolute top-2 right-2 p-1 rounded-md bg-muted/30 hover:bg-muted/50 transition"
         aria-label="Card actions"
       >
         <MoreVertical className="h-5 w-5 text-white drop-shadow" />

@@ -246,15 +246,15 @@ export default function ClassDetailPage() {
               </p>
               {/* Quick Stats Pills */}
               <div className="mt-3 flex flex-wrap gap-2">
-                <div className="px-3 py-1 rounded-full bg-white/70 backdrop-blur border text-[11px] flex items-center gap-1 shadow-sm">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
                   <FileText className="h-3.5 w-3.5 text-indigo-600" />
                   <span>{totalLectures} total</span>
                 </div>
-                <div className="px-3 py-1 rounded-full bg-white/70 backdrop-blur border text-[11px] flex items-center gap-1 shadow-sm">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
                   <Sparkles className="h-3.5 w-3.5 text-purple-600" />
                   <span>{recentLectures} recent</span>
                 </div>
-                <div className="px-3 py-1 rounded-full bg-white/70 backdrop-blur border text-[11px] flex items-center gap-1 shadow-sm">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
                   <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
                   <span>{storageUsedKB} KB</span>
                 </div>
@@ -417,7 +417,7 @@ export default function ClassDetailPage() {
                         href={`/dashboard/class/${cls.id}/lecture/${lec.id}`}
                         className="group block w-full"
                       >
-                        <div className="w-full rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 ease-in-out hover:border-indigo-400 hover:bg-gray-50 hover:shadow-sm">
+                        <div className="w-full rounded-xl border border-border bg-card p-4 transition-all duration-200 ease-in-out hover:border-primary/50 hover:bg-background/70 hover:shadow-sm">
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0 space-y-1">
                               <div className="flex items-center gap-2 min-w-0">

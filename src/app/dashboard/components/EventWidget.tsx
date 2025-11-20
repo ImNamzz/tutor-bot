@@ -119,7 +119,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
     >
       <div
         className={cn(
-          "relative overflow-hidden bg-white border border-gray-200 shadow-2xl transition-all duration-200",
+          "relative overflow-hidden bg-card border border-border shadow-2xl transition-all duration-200",
           expanded
             ? "rounded-xl flex flex-col"
             : "h-[52px] w-[52px] rounded-full flex items-center justify-center",
@@ -163,7 +163,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             </div>
 
             {/* Content List */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-white">
+            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-background dark:bg-card/40">
               {items.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <p className="text-xs text-gray-400">
@@ -174,7 +174,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
               {items.map((ev) => (
                 <div
                   key={ev.id}
-                  className="rounded-lg border border-gray-100 bg-white p-2.5 shadow-sm hover:shadow-md hover:border-purple-200 transition-all cursor-default"
+                  className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-default"
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <p className="text-sm font-semibold text-gray-800 truncate">

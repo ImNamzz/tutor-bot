@@ -35,7 +35,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
           <div className={`${item.color} h-24 w-full`} />
         )}
         <button
-          className="absolute top-2 right-2 p-1 rounded-md bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition"
+          className="absolute top-2 right-2 p-1 rounded-md bg-muted/30 hover:bg-muted/50 transition"
           aria-label="Class actions"
           type="button"
           onClick={(e) => {

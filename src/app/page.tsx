@@ -998,12 +998,12 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] transition-colors">
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-white dark:bg-black border-r border-gray-200 dark:border-[#212121] ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-card/95 dark:bg-card/95 backdrop-blur-sm border-r border-border dark:border-border ${
           isSidebarOpen ? "w-[280px]" : "w-16"
         }`}
       >
         {/* Sidebar Header with Toggle */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
+        <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
             <span className="text-gray-900 dark:text-white font-medium text-sm">
               EduAssist
@@ -1025,10 +1025,10 @@ export default function Home() {
         </div>
 
         {/* New Chat Button */}
-        <div className="p-3 border-b border-gray-200 dark:border-gray-800 shrink-0">
+        <div className="p-3 border-b border-gray-100 dark:border-gray-800 shrink-0">
           <Button
             onClick={handleReset}
-            className={`w-full justify-start gap-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 ${
+            className={`w-full justify-start gap-2 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 ${
               !isSidebarOpen ? "px-2" : ""
             }`}
             variant="outline"
@@ -1085,13 +1085,13 @@ export default function Home() {
                                       }}
                                       onBlur={() => saveRename(session.id)}
                                       onClick={(e) => e.stopPropagation()}
-                                      className="w-full text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:border-indigo-500"
+                                      className="w-full text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:border-gray-400"
                                       autoFocus
                                     />
                                   ) : (
                                     <div className="flex items-center gap-1">
                                       {session.pinned && (
-                                        <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
+                                        <Pin className="h-3 w-3 text-gray-600 dark:text-gray-400" />
                                       )}
                                       <p className="text-sm text-gray-900 dark:text-gray-200 break-words">
                                         {session.fileName}
@@ -1120,7 +1120,7 @@ export default function Home() {
                                   {openSessionMenu === session.id && (
                                     <div
                                       ref={sessionMenuRef}
-                                      className="absolute right-0 top-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
+                                      className="absolute right-0 top-6 bg-card dark:bg-card border border-border dark:border-border rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <button
@@ -1188,110 +1188,108 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main Content Area - Adjusted for sidebar */}
-      <div
-        className={`transition-all duration-300 ${
+      {/* Fixed Topbar aligned with sidebar */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border transition-colors ${
           isSidebarOpen ? "ml-[280px]" : "ml-16"
         }`}
       >
-        {/* Navigation */}
-        <nav className="bg-white dark:bg-black shadow-sm border-b border-gray-200 dark:border-[#212121] transition-colors">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-8">
+              <Link
+                href="/dashboard"
+                className="flex items-center hover:opacity-80 transition-opacity"
+              >
+                <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                <span className="ml-2 dark:text-white">EduAssist</span>
+              </Link>
+
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center gap-6">
                 <Link
-                  href="/dashboard"
-                  className="flex items-center hover:opacity-80 transition-opacity"
+                  href="/"
+                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
+                    pathname === "/" ? "font-medium" : "font-normal"
+                  }`}
                 >
-                  <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-                  <span className="ml-2 dark:text-white">EduAssist</span>
+                  <BookOpen className="h-4 w-4" />
+                  AI Tutor
                 </Link>
-
-                {/* Navigation Links */}
-                <div className="hidden md:flex items-center gap-6">
-                  <Link
-                    href="/"
-                    className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                      pathname === "/"
-                        ? "text-indigo-600 dark:text-indigo-400"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    AI Tutor
-                  </Link>
-                  <Link
-                    href="/calendar"
-                    className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                      pathname === "/calendar"
-                        ? "text-indigo-600 dark:text-indigo-400"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    <Calendar className="h-4 w-4" />
-                    Calendar
-                  </Link>
-                  <Link
-                    href="/todo"
-                    className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                      pathname === "/todo"
-                        ? "text-indigo-600 dark:text-indigo-400"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    <CheckSquare className="h-4 w-4" />
-                    Todo
-                  </Link>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Button
-                  onClick={toggleTheme}
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full w-9 h-9 p-0"
-                  aria-label="Toggle theme"
+                <Link
+                  href="/calendar"
+                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
+                    pathname === "/calendar" ? "font-medium" : "font-normal"
+                  }`}
                 >
-                  {isDarkMode ? (
-                    <Sun className="h-5 w-5 text-gray-300" />
-                  ) : (
-                    <Moon className="h-5 w-5 text-gray-600" />
-                  )}
-                </Button>
-
-                {isAuth ? (
-                  <Button
-                    onClick={handleLogout}
-                    variant="ghost"
-                    size="sm"
-                    className="flex items-center gap-2"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span className="hidden sm:inline">Sign Out</span>
-                  </Button>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Link href="/auth/login">
-                      <Button variant="ghost" size="sm">
-                        Sign In
-                      </Button>
-                    </Link>
-                    <Link href="/auth/register">
-                      <Button size="sm">Sign Up</Button>
-                    </Link>
-                  </div>
-                )}
+                  <Calendar className="h-4 w-4" />
+                  Calendar
+                </Link>
+                <Link
+                  href="/todo"
+                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
+                    pathname === "/todo" ? "font-medium" : "font-normal"
+                  }`}
+                >
+                  <CheckSquare className="h-4 w-4" />
+                  Todo
+                </Link>
               </div>
             </div>
-          </div>
-        </nav>
 
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={toggleTheme}
+                variant="ghost"
+                size="sm"
+                className="rounded-full w-9 h-9 p-0"
+                aria-label="Toggle theme"
+              >
+                {isDarkMode ? (
+                  <Sun className="h-5 w-5 text-gray-300" />
+                ) : (
+                  <Moon className="h-5 w-5 text-gray-600" />
+                )}
+              </Button>
+
+              {isAuth ? (
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sign Out</span>
+                </Button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link href="/auth/login">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth/register">
+                    <Button size="sm">Sign Up</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content Area - Adjusted for sidebar and fixed bars */}
+      <div
+        className={`transition-all duration-300 ${
+          isSidebarOpen ? "ml-[280px]" : "ml-16"
+        } pt-16 pb-24`}
+      >
         {/* Page Content */}
-        <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
+        <main className="px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
-            <Card className="min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
+            <Card className="min-h-[calc(100vh-12rem)] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
               {/* Hidden file inputs */}
               <input
                 ref={fileInputRef}
@@ -1312,7 +1310,7 @@ export default function Home() {
 
               {/* Chat Messages */}
               <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-                <div className="space-y-6">
+                <div className="space-y-6 pb-4">
                   {messages.map((message, index) => (
                     <div
                       key={message.id}
@@ -1333,7 +1331,7 @@ export default function Home() {
                             onChange={(e) =>
                               setEditedMessageContent(e.target.value)
                             }
-                            className="w-full resize-none min-h-[100px] bg-white dark:bg-[#212121] border-2 border-indigo-500 text-gray-900 dark:text-white"
+                            className="w-full resize-none min-h-[100px] bg-card dark:bg-card border-2 border-primary/50 text-foreground dark:text-foreground"
                             autoFocus
                           />
                           <div className="flex gap-2 mt-2 justify-end">
@@ -1363,10 +1361,10 @@ export default function Home() {
                             }
                           >
                             <div
-                              className={`px-4 py-3 ${
+                              className={`px-4 py-3 max-w-[85%] break-all rounded-xl ${
                                 message.role === "user"
-                                  ? "bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] break-all"
-                                  : "text-gray-900 dark:text-gray-100 max-w-[85%]"
+                                  ? "bg-gray-900 text-white"
+                                  : "text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
                               }`}
                             >
                               <p className="whitespace-pre-wrap">
@@ -1497,7 +1495,7 @@ export default function Home() {
                   {isLoading && (
                     <div className="flex justify-start">
                       <div className="px-4 py-3">
-                        <Loader2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 animate-spin" />
+                        <Loader2 className="h-5 w-5 text-gray-600 dark:text-gray-400 animate-spin" />
                       </div>
                     </div>
                   )}
@@ -1506,120 +1504,128 @@ export default function Home() {
                 </div>
               </ScrollArea>
 
-              {/* Input Area */}
-              <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
-                {/* Scroll to bottom button - positioned in input area */}
-                {messages.length > 0 && (
-                  <div className="flex justify-end mb-2">
-                    <Button
-                      onClick={scrollToBottom}
-                      variant="outline"
-                      size="sm"
-                      className="gap-2 text-xs"
-                      title="Scroll to latest message"
-                    >
-                      <ArrowDown className="h-4 w-4" />
-                      Latest message
-                    </Button>
-                  </div>
-                )}
-
-                <div className="flex gap-2 max-w-3xl mx-auto">
-                  {/* Upload button with menu or Lock icon */}
-                  <div className="relative" ref={uploadMenuRef}>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        isAuth && setShowUploadMenu(!showUploadMenu)
-                      }
-                      disabled={!isAuth}
-                      className={`min-h-11 h-11 ${
-                        !isAuth ? "cursor-not-allowed opacity-50" : ""
-                      }`}
-                    >
-                      {isAuth ? (
-                        <Plus className="h-4 w-4" />
-                      ) : (
-                        <Lock className="h-5 w-5" />
-                      )}
-                    </Button>
-
-                    {/* Upload menu */}
-                    {showUploadMenu && isAuth && (
-                      <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
-                        <button
-                          onClick={() => {
-                            fileInputRef.current?.click();
-                            setShowUploadMenu(false);
-                          }}
-                          className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                        >
-                          <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
-                            Upload file
-                          </span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            imageInputRef.current?.click();
-                            setShowUploadMenu(false);
-                          }}
-                          className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                        >
-                          <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
-                            Upload image
-                          </span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <Textarea
-                    ref={textareaRef}
-                    value={inputMessage}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyPress}
-                    placeholder={
-                      !isAuth
-                        ? "You need to sign in to use the chatbot."
-                        : chatState === "quizzing"
-                        ? "Type your answer or ask a question..."
-                        : chatState === "completed"
-                        ? "Ask me anything about the material..."
-                        : "Type a message..."
-                    }
-                    rows={1}
-                    disabled={!isAuth}
-                    className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-[#212121] border-2 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white ${
-                      !isAuth ? "cursor-not-allowed opacity-50" : ""
-                    }`}
-                  />
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={!isAuth || !inputMessage.trim() || isLoading}
-                    className={`shrink-0 min-h-11 h-11 ${
-                      !isAuth ? "cursor-not-allowed opacity-50" : ""
-                    }`}
-                  >
-                    {isAuth ? (
-                      <Send className="h-4 w-4" />
-                    ) : (
-                      <Lock className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-                  {isAuth
-                    ? "Press Enter to send, Shift+Enter for new line"
-                    : "Please sign in to start chatting"}
-                </p>
-              </div>
+              {/* Input moved to fixed bottom bar */}
             </Card>
           </div>
         </main>
+      </div>
+
+      {/* Fixed Input Area aligned with sidebar */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-t border-border dark:border-border transition-colors ${
+          isSidebarOpen ? "ml-[280px]" : "ml-16"
+        }`}
+      >
+        <div className="p-4">
+          <div className="max-w-[1200px] mx-auto">
+            {/* Scroll to bottom button */}
+            {messages.length > 0 && (
+              <div className="flex justify-end mb-2">
+                <Button
+                  onClick={scrollToBottom}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs"
+                  title="Scroll to latest message"
+                >
+                  <ArrowDown className="h-4 w-4" />
+                  Latest message
+                </Button>
+              </div>
+            )}
+
+            <div className="flex gap-2 max-w-3xl mx-auto">
+              {/* Upload button with menu or Lock icon */}
+              <div className="relative" ref={uploadMenuRef}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
+                  disabled={!isAuth}
+                  className={`min-h-11 h-11 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 ${
+                    !isAuth ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                >
+                  {isAuth ? (
+                    <Plus className="h-4 w-4" />
+                  ) : (
+                    <Lock className="h-5 w-5" />
+                  )}
+                </Button>
+
+                {/* Upload menu */}
+                {showUploadMenu && isAuth && (
+                  <div className="absolute bottom-full left-0 mb-2 bg-card dark:bg-card border border-border dark:border-border rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
+                    <button
+                      onClick={() => {
+                        fileInputRef.current?.click();
+                        setShowUploadMenu(false);
+                      }}
+                      className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                    >
+                      <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Upload file
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        imageInputRef.current?.click();
+                        setShowUploadMenu(false);
+                      }}
+                      className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                    >
+                      <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Upload image
+                      </span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <Textarea
+                ref={textareaRef}
+                value={inputMessage}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyPress}
+                placeholder={
+                  !isAuth
+                    ? "You need to sign in to use the chatbot."
+                    : chatState === "quizzing"
+                    ? "Type your answer or ask a question..."
+                    : chatState === "completed"
+                    ? "Ask me anything about the material..."
+                    : "Type a message..."
+                }
+                rows={1}
+                disabled={!isAuth}
+                className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-card dark:bg-card border-2 border-border text-foreground dark:text-foreground ${
+                  !isAuth ? "cursor-not-allowed opacity-50" : ""
+                }`}
+              />
+              <Button
+                onClick={handleSendMessage}
+                disabled={!isAuth || !inputMessage.trim() || isLoading}
+                className={`shrink-0 min-h-11 h-11 ${
+                  !isAuth ? "cursor-not-allowed opacity-50" : ""
+                }`}
+              >
+                {isAuth ? (
+                  <Send className="h-4 w-4" />
+                ) : (
+                  <Lock className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
+              {isAuth
+                ? "Press Enter to send, Shift+Enter for new line"
+                : "Please sign in to start chatting"}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
