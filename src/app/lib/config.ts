@@ -29,7 +29,12 @@ export const API_ENDPOINTS = {
   // Lectures - /api/lectures/*
   uploadAudio: `${config.apiUrl}/api/lectures/upload-audio`,
   uploadText: `${config.apiUrl}/api/lectures/upload-text`,
+  getLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}`,
+  getLectureStatus: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}/status`,
   analyzeLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}/analyze`,
+  updateLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}`,
+  deleteLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}`,
+  searchLectures: `${config.apiUrl}/api/lectures/search`,
   
   // Action Items - /api/action_items/*
   actionItems: `${config.apiUrl}/api/action_items`,

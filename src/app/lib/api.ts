@@ -29,6 +29,8 @@ export interface Lecture {
   title: string;
   transcript?: string;
   summary?: string;
+  status?: string;
+  object_key?: string;
   created_at: string;
   class_id: string;
   action_items?: ActionItem[];
@@ -208,6 +210,18 @@ export const lecturesAPI = {
   analyze: async (lectureId: string): Promise<AnalysisResponse> => {
     return apiCall<AnalysisResponse>(API_ENDPOINTS.analyzeLecture(lectureId), {
       method: "POST",
+      headers: getAuthHeaders(),
+    });
+  },
+
+  checkStatus: async (lectureId: string): Promise<Lecture> => {
+    return apiCall<Lecture>(API_ENDPOINTS.getLectureStatus(lectureId), {
+      headers: getAuthHeaders(),
+    });
+  },
+
+  get: async (lectureId: string): Promise<Lecture> => {
+    return apiCall<Lecture>(API_ENDPOINTS.getLecture(lectureId), {
       headers: getAuthHeaders(),
     });
   },

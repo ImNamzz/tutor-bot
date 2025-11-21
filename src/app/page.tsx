@@ -561,32 +561,101 @@ export default function Home() {
         }
 
         const data = await response.json()
-        const transcript = data.transcript || ''
         const lectureId = data.id
-        setTranscriptContent(transcript)
+        const status = data.status || 'PROCESSING'
         
-        // Analyze the lecture to extract action items and summary
-        try {
-          const analysisResponse = await fetch(API_ENDPOINTS.analyzeLecture(lectureId), {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getAccessToken()}`
-            }
-          })
+        // Show processing message
+        if (status === 'PROCESSING') {
+          addMessage('assistant', '🎙️ Audio uploaded! Transcription is in progress... This may take a few minutes.')
           
-          if (analysisResponse.ok) {
-            const analysisData = await analysisResponse.json()
-            console.log('Lecture analyzed:', analysisData)
-            // Analysis includes summary and action_items
-            if (analysisData.action_items && analysisData.action_items.length > 0) {
-              toast.success(`Analysis complete! Found ${analysisData.action_items.length} action items.`)
+          // Poll for completion
+          const pollForTranscript = async () => {
+            const maxAttempts = 60 // 5 minutes with 5-second intervals
+            let attempts = 0
+            
+            while (attempts < maxAttempts) {
+              await new Promise(resolve => setTimeout(resolve, 5000)) // Wait 5 seconds
+              
+              try {
+                const statusResponse = await fetch(API_ENDPOINTS.getLectureStatus(lectureId), {
+                  headers: {
+                    'Authorization': `Bearer ${getAccessToken()}`
+                  }
+                })
+                
+                if (statusResponse.ok) {
+                  const statusData = await statusResponse.json()
+                  
+                  if (statusData.status === 'COMPLETED' && statusData.transcript) {
+                    const transcript = statusData.transcript
+                    setTranscriptContent(transcript)
+                    addMessage('assistant', '✅ Transcription complete! Analyzing content...')
+                    
+                    // Now analyze the lecture
+                    try {
+                      const analysisResponse = await fetch(API_ENDPOINTS.analyzeLecture(lectureId), {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${getAccessToken()}`
+                        }
+                      })
+                      
+                      if (analysisResponse.ok) {
+                        const analysisData = await analysisResponse.json()
+                        console.log('Lecture analyzed:', analysisData)
+                        if (analysisData.action_items && analysisData.action_items.length > 0) {
+                          toast.success(`Analysis complete! Found ${analysisData.action_items.length} action items.`)
+                        }
+                      }
+                    } catch (analysisError) {
+                      console.error('Failed to analyze lecture:', analysisError)
+                    }
+                    
+                    // Start chat session
+                    const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
+                    
+                    const chatResponse = await fetch(API_ENDPOINTS.chat, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAccessToken()}`
+                      },
+                      body: JSON.stringify({ message: initialMessage })
+                    })
+                    
+                    if (chatResponse.ok) {
+                      const chatData = await chatResponse.json()
+                      setCurrentSessionId(chatData.chat_session_id.toString())
+                      generateSessionName(file.name).then(generatedName => {
+                        setFileName(generatedName)
+                      })
+                      addMessage('assistant', chatData.response)
+                    }
+                    
+                    return // Success, exit polling
+                  }
+                }
+              } catch (error) {
+                console.error('Error polling transcription status:', error)
+              }
+              
+              attempts++
             }
+            
+            // Timeout reached
+            addMessage('assistant', '⚠️ Transcription is taking longer than expected. Please check back later.')
+            toast.error('Transcription timeout. Please try again.')
           }
-        } catch (analysisError) {
-          console.error('Failed to analyze lecture:', analysisError)
-          // Don't fail the whole process if analysis fails
+          
+          // Start polling in background
+          pollForTranscript()
+          return // Exit early, polling will handle the rest
         }
+        
+        // If already completed (shouldn't happen with audio, but handle it)
+        const transcript = data.transcript || ''
+        setTranscriptContent(transcript)
         
         // Start a chat session with the transcript as context
         const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
