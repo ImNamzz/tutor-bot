@@ -79,7 +79,6 @@ export default function Topbar() {
                 <BookOpen className="h-4 w-4" />
                 AI Tutor
               </Link>
-              {/* Transcript button removed */}
               <Link
                 href="/calendar"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${

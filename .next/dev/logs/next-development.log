@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [00:00:03.097] Server  LOG      ✓ Ready in 2.2s
 [00:00:11.828] Server  LOG      ○ Compiling / ...
 [00:00:19.520] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
@@ -30,3 +31,6 @@
 [02:24:11.700] Server  LOG      ✓ Compiled in 431ms
 [02:24:17.902] Server  LOG      ✓ Compiled in 480ms
 [02:30:02.600] Server  LOG      ✓ Compiled in 23.2s
+=======
+[00:00:04.356] Server  LOG      ✓ Ready in 3.1s
+>>>>>>> origin/beforeMerge/AI-Tutor-Without-Dashboard

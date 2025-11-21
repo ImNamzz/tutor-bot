@@ -3,6 +3,7 @@ globalThis.__BUILD_MANIFEST = {
     "/_app": []
   },
   "devFiles": [],
+<<<<<<< HEAD
   "polyfillFiles": [
     "static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js"
   ],
@@ -19,6 +20,11 @@ globalThis.__BUILD_MANIFEST = {
     "static/chunks/_a0ff3932._.js",
     "static/chunks/turbopack-_376339a9._.js"
   ]
+=======
+  "polyfillFiles": [],
+  "lowPriorityFiles": [],
+  "rootMainFiles": []
+>>>>>>> origin/beforeMerge/AI-Tutor-Without-Dashboard
 };
 globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
 "/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
