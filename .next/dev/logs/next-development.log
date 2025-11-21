@@ -1,160 +1,185 @@
-[00:00:07.537] Server  LOG      ✓ Ready in 7.1s
-[00:00:15.185] Server  LOG      ○ Compiling / ...
-[00:00:22.838] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:24.458] Browser ERROR   Failed to load classes {}
-[00:00:24.756] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:02:24.631] Browser ERROR   Error fetching user profile: {}
-[00:02:24.631] Browser ERROR   Error fetching user profile: {}
-[00:02:25.386] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:25.386] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:25.386] Browser ERROR   Error fetching user profile: {}
-[00:02:38.995] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:38.995] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:38.996] Browser ERROR   Error fetching user profile: {}
-[00:03:24.471] Browser ERROR   Error processing audio: {}
-[00:03:43.524] Browser ERROR   Error processing audio: {}
-[00:04:26.366] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:26.367] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:26.367] Browser ERROR   Error fetching user profile: {}
-[00:04:47.235] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:47.235] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:47.235] Browser ERROR   Error fetching user profile: {}
-[00:05:17.978] Server  ERROR    ⨯ ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:01.644] Server  LOG      ✓ Ready in 1178ms
+[00:00:06.603] Server  LOG      ○ Compiling / ...
+[00:00:11.643] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:18.690] Server  ERROR    ⨯ ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
 
 
-[00:05:18.116] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:18.838] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:19.657] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:19.864] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:19.937] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:19.981] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:22.323] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:20.698] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:22.376] Server  ERROR    ⨯ ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:20.709] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-
-
-[00:05:22.643] Browser ERROR   uncaughtError: Error: ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:20.759] Server  ERROR    ⨯ ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
 
 
-[00:05:22.833] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:21.043] Browser ERROR   uncaughtError: Error: ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:22.833] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+
+
+[00:00:21.243] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:37.951] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:05:38.133] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:00:21.243] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:38.133] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:01:13.930] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
-[00:05:56.068] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+[00:01:26.620] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
 Parsing ecmascript source code failed
   405 |             </Dialog>
   406 |           </div>
 > 407 |         )}
       |          ^
-  408 |
-  409 |         <Card className="p-4">
-  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
 
 Expected '</', got '}'
+[00:02:49.850] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+Parsing ecmascript source code failed
+  405 |             </Dialog>
+  406 |           </div>
+> 407 |         )}
+      |          ^
+  408 |       </>
+  409 |       <Card className="p-4">
+  410 |         <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+
+Expected '</', got '}'
+[00:06:36.459] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:605:9
+Parsing ecmascript source code failed
+  603 |   );
+  604 | }
+> 605 |         ) : (
+      |         ^
+  606 |           <div className="text-center py-8">
+  607 |             <p className="text-muted-foreground">Class not found</p>
+  608 |           </div>
+
+Expression expected
+[00:06:48.696] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:605:9
+Parsing ecmascript source code failed
+  603 |   );
+  604 | }
+> 605 |         ) : (
+      |         ^
+  606 |           <div className="text-center py-8">
+  607 |             <p className="text-muted-foreground">Class not found</p>
+  608 |           </div>
+
+Expression expected
+[00:08:03.485] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:605:9
+Parsing ecmascript source code failed
+  603 |   );
+  604 | }
+> 605 |         ) : (
+      |         ^
+  606 |           <div className="text-center py-8">
+  607 |             <p className="text-muted-foreground">Class not found</p>
+  608 |           </div>
+
+Expression expected
