@@ -978,3 +978,31 @@ Import traces:
 [00:21:46.533] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 [00:21:46.813] Browser ERROR   Error fetching user profile: {}
 [00:21:51.989] Server  LOG      ✓ Compiled in 162ms
+[00:03:19.141] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+Parsing ecmascript source code failed
+  405 |             </Dialog>
+  406 |           </div>
+> 407 |         )}
+      |          ^
+  408 |
+  409 |         <Card className="p-4">
+  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+
+Expected '</', got '}'
+[00:03:19.215] Server  LOG        Reload env: .env.local
+[00:03:19.858] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/class/[id]/page.tsx:407:10
+Parsing ecmascript source code failed
+  405 |             </Dialog>
+  406 |           </div>
+> 407 |         )}
+      |          ^
+  408 |
+  409 |         <Card className="p-4">
+  410 |           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+
+Expected '</', got '}'
+[00:03:22.162] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:19.973] Browser ERROR   Error fetching user profile: {}
+[00:06:19.973] Browser ERROR   Error fetching user profile: {}
+[00:07:43.874] Server  LOG        Reload env: .env.local
+[00:08:06.628] Server  LOG      ✓ Compiled in 354ms
