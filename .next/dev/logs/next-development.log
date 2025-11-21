@@ -1,15 +1,21 @@
-[00:00:04.186] Server  LOG      ✓ Ready in 3s
-[00:07:24.991] Server  LOG      ○ Compiling / ...
-[00:07:31.151] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:07:32.885] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:09:34.255] Server  LOG      ✓ Compiled in 165ms
-[00:09:44.170] Server  LOG      ✓ Compiled in 315ms
-[00:09:52.231] Server  LOG      ✓ Compiled in 221ms
-[00:10:43.540] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:10:43.540] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:10:58.842] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:11:05.067] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:11:05.067] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:11:39.798] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:11:39.798] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:11:47.222] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:03.935] Server  LOG      ✓ Ready in 2.5s
+[00:00:16.673] Server  LOG      ○ Compiling / ...
+[00:00:22.400] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:34.842] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:36.021] Browser ERROR   Failed to load classes {}
+[00:00:36.022] Browser ERROR   Failed to load classes {}
+[00:00:42.478] Browser ERROR   Failed to load classes {}
+[00:00:42.478] Browser ERROR   Failed to load classes {}
+[00:03:07.131] Server  LOG      ✓ Compiled in 589ms
+[00:07:25.964] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:26.977] Browser ERROR   Failed to load classes {}
+[00:07:26.977] Browser ERROR   Failed to load classes {}
+[00:07:29.968] Browser ERROR   Failed to load classes {}
+[00:07:29.968] Browser ERROR   Failed to load classes {}
+[00:08:38.896] Server  LOG      ✓ Compiled in 879ms
+[00:08:58.612] Browser ERROR   Failed to load classes {}
+[00:08:58.612] Browser ERROR   Failed to load classes {}
+[00:09:01.853] Browser ERROR   Failed to load classes {}
+[00:09:01.853] Browser ERROR   Failed to load classes {}
+[00:09:25.537] Browser ERROR   Failed to load classes {}
+[00:09:25.537] Browser ERROR   Failed to load classes {}

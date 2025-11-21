@@ -60,7 +60,7 @@ export default function Topbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link
-              href="/dashboard"
+              href="/"
               className="flex items-center hover:opacity-80 transition-opacity"
             >
               <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
@@ -77,9 +77,19 @@ export default function Topbar() {
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
+                Dashboard
+              </Link>
+              <Link
+                href="/tutor"
+                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
+                  pathname === "/tutor"
+                    ? "text-indigo-600 dark:text-indigo-400"
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
+              >
+                <BookOpen className="h-4 w-4" />
                 AI Tutor
               </Link>
-              {/* Transcript button removed */}
               <Link
                 href="/calendar"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
