@@ -1,1 +1,695 @@
-[00:00:04.356] Server  LOG      ✓ Ready in 3.1s
+[00:00:23.735] Server  LOG      ✓ Ready in 15.7s
+[00:00:26.798] Server  LOG      ○ Compiling / ...
+[00:00:37.553] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:04.317] Server  ERROR    ⨯ ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+
+./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:04:04.514] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:04.514] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:06.569] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:07.048] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:07.338] Server  LOG      ○ Compiling /_error ...
+[00:04:10.652] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:10.698] Server  ERROR    ⨯ ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+
+./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:04:12.879] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:12.879] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:04:12.879] Browser ERROR   uncaughtError: Error: ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:08:22.931] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:23.903] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:27.046] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:11.654] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:11.654] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:11.654] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:11.654] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:11.654] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx:4:1
+Module not found: Can't resolve 'framer-motion'
+   2 |
+   3 | import React, { useCallback, useEffect, useRef, useState } from "react";
+>  4 | import {
+     | ^^^^^^^^
+>  5 |   motion,
+     | ^^^^^^^^^
+>  6 |   useMotionValue,
+     | ^^^^^^^^^
+>  7 |   animate,
+     | ^^^^^^^^^
+>  8 |   useDragControls,
+     | ^^^^^^^^^
+>  9 | } from "framer-motion";
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import { Button } from "@/app/components/ui/button";
+  11 | import { cn } from "@/app/components/ui/utils";
+  12 | import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/components/EventWidget.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:12.018] Server  LOG      ✓ Compiled in 1332ms
+[00:09:12.968] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:06.009] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:07.934] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:34.682] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:36.270] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:16:09.980] Server  LOG      ✓ Compiled in 1655ms
+[00:17:12.308] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:15.018] Server  LOG      ✓ Compiled in 1866ms
+[00:22:48.535] Server  LOG      ✓ Compiled in 1586ms
+[00:23:03.979] Server  LOG      ✓ Compiled in 1045ms
+[00:23:34.296] Server  LOG      ✓ Compiled in 783ms
+[00:24:21.747] Server  LOG      ✓ Compiled in 1121ms
+[00:25:33.949] Server  LOG      ✓ Compiled in 693ms
+[00:25:58.854] Server  LOG      ✓ Compiled in 1126ms
+[00:26:25.667] Server  LOG      ✓ Compiled in 785ms
+[00:26:48.373] Server  LOG      ✓ Compiled in 663ms
+[00:27:10.518] Server  LOG      ✓ Compiled in 1710ms
+[00:27:31.559] Server  LOG      ✓ Compiled in 1176ms
+[00:27:40.075] Server  LOG      ✓ Compiled in 1092ms
+[00:27:50.206] Server  LOG      ✓ Compiled in 624ms
+[00:28:12.078] Server  LOG      ✓ Compiled in 1770ms
+[00:28:30.217] Server  LOG      ✓ Compiled in 1085ms
+[00:28:50.348] Server  LOG      ✓ Compiled in 1043ms
+[00:29:12.631] Server  LOG      ✓ Compiled in 1266ms
+[00:29:55.727] Server  LOG      ✓ Compiled in 524ms
+[00:36:24.540] Server  LOG      ✓ Compiled in 1954ms
+[00:37:06.844] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:37:13.347] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

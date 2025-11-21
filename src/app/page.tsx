@@ -13,7 +13,7 @@ import { Badge } from '@/app/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
 import { Label } from '@/app/components/ui/label'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/components/ui/tooltip'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info, Check } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -1298,7 +1298,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] transition-colors">
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-card/95 dark:bg-card/95 backdrop-blur-sm border-r border-border dark:border-border ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-[#000000] dark:bg-[#000000] border-r border-gray-800 dark:border-gray-800 ${
           isSidebarOpen ? "w-[280px]" : "w-16"
         }`}
       >
@@ -1470,7 +1470,7 @@ export default function Home() {
 
       {/* Fixed Topbar aligned with sidebar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border transition-colors ${
+        className={`fixed top-0 left-0 right-0 z-50 bg-[#000000] dark:bg-[#000000] border-b border-gray-800 dark:border-gray-800 transition-colors ${
           isSidebarOpen ? "ml-[280px]" : "ml-16"
         }`}
       >
@@ -1504,15 +1504,6 @@ export default function Home() {
                 >
                   <Calendar className="h-4 w-4" />
                   Calendar
-                </Link>
-                <Link
-                  href="/todo"
-                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
-                    pathname === "/todo" ? "font-medium" : "font-normal"
-                  }`}
-                >
-                  <CheckSquare className="h-4 w-4" />
-                  Todo
                 </Link>
               </div>
             </div>
@@ -2264,8 +2255,8 @@ export default function Home() {
                 </div>
               </ScrollArea>
 
-            {/* Input Area */}
-            <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
+              {/* Input Area */}
+              <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
               {/* Scroll to bottom button - positioned in input area */}
               {messages.length > 0 && (
                 <div className="flex justify-end mb-2">
@@ -2379,6 +2370,7 @@ export default function Home() {
             </div>
           </Card>
         </div>
+        </main>
       </div>
     </div>
   );
