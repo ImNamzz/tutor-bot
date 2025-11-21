@@ -9,7 +9,7 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const showTopbar = !pathname.startsWith("/tutor");
+  const showTopbar = !pathname.startsWith("/tutor") && !pathname.startsWith("/auth");
 
   return (
     <>

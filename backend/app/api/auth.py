@@ -62,6 +62,7 @@ def google_callback():
         email = user_info.get('email')
         user = db.query(UserModel).filter_by(email=email).first()
         
+        needs_setup = False
         if not user:
             base_name = re.sub(r'[^a-zA-Z0-9]', '', user_info.get('name', 'User').lower()) or "user"
             username = base_name
@@ -74,8 +75,14 @@ def google_callback():
             db.add(user)
             db.commit()
             db.refresh(user)
+            needs_setup = True
 
         access_token = create_access_token(identity=user.id)
-        return redirect(f"{current_app.config['FRONTEND_URL']}/auth-callback?token={access_token}")
+        
+        # Add setup parameter for new users
+        if needs_setup:
+            return redirect(f"{current_app.config['FRONTEND_URL']}/auth-callback?token={access_token}&setup=true")
+        else:
+            return redirect(f"{current_app.config['FRONTEND_URL']}/auth-callback?token={access_token}&setup=false")
     finally:
         db.close()

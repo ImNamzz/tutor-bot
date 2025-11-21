@@ -62,8 +62,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md p-8 my-8 dark:bg-gray-900 dark:border-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-4">
+      <Card className="w-full max-w-md p-8 my-2 dark:bg-gray-900 dark:border-gray-800">
         {/* Back to Home Link */}
         <div className="mb-4">
           <Link

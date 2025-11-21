@@ -1,21 +1,14 @@
-[00:00:03.935] Server  LOG      ✓ Ready in 2.5s
-[00:00:16.673] Server  LOG      ○ Compiling / ...
-[00:00:22.400] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:34.842] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:36.021] Browser ERROR   Failed to load classes {}
-[00:00:36.022] Browser ERROR   Failed to load classes {}
-[00:00:42.478] Browser ERROR   Failed to load classes {}
-[00:00:42.478] Browser ERROR   Failed to load classes {}
-[00:03:07.131] Server  LOG      ✓ Compiled in 589ms
-[00:07:25.964] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:07:26.977] Browser ERROR   Failed to load classes {}
-[00:07:26.977] Browser ERROR   Failed to load classes {}
-[00:07:29.968] Browser ERROR   Failed to load classes {}
-[00:07:29.968] Browser ERROR   Failed to load classes {}
-[00:08:38.896] Server  LOG      ✓ Compiled in 879ms
-[00:08:58.612] Browser ERROR   Failed to load classes {}
-[00:08:58.612] Browser ERROR   Failed to load classes {}
-[00:09:01.853] Browser ERROR   Failed to load classes {}
-[00:09:01.853] Browser ERROR   Failed to load classes {}
-[00:09:25.537] Browser ERROR   Failed to load classes {}
-[00:09:25.537] Browser ERROR   Failed to load classes {}
+[00:00:01.790] Server  LOG      ✓ Ready in 1237ms
+[00:00:04.876] Server  LOG      ○ Compiling /tutor ...
+[00:00:08.585] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:20.142] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:23.847] Server  LOG      ✓ Compiled in 1671ms
+[00:07:34.581] Server  LOG      ✓ Compiled in 1404ms
+[00:09:04.011] Server  LOG      ✓ Compiled in 1509ms
+[00:09:05.903] Server  LOG      ✓ Compiled in 1104ms
+[00:10:05.749] Server  LOG      ✓ Compiled in 890ms
+[00:10:43.166] Server  LOG      ✓ Compiled in 803ms
+[00:11:06.461] Server  LOG      ✓ Compiled in 1681ms
+[00:11:59.306] Server  LOG      ✓ Compiled in 757ms
+[00:12:10.928] Server  LOG      ✓ Compiled in 553ms
+[00:12:15.529] Server  LOG      ✓ Compiled in 790ms

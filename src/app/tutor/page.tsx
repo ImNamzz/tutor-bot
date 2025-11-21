@@ -266,39 +266,19 @@ export default function Home() {
   };
 
   const generateSessionName = async (content: string): Promise<string> => {
-    try {
-      // Generate a concise session name based on content
-      const response = await fetch(API_ENDPOINTS.chat, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-        body: JSON.stringify({
-          chat_session_id: null,
-          message: `Generate a very short, concise title (3-5 words max) for a chat session based on this content: "${content.substring(0, 200)}...". Only respond with the title, nothing else.`
-        })
-      })
-
-      if (response.ok) {
-        const data = await response.json();
-        // Clean up the response and limit length
-        let title = data.response.replace(/['"]/g, "").trim();
-        if (title.length > 50) {
-          title = title.substring(0, 47) + "...";
-        }
-        // Store the session ID if returned
-        if (data.chat_session_id) {
-          setCurrentSessionId(data.chat_session_id.toString())
-        }
-        return title
-      }
-    } catch (error) {
-      console.error("Error generating session name:", error);
+    // Generate a simple title from the first few words of the content
+    const words = content.trim().split(/\s+/).slice(0, 5);
+    let title = words.join(' ');
+    
+    // Capitalize first letter
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+    
+    // Limit length
+    if (title.length > 50) {
+      title = title.substring(0, 47) + "...";
     }
-
-    // Fallback to a default name with timestamp
-    return `Chat Session ${new Date().toLocaleString("en-US", {
+    
+    return title || `Chat Session ${new Date().toLocaleString("en-US", {
       month: "short",
       day: "numeric",
       hour: "2-digit",
@@ -957,6 +937,56 @@ export default function Home() {
     toast.success("Message copied to clipboard!");
   };
 
+  const handleRegenerateMessage = async (messageId: string) => {
+    // Find the message index
+    const messageIndex = messages.findIndex((m) => m.id === messageId);
+    if (messageIndex === -1 || messageIndex === 0) return;
+
+    // Get the previous user message
+    const previousUserMessage = messages[messageIndex - 1];
+    if (previousUserMessage.role !== 'user') return;
+
+    // Remove the current assistant message and all messages after it
+    const messagesToKeep = messages.slice(0, messageIndex);
+    setMessages(messagesToKeep);
+    setIsLoading(true);
+
+    // Regenerate AI response
+    try {
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+        body: JSON.stringify({
+          chat_session_id: currentSessionId ? Number(currentSessionId) : null,
+          message: previousUserMessage.content
+        })
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error("Failed to regenerate message");
+      }
+
+      const data = await response.json();
+      addMessage("assistant", data.response);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error regenerating message:", error);
+      toast.error("Failed to regenerate message. Please try again.");
+      addMessage(
+        "assistant",
+        "Sorry, I encountered an error regenerating the response. Please try again."
+      );
+      setIsLoading(false);
+    }
+  };
+
   const handleStartEditMessage = (messageId: string, content: string) => {
     setEditingMessageId(messageId);
     setEditedMessageContent(content);
@@ -1580,15 +1610,6 @@ export default function Home() {
 
               {/* Navigation Links */}
               <div className="hidden md:flex items-center gap-6">
-                <Link
-                  href="/"
-                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
-                    pathname === "/" ? "font-medium" : "font-normal"
-                  }`}
-                >
-                  <BookOpen className="h-4 w-4" />
-                  Dashboard
-                </Link>
                 <Link
                   href="/tutor"
                   className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
@@ -2221,7 +2242,7 @@ export default function Home() {
                     ) : (
                       // Display mode
                       <>
-                        <div className={message.role === 'user' ? 'flex flex-col items-end gap-1' : ''}>
+                        <div className={message.role === 'user' ? 'flex flex-col items-end gap-1' : 'flex flex-col items-start gap-1'}>
                           <div
                             className={`px-4 py-3 ${
                               message.role === 'user'
@@ -2242,7 +2263,7 @@ export default function Home() {
 
                             {/* Action buttons below user messages */}
                             {message.role === "user" && (
-                              <div className="flex gap-2 px-2">
+                              <div className="flex gap-2 px-2">{/* ... existing user buttons ... */}
                                 <button
                                   onClick={() =>
                                     handleCopyMessage(message.content)
@@ -2301,25 +2322,21 @@ export default function Home() {
                                 </button>
                               </div>
                             )}
-                          </div>
 
-                          {/* Action buttons on hover for AI messages */}
-                          {message.role === "assistant" &&
-                            hoveredMessageId === message.id && (
-                              <div className="absolute top-0 left-0 -translate-x-full mr-2 pr-2 flex gap-1 transition-opacity opacity-100">
-                                <Button
+                          {/* Action buttons below assistant messages */}
+                          {message.role === "assistant" && (
+                              <div className="flex gap-2 px-4">
+                                <button
                                   onClick={() =>
                                     handleCopyMessage(message.content)
                                   }
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                  className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
                                   title="Copy"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
+                                    width="12"
+                                    height="12"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
@@ -2337,9 +2354,34 @@ export default function Home() {
                                     ></rect>
                                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                   </svg>
-                                </Button>
+                                  Copy
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleRegenerateMessage(message.id)
+                                  }
+                                  className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+                                  title="Regenerate"
+                                  disabled={isLoading}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                                  </svg>
+                                  Regenerate
+                                </button>
                               </div>
                             )}
+                          </div>
                         </>
                       )}
                     </div>

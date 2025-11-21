@@ -139,9 +139,9 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             {/* Header (Drag Zone) */}
             <div
               onPointerDown={(e) => dragControls.start(e)}
-              className="cursor-grab active:cursor-grabbing flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50 touch-none"
+              className="cursor-grab active:cursor-grabbing flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-[#000000] touch-none"
             >
-              <span className="text-xs font-bold tracking-wide text-gray-600 uppercase pointer-events-none">
+              <span className="text-xs font-bold tracking-wide text-white uppercase pointer-events-none">
                 Captured Events
               </span>
 
@@ -163,7 +163,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             </div>
 
             {/* Content List */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-background dark:bg-card/40">
+            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-[#0f0f0f] dark:bg-[#0f0f0f]">
               {items.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <p className="text-xs text-gray-400">

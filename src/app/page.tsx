@@ -149,7 +149,7 @@ export default function HomePage() {
   }, [classes]);
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background transition-colors">
+    <div className="min-h-screen bg-[#0f0f0f] dark:bg-[#0f0f0f] transition-colors">
       {/* Main content with top padding for fixed topbar */}
       <main className="pt-24 max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
@@ -165,7 +165,7 @@ export default function HomePage() {
             </div>
             {/* Quick Stats Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
-              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-[#000000] p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-indigo-950/40">
                     <CalendarDays className="h-5 w-5" />
@@ -178,7 +178,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-[#000000] p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-red-100 dark:bg-red-950/40 flex items-center justify-center">
                     <AlarmClock className="h-5 w-5 text-red-600" />
@@ -193,7 +193,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-[#000000] p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-green-100 dark:bg-green-950/40 flex items-center justify-center">
                     <Activity className="h-5 w-5 text-green-600" />
@@ -218,13 +218,13 @@ export default function HomePage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search classes..."
-                  className="w-full rounded-lg border border-border bg-background dark:bg-card pl-9 pr-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                  className="w-full rounded-lg border border-border bg-[#212121] dark:bg-[#212121] pl-9 pr-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-primary/30 focus:border-primary"
                 />
               </div>
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-gray-400" />
                 <select
-                  className="rounded-lg border border-border bg-background dark:bg-card px-2 py-2 text-sm"
+                  className="rounded-lg border border-border bg-[#212121] dark:bg-[#212121] px-2 py-2 text-sm"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
                 >

@@ -164,6 +164,7 @@ class AIService:
         }
 
         output_text = ""
+        last_content_length = 0  # Track the last accumulated length
         try:
             with requests.post(url, headers=headers, json=payload, stream=True) as r:
                 r.raise_for_status()
@@ -172,14 +173,20 @@ class AIService:
                         decoded = line.decode("utf-8-sig").strip()
                         if "data:" in decoded:
                             json_str = decoded.split("data:", 1)[1].strip()
-                            if json_str == "[DONE]": break
+                            if json_str == "[DONE]": 
+                                break
                             try:
                                 data = json.loads(json_str)
                                 content = data.get("message", {}).get("content")
-                                if content: output_text += content
-                            except: continue
+                                if content:
+                                    # Use the full accumulated content from the last chunk
+                                    output_text = content
+                            except: 
+                                continue
+            
+            print(f"AI Response Length: {len(output_text)} chars")
+            print(f"AI Response: {output_text[:200]}...")  # Log first 200 chars
+            return output_text
         except Exception as e:
             print(f"Socratic Chat Error: {e}")
             return "I'm sorry, I am dumb and cannot respond right now."
-
-        return output_text
