@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token
 from app import bcrypt, oauth
 from app.core.database import SessionLocal
 from app.models.models import User as UserModel
+from flask import url_for
 
 auth_bp = Blueprint('auth', __name__)
 
