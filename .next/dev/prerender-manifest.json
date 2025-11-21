@@ -4,8 +4,14 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
+<<<<<<< HEAD
     "previewModeId": "f176885fc3bb4ac428e0bc3fcad3906e",
     "previewModeSigningKey": "4de0c8f47740efa9b1ffd74ba607f0be03b39dfb31b409adb16976e0d18bf005",
     "previewModeEncryptionKey": "399422978bb06ef36d8d2b2a306e6e259a93231f2f8abab6962be275e08d1450"
+=======
+    "previewModeId": "dddb012e3cdc2d09cd5a349d6c1720b8",
+    "previewModeSigningKey": "a799ef0a1a7c776b05a14eb0fb684794f92cf14f32bb394926bbc40cfb04b160",
+    "previewModeEncryptionKey": "475a7561d74cbc38a82c726ce8cf9cdeeaf1bcb71a2de034566bca4d7705a05c"
+>>>>>>> feature/New-Backend-Connect-Phat
   }
 }

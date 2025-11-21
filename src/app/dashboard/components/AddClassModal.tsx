@@ -13,7 +13,7 @@ import { CLASS_COLORS, ClassItem, generateId } from "@/app/lib/types/class";
 import ColorPicker from "@/app/components/ColorPicker";
 
 interface AddClassModalProps {
-  onAdd: (item: ClassItem) => void;
+  onAdd: (name: string) => void;
 }
 
 // Extended palette (name + hex)
@@ -142,16 +142,7 @@ export const AddClassModal: React.FC<AddClassModalProps> = ({ onAdd }) => {
 
   const handleCreate = () => {
     if (!name.trim()) return;
-    const newClass: ClassItem = {
-      id: generateId(),
-      name: name.trim(),
-      code: code.trim() || undefined,
-      color: colorValue,
-      bgImage,
-      lectures: [],
-      createdAt: new Date().toISOString(),
-    };
-    onAdd(newClass);
+    onAdd(name.trim());
     setOpen(false);
     setName("");
     setCode("");

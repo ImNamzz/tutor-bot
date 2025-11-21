@@ -5,19 +5,24 @@ import EventWidget from "./components/EventWidget";
 import { AddClassModal } from "./components/AddClassModal";
 import { ClassCard } from "./components/ClassCard";
 import { ClassItem } from "@/app/lib/types/class";
+import { classesAPI, Class as APIClass } from "@/app/lib/api";
+import { isAuthenticated } from "@/app/lib/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import {
   CalendarDays,
   Activity,
   AlarmClock,
   Search,
   Filter,
+  Loader2,
 } from "lucide-react";
 
-const STORAGE_KEY = "eduassist_classes";
-
 export default function DashboardPage() {
+  const router = useRouter();
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "upcoming" | "ended"
@@ -25,37 +30,81 @@ export default function DashboardPage() {
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setClasses(JSON.parse(raw));
-    } catch (e) {
-      console.error("Failed to load classes", e);
+    if (!isAuthenticated()) {
+      router.push("/auth/login");
+      return;
     }
+    loadClasses();
   }, []);
 
-  const persist = (next: ClassItem[]) => {
-    setClasses(next);
+  const loadClasses = async () => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch (e) {
-      console.error("Failed to save classes", e);
+      setLoading(true);
+      const apiClasses = await classesAPI.getAll();
+      // Convert API classes to ClassItem format
+      const converted: ClassItem[] = apiClasses.map((c: APIClass) => ({
+        id: c.id,
+        name: c.title,
+        code: undefined,
+        color: "bg-indigo-600",
+        lectures: (c.lectures || []).map(l => ({
+          id: l.id,
+          title: l.title,
+          type: "text" as const,
+          content: l.transcript || "",
+          createdAt: l.created_at,
+        })),
+        createdAt: c.created_at,
+      }));
+      setClasses(converted);
+    } catch (e: any) {
+      console.error("Failed to load classes", e);
+      toast.error(e.message || "Failed to load classes");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleAddClass = (item: ClassItem) => {
-    persist([item, ...classes]);
+  const handleAddClass = async (name: string) => {
+    try {
+      const newClass = await classesAPI.create(name);
+      const converted: ClassItem = {
+        id: newClass.id,
+        name: newClass.title,
+        code: undefined,
+        color: "bg-indigo-600",
+        lectures: [],
+        createdAt: newClass.created_at,
+      };
+      setClasses([converted, ...classes]);
+      toast.success("Class created successfully");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to create class");
+    }
   };
 
-  const handleRenameClass = (id: string, newName: string) => {
-    const next = classes.map((c) =>
-      c.id === id ? { ...c, name: newName } : c
-    );
-    persist(next);
+  const handleRenameClass = async (id: string, newName: string) => {
+    try {
+      await classesAPI.update(id, newName);
+      const next = classes.map((c) =>
+        c.id === id ? { ...c, name: newName } : c
+      );
+      setClasses(next);
+      toast.success("Class renamed successfully");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to rename class");
+    }
   };
 
-  const handleDeleteClass = (id: string) => {
-    const next = classes.filter((c) => c.id !== id);
-    persist(next);
+  const handleDeleteClass = async (id: string) => {
+    try {
+      await classesAPI.delete(id);
+      const next = classes.filter((c) => c.id !== id);
+      setClasses(next);
+      toast.success("Class deleted successfully");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to delete class");
+    }
   };
 
   // Derived helpers
@@ -108,6 +157,11 @@ export default function DashboardPage() {
       </nav>
       {/* Main content offset by topbar height */}
       <main className="pt-24 max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
         <div className="relative">
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -204,6 +258,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        )}
       </main>
 
       {/* EventWidget mounted at the root level to allow free dragging */}

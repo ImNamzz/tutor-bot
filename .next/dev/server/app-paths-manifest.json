@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "/dashboard/class/[id]/lecture/[lectureId]/page": "app/dashboard/class/[id]/lecture/[lectureId]/page.js",
   "/dashboard/class/[id]/page": "app/dashboard/class/[id]/page.js",
   "/dashboard/page": "app/dashboard/page.js",
+=======
+  "/auth-callback/page": "app/auth-callback/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/setup/page": "app/auth/setup/page.js",
+>>>>>>> feature/New-Backend-Connect-Phat
   "/page": "app/page.js",
   "/tutor/page": "app/tutor/page.js"
 }

@@ -55,12 +55,12 @@ export default function Topbar() {
   };
 
   return (
-    <nav className="bg-card dark:bg-card shadow-sm border-b border-border dark:border-border transition-colors">
+    <nav className="bg-[#000000] dark:bg-[#000000] shadow-sm border-b border-border dark:border-border transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link
-              href="/dashboard"
+              href="/"
               className="flex items-center hover:opacity-80 transition-opacity"
             >
               <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
@@ -69,9 +69,9 @@ export default function Topbar() {
 
             <div className="hidden md:flex items-center gap-6">
               <Link
-                href="/"
+                href="/tutor"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/"
+                  pathname === "/tutor"
                     ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 dark:text-gray-300"
                 }`}
@@ -79,7 +79,6 @@ export default function Topbar() {
                 <BookOpen className="h-4 w-4" />
                 AI Tutor
               </Link>
-              {/* Transcript button removed */}
               <Link
                 href="/calendar"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
@@ -123,7 +122,7 @@ export default function Topbar() {
               <div className="flex items-center gap-2">
                 <Link href="/auth/login">
                   <Button variant="ghost" size="sm">
-                    Login
+                    Sign In
                   </Button>
                 </Link>
                 <Link href="/auth/register">

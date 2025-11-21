@@ -1,3 +1,20 @@
+<<<<<<< HEAD
 [00:00:07.293] Server  LOG      ✓ Ready in 6.3s
 [00:00:10.682] Server  LOG      ○ Compiling /dashboard ...
 [00:00:23.107] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+=======
+[00:00:01.790] Server  LOG      ✓ Ready in 1237ms
+[00:00:04.876] Server  LOG      ○ Compiling /tutor ...
+[00:00:08.585] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:20.142] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:23.847] Server  LOG      ✓ Compiled in 1671ms
+[00:07:34.581] Server  LOG      ✓ Compiled in 1404ms
+[00:09:04.011] Server  LOG      ✓ Compiled in 1509ms
+[00:09:05.903] Server  LOG      ✓ Compiled in 1104ms
+[00:10:05.749] Server  LOG      ✓ Compiled in 890ms
+[00:10:43.166] Server  LOG      ✓ Compiled in 803ms
+[00:11:06.461] Server  LOG      ✓ Compiled in 1681ms
+[00:11:59.306] Server  LOG      ✓ Compiled in 757ms
+[00:12:10.928] Server  LOG      ✓ Compiled in 553ms
+[00:12:15.529] Server  LOG      ✓ Compiled in 790ms
+>>>>>>> feature/New-Backend-Connect-Phat
