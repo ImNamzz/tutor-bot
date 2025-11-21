@@ -20,7 +20,9 @@ class Lecture(Base):
     __tablename__ = "lectures"
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     title = Column(String(80), nullable=False)
-    transcript = Column(Text, nullable=False)
+    transcript = Column(Text, nullable=True)
+    object_key = Column(String(255), nullable=True)
+    status = Column(String(20), default="PROCESSING")
     summary = Column(Text, nullable=True)
     created_at = Column(DateTime, default=func.now())
     class_id = Column(String(36), ForeignKey("classes.id"), nullable=False)
