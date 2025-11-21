@@ -40,7 +40,7 @@ def login():
 
 @auth_bp.route("/google/login", methods=["GET"])
 def google_login():
-    redirect_uri = 'http://localhost:8000/api/auth/google/callback'
+    redirect_uri = url_for('auth.google_callback', _external=True)    
     return oauth.google.authorize_redirect(redirect_uri)
 
 @auth_bp.route("/google/callback", methods=["GET"])
