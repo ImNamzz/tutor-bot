@@ -21,8 +21,8 @@ export default function ViewToggle({ value, onChange }: ViewToggleProps) {
         type="button"
         onClick={handleToggle}
         className={cn(
-          "relative w-32 h-10 rounded-full transition-all duration-300 ease-in-out",
-          "flex items-center justify-between px-2 gap-2",
+          "relative w-40 h-10 rounded-full transition-all duration-300 ease-in-out",
+          "flex items-center justify-between px-3 gap-3",
           "shadow-lg active:scale-95",
           isClassSelected
             ? "bg-gradient-to-b from-green-500 to-green-600 dark:from-green-600 dark:to-green-700"
@@ -54,7 +54,7 @@ export default function ViewToggle({ value, onChange }: ViewToggleProps) {
         <span
           className={cn(
             "relative z-10 text-xs font-bold uppercase transition-all duration-300",
-            "leading-none tracking-tight px-1",
+            "leading-none tracking-tight px-0",
             !isClassSelected
               ? "text-black dark:text-black opacity-100"
               : "text-gray-300 dark:text-gray-400 opacity-50"

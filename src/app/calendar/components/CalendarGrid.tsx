@@ -26,6 +26,7 @@ export type CalendarGridProps = {
   onUnscheduleDeadline?: (deadlineEvent: DeadlineEvent) => void;
   onAddClass?: (classEvent: ClassEvent) => void;
   onAddDeadline?: (deadlineEvent: DeadlineEvent) => void;
+  onBindAddTrigger?: (fn: () => void) => void;
 };
 
 export default function CalendarGrid({
@@ -37,6 +38,7 @@ export default function CalendarGrid({
   onUnscheduleDeadline,
   onAddClass,
   onAddDeadline,
+  onBindAddTrigger,
 }: CalendarGridProps) {
   const [currentMonth, setCurrentMonth] = useState(() => {
     const d = date || new Date();
@@ -140,6 +142,15 @@ export default function CalendarGrid({
     setSelectedDayForAdd(day.date);
     setIsAddDialogOpen(true);
   };
+
+  useEffect(() => {
+    if (onBindAddTrigger) {
+      onBindAddTrigger(() => {
+        setSelectedDayForAdd(date || new Date());
+        setIsAddDialogOpen(true);
+      });
+    }
+  }, [onBindAddTrigger, date]);
 
   const formatDateKey = (date: Date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(

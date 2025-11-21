@@ -4,14 +4,8 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-<<<<<<< HEAD
-    "previewModeId": "223d79f072b95900d4f55ede91090c61",
-    "previewModeSigningKey": "ce464a67c295685b34a2ef9199f6295ab5aa9635e9d2a8072309801b9ee6324c",
-    "previewModeEncryptionKey": "534f20d7f771c12a9b0ae9850bc072bd3aa393bed2de408f295e5104b9f8af5c"
-=======
-    "previewModeId": "a71024e1d39ae789ed50193c39e11c3f",
-    "previewModeSigningKey": "8b6036b3784729dd6c5e0f55c0ca86b3689ab90284a2b0f4640d0049941b0917",
-    "previewModeEncryptionKey": "7e80eaed09532f2d0db48672367e0c5acc9a28b4eccdb051dda1e035f7868cde"
->>>>>>> origin/beforeMerge/AI-Tutor-Without-Dashboard
+    "previewModeId": "de16027160a26db471dcaf12071c578c",
+    "previewModeSigningKey": "1133a518fc99f656ea0cffd14fe2c42786efc3963fc7b4e45e5c0944d6d7cabe",
+    "previewModeEncryptionKey": "1a02aeb90638e06536f636332886a7bf9b27974c9da02eee44f8799bda1f2ef2"
   }
 }

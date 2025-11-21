@@ -2409,7 +2409,7 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                   <div className="absolute bottom-full left-0 mb-2 bg-card dark:bg-card border border-border dark:border-border rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
                     <button
                       onClick={() => {
-                        fileInputRef.current?.click();
+                        textInputRef.current?.click();
                         setShowUploadMenu(false);
                       }}
                       className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
@@ -2421,7 +2421,7 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                     </button>
                     <button
                       onClick={() => {
-                        imageInputRef.current?.click();
+                        audioInputRef.current?.click();
                         setShowUploadMenu(false);
                       }}
                       className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"

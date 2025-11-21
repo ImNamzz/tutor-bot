@@ -1,36 +1,112 @@
-<<<<<<< HEAD
-[00:00:03.097] Server  LOG      ✓ Ready in 2.2s
-[00:00:11.828] Server  LOG      ○ Compiling / ...
-[00:00:19.520] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:25.351] Server  LOG      ○ Compiling /dashboard ...
-[00:00:42.885] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:42.886] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:34.851] Server  LOG      ✓ Compiled in 889ms
-[00:06:34.839] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:06:40.839] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:06:45.970] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:07:12.059] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:09:15.828] Server  LOG      ✓ Compiled in 715ms
-[00:10:24.350] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:10:26.340] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:13:46.252] Server  LOG      ✓ Compiled in 4.2s
-[00:42:58.174] Server  LOG      ✓ Compiled in 3.4s
-[01:32:53.219] Server  LOG      ✓ Compiled in 675ms
-[01:33:36.516] Server  LOG      ✓ Compiled in 542ms
-[01:34:19.908] Server  LOG      ✓ Compiled in 563ms
-[01:35:25.390] Server  LOG      ✓ Compiled in 705ms
-[01:35:43.445] Server  LOG      ✓ Compiled in 435ms
-[01:38:12.087] Server  LOG      ✓ Compiled in 5s
-[01:38:45.108] Server  LOG      ✓ Compiled in 735ms
-[01:56:17.980] Server  LOG      ○ Compiling /auth/login ...
-[02:09:08.592] Server  LOG      ✓ Compiled in 2s
-[02:09:18.191] Server  LOG      ✓ Compiled in 513ms
-[02:09:24.922] Server  LOG      ✓ Compiled in 622ms
-[02:11:11.803] Server  LOG      ✓ Compiled in 6.5s
-[02:24:08.580] Server  LOG      ✓ Compiled in 755ms
-[02:24:11.700] Server  LOG      ✓ Compiled in 431ms
-[02:24:17.902] Server  LOG      ✓ Compiled in 480ms
-[02:30:02.600] Server  LOG      ✓ Compiled in 23.2s
-=======
-[00:00:04.356] Server  LOG      ✓ Ready in 3.1s
->>>>>>> origin/beforeMerge/AI-Tutor-Without-Dashboard
+[00:00:02.365] Server  LOG      ✓ Ready in 1810ms
+[00:00:07.572] Server  LOG      ○ Compiling / ...
+[00:00:14.845] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:32.491] Browser ERROR   Login error: {}
+[00:02:54.623] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:02:54.623] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:19.612] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:19.612] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:04:50.537] Browser ERROR   Registration error: {}
+[00:05:21.950] Server  LOG        Reload env: .env.local
+[00:05:25.684] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:45.265] Browser ERROR   Registration error: {}
+[00:14:53.553] Server  LOG      ✓ Compiled in 1043ms
+[00:15:39.221] Server  LOG      ✓ Compiled in 1443ms
+[00:24:48.408] Server  LOG      ✓ Compiled in 2.3s
+[00:30:50.220] Server  LOG      ✓ Compiled in 1910ms
+[00:32:25.319] Server  LOG      ✓ Compiled in 2.4s
+[00:38:19.284] Server  LOG      ✓ Compiled in 1563ms
+[00:39:59.025] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:39:59.026] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:40:09.579] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:40:09.580] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:50:47.943] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:50:47.943] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:57:06.216] Server  LOG      ✓ Compiled in 2s
+[00:58:10.580] Server  LOG      ✓ Compiled in 1311ms
+[00:59:25.443] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:59:26.997] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:59:26.997] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:00:42.020] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:00:42.022] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:04:21.486] Server  LOG      ✓ Compiled in 695ms
+[01:06:45.716] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:06:45.716] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:06:59.464] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:07:00.934] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:07:00.934] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:23.465] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:23.473] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:44.796] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:44.796] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:15:58.128] Server  LOG      ✓ Compiled in 2.3s
+[01:15:58.577] Browser ERROR   ./src/app/calendar/components/ViewToggle.tsx:65:16
+Parsing ecmascript source code failed
+  63 |           Deadline
+  64 |         </span>
+> 65 |       </button>
+     |                ^
+> 66 |     </div>
+     | ^^^^^
+  67 |   );
+  68 | }
+  69 |
+
+Expected '</', got 'jsx text (
+    )'
+
+Import traces:
+  Client Component Browser:
+    ./src/app/calendar/components/ViewToggle.tsx [Client Component Browser]
+    ./src/app/calendar/components/AddEventDialog.tsx [Client Component Browser]
+    ./src/app/calendar/components/CalendarGrid.tsx [Client Component Browser]
+    ./src/app/calendar/components/CalendarView.tsx [Client Component Browser]
+    ./src/app/calendar/page.tsx [Client Component Browser]
+    ./src/app/calendar/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/calendar/components/ViewToggle.tsx [Client Component SSR]
+    ./src/app/calendar/components/AddEventDialog.tsx [Client Component SSR]
+    ./src/app/calendar/components/CalendarGrid.tsx [Client Component SSR]
+    ./src/app/calendar/components/CalendarView.tsx [Client Component SSR]
+    ./src/app/calendar/page.tsx [Client Component SSR]
+    ./src/app/calendar/page.tsx [Server Component]
+[01:16:34.792] Server  LOG      ✓ Compiled in 412ms
+[01:16:58.207] Server  LOG      ✓ Compiled in 1171ms
+[01:17:36.590] Server  LOG      ✓ Compiled in 1458ms
+[01:18:09.832] Server  LOG      ✓ Compiled in 1608ms
+[01:18:20.465] Server  LOG      ✓ Compiled in 456ms
+[01:18:57.152] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:18:57.152] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:19:01.921] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:19:01.921] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:19:09.024] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:19:09.024] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:19:41.599] Server  LOG      ✓ Compiled in 10.6s
+[01:19:41.743] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:22:12.611] Server  LOG      ✓ Compiled in 3.2s
+[01:22:26.260] Server  LOG      ✓ Compiled in 241ms
+[01:23:13.434] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:23:13.435] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:24:05.874] Server  LOG      ✓ Compiled in 1873ms
+[01:24:21.113] Server  LOG      ✓ Compiled in 172ms
+[01:24:22.844] Server  LOG      ✓ Compiled in 314ms
+[01:24:44.500] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:24:44.500] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:25:16.820] Server  LOG      ✓ Compiled in 86ms
+[01:25:19.457] Server  LOG      ✓ Compiled in 138ms
+[01:26:17.177] Server  LOG      ✓ Compiled in 330ms
+[01:26:24.260] Server  LOG      ✓ Compiled in 273ms
+[01:26:33.198] Server  LOG      ✓ Compiled in 174ms
+[01:26:42.741] Server  LOG      ✓ Compiled in 182ms
+[01:26:44.404] Server  LOG      ✓ Compiled in 158ms
+[01:26:54.638] Server  LOG      ✓ Compiled in 390ms
+[01:26:58.103] Server  LOG      ✓ Compiled in 142ms
+[01:27:03.689] Server  LOG      ✓ Compiled in 189ms
+[01:27:11.266] Server  LOG      ✓ Compiled in 165ms
+[01:27:18.781] Server  LOG      ✓ Compiled in 402ms
+[01:27:24.631] Server  LOG      ✓ Compiled in 125ms
+[01:27:30.924] Server  LOG      ✓ Compiled in 235ms
+[01:27:33.198] Server  LOG      ✓ Compiled in 117ms
+[01:27:37.264] Server  LOG      ✓ Compiled in 103ms
+[01:27:47.982] Server  LOG      ✓ Compiled in 125ms

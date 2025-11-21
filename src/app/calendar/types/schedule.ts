@@ -6,6 +6,7 @@ export type ClassEvent = {
   date?: Date; // For one-time events
   recurringDay?: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday. For recurring events
   type: "one-time" | "recurring";
+  color?: string; // Tailwind color class for display
 };
 
 export type DeadlineEvent = {

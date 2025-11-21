@@ -112,6 +112,7 @@ export default function AddEventDialog({
         time,
         location: location || undefined,
         type: isRecurring ? "recurring" : "one-time",
+        color: "bg-green-500",
         ...(isRecurring
           ? { recurringDay: selectedDayOfWeek! }
           : { date: date! }),

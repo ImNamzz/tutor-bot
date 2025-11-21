@@ -16,6 +16,36 @@ import {
 const STORAGE_KEY = "eduassist_classes";
 
 export default function DashboardPage() {
+  // Mock events for the EventWidget
+  const MOCK_EVENTS = [
+    {
+      id: "evt-1",
+      title: "Meeting with AI Tutor",
+      description:
+        "Discuss progress on recent problem sets and clarify doubts about calculus.",
+      timestamp: new Date().toLocaleTimeString(),
+    },
+    {
+      id: "evt-2",
+      title: "Review Class Notes",
+      description:
+        "Go through week 3 lecture notes on thermodynamics and summarize key formulas.",
+      timestamp: new Date(Date.now() - 60 * 60 * 1000).toLocaleTimeString(),
+    },
+    {
+      id: "evt-3",
+      title: "Physics Assignment Deadline",
+      description: "Submit assignment on projectile motion before midnight.",
+      timestamp: new Date(Date.now() + 2 * 60 * 60 * 1000).toLocaleTimeString(),
+    },
+    {
+      id: "evt-4",
+      title: "Group Study Session",
+      description:
+        "Collaborative session on linear algebra problem set with peers.",
+      timestamp: new Date(Date.now() + 4 * 60 * 60 * 1000).toLocaleTimeString(),
+    },
+  ];
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
@@ -207,7 +237,7 @@ export default function DashboardPage() {
       </main>
 
       {/* EventWidget mounted at the root level to allow free dragging */}
-      <EventWidget />
+      <EventWidget items={MOCK_EVENTS} />
     </div>
   );
 }

@@ -1,21 +1,30 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   motion,
   useMotionValue,
   animate,
   useDragControls,
+  AnimatePresence,
 } from "framer-motion";
+import { createPortal } from "react-dom";
 import { Button } from "@/app/components/ui/button";
 import { cn } from "@/app/components/ui/utils";
-import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { X, ChevronsRight, Bell, Filter as FilterIcon } from "lucide-react";
 
 export interface EventItem {
   id: string;
   title: string;
   description?: string;
   timestamp?: string;
+  isSeen?: boolean;
 }
 
 export interface EventWidgetProps {
@@ -32,6 +41,14 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(true);
   const [width, setWidth] = useState<number>(360);
+  const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDate, setFilterDate] = useState<string>("");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Resize refs
   const draggingResize = useRef(false);
@@ -44,6 +61,23 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const dragControls = useDragControls();
+
+  const unseenCount = useMemo(
+    () => items.reduce((acc, ev) => acc + (!ev.isSeen ? 1 : 0), 0),
+    [items]
+  );
+
+  const filteredItems = useMemo(() => {
+    if (!filterDate) return items;
+    const matchDate = filterDate; // yyyy-mm-dd
+    return items.filter((ev) => {
+      if (!ev.timestamp) return false;
+      const d = new Date(ev.timestamp);
+      if (isNaN(d.getTime())) return false;
+      const iso = d.toISOString().slice(0, 10);
+      return iso === matchDate;
+    });
+  }, [items, filterDate]);
 
   // Snap logic: return to right edge (x=0) on drag end
   const handleDragEnd = useCallback(() => {
@@ -119,11 +153,10 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
     >
       <div
         className={cn(
-          "relative overflow-hidden bg-card border border-border shadow-2xl transition-all duration-200",
+          "relative bg-card border border-border shadow-2xl transition-all duration-200",
           expanded
-            ? "rounded-xl flex flex-col"
-            : "h-[52px] w-[52px] rounded-full flex items-center justify-center",
-          expanded && "max-h-[70vh]"
+            ? "overflow-hidden rounded-xl flex flex-col max-h-[70vh]"
+            : "overflow-visible h-[52px] w-[52px] rounded-full flex items-center justify-center"
         )}
         style={{ width: expanded ? width : collapsedSize }}
       >
@@ -139,17 +172,31 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             {/* Header (Drag Zone) */}
             <div
               onPointerDown={(e) => dragControls.start(e)}
-              className="cursor-grab active:cursor-grabbing flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50 touch-none"
+              className="cursor-grab active:cursor-grabbing flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50 touch-none relative"
             >
-              <span className="text-xs font-bold tracking-wide text-gray-600 uppercase pointer-events-none">
-                Captured Events
-              </span>
+              <div className="flex items-center gap-2 pointer-events-none">
+                <span className="text-xs font-bold tracking-wide text-gray-600 uppercase">
+                  Captured Events
+                </span>
+                <span className="text-[10px] text-gray-400">
+                  Total: {filteredItems.length}
+                </span>
+              </div>
 
               {/* Buttons Area - Stop propagation to prevent drag start */}
               <div
                 className="flex items-center gap-1"
                 onPointerDown={(e) => e.stopPropagation()}
               >
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 hover:bg-gray-200 rounded-full"
+                  onClick={() => setFilterOpen((v) => !v)}
+                  title="Filter by date"
+                >
+                  <FilterIcon className="h-4 w-4 text-gray-500" />
+                </Button>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -162,6 +209,33 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
               </div>
             </div>
 
+            {/* Filter Control */}
+            {filterOpen && (
+              <div
+                className="px-4 py-2 border-b border-gray-100 bg-background/80"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <label className="text-[11px] text-gray-500 mr-2">Date:</label>
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="rounded-md border border-border bg-card px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+                {filterDate && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-2 h-7 px-2 text-xs"
+                    onClick={() => setFilterDate("")}
+                  >
+                    Clear
+                  </Button>
+                )}
+              </div>
+            )}
+
             {/* Content List */}
             <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-background dark:bg-card/40">
               {items.length === 0 && (
@@ -171,10 +245,11 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                   </p>
                 </div>
               )}
-              {items.map((ev) => (
+              {filteredItems.map((ev) => (
                 <div
                   key={ev.id}
-                  className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-default"
+                  onClick={() => setSelectedEvent(ev)}
+                  className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <p className="text-sm font-semibold text-gray-800 truncate">
@@ -198,17 +273,79 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
         ) : (
           // Collapsed State (Icon) - Draggable
           <div
-            className="w-full h-full flex items-center justify-center cursor-pointer hover:bg-purple-50 rounded-full"
+            className="w-full h-full flex items-center justify-center cursor-pointer hover:bg-purple-50 rounded-full relative"
             onClick={() => {
               if (isDraggingRef.current) return;
               setExpanded(true);
             }}
             onPointerDown={(e) => dragControls.start(e)}
           >
-            <ChevronsLeft className="h-6 w-6 text-purple-600" />
+            <Bell className="h-6 w-6 text-purple-600" />
+            {unseenCount > 0 && (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                className="pointer-events-none absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold z-10"
+              >
+                {unseenCount > 99 ? "99+" : unseenCount}
+              </motion.div>
+            )}
           </div>
         )}
       </div>
+      {/* Detail Popup via Portal */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {selectedEvent && (
+              <motion.div
+                key="event-overlay"
+                className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedEvent(null)}
+              >
+                <motion.div
+                  key="event-modal"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                  className="bg-card border border-border w-full max-w-md rounded-xl shadow-2xl p-6 relative"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-3 right-3 h-8 w-8 rounded-full hover:bg-muted"
+                    onClick={() => setSelectedEvent(null)}
+                    aria-label="Close"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                  <div className="space-y-3">
+                    <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                      {selectedEvent.title}
+                    </h2>
+                    {selectedEvent.timestamp && (
+                      <p className="text-xs text-muted-foreground">
+                        {selectedEvent.timestamp}
+                      </p>
+                    )}
+                    {selectedEvent.description && (
+                      <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                        {selectedEvent.description}
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
     </motion.div>
   );
 };

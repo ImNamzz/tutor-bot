@@ -3,18 +3,13 @@
     "/_app": []
   },
   "devFiles": [],
-<<<<<<< HEAD
   "polyfillFiles": [
     "static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js"
   ],
-=======
-  "polyfillFiles": [],
->>>>>>> origin/beforeMerge/AI-Tutor-Without-Dashboard
   "lowPriorityFiles": [
     "static/development/_ssgManifest.js",
     "static/development/_buildManifest.js"
   ],
-<<<<<<< HEAD
   "rootMainFiles": [
     "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_d62d378a._.js",
     "static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js",
@@ -27,7 +22,4 @@
     "static/chunks/_a0ff3932._.js",
     "static/chunks/turbopack-_376339a9._.js"
   ]
-=======
-  "rootMainFiles": []
->>>>>>> origin/beforeMerge/AI-Tutor-Without-Dashboard
 }
