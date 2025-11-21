@@ -197,7 +197,21 @@ export default function ClassDetailPage() {
     setCls(updated.find((c) => c.id === cls.id) || null);
   };
 
-  // Remove duplicate not-found block, handle not-found in main return below
+  if (mounted && !cls) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        \n{" "}
+        <div className="text-center space-y-4">
+          \n <p className="text-sm text-muted-foreground">Class not found.</p>\n{" "}
+          <Button onClick={() => router.push("/dashboard")}>
+            Back to Dashboard
+          </Button>
+          \n{" "}
+        </div>
+        \n{" "}
+      </div>
+    );
+  }
 
   // --- Derived stats & helpers ---
   const totalLectures = cls?.lectures.length || 0;
@@ -236,275 +250,270 @@ export default function ClassDetailPage() {
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : cls ? (
-          <>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="space-y-1">
-                <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-                  {cls.color.startsWith("#") ? (
-                    <span
-                      className="inline-block h-6 w-6 rounded-md"
-                      style={{ backgroundColor: cls.color }}
-                    />
-                  ) : (
-                    <span
-                      className={`inline-block h-6 w-6 rounded-md ${cls.color}`}
-                    />
-                  )}
-                  {cls.name}
-                </h1>
-                {cls.code && (
-                  <p className="text-xs text-muted-foreground">{cls.code}</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-1">
+              <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                {cls.color.startsWith("#") ? (
+                  <span
+                    className="inline-block h-6 w-6 rounded-md"
+                    style={{ backgroundColor: cls.color }}
+                  />
+                ) : (
+                  <span
+                    className={`inline-block h-6 w-6 rounded-md ${cls.color}`}
+                  />
                 )}
-                <p className="text-xs text-muted-foreground">
-                  {cls.lectures.length} lecture(s)
-                </p>
-                <p className="text-[10px] text-muted-foreground">
-                  Created {new Date(cls.createdAt).toLocaleString()}
-                </p>
-                {/* Quick Stats Pills */}
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
-                    <FileText className="h-3.5 w-3.5 text-indigo-600" />
-                    <span>{totalLectures} total</span>
-                  </div>
-                  <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
-                    <Sparkles className="h-3.5 w-3.5 text-purple-600" />
-                    <span>{recentLectures} recent</span>
-                  </div>
-                  <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
-                    <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
-                    <span>{storageUsedKB} KB</span>
-                  </div>
+                {cls.name}
+              </h1>
+              {cls.code && (
+                <p className="text-xs text-muted-foreground">{cls.code}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {cls.lectures.length} lecture(s)
+              </p>
+              <p className="text-[10px] text-muted-foreground">
+                Created {new Date(cls.createdAt).toLocaleString()}
+              </p>
+              {/* Quick Stats Pills */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
+                  <FileText className="h-3.5 w-3.5 text-indigo-600" />
+                  <span>{totalLectures} total</span>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
+                  <Sparkles className="h-3.5 w-3.5 text-purple-600" />
+                  <span>{recentLectures} recent</span>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
+                  <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>{storageUsedKB} KB</span>
                 </div>
               </div>
-              <Dialog open={openLectureModal} onOpenChange={setOpenLectureModal}>
-                <DialogTrigger asChild>
-                  <Button variant="default" className="gap-2">
-                    <Upload className="h-4 w-4" /> Upload Lecture
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Add Lecture</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 py-2">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Lecture Title</label>
-                      <Input
-                        value={lectureTitle}
-                        onChange={(e) => setLectureTitle(e.target.value)}
-                        placeholder="e.g. Week 1 Overview"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Type</label>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant={lectureType === "text" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => {
-                            setLectureType("text");
-                            setUploadedFile(null);
-                            setUploadedText("");
-                          }}
-                        >
-                          Text
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={
-                            lectureType === "audio" ? "default" : "outline"
-                          }
-                          size="sm"
-                          onClick={() => {
-                            setLectureType("audio");
-                            setUploadedFile(null);
-                            setUploadedText("");
-                            setLectureContentText("");
-                          }}
-                        >
-                          Audio
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">
-                        {lectureType === "audio"
-                          ? "Audio File"
-                          : "Paste Text or Upload .txt"}
-                      </label>
-                      {lectureType === "text" && (
-                        <>
-                          <Textarea
-                            rows={6}
-                            value={lectureContentText}
-                            onChange={(e) =>
-                              setLectureContentText(e.target.value)
-                            }
-                            placeholder="Paste transcript here..."
-                            className="h-32 max-h-48 overflow-y-auto resize-y"
-                          />
-                          <div className="flex justify-between text-[10px] text-muted-foreground">
-                            <span>{lectureContentText.length} chars</span>
-                            {uploadedFile &&
-                              uploadedFile.type.startsWith("text") && (
-                                <span>Attached file kept internally</span>
-                              )}
-                          </div>
-                        </>
-                      )}
-                      {/* File preview */}
-                      {uploadedFile && (
-                        <FilePreview
-                          file={uploadedFile}
-                          kind={lectureType}
-                          onRemove={() => {
-                            setUploadedFile(null);
-                            setUploadedText("");
-                          }}
-                        />
-                      )}
-                      <Input
-                        type="file"
-                        accept={lectureType === "audio" ? "audio/*" : ".txt"}
-                        onChange={handleFileUpload}
-                      />
-                      {fileError && (
-                        <p className="text-xs text-red-600">{fileError}</p>
-                      )}
-                    </div>
-                    <Button
-                      disabled={
-                        !lectureTitle.trim() ||
-                        (lectureType === "text" &&
-                          !lectureContentText.trim() &&
-                          !uploadedText) ||
-                        (lectureType === "audio" && !uploadedFile)
-                      }
-                      className="w-full"
-                      onClick={handleAddLecture}
-                    >
-                      Save Lecture
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
             </div>
-            <Card className="p-4">
-              <h2 className="text-lg font-semibold mb-4">Lectures</h2>
-              {cls.lectures.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
-                  <div className="h-20 w-20 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-3xl select-none">
-                    📄
+            <Dialog open={openLectureModal} onOpenChange={setOpenLectureModal}>
+              <DialogTrigger asChild>
+                <Button variant="default" className="gap-2">
+                  <Upload className="h-4 w-4" /> Upload Lecture
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Add Lecture</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-2">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Lecture Title</label>
+                    <Input
+                      value={lectureTitle}
+                      onChange={(e) => setLectureTitle(e.target.value)}
+                      placeholder="e.g. Week 1 Overview"
+                    />
                   </div>
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">No lectures yet</p>
-                    <p className="text-xs text-muted-foreground max-w-sm">
-                      Start by uploading your first lecture. Text lectures hold
-                      transcripts; audio lectures can later generate transcripts &
-                      summaries.
-                    </p>
+                    <label className="text-sm font-medium">Type</label>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant={lectureType === "text" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          setLectureType("text");
+                          setUploadedFile(null);
+                          setUploadedText("");
+                        }}
+                      >
+                        Text
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={
+                          lectureType === "audio" ? "default" : "outline"
+                        }
+                        size="sm"
+                        onClick={() => {
+                          setLectureType("audio");
+                          setUploadedFile(null);
+                          setUploadedText("");
+                          setLectureContentText("");
+                        }}
+                      >
+                        Audio
+                      </Button>
+                    </div>
                   </div>
-                  <ul className="text-[11px] text-muted-foreground space-y-1">
-                    <li>• Text: Paste a transcript or import a .txt file</li>
-                    <li>• Audio: Upload recordings for future processing</li>
-                    <li>
-                      • Use clear titles (e.g. "Week 2 - Optimization Basics")
-                    </li>
-                  </ul>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      {lectureType === "audio"
+                        ? "Audio File"
+                        : "Paste Text or Upload .txt"}
+                    </label>
+                    {lectureType === "text" && (
+                      <>
+                        <Textarea
+                          rows={6}
+                          value={lectureContentText}
+                          onChange={(e) =>
+                            setLectureContentText(e.target.value)
+                          }
+                          placeholder="Paste transcript here..."
+                          className="h-32 max-h-48 overflow-y-auto resize-y"
+                        />
+                        <div className="flex justify-between text-[10px] text-muted-foreground">
+                          <span>{lectureContentText.length} chars</span>
+                          {uploadedFile &&
+                            uploadedFile.type.startsWith("text") && (
+                              <span>Attached file kept internally</span>
+                            )}
+                        </div>
+                      </>
+                    )}
+                    {/* File preview */}
+                    {uploadedFile && (
+                      <FilePreview
+                        file={uploadedFile}
+                        kind={lectureType}
+                        onRemove={() => {
+                          setUploadedFile(null);
+                          setUploadedText("");
+                        }}
+                      />
+                    )}
+                    <Input
+                      type="file"
+                      accept={lectureType === "audio" ? "audio/*" : ".txt"}
+                      onChange={handleFileUpload}
+                    />
+                    {fileError && (
+                      <p className="text-xs text-red-600">{fileError}</p>
+                    )}
+                  </div>
                   <Button
-                    variant="outline"
-                    onClick={() => setOpenLectureModal(true)}
+                    disabled={
+                      !lectureTitle.trim() ||
+                      (lectureType === "text" &&
+                        !lectureContentText.trim() &&
+                        !uploadedText) ||
+                      (lectureType === "audio" && !uploadedFile)
+                    }
+                    className="w-full"
+                    onClick={handleAddLecture}
                   >
-                    Upload Lecture
+                    Save Lecture
                   </Button>
                 </div>
-              )}
-              {cls.lectures.length > 0 && (
-                <ScrollArea className="h-[400px] pr-2">
-                  <ul className="space-y-3">
-                    {cls.lectures.map((lec) => {
-                      const status = getLectureStatus(lec);
-                      return (
-                        <li key={lec.id}>
-                          <Link
-                            href={`/dashboard/class/${cls.id}/lecture/${lec.id}`}
-                            className="group block w-full"
-                          >
-                            <div className="w-full rounded-xl border border-border bg-card p-4 transition-all duration-200 ease-in-out hover:border-primary/50 hover:bg-background/70 hover:shadow-sm">
-                              <div className="flex items-start justify-between gap-3">
-                                <div className="flex-1 min-w-0 space-y-1">
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    {lec.type === "text" ? (
-                                      <FileText className="h-4 w-4 text-indigo-500 shrink-0" />
-                                    ) : (
-                                      <Headphones className="h-4 w-4 text-purple-500 shrink-0" />
-                                    )}
-                                    <div className="font-medium text-sm text-foreground group-hover:underline underline-offset-2 truncate">
-                                      {lec.title}
-                                    </div>
-                                  </div>
-                                  {lec.type === "text" ? (
-                                    <p className="text-xs line-clamp-3 whitespace-pre-wrap text-muted-foreground leading-relaxed">
-                                      {lec.content}
-                                    </p>
-                                  ) : (
-                                    <p className="text-xs italic text-muted-foreground truncate leading-relaxed">
-                                      {lec.content}
-                                    </p>
-                                  )}
-                                  <div className="flex items-center gap-2 flex-wrap">
-                                    <p className="text-[10px] text-muted-foreground">
-                                      Added{" "}
-                                      {new Date(lec.createdAt).toLocaleDateString()}{" "}
-                                      • {lec.type === "audio" ? "Audio" : "Text"}
-                                    </p>
-                                    {/* Status badge */}
-                                    {status === "new" && (
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-50 text-[10px] text-indigo-600">
-                                        <Sparkles className="h-3 w-3" /> New
-                                      </span>
-                                    )}
-                                    {status === "important" && (
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-50 text-[10px] text-rose-600">
-                                        <Star className="h-3 w-3" /> Important
-                                      </span>
-                                    )}
-                                    {status === "reviewed" && (
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-[10px] text-emerald-600">
-                                        <CheckCircle className="h-3 w-3" /> Reviewed
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="flex flex-col items-end gap-2">
-                                  <span className="text-[10px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground uppercase">
-                                    {lec.type}
-                                  </span>
-                                  <LectureActions
-                                    onRename={(newTitle: string) =>
-                                      handleRenameLecture(lec.id, newTitle)
-                                    }
-                                    onDelete={() => handleDeleteLecture(lec.id)}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </ScrollArea>
-              )}
-            </Card>
-          </>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">Class not found</p>
+              </DialogContent>
+            </Dialog>
           </div>
         )}
+      </>
+      <Card className="p-4">
+        <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+          {cls && cls.lectures.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
+              <div className="h-20 w-20 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-3xl select-none">
+                📄
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium">No lectures yet</p>
+                <p className="text-xs text-muted-foreground max-w-sm">
+                  Start by uploading your first lecture. Text lectures hold
+                  transcripts; audio lectures can later generate transcripts &
+                  summaries.
+                </p>
+              </div>
+              <ul className="text-[11px] text-muted-foreground space-y-1">
+                <li>• Text: Paste a transcript or import a .txt file</li>
+                <li>• Audio: Upload recordings for future processing</li>
+                <li>
+                  • Use clear titles (e.g. "Week 2 - Optimization Basics")
+                </li>
+              </ul>
+              <Button
+                variant="outline"
+                onClick={() => setOpenLectureModal(true)}
+              >
+                Upload Lecture
+              </Button>
+            </div>
+          )}
+          {cls && cls.lectures.length > 0 && (
+            <ScrollArea className="h-[400px] pr-2">
+              <ul className="space-y-3">
+                {cls.lectures.map((lec) => {
+                  const status = getLectureStatus(lec);
+                  return (
+                    <li key={lec.id}>
+                      <Link
+                        href={`/dashboard/class/${cls.id}/lecture/${lec.id}`}
+                        className="group block w-full"
+                      >
+                        <div className="w-full rounded-xl border border-border bg-card p-4 transition-all duration-200 ease-in-out hover:border-primary/50 hover:bg-background/70 hover:shadow-sm">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <div className="flex items-center gap-2 min-w-0">
+                                {lec.type === "text" ? (
+                                  <FileText className="h-4 w-4 text-indigo-500 shrink-0" />
+                                ) : (
+                                  <Headphones className="h-4 w-4 text-purple-500 shrink-0" />
+                                )}
+                                <div className="font-medium text-sm text-foreground group-hover:underline underline-offset-2 truncate">
+                                  {lec.title}
+                                </div>
+                              </div>
+                              {lec.type === "text" ? (
+                                <p className="text-xs line-clamp-3 whitespace-pre-wrap text-muted-foreground leading-relaxed">
+                                  {lec.content}
+                                </p>
+                              ) : (
+                                <p className="text-xs italic text-muted-foreground truncate leading-relaxed">
+                                  {lec.content}
+                                </p>
+                              )}
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <p className="text-[10px] text-muted-foreground">
+                                  Added{" "}
+                                  {new Date(lec.createdAt).toLocaleDateString()}{" "}
+                                  • {lec.type === "audio" ? "Audio" : "Text"}
+                                </p>
+                                {/* Status badge */}
+                                {status === "new" && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-50 text-[10px] text-indigo-600">
+                                    <Sparkles className="h-3 w-3" /> New
+                                  </span>
+                                )}
+                                {status === "important" && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-50 text-[10px] text-rose-600">
+                                    <Star className="h-3 w-3" /> Important
+                                  </span>
+                                )}
+                                {status === "reviewed" && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-[10px] text-emerald-600">
+                                    <CheckCircle className="h-3 w-3" /> Reviewed
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex flex-col items-end gap-2">
+                              <span className="text-[10px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground uppercase">
+                                {lec.type}
+                              </span>
+                              <LectureActions
+                                onRename={(newTitle: string) =>
+                                  handleRenameLecture(lec.id, newTitle)
+                                }
+                                onDelete={() => handleDeleteLecture(lec.id)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </ScrollArea>
+          )}
+        </Card>
       </main>
     </div>
   );
