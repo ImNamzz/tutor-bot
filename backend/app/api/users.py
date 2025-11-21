@@ -12,7 +12,6 @@ users_bp = Blueprint('users', __name__)
 def update_username():
     current_user_id = get_jwt_identity()
     try:
-        # Validate Schema
         data = UserUpdateUsername.model_validate(request.json)
     except Exception as e:
         return jsonify({"detail": str(e)}), 422
@@ -75,5 +74,24 @@ def update_password():
         user.hashed_password = bcrypt.generate_password_hash(data.new_password).decode('utf-8')
         db.commit()
         return jsonify({"message": "Password updated successfully."}), 200
+    finally:
+        db.close()
+        
+@users_bp.route("/me", methods=["GET"])
+@jwt_required()
+def get_current_user_profile():
+    current_user_id = get_jwt_identity()
+    db = SessionLocal()
+    try:
+        user = db.query(UserModel).filter_by(id=current_user_id).first()
+        if not user:
+            return jsonify({"detail": "User not found."}), 404
+        
+        return jsonify({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "google_id": user.google_id
+        }), 200
     finally:
         db.close()
