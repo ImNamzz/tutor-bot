@@ -41,7 +41,7 @@ def login():
 
 @auth_bp.route("/google/login", methods=["GET"])
 def google_login():
-    redirect_uri = url_for('auth.google_callback', _external=True)    
+    redirect_uri = "http://223.130.141.245.nip.io/api/auth/google/callback"
     return oauth.google.authorize_redirect(redirect_uri)
 
 @auth_bp.route("/google/callback", methods=["GET"])
