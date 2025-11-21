@@ -21,9 +21,6 @@ import {
   Lecture,
   generateId,
 } from "@/app/lib/types/class";
-import { classesAPI, Class as APIClass } from "@/app/lib/api";
-import { isAuthenticated } from "@/app/lib/auth";
-import { toast } from "sonner";
 import {
   Upload,
   MoreVertical,
@@ -33,15 +30,16 @@ import {
   CheckCircle,
   Star,
   X,
-  Loader2,
 } from "lucide-react";
+
+const STORAGE_KEY = "eduassist_classes";
 
 export default function ClassDetailPage() {
   const params = useParams();
   const router = useRouter();
   const classId = params?.id as string;
   const [cls, setCls] = useState<ClassItem | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [allClasses, setAllClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
 
   // Lecture modal state
@@ -59,44 +57,24 @@ export default function ClassDetailPage() {
 
   useEffect(() => {
     setMounted(true);
-    if (!isAuthenticated()) {
-      router.push("/auth/login");
-      return;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed: ClassItem[] = JSON.parse(raw);
+        setAllClasses(parsed);
+        const found = parsed.find((c) => c.id === classId);
+        setCls(found || null);
+      }
+    } catch (e) {
+      console.error("Failed to load class", e);
     }
-    loadClass();
   }, [classId]);
 
-  const loadClass = async () => {
+  const persist = (next: ClassItem[]) => {
+    setAllClasses(next);
     try {
-      setLoading(true);
-      const classes = await classesAPI.getAll();
-      const found = classes.find((c: APIClass) => c.id === classId);
-      if (found) {
-        const converted: ClassItem = {
-          id: found.id,
-          name: found.title,
-          code: undefined,
-          color: "bg-indigo-600",
-          lectures: (found.lectures || []).map(l => ({
-            id: l.id,
-            title: l.title,
-            type: "text" as const,
-            content: l.transcript || "",
-            createdAt: l.created_at,
-          })),
-          createdAt: found.created_at,
-        };
-        setCls(converted);
-      } else {
-        toast.error("Class not found");
-        router.push("/dashboard");
-      }
-    } catch (e: any) {
-      toast.error(e.message || "Failed to load class");
-      router.push("/dashboard");
-    } finally {
-      setLoading(false);
-    }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch {}
   };
 
   const handleAddLecture = () => {
@@ -245,11 +223,7 @@ export default function ClassDetailPage() {
       </nav>
       {/* Main content offset by topbar height */}
       <main className="pt-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {loading ? (
-          <div className="flex items-center justify-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : cls ? (
+        {cls && (
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="space-y-1">
               <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
@@ -608,15 +582,6 @@ function FilePreview({ file, kind, onRemove }: FilePreviewProps) {
       >
         <X className="h-4 w-4" />
       </button>
-    </div>
-  );
-}
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">Class not found</p>
-          </div>
-        )}
-      </main>
     </div>
   );
 }

@@ -1,6 +1,31 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": []
+    "/_app": [
+      "static/chunks/359e0_next_dist_compiled_bda9fb89._.js",
+      "static/chunks/359e0_next_dist_shared_lib_78f74c84._.js",
+      "static/chunks/359e0_next_dist_client_42dfbd1e._.js",
+      "static/chunks/359e0_next_dist_b6a75924._.js",
+      "static/chunks/359e0_next_app_14e36ab3.js",
+      "static/chunks/[next]_entry_page-loader_ts_04b082a5._.js",
+      "static/chunks/359e0_react-dom_c0169bc1._.js",
+      "static/chunks/359e0_5713ea02._.js",
+      "static/chunks/[root-of-the-server]__fa764861._.js",
+      "static/chunks/61fcf_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_pages__app_2da965e7._.js",
+      "static/chunks/ba57d_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_pages__app_92e202ca._.js"
+    ],
+    "/_error": [
+      "static/chunks/359e0_next_dist_compiled_bda9fb89._.js",
+      "static/chunks/359e0_next_dist_shared_lib_9a481dc4._.js",
+      "static/chunks/359e0_next_dist_client_42dfbd1e._.js",
+      "static/chunks/359e0_next_dist_d369dc06._.js",
+      "static/chunks/359e0_next_error_c9e67f4b.js",
+      "static/chunks/[next]_entry_page-loader_ts_7fcd5c09._.js",
+      "static/chunks/359e0_react-dom_c0169bc1._.js",
+      "static/chunks/359e0_5713ea02._.js",
+      "static/chunks/[root-of-the-server]__7852d739._.js",
+      "static/chunks/61fcf_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_pages__error_2da965e7._.js",
+      "static/chunks/ba57d_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_pages__error_8adfdbac._.js"
+    ]
   },
   "devFiles": [],
   "polyfillFiles": [
