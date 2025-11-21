@@ -22,8 +22,10 @@ interface ParamMap {
   "/auth/setup": {}
   "/auth/verify-email/[token]": { "token": string; }
   "/calendar": {}
-  "/todo": {}
-  "/transcript": {}
+  "/dashboard": {}
+  "/dashboard/class/[id]": { "id": string; }
+  "/dashboard/class/[id]/lecture/[lectureId]": { "id": string; "lectureId": string; }
+  "/tutor": {}
 }
 
 

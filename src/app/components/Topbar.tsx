@@ -6,9 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import {
   BookOpen,
-  FileText,
   Calendar as CalendarIcon,
-  CheckSquare,
   Moon,
   Sun,
   LogOut,
@@ -22,14 +20,15 @@ export default function Topbar() {
   const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
+  // Transcript button removed globally
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Check authentication
     const authenticated = isAuthenticated();
     setIsAuth(authenticated);
-    
+
     const savedTheme = localStorage.getItem("theme");
     const prefersDark =
       window.matchMedia &&
@@ -56,12 +55,12 @@ export default function Topbar() {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-950 shadow-sm border-b dark:border-gray-800 transition-colors">
+    <nav className="bg-card dark:bg-card shadow-sm border-b border-border dark:border-border transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link
-              href="/"
+              href="/dashboard"
               className="flex items-center hover:opacity-80 transition-opacity"
             >
               <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
@@ -72,35 +71,25 @@ export default function Topbar() {
               <Link
                 href="/"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
+                  pathname === "/"
+                    ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 dark:text-gray-300"
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
                 AI Tutor
               </Link>
+              {/* Transcript button removed */}
               <Link
                 href="/calendar"
                 className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/calendar" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
+                  pathname === "/calendar"
+                    ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 dark:text-gray-300"
                 }`}
               >
                 <CalendarIcon className="h-4 w-4" />
                 Calendar
-              </Link>
-              <Link
-                href="/todo"
-                className={`hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors flex items-center gap-2 ${
-                  pathname === "/todo" 
-                    ? "text-indigo-600 dark:text-indigo-400" 
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                <CheckSquare className="h-4 w-4" />
-                Todo
               </Link>
             </div>
           </div>
@@ -116,10 +105,10 @@ export default function Topbar() {
               {isDarkMode ? (
                 <Sun className="h-5 w-5 text-gray-300" />
               ) : (
-                <Moon className="h-5 w-5 text-gray-600" />
+                <Moon className="h-5 w-5 text-foreground/80" />
               )}
             </Button>
-            
+
             {isAuth ? (
               <Button
                 onClick={handleLogout}
@@ -138,9 +127,7 @@ export default function Topbar() {
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button size="sm">
-                    Sign Up
-                  </Button>
+                  <Button size="sm">Sign Up</Button>
                 </Link>
               </div>
             )}
