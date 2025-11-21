@@ -10,7 +10,9 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown } from 'lucide-react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
+import { Label } from '@/app/components/ui/label'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -69,9 +71,20 @@ export default function Home() {
   const [editedMessageContent, setEditedMessageContent] = useState('')
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null)
   const [showScrollButton, setShowScrollButton] = useState(false)
+  const [attachedFile, setAttachedFile] = useState<File | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [settingsData, setSettingsData] = useState({
+    username: '',
+    email: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    hasPassword: true
+  })
   
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const imageInputRef = useRef<HTMLInputElement>(null)
+  const audioInputRef = useRef<HTMLInputElement>(null)
+  const textInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const uploadMenuRef = useRef<HTMLDivElement>(null)
@@ -96,6 +109,35 @@ export default function Home() {
       setIsSidebarOpen(savedSidebar === 'true')
     }
   }, [])
+
+  // Fetch user profile when settings dialog opens
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isSettingsOpen && isAuth) {
+        try {
+          const response = await fetch(API_ENDPOINTS.getUserProfile, {
+            headers: {
+              'Authorization': `Bearer ${getAccessToken()}`
+            }
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            setSettingsData(prev => ({
+              ...prev,
+              username: data.username,
+              email: data.email,
+              hasPassword: data.has_password
+            }))
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error)
+        }
+      }
+    }
+    
+    fetchUserProfile()
+  }, [isSettingsOpen, isAuth])
 
   // Handle theme changes
   useEffect(() => {
@@ -177,7 +219,7 @@ export default function Home() {
           'Authorization': `Bearer ${getAccessToken()}`
         },
         body: JSON.stringify({
-          session_id: null,
+          chat_session_id: null,
           message: `Generate a very short, concise title (3-5 words max) for a chat session based on this content: "${content.substring(0, 200)}...". Only respond with the title, nothing else.`
         })
       })
@@ -188,6 +230,10 @@ export default function Home() {
         let title = data.response.replace(/['"]/g, '').trim()
         if (title.length > 50) {
           title = title.substring(0, 47) + '...'
+        }
+        // Store the session ID if returned
+        if (data.chat_session_id) {
+          setCurrentSessionId(data.chat_session_id.toString())
         }
         return title
       }
@@ -211,16 +257,6 @@ export default function Home() {
       return
     }
 
-    // Save current session before starting new one
-    if (chatState !== 'idle') {
-      saveCurrentSession()
-    }
-
-    // Reset for new session
-    setMessages([])
-    setCurrentQuestionIndex(0)
-    setCorrectAnswers(0)
-    setFileName(file.name)
     setIsLoading(true)
     
     addMessage('user', `📎 Uploaded: ${file.name}`)
@@ -231,60 +267,107 @@ export default function Home() {
         const formData = new FormData()
         formData.append('file', file)
         
-        // Send file to backend - backend should handle doc/docx parsing
-        const response = await fetch(API_ENDPOINTS.startSession, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${getAccessToken()}`
-          },
-          body: formData
-        })
+        // Note: Backend may need to support .doc/.docx parsing
+        // For now, sending as is - backend should handle extraction
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+          const content = e.target?.result as string
+          
+          try {
+            // Step 1: Upload lecture to create lecture resource
+            const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getAccessToken()}`
+              },
+              body: JSON.stringify({
+                title: file.name,
+                transcript: content // Backend may need document parser
+              })
+            })
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            handleAuthError(401)
-            return
+            if (!uploadResponse.ok) {
+              if (uploadResponse.status === 401) {
+                handleAuthError(401)
+                return
+              }
+              throw new Error('Failed to upload document')
+            }
+
+            const lectureData = await uploadResponse.json()
+            const lectureId = lectureData.id
+            
+            // Step 2: Start chat session from the lecture
+            const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getAccessToken()}`
+              }
+            })
+
+            if (!chatResponse.ok) {
+              if (chatResponse.status === 401) {
+                handleAuthError(401)
+                return
+              }
+              throw new Error('Failed to start chat')
+            }
+
+            const chatData = await chatResponse.json()
+            
+            // Set the session ID from backend
+            setCurrentSessionId(chatData.chat_session_id.toString())
+            
+            // Generate AI-based session name in the background
+            generateSessionName(lectureData.transcript || file.name).then(generatedName => {
+              setFileName(generatedName)
+            })
+            
+            setTranscriptContent(lectureData.transcript || '')
+            
+            // Use the first question from the backend
+            addMessage('assistant', chatData.first_question)
+            
+            setChatState('quizzing')
+            setIsLoading(false)
+            toast.success('Document processed! Answer the questions to proceed.')
+            
+          } catch (error) {
+            console.error('Error processing document:', error)
+            toast.error('Failed to process document. Please try again.')
+            setIsLoading(false)
+            
+            // Reset to idle state on error
+            setMessages([])
+            setChatState('idle')
+            setFileName('')
+            addMessage('assistant', 
+              "Sorry, I encountered an error processing your document. Please make sure the backend server is running."
+            )
           }
-          throw new Error('Failed to start session')
         }
-
-        const data = await response.json()
         
-        // Set the session ID from backend
-        setCurrentSessionId(data.session_id.toString())
+        reader.onerror = () => {
+          toast.error('Failed to read file')
+          setIsLoading(false)
+          setMessages([])
+          setChatState('idle')
+          setFileName('')
+        }
         
-        // Generate AI-based session name in the background
-        generateSessionName(data.transcript || file.name).then(generatedName => {
-          setFileName(generatedName)
-        })
-        
-        setTranscriptContent(data.transcript || '')
-        
-        addMessage('assistant', 
-          `Great! I've analyzed your document. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
-        )
-        
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        // Use the first question from the backend
-        addMessage('assistant', data.first_question)
-        
-        setChatState('quizzing')
-        setIsLoading(false)
-        toast.success('Document processed! Answer the questions to proceed.')
+        reader.readAsText(file)
         
       } catch (error) {
-        console.error('Error processing document:', error)
-        toast.error('Failed to process document. Please try again.')
+        console.error('Error reading document:', error)
+        toast.error('Failed to read document. Please try again.')
         setIsLoading(false)
         
         // Reset to idle state on error
         setMessages([])
         setChatState('idle')
         setFileName('')
-        addMessage('assistant', 
-          "Sorry, I encountered an error processing your document. Please make sure the backend server is running and supports .doc/.docx files."
-        )
       }
       return
     }
@@ -298,8 +381,8 @@ export default function Home() {
       addMessage('user', `📎 Uploaded: ${file.name}`)
       
       try {
-        // Call the real backend API to start a session
-        const response = await fetch(API_ENDPOINTS.startSession, {
+        // Step 1: Upload lecture to create lecture resource
+        const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -311,32 +394,46 @@ export default function Home() {
           })
         })
 
-        if (!response.ok) {
-          if (response.status === 401) {
+        if (!uploadResponse.ok) {
+          if (uploadResponse.status === 401) {
             handleAuthError(401)
             return
           }
-          throw new Error('Failed to start session')
+          throw new Error('Failed to upload lecture')
         }
 
-        const data = await response.json()
+        const lectureData = await uploadResponse.json()
+        const lectureId = lectureData.id
+        
+        // Step 2: Start chat session from the lecture
+        const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          }
+        })
+
+        if (!chatResponse.ok) {
+          if (chatResponse.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to start chat')
+        }
+
+        const chatData = await chatResponse.json()
         
         // Set the session ID from backend
-        setCurrentSessionId(data.session_id.toString())
+        setCurrentSessionId(chatData.chat_session_id.toString())
         
         // Generate AI-based session name in the background
         generateSessionName(content).then(generatedName => {
           setFileName(generatedName)
         })
         
-        addMessage('assistant', 
-          `Great! I've analyzed your lecture transcript. I found several key concepts that we should discuss.\n\nLet me ask you some questions to check your understanding. This will help reinforce your learning! 📚\n\nReady? Here's the first question:`
-        )
-        
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
         // Use the first question from the backend
-        addMessage('assistant', data.first_question)
+        addMessage('assistant', chatData.first_question)
         
         setChatState('quizzing')
         setIsLoading(false)
@@ -360,28 +457,231 @@ export default function Home() {
     reader.readAsText(file)
   }
 
+  const processFileUpload = async (file: File, userMessage: string = '') => {
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    const validTextExtensions = ['.txt', '.doc', '.docx']
+    const validAudioExtensions = ['.mp3', '.m4a', '.wav', '.ogg', '.flac', '.aac', '.wma']
+
+    setIsLoading(true)
+    
+    const fileTypeIcon = validAudioExtensions.includes(fileExtension) ? '🎵' : '📄'
+    const messageContent = userMessage ? `${fileTypeIcon} ${file.name}\n\n${userMessage}` : `${fileTypeIcon} Uploaded: ${file.name}`
+    addMessage('user', messageContent)
+    
+    // Handle audio files
+    if (validAudioExtensions.includes(fileExtension)) {
+      try {
+        const formData = new FormData()
+        formData.append('media', file)
+        formData.append('title', file.name)
+        formData.append('language', 'en-US') // Default to English
+        
+        const response = await fetch(API_ENDPOINTS.uploadAudio, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: formData
+        })
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401)
+            return
+          }
+          throw new Error('Failed to process audio')
+        }
+
+        const data = await response.json()
+        const lectureId = data.id
+        
+        // Now start a chat session with this lecture
+        const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          }
+        })
+
+        if (!chatResponse.ok) {
+          throw new Error('Failed to start chat session')
+        }
+
+        const chatData = await chatResponse.json()
+        setCurrentSessionId(chatData.chat_session_id.toString())
+        setTranscriptContent(data.transcript || '')
+        
+        generateSessionName(file.name).then(generatedName => {
+          setFileName(generatedName)
+        })
+        
+        addMessage('assistant', chatData.first_question)
+        
+        setChatState('quizzing')
+        setIsLoading(false)
+        toast.success('Audio transcribed successfully!')
+        
+      } catch (error) {
+        console.error('Error processing audio:', error)
+        toast.error('Failed to process audio. Please try again.')
+        setIsLoading(false)
+        setMessages([])
+        setChatState('idle')
+        setFileName('')
+      }
+      return
+    }
+    
+    // For text files, use existing handleFileUpload logic by reading the file
+    if (validTextExtensions.includes(fileExtension)) {
+      // Create a synthetic event to reuse existing logic
+      const reader = new FileReader()
+      reader.onload = async (e) => {
+        const content = e.target?.result as string
+        setTranscriptContent(content)
+        
+        try {
+          // Upload the lecture first
+          const uploadResponse = await fetch(API_ENDPOINTS.uploadLecture, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getAccessToken()}`
+            },
+            body: JSON.stringify({
+              title: file.name,
+              transcript: content
+            })
+          })
+
+          if (!uploadResponse.ok) {
+            if (uploadResponse.status === 401) {
+              handleAuthError(401)
+              return
+            }
+            throw new Error('Failed to upload lecture')
+          }
+
+          const lectureData = await uploadResponse.json()
+          const lectureId = lectureData.id
+          
+          // Start chat session with the lecture
+          const chatResponse = await fetch(API_ENDPOINTS.startChatFromLecture(lectureId), {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${getAccessToken()}`
+            }
+          })
+
+          if (!chatResponse.ok) {
+            throw new Error('Failed to start chat session')
+          }
+
+          const chatData = await chatResponse.json()
+          setCurrentSessionId(chatData.chat_session_id.toString())
+          
+          generateSessionName(content).then(generatedName => {
+            setFileName(generatedName)
+          })
+          
+          addMessage('assistant', chatData.first_question)
+          
+          setChatState('quizzing')
+          setIsLoading(false)
+          toast.success('Transcript processed! Answer the questions to proceed.')
+          
+        } catch (error) {
+          console.error('Error starting session:', error)
+          toast.error('Failed to process transcript. Please try again.')
+          setIsLoading(false)
+          setMessages([])
+          setChatState('idle')
+          setFileName('')
+        }
+      }
+      
+      reader.readAsText(file)
+    }
+  }
+
+  const removeAttachedFile = () => {
+    setAttachedFile(null)
+    if (audioInputRef.current) audioInputRef.current.value = ''
+    if (textInputRef.current) textInputRef.current.value = ''
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isAuth) {
+      setIsDragging(true)
+    }
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    if (!isAuth) {
+      toast.error('Please sign in to upload files')
+      return
+    }
+
+    const file = e.dataTransfer.files?.[0]
+    if (!file) return
+
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    const validExtensions = ['.txt', '.doc', '.docx', '.mp3', '.m4a', '.wav', '.ogg', '.flac', '.aac', '.wma']
+    
+    if (!validExtensions.includes(fileExtension)) {
+      toast.error('Unsupported file format. Please upload audio (mp3, m4a, wav, etc.) or text files (txt, doc, docx)')
+      return
+    }
+
+    setAttachedFile(file)
+  }
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file')
+    const validAudioExtensions = ['.mp3', '.m4a', '.wav', '.ogg', '.flac', '.aac', '.wma']
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    
+    if (!validAudioExtensions.includes(fileExtension)) {
+      toast.error('Please upload a valid audio file (mp3, m4a, wav, ogg, flac, aac, wma)')
       return
     }
 
-    addMessage('user', `🖼️ Uploaded image: ${file.name}`)
-    
-    // For now, just show a message that image processing is coming soon
-    // You can implement actual image processing with your backend later
-    addMessage('assistant', 
-      `I've received your image "${file.name}". Image analysis functionality will be available soon! For now, you can describe what you'd like to know about this image, and I'll help you with that.`
-    )
-    
+    // Attach file and allow user to add a message
+    setAttachedFile(file)
     setShowUploadMenu(false)
-    toast.success('Image uploaded!')
   }
 
   const handleSendMessage = async () => {
+    // If there's an attached file, process it with the message
+    if (attachedFile) {
+      const userMessage = inputMessage.trim()
+      const fileToUpload = attachedFile
+      
+      // Clear UI immediately
+      setAttachedFile(null)
+      setInputMessage('')
+      if (audioInputRef.current) audioInputRef.current.value = ''
+      if (textInputRef.current) textInputRef.current.value = ''
+      toast.dismiss() // Dismiss all toast notifications
+      
+      await processFileUpload(fileToUpload, userMessage)
+      return
+    }
+
     if (!inputMessage.trim()) return
 
     const userMessage = inputMessage.trim()
@@ -402,7 +702,7 @@ export default function Home() {
             'Authorization': `Bearer ${getAccessToken()}`
           },
           body: JSON.stringify({
-            session_id: null, // Let backend create a new session
+            chat_session_id: null, // Let backend create a new session
             message: userMessage
           })
         })
@@ -418,7 +718,7 @@ export default function Home() {
         const data = await response.json()
         
         // Update session ID from backend and set state to completed
-        setCurrentSessionId(data.session_id.toString())
+        setCurrentSessionId(data.chat_session_id.toString())
         setChatState('completed') // Now in conversation mode
         
         // Generate AI-based session name from the first message
@@ -454,7 +754,7 @@ export default function Home() {
             'Authorization': `Bearer ${getAccessToken()}`
           },
           body: JSON.stringify({
-            session_id: currentSessionId ? Number(currentSessionId) : null,
+            chat_session_id: currentSessionId ? Number(currentSessionId) : null,
             message: userMessage
           })
         })
@@ -470,8 +770,8 @@ export default function Home() {
         const data = await response.json()
         
         // Update session ID from backend (in case it was created or changed)
-        if (data.session_id) {
-          setCurrentSessionId(data.session_id.toString())
+        if (data.chat_session_id) {
+          setCurrentSessionId(data.chat_session_id.toString())
         }
         
         // Display AI's response
@@ -541,7 +841,7 @@ export default function Home() {
           'Authorization': `Bearer ${getAccessToken()}`
         },
         body: JSON.stringify({
-          session_id: currentSessionId ? Number(currentSessionId) : null,
+          chat_session_id: currentSessionId ? Number(currentSessionId) : null,
           message: editedMessageContent.trim()
         })
       })
@@ -667,8 +967,11 @@ export default function Home() {
       setCorrectAnswers(0)
       setKeyPoints([])
       setCurrentSessionId('')
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
+      if (textInputRef.current) {
+        textInputRef.current.value = ''
+      }
+      if (audioInputRef.current) {
+        audioInputRef.current.value = ''
       }
       addMessage('assistant', 
         "Your previous session has been deleted. Feel free to start a new conversation or upload a file! 📚"
@@ -741,8 +1044,11 @@ export default function Home() {
     setCorrectAnswers(0)
     setKeyPoints([])
     setCurrentSessionId('')
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+    if (textInputRef.current) {
+      textInputRef.current.value = ''
+    }
+    if (audioInputRef.current) {
+      audioInputRef.current.value = ''
     }
     addMessage('assistant', 
       "Welcome back! Upload a new lecture transcript to start a fresh learning session. 📚"
@@ -981,7 +1287,7 @@ export default function Home() {
                               ) : (
                                 <div className="flex items-center gap-1">
                                   {session.pinned && <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
-                                  <p className="text-sm text-gray-900 dark:text-gray-200 break-words">
+                                  <p className="text-sm text-gray-900 dark:text-gray-200 wrap-break-word">
                                     {session.fileName}
                                   </p>
                                 </div>
@@ -1114,6 +1420,231 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-3">
+              {isAuth && (
+                <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-full w-9 h-9 p-0"
+                      aria-label="Settings"
+                    >
+                      <Settings className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px] bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-semibold">Account Settings</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-6 py-4">
+                      {/* Google Account Notice */}
+                      {!settingsData.hasPassword && (
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <div className="text-blue-600 dark:text-blue-400 mt-0.5">
+                              ℹ️
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                                Complete Your Profile
+                              </h4>
+                              <p className="text-sm text-blue-800 dark:text-blue-200">
+                                You signed in with Google. Set a password to enable email/password login as a backup.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Username */}
+                      <div className="space-y-2">
+                        <Label htmlFor="username" className="text-sm font-medium">
+                          Username
+                        </Label>
+                        <Input
+                          id="username"
+                          type="text"
+                          placeholder="Enter new username"
+                          value={settingsData.username}
+                          onChange={(e) => setSettingsData({...settingsData, username: e.target.value})}
+                          className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Leave unchanged to keep current username</p>
+                      </div>
+
+                      {/* Email */}
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="Enter new email"
+                          value={settingsData.email}
+                          onChange={(e) => setSettingsData({...settingsData, email: e.target.value})}
+                          className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Leave unchanged to keep current email</p>
+                      </div>
+
+                      {/* Password Section */}
+                      <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <h3 className="text-sm font-semibold mb-4">
+                          {settingsData.hasPassword ? 'Change Password' : 'Set Password'}
+                        </h3>
+                        
+                        {/* Current Password - only show if user has password */}
+                        {settingsData.hasPassword && (
+                          <div className="space-y-2 mb-4">
+                            <Label htmlFor="currentPassword" className="text-sm font-medium">
+                              Current Password
+                            </Label>
+                            <Input
+                              id="currentPassword"
+                              type="password"
+                              placeholder="Enter current password"
+                              value={settingsData.currentPassword}
+                              onChange={(e) => setSettingsData({...settingsData, currentPassword: e.target.value})}
+                              className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                            />
+                          </div>
+                        )}
+
+                        {/* New Password */}
+                        <div className="space-y-2 mb-4">
+                          <Label htmlFor="newPassword" className="text-sm font-medium">
+                            New Password
+                          </Label>
+                          <Input
+                            id="newPassword"
+                            type="password"
+                            placeholder="Enter new password"
+                            value={settingsData.newPassword}
+                            onChange={(e) => setSettingsData({...settingsData, newPassword: e.target.value})}
+                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                          />
+                        </div>
+
+                        {/* Confirm New Password */}
+                        <div className="space-y-2">
+                          <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                            Confirm New Password
+                          </Label>
+                          <Input
+                            id="confirmPassword"
+                            type="password"
+                            placeholder="Confirm new password"
+                            value={settingsData.confirmPassword}
+                            onChange={(e) => setSettingsData({...settingsData, confirmPassword: e.target.value})}
+                            className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
+                          />
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {settingsData.hasPassword 
+                              ? 'Leave blank to keep current password' 
+                              : 'Set a password to enable email/password login'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex justify-end gap-3 pt-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setIsSettingsOpen(false)
+                            // Only reset password fields, keep username and email
+                            setSettingsData(prev => ({
+                              ...prev,
+                              currentPassword: '',
+                              newPassword: '',
+                              confirmPassword: ''
+                            }))
+                          }}
+                          className="border-gray-300 dark:border-gray-700"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={async () => {
+                            // Validate password fields if user wants to change password
+                            if (settingsData.newPassword || settingsData.confirmPassword || settingsData.currentPassword) {
+                              // If user has a password, require current password
+                              if (settingsData.hasPassword && !settingsData.currentPassword) {
+                                toast.error('Please enter your current password to change it')
+                                return
+                              }
+                              if (!settingsData.newPassword) {
+                                toast.error('Please enter a new password')
+                                return
+                              }
+                              if (settingsData.newPassword !== settingsData.confirmPassword) {
+                                toast.error('New passwords do not match')
+                                return
+                              }
+                              if (settingsData.newPassword.length < 6) {
+                                toast.error('Password must be at least 6 characters')
+                                return
+                              }
+                            }
+
+                            try {
+                              const updateData: any = {}
+                              
+                              // Only include fields that should be updated
+                              if (settingsData.username) updateData.username = settingsData.username
+                              if (settingsData.email) updateData.email = settingsData.email
+                              if (settingsData.newPassword) {
+                                // For Google users without password, old_password can be empty
+                                updateData.current_password = settingsData.currentPassword || ''
+                                updateData.new_password = settingsData.newPassword
+                              }
+
+                              const response = await fetch(API_ENDPOINTS.updateUserProfile, {
+                                method: 'PUT',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Bearer ${getAccessToken()}`
+                                },
+                                body: JSON.stringify(updateData)
+                              })
+
+                              const data = await response.json()
+
+                              if (!response.ok) {
+                                if (response.status === 401) {
+                                  handleAuthError(401)
+                                  return
+                                }
+                                toast.error(data.detail || 'Failed to update profile')
+                                return
+                              }
+
+                              toast.success('Profile updated successfully!')
+                              setIsSettingsOpen(false)
+                              setSettingsData({
+                                username: data.username || settingsData.username,
+                                email: data.email || settingsData.email,
+                                currentPassword: '',
+                                newPassword: '',
+                                confirmPassword: '',
+                                hasPassword: settingsData.hasPassword || (settingsData.newPassword ? true : settingsData.hasPassword)
+                              })
+                            } catch (error) {
+                              console.error('Error updating profile:', error)
+                              toast.error('Failed to update profile')
+                            }
+                          }}
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                        >
+                          Save Changes
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )}
+              
               <Button
                 onClick={toggleTheme}
                 variant="ghost"
@@ -1161,10 +1692,17 @@ export default function Home() {
       <main className="px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-4rem)]">
         <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
-            <Card className="min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none">
+            <Card 
+              className={`min-h-[600px] flex flex-col dark:border-gray-800 transition-all duration-300 bg-transparent border-0 shadow-none relative ${
+                isDragging ? 'ring-2 ring-indigo-500 ring-offset-2' : ''
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
             {/* Hidden file inputs */}
             <input
-              ref={fileInputRef}
+              ref={textInputRef}
               type="file"
               accept=".txt,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={handleFileUpload}
@@ -1172,12 +1710,12 @@ export default function Home() {
               id="file-upload"
             />
             <input
-              ref={imageInputRef}
+              ref={audioInputRef}
               type="file"
-              accept="image/*"
+              accept="audio/*,.mp3,.m4a,.wav,.ogg,.flac,.aac,.wma"
               onChange={handleImageUpload}
               className="hidden"
-              id="image-upload"
+              id="audio-upload"
             />
 
             {/* Chat Messages */}
@@ -1223,11 +1761,11 @@ export default function Home() {
                           <div
                             className={`px-4 py-3 ${
                               message.role === 'user'
-                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] break-all'
+                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] min-w-[200px] overflow-wrap-break-word'
                                 : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
                             }`}
                           >
-                            <p className="whitespace-pre-wrap">{message.content}</p>
+                            <p className="whitespace-pre-wrap overflow-wrap-break-word">{message.content}</p>
                             {message.role === 'assistant' && (
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                                 {message.timestamp instanceof Date 
@@ -1319,6 +1857,28 @@ export default function Home() {
                 </div>
               )}
               
+              {/* Attached file indicator */}
+              {attachedFile && (
+                <div className="max-w-3xl mx-auto mb-2">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg">
+                    {attachedFile.name.match(/\.(mp3|m4a|wav|ogg|flac|aac|wma)$/i) ? (
+                      <Music className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    ) : (
+                      <File className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    )}
+                    <span className="flex-1 text-sm text-indigo-900 dark:text-indigo-100 truncate">{attachedFile.name}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={removeAttachedFile}
+                      className="h-6 w-6 p-0 hover:bg-indigo-100 dark:hover:bg-indigo-900/40"
+                    >
+                      <X className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex gap-2 max-w-3xl mx-auto">
                 {/* Upload button with menu or Lock icon */}
                 <div className="relative" ref={uploadMenuRef}>
@@ -1335,26 +1895,26 @@ export default function Home() {
                   
                   {/* Upload menu */}
                   {showUploadMenu && isAuth && (
-                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
+                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[200px]">
                       <button
                         onClick={() => {
-                          fileInputRef.current?.click()
+                          audioInputRef.current?.click()
                           setShowUploadMenu(false)
                         }}
                         className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
                       >
-                        <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload file</span>
+                        <Music className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload audio transcript</span>
                       </button>
                       <button
                         onClick={() => {
-                          imageInputRef.current?.click()
+                          textInputRef.current?.click()
                           setShowUploadMenu(false)
                         }}
                         className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
                       >
-                        <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload image</span>
+                        <File className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload text transcript</span>
                       </button>
                     </div>
                   )}
