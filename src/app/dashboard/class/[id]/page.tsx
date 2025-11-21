@@ -405,9 +405,9 @@ export default function ClassDetailPage() {
             </Dialog>
           </div>
         )}
-
-        <Card className="p-4">
-          <h2 className="text-lg font-semibold mb-4">Lectures</h2>
+      </>
+      <Card className="p-4">
+        <h2 className="text-lg font-semibold mb-4">Lectures</h2>
           {cls && cls.lectures.length === 0 && (
             <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
               <div className="h-20 w-20 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-3xl select-none">

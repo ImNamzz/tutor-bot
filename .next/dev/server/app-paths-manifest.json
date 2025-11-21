@@ -1,7 +1,7 @@
 {
-  "/auth-callback/page": "app/auth-callback/page.js",
   "/auth/login/page": "app/auth/login/page.js",
-  "/auth/setup/page": "app/auth/setup/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/dashboard/class/[id]/page": "app/dashboard/class/[id]/page.js",
   "/page": "app/page.js",
   "/tutor/page": "app/tutor/page.js"
 }
