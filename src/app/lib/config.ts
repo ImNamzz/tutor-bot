@@ -28,6 +28,7 @@ export const API_ENDPOINTS = {
   
   // Lectures - /api/lectures/*
   uploadAudio: `${config.apiUrl}/api/lectures/upload-audio`,
+  uploadText: `${config.apiUrl}/api/lectures/upload-text`,
   analyzeLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}/analyze`,
   
   // Action Items - /api/action_items/*

@@ -13,7 +13,7 @@ import { API_ENDPOINTS } from "@/app/lib/config";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +28,7 @@ export default function LoginPage() {
       const response = await fetch(API_ENDPOINTS.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: emailOrUsername, password }),
       });
 
       const data = await response.json();
@@ -39,8 +39,8 @@ export default function LoginPage() {
         toast.success("Login successful!");
         router.push("/");
       } else if (response.status === 401) {
-        setLoginError("Invalid email or password. Please try again.");
-        toast.error(data.detail || "Invalid email or password.");
+        setLoginError("Invalid email/username or password. Please try again.");
+        toast.error(data.detail || "Invalid credentials.");
       } else {
         setLoginError("Login failed. Please try again.");
         toast.error(data.detail || "Login failed. Please try again.");
@@ -87,15 +87,15 @@ export default function LoginPage() {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <Label htmlFor="email" className="dark:text-gray-200">
-              Email
+            <Label htmlFor="emailOrUsername" className="dark:text-gray-200">
+              Email or Username
             </Label>
             <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="emailOrUsername"
+              type="text"
+              placeholder="you@example.com or username"
+              value={emailOrUsername}
+              onChange={(e) => setEmailOrUsername(e.target.value)}
               required
               disabled={isLoading}
               className="mt-1"

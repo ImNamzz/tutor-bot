@@ -30,8 +30,15 @@ def login():
     db = SessionLocal()
     try:
         data = request.json
-        user = db.query(UserModel).filter_by(email=data['email']).first()
-        if user and user.hashed_password and bcrypt.check_password_hash(user.hashed_password, data['password']):
+        identifier = data.get('email')  # Can be email or username
+        password = data.get('password')
+        
+        # Try to find user by email first, then by username
+        user = db.query(UserModel).filter_by(email=identifier).first()
+        if not user:
+            user = db.query(UserModel).filter_by(username=identifier).first()
+        
+        if user and user.hashed_password and bcrypt.check_password_hash(user.hashed_password, password):
             token = create_access_token(identity=user.id)
             return jsonify(access_token=token), 200
         return jsonify({"detail": "Invalid credentials."}), 401

@@ -562,7 +562,31 @@ export default function Home() {
 
         const data = await response.json()
         const transcript = data.transcript || ''
+        const lectureId = data.id
         setTranscriptContent(transcript)
+        
+        // Analyze the lecture to extract action items and summary
+        try {
+          const analysisResponse = await fetch(API_ENDPOINTS.analyzeLecture(lectureId), {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getAccessToken()}`
+            }
+          })
+          
+          if (analysisResponse.ok) {
+            const analysisData = await analysisResponse.json()
+            console.log('Lecture analyzed:', analysisData)
+            // Analysis includes summary and action_items
+            if (analysisData.action_items && analysisData.action_items.length > 0) {
+              toast.success(`Analysis complete! Found ${analysisData.action_items.length} action items.`)
+            }
+          }
+        } catch (analysisError) {
+          console.error('Failed to analyze lecture:', analysisError)
+          // Don't fail the whole process if analysis fails
+        }
         
         // Start a chat session with the transcript as context
         const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
