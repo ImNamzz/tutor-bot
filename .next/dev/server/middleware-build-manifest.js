@@ -3,22 +3,9 @@ globalThis.__BUILD_MANIFEST = {
     "/_app": []
   },
   "devFiles": [],
-  "polyfillFiles": [
-    "static/chunks/359e0_next_dist_build_polyfills_polyfill-nomodule.js"
-  ],
+  "polyfillFiles": [],
   "lowPriorityFiles": [],
-  "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_5c16fce1._.js",
-    "static/chunks/359e0_next_dist_compiled_react-dom_3f8b15bd._.js",
-    "static/chunks/359e0_next_dist_compiled_react-server-dom-turbopack_12cb2c48._.js",
-    "static/chunks/359e0_next_dist_compiled_next-devtools_index_dfe51627.js",
-    "static/chunks/359e0_next_dist_compiled_92fb73fc._.js",
-    "static/chunks/359e0_next_dist_client_77d50cac._.js",
-    "static/chunks/359e0_next_dist_1704f49b._.js",
-    "static/chunks/359e0_@swc_helpers_cjs_fc28fb94._.js",
-    "static/chunks/ea5e1_miscellaneous_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_a0ff3932._.js",
-    "static/chunks/d7665_miscellaneous_VS Code Miscs_Naver Hackathon 2025_nhungConGa_tutor-bot_72569293._.js"
-  ]
+  "rootMainFiles": []
 };
 globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
 "/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
