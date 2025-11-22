@@ -102,7 +102,7 @@ export default function TutorPage() {
       // Create a focused prompt for generating Socratic questions
       const contextMessage = `You are a Socratic tutor. Based on this lecture transcript, generate ONE thoughtful Socratic question that encourages critical thinking and deeper understanding. The question should be open-ended and help students explore the key concepts.\n\nLecture content:\n${transcript.substring(0, 2500)}\n\nGenerate a Socratic question:`;
       
-      const response = await fetch(API_ENDPOINTS.chat, {
+      const response = await fetch(API_ENDPOINTS.chatSocratic, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,6 +110,7 @@ export default function TutorPage() {
         },
         body: JSON.stringify({
           message: contextMessage,
+          lecture_id: lectureId,
           session_id: currentSessionId
         })
       });
@@ -139,7 +140,7 @@ export default function TutorPage() {
   const initializeGenericChat = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(API_ENDPOINTS.chat, {
+      const response = await fetch(API_ENDPOINTS.chatSocratic, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +195,7 @@ export default function TutorPage() {
     
     try {
       setIsLoading(true);
-      const response = await fetch(API_ENDPOINTS.chat, {
+      const response = await fetch(API_ENDPOINTS.chatSocratic, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -202,6 +203,7 @@ export default function TutorPage() {
         },
         body: JSON.stringify({
           message: text,
+          lecture_id: lectureId,
           session_id: currentSessionId
         })
       });

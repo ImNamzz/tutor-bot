@@ -22,6 +22,8 @@ export const API_ENDPOINTS = {
   // Chat - /api/chat/*
   chat: `${config.apiUrl}/api/chat`,
   startSession: `${config.apiUrl}/api/chat/start-session`,
+  chatGeneral: `${config.apiUrl}/api/chat/general`,
+  chatSocratic: `${config.apiUrl}/api/chat/socratic`,
   
   // Classes - /api/classes/*
   classes: `${config.apiUrl}/api/classes`,

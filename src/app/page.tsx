@@ -269,14 +269,13 @@ export default function Home() {
   const generateSessionName = async (content: string): Promise<string> => {
     try {
       // Use AI to generate a concise, descriptive title
-      const response = await fetch(API_ENDPOINTS.chat, {
+      const response = await fetch(API_ENDPOINTS.chatGeneral, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${getAccessToken()}`
         },
         body: JSON.stringify({
-          chat_session_id: null,
           message: `Generate a very short, concise title (max 6 words) for a chat session where the user's first message is: "${content.substring(0, 200)}". Only respond with the title, nothing else.`
         })
       });
@@ -353,7 +352,7 @@ export default function Home() {
             // Start chat session directly with the document content
             const initialMessage = `I've uploaded a document titled "${file.name}". Here's the content:\n\n${content}\n\nPlease help me understand this content by asking me questions.`
             
-            const chatResponse = await fetch(API_ENDPOINTS.chat, {
+            const chatResponse = await fetch(API_ENDPOINTS.chatGeneral, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -375,7 +374,7 @@ export default function Home() {
             const chatData = await chatResponse.json()
             
             // Set the session ID from backend
-            setCurrentSessionId(chatData.chat_session_id.toString())
+            setCurrentSessionId(chatData.session_id.toString())
             
             // Generate AI-based session name in the background
             generateSessionName(content).then(generatedName => {
@@ -439,7 +438,7 @@ export default function Home() {
 
       try {
         // Use chat endpoint directly with the transcript content
-        const chatResponse = await fetch(API_ENDPOINTS.chat, {
+        const chatResponse = await fetch(API_ENDPOINTS.chatGeneral, {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
@@ -461,8 +460,8 @@ export default function Home() {
         const chatData = await chatResponse.json()
         
         // Set the session ID from backend
-        if (chatData.chat_session_id) {
-          setCurrentSessionId(chatData.chat_session_id.toString())
+        if (chatData.session_id) {
+          setCurrentSessionId(chatData.session_id.toString())
         }
         
         // Generate AI-based session name
@@ -659,7 +658,7 @@ export default function Home() {
                     // Start chat session
                     const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
                     
-                    const chatResponse = await fetch(API_ENDPOINTS.chat, {
+                    const chatResponse = await fetch(API_ENDPOINTS.chatGeneral, {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
@@ -670,7 +669,7 @@ export default function Home() {
                     
                     if (chatResponse.ok) {
                       const chatData = await chatResponse.json()
-                      setCurrentSessionId(chatData.chat_session_id.toString())
+                      setCurrentSessionId(chatData.session_id.toString())
                       generateSessionName(file.name).then(generatedName => {
                         setFileName(generatedName)
                       })
@@ -723,7 +722,7 @@ export default function Home() {
         // Start a chat session with the transcript as context
         const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
         
-        const chatResponse = await fetch(API_ENDPOINTS.chat, {
+        const chatResponse = await fetch(API_ENDPOINTS.chatGeneral, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -743,7 +742,7 @@ export default function Home() {
         }
 
         const chatData = await chatResponse.json()
-        setCurrentSessionId(chatData.chat_session_id.toString())
+        setCurrentSessionId(chatData.session_id.toString())
         
         generateSessionName(file.name).then(generatedName => {
           setFileName(generatedName)
@@ -778,7 +777,7 @@ export default function Home() {
           // Start chat session directly with the text content
           const initialMessage = `I've uploaded a document titled "${file.name}". Here's the content:\n\n${content}\n\nPlease help me understand this content by asking me questions.`
           
-          const chatResponse = await fetch(API_ENDPOINTS.chat, {
+          const chatResponse = await fetch(API_ENDPOINTS.chatGeneral, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -798,7 +797,7 @@ export default function Home() {
           }
 
           const chatData = await chatResponse.json()
-          setCurrentSessionId(chatData.chat_session_id.toString())
+          setCurrentSessionId(chatData.session_id.toString())
           
           generateSessionName(content).then(generatedName => {
             setFileName(generatedName)
@@ -915,14 +914,13 @@ export default function Home() {
       setFileName("Chat Session");
 
       try {
-        const response = await fetch(API_ENDPOINTS.chat, {
+        const response = await fetch(API_ENDPOINTS.chatGeneral, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${getAccessToken()}`,
           },
           body: JSON.stringify({
-            chat_session_id: null, // Let backend create a new session
             message: userMessage
           })
         })
@@ -938,7 +936,7 @@ export default function Home() {
         const data = await response.json();
 
         // Update session ID from backend and set state to completed
-        setCurrentSessionId(data.chat_session_id.toString())
+        setCurrentSessionId(data.session_id.toString())
         setChatState('completed') // Now in conversation mode
         
         // Generate AI-based session name from the first message
@@ -967,15 +965,15 @@ export default function Home() {
     // For both quizzing and completed states, use the /api/chat endpoint
     if (chatState === "quizzing" || chatState === "completed") {
       try {
-        const response = await fetch(API_ENDPOINTS.chat, {
+        const response = await fetch(API_ENDPOINTS.chatGeneral, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${getAccessToken()}`,
           },
           body: JSON.stringify({
-            chat_session_id: currentSessionId ? Number(currentSessionId) : null,
-            message: userMessage
+            message: userMessage,
+            session_id: currentSessionId
           })
         })
 
@@ -990,8 +988,8 @@ export default function Home() {
         const data = await response.json();
 
         // Update session ID from backend (in case it was created or changed)
-        if (data.chat_session_id) {
-          setCurrentSessionId(data.chat_session_id.toString())
+        if (data.session_id) {
+          setCurrentSessionId(data.session_id.toString())
         }
 
         // Display AI's response
@@ -1036,15 +1034,15 @@ export default function Home() {
 
     // Regenerate AI response
     try {
-      const response = await fetch(API_ENDPOINTS.chat, {
+      const response = await fetch(API_ENDPOINTS.chatGeneral, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getAccessToken()}`,
         },
         body: JSON.stringify({
-          chat_session_id: currentSessionId ? Number(currentSessionId) : null,
-          message: previousUserMessage.content
+          message: previousUserMessage.content,
+          session_id: currentSessionId
         })
       });
 
@@ -1104,15 +1102,15 @@ export default function Home() {
 
     // Get AI response to the edited message
     try {
-      const response = await fetch(API_ENDPOINTS.chat, {
+      const response = await fetch(API_ENDPOINTS.chatGeneral, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getAccessToken()}`,
         },
         body: JSON.stringify({
-          chat_session_id: currentSessionId ? Number(currentSessionId) : null,
-          message: editedMessageContent.trim()
+          message: editedMessageContent.trim(),
+          session_id: currentSessionId
         })
       })
 
