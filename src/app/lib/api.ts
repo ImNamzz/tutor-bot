@@ -249,6 +249,16 @@ export const actionItemsAPI = {
     });
   },
 
+  create: async (
+    data: Partial<{ content: string; type: string; due_date: string; lecture_id?: string }>
+  ): Promise<ActionItem> => {
+    return apiCall<ActionItem>(API_ENDPOINTS.actionItems, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+  },
+
   delete: async (itemId: string) => {
     return apiCall(API_ENDPOINTS.deleteActionItem(itemId), {
       method: "DELETE",

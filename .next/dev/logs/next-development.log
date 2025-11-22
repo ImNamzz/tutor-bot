@@ -1,26 +1,12 @@
-[00:00:02.543] Server  LOG      ✓ Ready in 1678ms
-[00:00:06.582] Server  LOG      ○ Compiling / ...
-[00:00:14.537] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:14.800] Browser ERROR   Error fetching user profile: {}
-[00:00:47.437] Browser ERROR   Error fetching user profile: {}
-[00:00:47.437] Browser ERROR   Error fetching user profile: {}
-[00:00:49.417] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:49.417] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:49.418] Browser ERROR   Error fetching user profile: {}
-[00:01:01.594] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:01.594] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:01.594] Browser ERROR   Error fetching user profile: {}
-[00:14:40.196] Server  LOG      ✓ Compiled in 2.4s
-[00:14:41.276] Browser ERROR   Error fetching user profile: {}
-[00:14:48.166] Server  LOG      ✓ Compiled in 1480ms
-[00:15:07.633] Server  LOG      ✓ Compiled in 1725ms
-[00:16:25.160] Server  LOG      ✓ Compiled in 2.6s
-[00:16:36.055] Server  LOG      ✓ Compiled in 627ms
-[00:17:15.459] Server  LOG      ✓ Compiled in 1250ms
-[00:24:23.151] Server  LOG      ✓ Compiled in 1632ms
-[00:27:02.601] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:02.602] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:02.805] Browser ERROR   Error fetching user profile: {}
-[00:27:21.135] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:21.135] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:27:21.135] Browser ERROR   Error fetching user profile: {}
+[00:00:01.691] Server  LOG      ✓ Ready in 1243ms
+[00:00:07.127] Server  LOG      ○ Compiling / ...
+[00:00:14.491] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:15.087] Browser ERROR   Error fetching user profile: {}
+[00:01:03.224] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:03.224] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:07.537] Browser ERROR   Error creating deadline action item: {}
+[00:02:42.636] Server  LOG      ✓ Compiled in 301ms
+[00:03:49.044] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:49.044] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:53.947] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:03:53.947] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.

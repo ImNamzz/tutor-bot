@@ -100,7 +100,7 @@ export default function CalendarPage() {
 
   const handleAddDeadline = async (deadlineEvent: DeadlineEvent) => {
     try {
-      // Create action item in backend if it has actionItemId (update) or create new
+      // Create or update action item in backend
       if (deadlineEvent.actionItemId) {
         // Update existing action item
         await actionItemsAPI.update(deadlineEvent.actionItemId, {
@@ -110,12 +110,16 @@ export default function CalendarPage() {
         });
         toast.success("Deadline updated successfully");
       } else {
-        // For new deadlines, they need to be created through lecture analysis
-        // For now, just add to local state and show info message
-        toast.info("Note: New deadlines should be created from lecture action items");
+        // This deadline isn't associated with a lecture/action item on the backend.
+        // The backend's ActionItem model requires a `lecture_id`, so standalone
+        // deadlines can't be persisted server-side right now. Keep it in local
+        // calendar state and inform the user.
+        setDeadlines(prev => [...prev, deadlineEvent]);
+        toast.success("Deadline added", { description: `${deadlineEvent.name} - ${deadlineEvent.priority} priority` });
+        return;
       }
-      
-      // Reload data from backend
+
+      // Reload data from backend (for updates/creates that touched the server)
       await loadCalendarData();
     } catch (error) {
       console.error("Error adding deadline:", error);
