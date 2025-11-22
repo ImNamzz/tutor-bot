@@ -165,21 +165,35 @@ class AIService:
 
         output_text = ""
         try:
-            with requests.post(url, headers=headers, json=payload, stream=True) as r:
+            with requests.post(url, headers=headers, json=payload, stream=True, timeout=30) as r:
                 r.raise_for_status()
                 for line in r.iter_lines():
                     if line:
                         decoded = line.decode("utf-8-sig").strip()
-                        if "data:" in decoded:
-                            json_str = decoded.split("data:", 1)[1].strip()
-                            if json_str == "[DONE]": break
+                        if decoded.startswith("data:"):
+                            json_str = decoded[5:].strip()
+                            if json_str == "[DONE]":
+                                break
                             try:
                                 data = json.loads(json_str)
-                                content = data.get("message", {}).get("content")
-                                if content: output_text += content
-                            except: continue
-        except Exception as e:
+                                message = data.get("message", {})
+                                content = message.get("content", "")
+                                if content:
+                                    if not output_text.endswith(content):
+                                        output_text += content
+                                        
+                            except json.JSONDecodeError as e:
+                                print(f"JSON decode error: {e}, line: {json_str}")
+                                continue
+                            except Exception as e:
+                                print(f"Error processing stream: {e}")
+                                continue
+                                
+        except requests.exceptions.RequestException as e:
             print(f"Socratic Chat Error: {e}")
-            return "I'm sorry, I am dumb and cannot respond right now."
+            return "Yeah bro, I'm dead"
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            return "Yeah that's enough for me, going to my bed"
 
-        return output_text
+        return output_text.strip()
