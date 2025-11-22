@@ -2528,46 +2528,6 @@ export default function Home() {
               )}
               
               <div className="flex gap-2 max-w-3xl mx-auto">
-                {/* Upload button with menu or Lock icon */}
-                <div className="relative" ref={uploadMenuRef}>
-                  <Button 
-                    type="button"
-                    variant="outline" 
-                    size="icon"
-                    onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
-                    disabled={!isAuth}
-                    className={`min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
-                  >
-                    {isAuth ? <Plus className="h-4 w-4" /> : <Lock className="h-5 w-5" />}
-                  </Button>
-                  
-                  {/* Upload menu */}
-                  {showUploadMenu && isAuth && (
-                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[200px]">
-                      <button
-                        onClick={() => {
-                          audioInputRef.current?.click()
-                          setShowUploadMenu(false)
-                        }}
-                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                      >
-                        <Music className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload audio transcript</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          textInputRef.current?.click()
-                          setShowUploadMenu(false)
-                        }}
-                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                      >
-                        <File className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload text transcript</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-                
                 <Textarea
                   ref={textareaRef}
                   value={inputMessage}

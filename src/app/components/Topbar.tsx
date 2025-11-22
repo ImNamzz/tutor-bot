@@ -624,22 +624,15 @@ export default function Topbar() {
             </Button>
 
             {isAuth ? (
-              <>
-                {username && (
-                  <span className="text-sm text-gray-700 dark:text-gray-300 px-3 py-2">
-                    {username}
-                  </span>
-                )}
-                <Button
-                  onClick={handleLogout}
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Logout</span>
-                </Button>
-              </>
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Sign Out</span>
+              </Button>
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/auth/login">
