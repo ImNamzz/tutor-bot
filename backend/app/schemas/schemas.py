@@ -1,8 +1,46 @@
 from pydantic import BaseModel, ConfigDict
-from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 import uuid
+
+class MessageBase(BaseModel):
+    role: str
+    content: str
+
+class Message(MessageBase):
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    created_at: datetime
+
+class GeneralChatSessionBase(BaseModel):
+    title: str
+
+class GeneralChatSession(GeneralChatSessionBase):
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    user_id: uuid.UUID
+    created_at: datetime
+    messages: List[Message] = []
+
+class SocraticChatSessionBase(BaseModel):
+    title: str
+
+class SocraticChatSession(SocraticChatSessionBase):
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    user_id: uuid.UUID
+    lecture_id: uuid.UUID
+    created_at: datetime
+    messages: List[Message] = []
+
+class NotebookPageBase(BaseModel):
+    content: Optional[str] = ""
+
+class NotebookPage(NotebookPageBase):
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    updated_at: datetime
+    action_item_id: uuid.UUID
 
 class ActionItemBase(BaseModel):
     type: str
@@ -18,6 +56,7 @@ class ActionItem(ActionItemBase):
     created_at: datetime
     lecture_id: uuid.UUID
     user_id: uuid.UUID
+    notebook_page: Optional[NotebookPage] = None
 
 class ExternalNoteBase(BaseModel):
     title: str
@@ -67,26 +106,6 @@ class Class(ClassBase):
     created_at: datetime
     lectures: List[Lecture] = []
     external_notes: List[ExternalNote] = []
-
-class ChatSessionBase(BaseModel):
-    title: str
-
-class ChatSession(ChatSessionBase):
-    model_config = ConfigDict(from_attributes=True)
-    id: uuid.UUID
-    user_id: uuid.UUID
-    lecture_id: Optional[uuid.UUID] = None
-    created_at: datetime
-
-class NotebookPageBase(BaseModel):
-    content: Optional[str] = ""
-
-class NotebookPage(NotebookPageBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: uuid.UUID
-    updated_at: datetime
-    action_item_id: uuid.UUID
 
 class User(BaseModel):
     model_config = ConfigDict(from_attributes=True)

@@ -20,11 +20,11 @@ class Config:
     CLOVA_API_HOST = os.getenv("CLOVA_API_HOST", "https://clovastudio.stream.ntruss.com")
     CLOVA_API_KEY = os.getenv("CLOVA_API_KEY")
     CLOVA_MODEL = os.getenv("CLOVA_MODEL", "HCX-005")
-    SYSTEM_PROMPT = os.getenv("SYSTEM_PROMPT")
+    SOCRATIC_PROMPT = os.getenv("SYSTEM_PROMPT")
     ANALYSIS_PROMPT = os.getenv("ANALYSIS_PROMPT")
+    GENERAL_PROMPT = "You are a helpful AI teaching assistant. Answer questions clearly and concisely."
     CLOVA_SPEECH_URL = os.getenv("CLOVA_SPEECH_URL")
     CLOVA_SPEECH_SECRET = os.getenv("CLOVA_SPEECH_SECRET")
-
     NCP_ACCESS_KEY = os.getenv("NCP_ACCESS_KEY")
     NCP_SECRET_KEY = os.getenv("NCP_SECRET_KEY")
     NCP_ENDPOINT = os.getenv("NCP_ENDPOINT", "https://kr.object.ncloudstorage.com")

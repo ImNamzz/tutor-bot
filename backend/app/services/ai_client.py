@@ -164,22 +164,46 @@ class AIService:
         }
 
         output_text = ""
+        
         try:
-            with requests.post(url, headers=headers, json=payload, stream=True) as r:
+            with requests.post(url, headers=headers, json=payload, stream=True, timeout=30) as r:
                 r.raise_for_status()
                 for line in r.iter_lines():
                     if line:
                         decoded = line.decode("utf-8-sig").strip()
-                        if "data:" in decoded:
-                            json_str = decoded.split("data:", 1)[1].strip()
-                            if json_str == "[DONE]": break
+                        if decoded.startswith("data:"):
+                            json_str = decoded[5:].strip()
+                            if json_str == "[DONE]":
+                                break
                             try:
                                 data = json.loads(json_str)
-                                content = data.get("message", {}).get("content")
-                                if content: output_text += content
-                            except: continue
-        except Exception as e:
-            print(f"Socratic Chat Error: {e}")
-            return "I'm sorry, I am dumb and cannot respond right now."
+                                if "error" in data:
+                                    print(f"AI Error: {data}")
+                                    return "Error from AI."
 
-        return output_text
+                                message = data.get("message", {})
+                                content = message.get("content", "")
+                                
+                                if content:
+                                    if len(content) > len(output_text) and content.startswith(output_text):
+                                        output_text = content
+                                    elif content == output_text:
+                                        pass
+
+                                    elif len(content) > 5 and output_text.endswith(content):
+                                        pass
+                                        
+                                    else:
+                                        output_text += content
+                                        
+                            except json.JSONDecodeError:
+                                continue
+                            except Exception as e:
+                                print(f"Stream Error: {e}")
+                                continue
+                                
+        except Exception as e:
+            print(f"Connection Error: {e}")
+            return "I'm dead, please contact my boss discord: nam.1353 ."
+
+        return output_text.strip()
