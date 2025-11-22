@@ -333,7 +333,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             {/* Header (Drag Zone) */}
             <div
               onPointerDown={(e) => dragControls.start(e)}
-              className="cursor-grab active:cursor-grabbing flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-[#0f0f0f] touch-none relative"
+              className="cursor-grab active:cursor-grabbing flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-[#1a1a1a] touch-none relative"
             >
               <div className="flex items-center gap-2 pointer-events-none">
                 <span className="text-xs font-bold tracking-wide text-gray-600 dark:text-gray-400 uppercase">
@@ -373,7 +373,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             {/* Filter Control */}
             {filterOpen && (
               <div
-                className="px-4 py-2 border-b border-gray-100 dark:border-gray-700 bg-background/80 dark:bg-[#0f0f0f]"
+                className="px-4 py-2 border-b border-gray-100 dark:border-gray-700 bg-background/80 dark:bg-[#1a1a1a]"
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -398,7 +398,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
             )}
 
             {/* Content List */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-background dark:bg-[#0f0f0f]">
+            <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-background dark:bg-[#1a1a1a]">
               {/* Show hierarchical view if classGroups provided */}
               {classGroups.length > 0 ? (
                 <>
@@ -423,7 +423,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                         getSelectedLectureItems().map((ev) => (
                           <div
                             key={ev.id}
-                            className="rounded-lg border border-border bg-card dark:bg-[#0f0f0f] p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
+                            className="rounded-lg border border-border bg-card dark:bg-[#1a1a1a] p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
                           >
                             <div className="flex flex-col gap-2">
                               <div
@@ -479,7 +479,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                               return next;
                             })
                           }
-                          className="w-full text-left px-2.5 py-2 rounded-lg border border-border bg-card dark:bg-[#0f0f0f] hover:bg-card/80 transition-all flex items-center justify-between"
+                          className="w-full text-left px-2.5 py-2 rounded-lg border border-border bg-card dark:bg-[#1a1a1a] hover:bg-card/80 transition-all flex items-center justify-between"
                         >
                           <span
                             className="w-2 h-2 rounded-full mr-2 flex-shrink-0"
@@ -504,7 +504,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                               <button
                                 key={lec.id}
                                 onClick={() => setSelectedLectureId(lec.id)}
-                                className="w-full text-left px-2 py-1.5 rounded text-xs bg-card/50 dark:bg-[#0f0f0f] hover:bg-card dark:hover:bg-[#1a1a1a] border border-border/30 hover:border-border transition-all flex items-center justify-between"
+                                className="w-full text-left px-2 py-1.5 rounded text-xs bg-card/50 dark:bg-[#1a1a1a] hover:bg-card dark:hover:bg-[#262626] border border-border/30 hover:border-border transition-all flex items-center justify-between"
                               >
                                 <span className="text-foreground/80 truncate flex-1">
                                   {lec.title}
@@ -533,7 +533,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                   {filteredItems.map((ev) => (
                     <div
                       key={ev.id}
-                      className="rounded-lg border border-border bg-card dark:bg-[#0f0f0f] p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
+                      className="rounded-lg border border-border bg-card dark:bg-[#1a1a1a] p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
                     >
                       <div className="flex flex-col gap-2">
                         <div

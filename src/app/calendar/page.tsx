@@ -214,7 +214,7 @@ export default function CalendarPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-[#000000] dark:to-[#000000] transition-colors">
       <Topbar />
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="rounded-xl border bg-card dark:bg-[#0f0f0f] text-card-foreground shadow-lg shadow-black/5 dark:shadow-black/20 overflow-hidden">
+        <div className="rounded-xl border bg-card dark:bg-[#1a1a1a] text-card-foreground shadow-lg shadow-black/5 dark:shadow-black/20 overflow-hidden">
           <CalendarView
             date={date}
             onDateChange={setDate}

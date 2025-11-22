@@ -4633,6 +4633,11 @@
     background-color: #1a1a1a;
   }
 
+  .dark\:bg-\[\#1a1a1a\]\/70:is(.dark *) {
+    background-color: #1a1a1ab3;
+    background-color: lab(9.26323% 0 .00000298023 / .7);
+  }
+
   .dark\:bg-\[\#212121\]:is(.dark *) {
     background-color: #212121;
   }
@@ -5146,6 +5151,12 @@
   @media (hover: hover) {
     .dark\:hover\:bg-\[\#1a1a1a\]:is(.dark *):hover {
       background-color: #1a1a1a;
+    }
+  }
+
+  @media (hover: hover) {
+    .dark\:hover\:bg-\[\#262626\]:is(.dark *):hover {
+      background-color: #262626;
     }
   }
 

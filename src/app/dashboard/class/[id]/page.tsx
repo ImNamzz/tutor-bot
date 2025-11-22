@@ -407,9 +407,9 @@ export default function ClassDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-[#000000] dark:to-[#000000]">
       {/* Fixed Topbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-[#000000]/80 backdrop-blur-sm border-b border-border dark:border-border">
         <Topbar />
       </nav>
       {/* Main content offset by topbar height */}
@@ -441,15 +441,15 @@ export default function ClassDetailPage() {
               </p>
               {/* Quick Stats Pills */}
               <div className="mt-3 flex flex-wrap gap-2">
-                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm dark:bg-[#1a1a1a]/70">
                   <FileText className="h-3.5 w-3.5 text-indigo-600" />
                   <span>{totalLectures} total</span>
                 </div>
-                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm dark:bg-[#1a1a1a]/70">
                   <Sparkles className="h-3.5 w-3.5 text-purple-600" />
                   <span>{recentLectures} recent</span>
                 </div>
-                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm">
+                <div className="px-3 py-1 rounded-full bg-card/70 backdrop-blur border border-border text-[11px] flex items-center gap-1 shadow-sm dark:bg-[#1a1a1a]/70">
                   <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
                   <span>{storageUsedKB} KB</span>
                 </div>
@@ -607,7 +607,7 @@ export default function ClassDetailPage() {
           </div>
         )}
 
-        <Card className="p-4">
+        <Card className="p-4 dark:bg-[#1a1a1a]">
           <h2 className="text-lg font-semibold mb-4">Lectures</h2>
           {cls && cls.lectures.length === 0 && (
             <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
@@ -648,7 +648,7 @@ export default function ClassDetailPage() {
                         href={`/dashboard/class/${cls.id}/lecture/${lec.id}`}
                         className="group block w-full"
                       >
-                        <div className="w-full rounded-xl border border-border bg-card p-4 transition-all duration-200 ease-in-out hover:border-primary/50 hover:bg-background/70 hover:shadow-sm">
+                        <div className="w-full rounded-xl border border-border bg-card p-4 transition-all duration-200 ease-in-out hover:border-primary/50 hover:bg-background/70 hover:shadow-sm dark:bg-[#1a1a1a] dark:hover:bg-[#262626]">
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0 space-y-1">
                               <div className="flex items-center gap-2 min-w-0">
@@ -742,7 +742,7 @@ function LectureActions({ onRename, onDelete }: LectureActionsProps) {
       </button>
       {open && (
         <div
-          className="absolute right-0 z-10 mt-2 w-32 rounded-md border bg-card shadow-md"
+          className="absolute right-0 z-10 mt-2 w-32 rounded-md border bg-card shadow-md dark:bg-[#1a1a1a]"
           onClick={(e) => e.stopPropagation()}
         >
           <button

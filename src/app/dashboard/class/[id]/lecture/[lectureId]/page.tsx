@@ -80,6 +80,38 @@ export default function LectureDetailPage() {
     
     try {
       setLoading(true);
+      
+      // Fetch class information first
+      if (classId) {
+        const classResponse = await fetch(API_ENDPOINTS.classes, {
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          }
+        });
+
+        if (classResponse.ok) {
+          const classesData = await classResponse.json();
+          const foundClass = classesData.find((c: any) => c.id === classId);
+          if (foundClass) {
+            const transformedClass: StoredClass = {
+              id: foundClass.id,
+              name: foundClass.title,
+              code: foundClass.code || '',
+              color: foundClass.color || '#6366f1',
+              lectures: foundClass.lectures?.map((lec: any) => ({
+                id: lec.id,
+                title: lec.title,
+                type: lec.type || 'text',
+                content: lec.transcript || lec.content || '',
+                createdAt: lec.created_at
+              })) || [],
+              createdAt: foundClass.created_at
+            };
+            setCls(transformedClass);
+          }
+        }
+      }
+      
       const response = await fetch(API_ENDPOINTS.getLecture(lectureId), {
         headers: {
           'Authorization': `Bearer ${getAccessToken()}`
@@ -477,8 +509,8 @@ export default function LectureDetailPage() {
   );
 
   return (
-    <div className="relative min-h-screen bg-background dark:bg-background">
-      <div className="backdrop-blur-md bg-card/70 dark:bg-card/70 border-b border-border dark:border-border sticky top-0 z-10">
+    <div className="relative min-h-screen bg-background dark:bg-[#0f0f0f]">
+      <div className="backdrop-blur-md bg-card/70 dark:bg-[#000000]/80 border-b border-border dark:border-border sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             <div className="space-y-2 flex-1">
@@ -487,16 +519,12 @@ export default function LectureDetailPage() {
                   Dashboard
                 </Link>
                 <span>/</span>
-                {cls ? (
-                  <Link
-                    href={`/dashboard/class/${cls.id}`}
-                    className="hover:underline"
-                  >
-                    {cls.name}
-                  </Link>
-                ) : (
-                  <span>Class</span>
-                )}
+                <Link
+                  href={`/dashboard/class/${classId}`}
+                  className="hover:underline"
+                >
+                  {cls?.name || 'Class'}
+                </Link>
                 <span>/</span>
                 <span className="text-slate-700 dark:text-slate-200">
                   Lecture
