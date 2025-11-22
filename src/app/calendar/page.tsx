@@ -7,26 +7,68 @@ import { ClassEvent, DeadlineEvent } from "./types/schedule";
 import { toast } from "sonner";
 import { actionItemsAPI, ActionItem } from "../lib/api";
 import { useRouter } from "next/navigation";
+import { getAccessToken } from "../lib/auth";
 
 export default function CalendarPage() {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [classes, setClasses] = useState<ClassEvent[]>([]);
   const [deadlines, setDeadlines] = useState<DeadlineEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentToken, setCurrentToken] = useState<string | null>(null);
   const router = useRouter();
 
   // Set initial date and load data
   useEffect(() => {
     setDate(new Date());
+    const token = getAccessToken();
+    setCurrentToken(token);
     loadCalendarData();
   }, []);
+
+  // Monitor for account changes and reload data
+  useEffect(() => {
+    const token = getAccessToken();
+    if (token !== currentToken) {
+      // Account changed (logged in/out or switched accounts)
+      setCurrentToken(token);
+      setClasses([]);
+      setDeadlines([]);
+      if (token) {
+        loadCalendarData();
+      }
+    }
+
+    // Check for account changes every second
+    const interval = setInterval(() => {
+      const newToken = getAccessToken();
+      if (newToken !== currentToken) {
+        setCurrentToken(newToken);
+        setClasses([]);
+        setDeadlines([]);
+        if (newToken) {
+          loadCalendarData();
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentToken]);
 
   // Load calendar data from backend and localStorage
   const loadCalendarData = async () => {
     setIsLoading(true);
     try {
-      // Load classes from localStorage (keep local storage for recurring schedules)
-      const savedClasses = localStorage.getItem("calendar-classes");
+      // Get user profile to identify the current user
+      const token = getAccessToken();
+      if (!token) {
+        setClasses([]);
+        setDeadlines([]);
+        return;
+      }
+
+      // Load classes from localStorage with user-specific key
+      const userClassesKey = `calendar-classes-${token.substring(0, 20)}`; // Use token prefix as user identifier
+      const savedClasses = localStorage.getItem(userClassesKey);
       if (savedClasses) {
         try {
           const parsed = JSON.parse(savedClasses);
@@ -80,10 +122,14 @@ export default function CalendarPage() {
 
   // Save classes to localStorage whenever classes change
   useEffect(() => {
-    if (classes.length > 0 || localStorage.getItem("calendar-classes")) {
-      localStorage.setItem("calendar-classes", JSON.stringify(classes));
+    if (classes.length > 0 || localStorage.getItem(`calendar-classes-${currentToken?.substring(0, 20) || ""}`)) {
+      const token = getAccessToken();
+      if (token) {
+        const userClassesKey = `calendar-classes-${token.substring(0, 20)}`;
+        localStorage.setItem(userClassesKey, JSON.stringify(classes));
+      }
     }
-  }, [classes]);
+  }, [classes, currentToken]);
 
   // Note: Deadlines are now managed via backend API, not localStorage
 

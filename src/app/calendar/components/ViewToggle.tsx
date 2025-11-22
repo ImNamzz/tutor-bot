@@ -32,7 +32,7 @@ export default function ViewToggle({ value, onChange }: ViewToggleProps) {
         {/* Sliding indicator with 3D effect */}
         <div
           className={cn(
-            "absolute top-1 bottom-1 w-16 rounded-full",
+            "absolute top-1 bottom-1 w-18 rounded-full",
             "bg-gradient-to-b from-white to-gray-100",
             "shadow-2xl transition-all duration-300 ease-in-out",
             "border border-gray-200/50",

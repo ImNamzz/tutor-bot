@@ -10,3 +10,67 @@
 [00:03:49.044] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 [00:03:53.947] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 [00:03:53.947] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:06:48.833] Server  LOG      ✓ Compiled in 982ms
+[01:06:49.071] Browser ERROR   Error fetching user profile: {}
+[01:07:12.073] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:07:12.073] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:08:16.549] Server  LOG      ✓ Compiled in 194ms
+[01:08:16.660] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/DayClassesDialog.tsx:148:29
+Parsing ecmascript source code failed
+  146 |                     }}>DEADLINE</div>
+  147 |                   </div>
+> 148 |                             if (
+      |                             ^^
+  149 |                               sortedClasses.length === 0 &&
+  150 |                               sortedDeadlines.length === 1
+  151 |                             ) {
+
+Expected '</', got 'if'
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/DayClassesDialog.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/CalendarGrid.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/CalendarView.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/DayClassesDialog.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/CalendarGrid.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/components/CalendarView.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/calendar/page.tsx [Server Component]
+[01:08:36.313] Server  LOG      ✓ Compiled in 229ms
+[01:09:24.325] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:09:24.325] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:10:48.523] Server  LOG      ✓ Compiled in 112ms
+[01:11:01.611] Server  LOG      ✓ Compiled in 505ms
+[01:11:58.834] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:12:02.104] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:02.104] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:21.451] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:21.451] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:38.288] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:38.288] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:40.757] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:40.757] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:12:57.193] Browser ERROR   Error fetching user profile: {}
+[01:12:57.193] Browser ERROR   Error fetching user profile: {}
+[01:13:05.395] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:13:06.270] Browser ERROR   Error fetching user profile: {}
+[01:13:06.379] Browser ERROR   Error fetching user profile: {}
+[01:14:09.251] Server  LOG      ✓ Compiled in 338ms
+[01:14:24.269] Server  LOG      ✓ Compiled in 131ms
+[01:14:31.127] Server  LOG      ✓ Compiled in 112ms
+[01:14:32.150] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [] [, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2MzgyMzY3NCwianRpIjoiNGUwNzlhNzYtZWYwYS00MDkyLWFiY2MtOWIwMTkyZTg5MjM1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFhZjE4YTJjLWE2ODMtNGViMi04MzQ3LTY5YjkzYTRmMDM2ZCIsIm5iZiI6MTc2MzgyMzY3NCwiY3NyZiI6IjI1YmI5NjdmLTg2OGEtNDdjYy1iYWI5LTA0MTA5Zjc0NGY3NyIsImV4cCI6MTc2MzgyNDU3NH0.A_HA0ypu0z8ClGIiG-eEENoc2vdOoVXlAKjxO9zhWL8]
+[01:14:56.117] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:14:56.118] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:15:08.814] Browser ERROR   Error fetching user profile: {}
+[01:15:08.923] Browser ERROR   Error fetching user profile: {}
+[01:15:14.531] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:15:15.553] Browser ERROR   Error fetching user profile: {}
+[01:15:15.553] Browser ERROR   Error fetching user profile: {}
