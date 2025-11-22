@@ -1,6 +1,6 @@
 // Environment configuration
 export const config = {
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://223.130.141.245.nip.io/',
 }
 
 // API endpoints
