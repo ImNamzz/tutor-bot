@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, X, Plus } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { cn } from "../../components/ui/utils";
-import { ClassEvent, DeadlineEvent } from "../types/schedule";
+import { ClassEvent, DeadlineEvent, CustomEvent } from "../types/schedule";
 import { getCourseColorClasses } from "../utils/colors";
 import DayClassesDialog from "./DayClassesDialog";
 import AddEventDialog from "./AddEventDialog";
@@ -22,10 +22,12 @@ export type CalendarGridProps = {
   onDateChange?: (date?: Date) => void;
   classes?: ClassEvent[];
   deadlines?: DeadlineEvent[];
+  events?: CustomEvent[];
   onUnschedule?: (classEvent: ClassEvent) => void;
   onUnscheduleDeadline?: (deadlineEvent: DeadlineEvent) => void;
   onAddClass?: (classEvent: ClassEvent) => void;
   onAddDeadline?: (deadlineEvent: DeadlineEvent) => void;
+  onAddEvent?: (customEvent: CustomEvent) => void;
   onBindAddTrigger?: (fn: () => void) => void;
 };
 
@@ -34,10 +36,12 @@ export default function CalendarGrid({
   onDateChange,
   classes = [],
   deadlines = [],
+  events = [],
   onUnschedule,
   onUnscheduleDeadline,
   onAddClass,
   onAddDeadline,
+  onAddEvent,
   onBindAddTrigger,
 }: CalendarGridProps) {
   const [currentMonth, setCurrentMonth] = useState(() => {
@@ -460,6 +464,7 @@ export default function CalendarGrid({
         date={selectedDayForAdd}
         onAddClass={onAddClass}
         onAddDeadline={onAddDeadline}
+        onAddEvent={onAddEvent}
       />
     </div>
   );

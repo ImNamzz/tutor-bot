@@ -18,7 +18,17 @@ export type DeadlineEvent = {
   type?: string; // Action item type from backend
 };
 
+export type CustomEvent = {
+  id: string;
+  name: string;
+  dateTime: Date; // Date and time of event
+  time?: string; // Optional time as text
+  location?: string; // Optional location
+  actionItemId?: string; // Reference to backend ActionItem ID (from Captured Events)
+};
+
 export type ScheduleState = {
   classes: ClassEvent[];
   deadlines: DeadlineEvent[];
+  events: CustomEvent[];
 };

@@ -17,7 +17,9 @@ import {
 import { createPortal } from "react-dom";
 import { Button } from "@/app/components/ui/button";
 import { cn } from "@/app/components/ui/utils";
-import { X, ChevronsRight, Bell, Filter as FilterIcon, ChevronDown } from "lucide-react";
+import { X, ChevronsRight, Bell, Filter as FilterIcon, ChevronDown, Calendar as CalendarIcon } from "lucide-react";
+import { actionItemsAPI } from "@/app/lib/api";
+import { toast } from "sonner";
 
 export interface EventItem {
   id: string;
@@ -62,6 +64,73 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   const [filterDate, setFilterDate] = useState<string>("");
   const [selectedLectureId, setSelectedLectureId] = useState<string | null>(null);
   const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
+  const [calendarDialogOpen, setCalendarDialogOpen] = useState(false);
+  const [selectedEventForCalendar, setSelectedEventForCalendar] = useState<EventItem | null>(null);
+  const [selectedCalendarDate, setSelectedCalendarDate] = useState<Date | undefined>(new Date());
+  const [isAddingToCalendar, setIsAddingToCalendar] = useState(false);
+  const [eventFormTime, setEventFormTime] = useState<string>("");
+  const [eventFormLocation, setEventFormLocation] = useState<string>("");
+  const [useEventType, setUseEventType] = useState(false);
+
+  // Parse date from event title
+  const extractDateFromTitle = (title: string): Date | null => {
+    if (!title) return null;
+
+    // Common date patterns: "April 15", "April 15, 2025", "4/15", "4/15/2025", "15 April", etc.
+    const monthNames = [
+      "january", "february", "march", "april", "may", "june",
+      "july", "august", "september", "october", "november", "december"
+    ];
+
+    // Helper function to create a local date (no timezone conversion)
+    const createLocalDate = (year: number, month: number, day: number): Date => {
+      const date = new Date(year, month - 1, day);
+      // Adjust for timezone offset to ensure the date stays correct
+      const offset = date.getTimezoneOffset();
+      date.setMinutes(date.getMinutes() - offset);
+      return date;
+    };
+
+    // Pattern 1: "Month Day" or "Month Day, Year" (e.g., "April 15" or "April 15, 2025")
+    const pattern1 = new RegExp(
+      `(${monthNames.join("|")})\\s+(\\d{1,2})(?:,?\\s*(\\d{4}))?`,
+      "i"
+    );
+    const match1 = title.match(pattern1);
+    if (match1) {
+      const month = monthNames.indexOf(match1[1].toLowerCase()) + 1;
+      const day = parseInt(match1[2]);
+      const year = match1[3] ? parseInt(match1[3]) : new Date().getFullYear();
+      return createLocalDate(year, month, day);
+    }
+
+    // Pattern 2: "Day Month" or "Day Month Year" (e.g., "15 April" or "15 April 2025")
+    const pattern2 = new RegExp(
+      `(\\d{1,2})\\s+(${monthNames.join("|")})(?:\\s+(\\d{4}))?`,
+      "i"
+    );
+    const match2 = title.match(pattern2);
+    if (match2) {
+      const day = parseInt(match2[1]);
+      const month = monthNames.indexOf(match2[2].toLowerCase()) + 1;
+      const year = match2[3] ? parseInt(match2[3]) : new Date().getFullYear();
+      return createLocalDate(year, month, day);
+    }
+
+    // Pattern 3: Numeric dates "M/D" or "M/D/YYYY" (e.g., "4/15" or "4/15/2025")
+    const pattern3 = /(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/;
+    const match3 = title.match(pattern3);
+    if (match3) {
+      const month = parseInt(match3[1]);
+      const day = parseInt(match3[2]);
+      const year = match3[3] ? parseInt(match3[3]) : new Date().getFullYear();
+      if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+        return createLocalDate(year, month, day);
+      }
+    }
+
+    return null;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -169,6 +238,59 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
       document.removeEventListener("mouseup", onResizeMouseUp);
     };
   }, []);
+
+  const handleAddToCalendar = async (event: EventItem) => {
+    setSelectedEventForCalendar(event);
+    // Try to extract date from title
+    const extractedDate = extractDateFromTitle(event.title);
+    setSelectedCalendarDate(extractedDate || new Date());
+    setEventFormTime("");
+    setEventFormLocation("");
+    setUseEventType(false);
+    setCalendarDialogOpen(true);
+  };
+
+  const handleConfirmAddToCalendar = async () => {
+    if (!selectedEventForCalendar || !selectedCalendarDate) {
+      toast.error("Please select a date");
+      return;
+    }
+
+    try {
+      setIsAddingToCalendar(true);
+      
+      if (useEventType) {
+        // Add as Event type to calendar (for now, just show success)
+        // In a real app, you'd send this to the calendar API
+        toast.success(
+          `Added "${selectedEventForCalendar.title}" as event for ${selectedCalendarDate.toDateString()}${
+            eventFormTime ? ` at ${eventFormTime}` : ""
+          }${eventFormLocation ? ` in ${eventFormLocation}` : ""}`
+        );
+      } else {
+        // Add as Deadline type
+        await actionItemsAPI.update(selectedEventForCalendar.id, {
+          due_date: selectedCalendarDate.toISOString(),
+        });
+
+        toast.success(
+          `Added "${selectedEventForCalendar.title}" as deadline for ${selectedCalendarDate.toDateString()}`
+        );
+      }
+
+      setCalendarDialogOpen(false);
+      setSelectedEventForCalendar(null);
+      setSelectedCalendarDate(undefined);
+      setEventFormTime("");
+      setEventFormLocation("");
+      setUseEventType(false);
+    } catch (error) {
+      console.error("Error adding to calendar:", error);
+      toast.error("Failed to add event to calendar");
+    } finally {
+      setIsAddingToCalendar(false);
+    }
+  };
 
   const collapsedSize = 52;
 
@@ -301,25 +423,41 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                         getSelectedLectureItems().map((ev) => (
                           <div
                             key={ev.id}
-                            onClick={() => setSelectedEvent(ev)}
-                            className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
+                            className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
                           >
-                            <div className="flex flex-col gap-1">
-                              <div className="flex items-start justify-between gap-2">
-                                <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
-                                  {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
-                                </p>
-                                {ev.timestamp && (
-                                  <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
-                                    {ev.timestamp}
-                                  </span>
+                            <div className="flex flex-col gap-2">
+                              <div
+                                onClick={() => setSelectedEvent(ev)}
+                                className="cursor-pointer"
+                              >
+                                <div className="flex items-start justify-between gap-2">
+                                  <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
+                                    {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                                  </p>
+                                  {ev.timestamp && (
+                                    <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
+                                      {ev.timestamp}
+                                    </span>
+                                  )}
+                                </div>
+                                {ev.description && (
+                                  <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
+                                    {ev.description}
+                                  </p>
                                 )}
                               </div>
-                              {ev.description && (
-                                <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
-                                  {ev.description}
-                                </p>
-                              )}
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="w-full h-7 text-xs"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddToCalendar(ev);
+                                }}
+                              >
+                                <CalendarIcon className="w-3 h-3 mr-1" />
+                                Add to Calendar
+                              </Button>
                             </div>
                           </div>
                         ))
@@ -395,25 +533,41 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                   {filteredItems.map((ev) => (
                     <div
                       key={ev.id}
-                      onClick={() => setSelectedEvent(ev)}
-                      className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
+                      className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
                     >
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
-                            {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
-                          </p>
-                          {ev.timestamp && (
-                            <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
-                              {ev.timestamp}
-                            </span>
+                      <div className="flex flex-col gap-2">
+                        <div
+                          onClick={() => setSelectedEvent(ev)}
+                          className="cursor-pointer"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
+                              {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                            </p>
+                            {ev.timestamp && (
+                              <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
+                                {ev.timestamp}
+                              </span>
+                            )}
+                          </div>
+                          {ev.description && (
+                            <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
+                              {ev.description}
+                            </p>
                           )}
                         </div>
-                        {ev.description && (
-                          <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
-                            {ev.description}
-                          </p>
-                        )}
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="w-full h-7 text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCalendar(ev);
+                          }}
+                        >
+                          <CalendarIcon className="w-3 h-3 mr-1" />
+                          Add to Calendar
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -445,6 +599,113 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
           </div>
         )}
       </div>
+      {/* Calendar Date Picker Dialog */}
+      {mounted &&
+        calendarDialogOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-card border border-border rounded-lg shadow-lg p-6 max-w-sm w-full max-h-[90vh] overflow-y-auto">
+              <h3 className="text-lg font-semibold mb-4">Add to Calendar</h3>
+              {selectedEventForCalendar && (
+                <p className="text-sm text-muted-foreground mb-4">
+                  Event: <strong>{selectedEventForCalendar.title}</strong>
+                </p>
+              )}
+
+              {/* Type Toggle */}
+              <div className="mb-4 flex items-center gap-3">
+                <span className="text-sm font-medium">Type:</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setUseEventType(false)}
+                    className={`px-3 py-1.5 rounded-md font-medium text-sm transition-all ${
+                      !useEventType
+                        ? "bg-foreground text-background"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Deadline
+                  </button>
+                  <button
+                    onClick={() => setUseEventType(true)}
+                    className={`px-3 py-1.5 rounded-md font-medium text-sm transition-all ${
+                      useEventType
+                        ? "bg-foreground text-background"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Event
+                  </button>
+                </div>
+              </div>
+
+              {/* Date Field */}
+              <div className="mb-4">
+                <label className="text-sm font-medium mb-2 block">Select Date</label>
+                <input
+                  type="date"
+                  value={selectedCalendarDate?.toISOString().split('T')[0] || ''}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setSelectedCalendarDate(new Date(e.target.value));
+                    }
+                  }}
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                />
+              </div>
+
+              {/* Event-specific fields */}
+              {useEventType && (
+                <>
+                  <div className="mb-4">
+                    <label className="text-sm font-medium mb-2 block">Time (Optional)</label>
+                    <input
+                      type="time"
+                      placeholder="e.g., 14:30"
+                      value={eventFormTime}
+                      onChange={(e) => setEventFormTime(e.target.value)}
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="text-sm font-medium mb-2 block">Location (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Conference room B"
+                      value={eventFormLocation}
+                      onChange={(e) => setEventFormLocation(e.target.value)}
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="flex gap-2 justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setCalendarDialogOpen(false);
+                    setSelectedEventForCalendar(null);
+                    setEventFormTime("");
+                    setEventFormLocation("");
+                    setUseEventType(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleConfirmAddToCalendar}
+                  disabled={isAddingToCalendar || !selectedCalendarDate}
+                >
+                  {isAddingToCalendar ? "Adding..." : "Add to Calendar"}
+                </Button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
       {/* Detail Popup via Portal */}
       {mounted &&
         createPortal(

@@ -12,7 +12,7 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
-import { ClassEvent, DeadlineEvent } from "../types/schedule";
+import { ClassEvent, DeadlineEvent, CustomEvent } from "../types/schedule";
 import { toast } from "sonner";
 import ViewToggle from "./ViewToggle";
 
@@ -32,6 +32,7 @@ export type AddEventDialogProps = {
   date: Date | null;
   onAddClass?: (classEvent: ClassEvent) => void;
   onAddDeadline?: (deadlineEvent: DeadlineEvent) => void;
+  onAddEvent?: (customEvent: CustomEvent) => void;
 };
 
 export default function AddEventDialog({
@@ -40,8 +41,9 @@ export default function AddEventDialog({
   date,
   onAddClass,
   onAddDeadline,
+  onAddEvent,
 }: AddEventDialogProps) {
-  const [viewType, setViewType] = useState<"class" | "deadline">("class");
+  const [viewType, setViewType] = useState<"class" | "deadline" | "event">("class");
 
   // Class fields
   const [course, setCourse] = useState("");
@@ -58,6 +60,12 @@ export default function AddEventDialog({
   const [priority, setPriority] = useState<"urgent" | "normal" | "early">(
     "normal"
   );
+
+  // Event fields
+  const [eventName, setEventName] = useState("");
+  const [eventTime, setEventTime] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
+  const [eventDate, setEventDate] = useState("");
 
   // Update selectedDayOfWeek when date changes
   useEffect(() => {
@@ -77,6 +85,10 @@ export default function AddEventDialog({
       setDeadlineName("");
       setDeadlineDateTime("");
       setPriority("normal");
+      setEventName("");
+      setEventTime("");
+      setEventLocation("");
+      setEventDate("");
       setViewType("class");
     }
   }, [open]);
@@ -90,7 +102,13 @@ export default function AddEventDialog({
       const defaultTime = "23:59";
       setDeadlineDateTime(`${year}-${month}-${day}T${defaultTime}`);
     }
-  }, [date, viewType, deadlineDateTime]);
+    if (date && viewType === "event" && !eventDate) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      setEventDate(`${year}-${month}-${day}`);
+    }
+  }, [date, viewType, deadlineDateTime, eventDate]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -130,7 +148,7 @@ export default function AddEventDialog({
           }`,
         }
       );
-    } else {
+    } else if (viewType === "deadline") {
       // Deadline
       if (!deadlineName || !deadlineDateTime) {
         toast.error("Please fill in required fields");
@@ -154,6 +172,34 @@ export default function AddEventDialog({
       toast.success("Deadline added", {
         description: `${deadlineName} - ${priority} priority`,
       });
+    } else {
+      // Event
+      if (!eventName || !eventDate) {
+        toast.error("Please fill in required fields");
+        return;
+      }
+
+      const eventDateTime = new Date(eventDate);
+      if (eventTime) {
+        const [hours, minutes] = eventTime.split(":").map(Number);
+        eventDateTime.setHours(hours, minutes);
+      }
+
+      const customEvent: CustomEvent = {
+        id: `event-${Date.now()}-${Math.random()}`,
+        name: eventName,
+        dateTime: eventDateTime,
+        time: eventTime || undefined,
+        location: eventLocation || undefined,
+      };
+
+      onAddEvent?.(customEvent);
+
+      toast.success("Event added", {
+        description: `${eventName}${eventTime ? ` at ${eventTime}` : ""}${
+          eventLocation ? ` in ${eventLocation}` : ""
+        }`,
+      });
     }
 
     onOpenChange(false);
@@ -164,7 +210,12 @@ export default function AddEventDialog({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            Add {viewType === "class" ? "Class" : "Deadline"}
+            Add{" "}
+            {viewType === "class"
+              ? "Class"
+              : viewType === "deadline"
+              ? "Deadline"
+              : "Event"}
           </DialogTitle>
         </DialogHeader>
 
@@ -251,7 +302,7 @@ export default function AddEventDialog({
                 </div>
               )}
             </>
-          ) : (
+          ) : viewType === "deadline" ? (
             <>
               <div className="space-y-1.5">
                 <Label htmlFor="deadlineName">Deadline name</Label>
@@ -316,6 +367,51 @@ export default function AddEventDialog({
                 </RadioGroup>
               </div>
             </>
+          ) : (
+            <>
+              <div className="space-y-1.5">
+                <Label htmlFor="eventName">Event name</Label>
+                <Input
+                  id="eventName"
+                  placeholder="e.g., Project meeting"
+                  value={eventName}
+                  onChange={(e) => setEventName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="eventDate">Date</Label>
+                <Input
+                  id="eventDate"
+                  type="date"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="eventTime">Time (Optional)</Label>
+                <Input
+                  id="eventTime"
+                  type="time"
+                  placeholder="e.g., 14:30"
+                  value={eventTime}
+                  onChange={(e) => setEventTime(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="eventLocation">Location (Optional)</Label>
+                <Input
+                  id="eventLocation"
+                  placeholder="e.g., Conference room B"
+                  value={eventLocation}
+                  onChange={(e) => setEventLocation(e.target.value)}
+                />
+              </div>
+            </>
           )}
 
           <div className="flex gap-2 pt-2">
@@ -328,7 +424,12 @@ export default function AddEventDialog({
               Cancel
             </Button>
             <Button type="submit" className="flex-1">
-              Add {viewType === "class" ? "Class" : "Deadline"}
+              Add{" "}
+              {viewType === "class"
+                ? "Class"
+                : viewType === "deadline"
+                ? "Deadline"
+                : "Event"}
             </Button>
           </div>
         </form>

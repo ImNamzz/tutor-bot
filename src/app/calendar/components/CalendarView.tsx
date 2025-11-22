@@ -1,7 +1,7 @@
 "use client";
 
 import CalendarGrid from "./CalendarGrid";
-import { ClassEvent, DeadlineEvent } from "../types/schedule";
+import { ClassEvent, DeadlineEvent, CustomEvent } from "../types/schedule";
 import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Plus } from "lucide-react";
@@ -11,10 +11,12 @@ export type CalendarViewProps = {
   onDateChange?: (date?: Date) => void;
   classes?: ClassEvent[];
   deadlines?: DeadlineEvent[];
+  events?: CustomEvent[];
   onUnschedule?: (classEvent: ClassEvent) => void;
   onUnscheduleDeadline?: (deadlineEvent: DeadlineEvent) => void;
   onAddClass?: (classEvent: ClassEvent) => void;
   onAddDeadline?: (deadlineEvent: DeadlineEvent) => void;
+  onAddEvent?: (customEvent: CustomEvent) => void;
 };
 
 export default function CalendarView({
@@ -22,10 +24,12 @@ export default function CalendarView({
   onDateChange,
   classes,
   deadlines,
+  events,
   onUnschedule,
   onUnscheduleDeadline,
   onAddClass,
   onAddDeadline,
+  onAddEvent,
 }: CalendarViewProps) {
   const [openAddFn, setOpenAddFn] = useState<(() => void) | null>(null);
 
@@ -36,10 +40,12 @@ export default function CalendarView({
         onDateChange={onDateChange}
         classes={classes}
         deadlines={deadlines}
+        events={events}
         onUnschedule={onUnschedule}
         onUnscheduleDeadline={onUnscheduleDeadline}
         onAddClass={onAddClass}
         onAddDeadline={onAddDeadline}
+        onAddEvent={onAddEvent}
         onBindAddTrigger={(fn) => setOpenAddFn(() => fn)}
       />
       {openAddFn && (

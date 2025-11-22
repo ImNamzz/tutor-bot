@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CalendarView from "./components/CalendarView";
 import Topbar from "../components/Topbar";
-import { ClassEvent, DeadlineEvent } from "./types/schedule";
+import { ClassEvent, DeadlineEvent, CustomEvent } from "./types/schedule";
 import { toast } from "sonner";
 import { actionItemsAPI, ActionItem } from "../lib/api";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,7 @@ export default function CalendarPage() {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [classes, setClasses] = useState<ClassEvent[]>([]);
   const [deadlines, setDeadlines] = useState<DeadlineEvent[]>([]);
+  const [events, setEvents] = useState<CustomEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentToken, setCurrentToken] = useState<string | null>(null);
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function CalendarPage() {
       setCurrentToken(token);
       setClasses([]);
       setDeadlines([]);
+      setEvents([]);
       if (token) {
         loadCalendarData();
       }
@@ -45,6 +47,7 @@ export default function CalendarPage() {
         setCurrentToken(newToken);
         setClasses([]);
         setDeadlines([]);
+        setEvents([]);
         if (newToken) {
           loadCalendarData();
         }
@@ -63,6 +66,7 @@ export default function CalendarPage() {
       if (!token) {
         setClasses([]);
         setDeadlines([]);
+        setEvents([]);
         return;
       }
 
@@ -194,6 +198,18 @@ export default function CalendarPage() {
     }
   };
 
+  const handleAddEvent = (customEvent: CustomEvent) => {
+    setEvents((prev) => [...prev, customEvent]);
+    toast.success("Event added to calendar");
+  };
+
+  const handleUnscheduleEvent = (customEvent: CustomEvent) => {
+    setEvents((prev) => prev.filter((evt) => evt.id !== customEvent.id));
+    toast.success("Event removed", {
+      description: `${customEvent.name} has been removed from the calendar`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
       <Topbar />
@@ -204,10 +220,12 @@ export default function CalendarPage() {
             onDateChange={setDate}
             classes={classes}
             deadlines={deadlines}
+            events={events}
             onUnschedule={handleUnschedule}
             onUnscheduleDeadline={handleUnscheduleDeadline}
             onAddClass={handleAddClass}
             onAddDeadline={handleAddDeadline}
+            onAddEvent={handleAddEvent}
           />
         </div>
       </main>

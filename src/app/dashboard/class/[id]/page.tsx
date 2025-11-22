@@ -46,6 +46,7 @@ export default function ClassDetailPage() {
   // Lecture modal state
   const [openLectureModal, setOpenLectureModal] = useState(false);
   const [lectureTitle, setLectureTitle] = useState("");
+  const [lectureMessage, setLectureMessage] = useState("");
   const [lectureType, setLectureType] = useState<"text" | "audio">("text");
   const [lectureContentText, setLectureContentText] = useState("");
   const [fileError, setFileError] = useState("");
@@ -203,6 +204,7 @@ export default function ClassDetailPage() {
         
         // Reset form
         setLectureTitle("");
+        setLectureMessage("");
         setLectureContentText("");
         setLectureType("text");
         setOpenLectureModal(false);
@@ -258,6 +260,7 @@ export default function ClassDetailPage() {
         
         // Reset form
         setLectureTitle("");
+        setLectureMessage("");
         setLectureContentText("");
         setLectureType("text");
         setOpenLectureModal(false);
@@ -387,6 +390,22 @@ export default function ClassDetailPage() {
     return "reviewed";
   };
 
+  const handleDialogOpen = (open: boolean) => {
+    setOpenLectureModal(open);
+    if (!open) {
+      // Reset form when dialog closes
+      setLectureTitle("");
+      setLectureMessage("");
+      setLectureContentText("");
+      setLectureType("text");
+      setUploadedFile(null);
+      setUploadedText("");
+      setActualFile(null);
+      setAudioLanguage("en-US");
+      setFileError("");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Fixed Topbar */}
@@ -436,7 +455,7 @@ export default function ClassDetailPage() {
                 </div>
               </div>
             </div>
-            <Dialog open={openLectureModal} onOpenChange={setOpenLectureModal}>
+            <Dialog open={openLectureModal} onOpenChange={handleDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="default" className="gap-2">
                   <Upload className="h-4 w-4" /> Upload Lecture
@@ -453,6 +472,15 @@ export default function ClassDetailPage() {
                       value={lectureTitle}
                       onChange={(e) => setLectureTitle(e.target.value)}
                       placeholder="e.g. Week 1 Overview"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Message (Optional)</label>
+                    <Textarea
+                      value={lectureMessage}
+                      onChange={(e) => setLectureMessage(e.target.value)}
+                      placeholder="Add any notes or context about this lecture..."
+                      className="h-20 max-h-32 overflow-y-auto resize-y"
                     />
                   </div>
                   <div className="space-y-2">
