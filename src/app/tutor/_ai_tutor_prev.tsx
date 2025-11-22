@@ -10,7 +10,7 @@ import { Input } from '@/app/components/ui/input'
 import { Textarea } from '@/app/components/ui/textarea'
 import { ScrollArea } from '@/app/components/ui/scroll-area'
 import { Badge } from '@/app/components/ui/badge'
-import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown } from 'lucide-react'
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, Moon, Sun, Calendar, CheckSquare, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -1071,8 +1071,8 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-                <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-                <span className="ml-2 dark:text-white">EduAssist</span>
+                <Bot className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                <span className="ml-2 dark:text-white">TutorBot</span>
               </Link>
               
               {/* Navigation Links */}
@@ -1085,8 +1085,8 @@ export default function Home() {
                       : "text-gray-700 dark:text-gray-300"
                   }`}
                 >
-                  <BookOpen className="h-4 w-4" />
-                  AI Tutor
+                  <Bot className="h-4 w-4" />
+                  Chat
                 </Link>
                 <Link 
                   href="/calendar" 

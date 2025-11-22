@@ -1518,15 +1518,6 @@ export default function Home() {
       >
         {/* Sidebar Header with Toggle */}
         <div className="h-16 px-4 flex items-center justify-between shrink-0">
-          {isSidebarOpen && (
-            <button 
-              onClick={() => router.push('/dashboard')}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
-            >
-              <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-gray-800 dark:text-white font-medium text-sm">EduAssist</span>
-            </button>
-          )}
           <Button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             variant="ghost"
@@ -1698,8 +1689,8 @@ export default function Home() {
                 href="/dashboard"
                 className="flex items-center hover:opacity-80 transition-opacity"
               >
-                <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-                <span className="ml-2 text-gray-800 dark:text-white">EduAssist</span>
+                <Bot className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                <span className="ml-2 text-gray-800 dark:text-white">TutorBot</span>
               </Link>
 
               {/* Navigation Links */}
@@ -1713,7 +1704,7 @@ export default function Home() {
                   }`}
                 >
                   <BookOpen className="h-4 w-4" />
-                  AI Tutor
+                  Chat
                 </Link>
                 <Link
                   href="/calendar"

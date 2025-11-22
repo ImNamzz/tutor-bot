@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import {
+  Bot,
   BookOpen,
   Calendar as CalendarIcon,
   Moon,
@@ -265,8 +266,8 @@ export default function Topbar() {
               href="/dashboard"
               className="flex items-center hover:opacity-80 transition-opacity"
             >
-              <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-              <span className="ml-2 dark:text-white">EduAssist</span>
+              <Bot className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+              <span className="ml-2 dark:text-white">TutorBot</span>
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
@@ -279,7 +280,7 @@ export default function Topbar() {
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
-                AI Tutor
+                Chat
               </Link>
               <Link
                 href="/calendar"

@@ -110,7 +110,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$Col
 ;
 ;
 const metadata = {
-    title: "EduAssist",
+    title: "TutorBot",
     description: "Your AI learning assistant for better education"
 };
 function RootLayout({ children }) {
