@@ -2930,6 +2930,14 @@
     padding-right: calc(var(--spacing) * 10);
   }
 
+  .pb-1 {
+    padding-bottom: calc(var(--spacing) * 1);
+  }
+
+  .pb-2 {
+    padding-bottom: calc(var(--spacing) * 2);
+  }
+
   .pb-6 {
     padding-bottom: calc(var(--spacing) * 6);
   }

@@ -2270,10 +2270,10 @@ export default function Home() {
       <div
         className={`transition-all duration-300 ${
           isSidebarOpen ? "ml-[280px]" : "ml-16"
-        } pt-16 pb-6`}
+        } pt-16 pb-1`}
       >
         {/* Page Content */}
-        <main className="px-4 sm:px-6 lg:px-8 py-8">
+        <main className="px-4 sm:px-6 lg:px-8 py-1">
           <div className="max-w-[1200px] mx-auto">
             {/* Main Chat Area */}
             <Card 
@@ -2303,7 +2303,7 @@ export default function Home() {
             />
 
             {/* Chat Messages */}
-            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+            <ScrollArea className="flex-1 p-4 overflow-y-auto overflow-x-hidden" ref={scrollAreaRef}>
               <div className="space-y-6">
                 {messages.map((message, index) => (
                   <div
@@ -2499,7 +2499,7 @@ export default function Home() {
               </ScrollArea>
 
               {/* Input Area */}
-              <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
+              <div className="flex-shrink-0 sticky bottom-0 px-4 py-1 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
               {/* Scroll to bottom button - positioned in input area */}
               {messages.length > 0 && (
                 <div className="flex justify-end mb-2">

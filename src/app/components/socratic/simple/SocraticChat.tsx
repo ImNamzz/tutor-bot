@@ -27,7 +27,7 @@ export const SocraticChat: React.FC<Props> = ({
 }) => {
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-auto p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-3">
         {messages.map((m, i) => (
           <div
             key={i}
@@ -54,7 +54,7 @@ export const SocraticChat: React.FC<Props> = ({
           </div>
         ))}
       </div>
-      <div className="border-t p-4 space-y-3">
+      <div className="flex-shrink-0 border-t p-3 space-y-2">
         <Textarea
           placeholder="Share your thinking process..."
           value={input}

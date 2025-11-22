@@ -285,7 +285,7 @@ export default function TutorPage() {
   return (
     <div className="min-h-screen bg-background">
       <Topbar />
-      <div className="flex items-center justify-center p-4 h-[calc(100vh-4rem)]">
+      <div className="flex items-center justify-center px-4 py-2 h-[calc(100vh-4rem)]">
         <div className="w-full max-w-2xl h-full">
           <SocraticChat
             messages={messages}
