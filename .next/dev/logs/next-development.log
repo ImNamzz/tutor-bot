@@ -1,5 +1,14 @@
-[00:00:01.851] Server  LOG      ✓ Ready in 1323ms
-[00:00:04.930] Server  LOG      ○ Compiling /calendar ...
-[00:00:11.633] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:11.779] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:12.429] Browser ERROR   Error fetching user profile: {}
+[00:00:01.706] Server  LOG      ✓ Ready in 1224ms
+[00:00:04.797] Server  LOG      ○ Compiling /calendar ...
+[00:00:09.351] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:09.696] Browser ERROR   Error fetching user profile: {}
+[00:00:12.290] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:18.420] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:19.645] Browser ERROR   Error fetching user profile: {}
+[00:00:19.800] Browser ERROR   Error fetching user profile: {}
+[00:00:39.180] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:39.180] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:52.373] Server  LOG      ✓ Compiled in 159ms
+[00:01:59.374] Server  LOG      ✓ Compiled in 110ms
+[00:02:05.882] Server  LOG      ✓ Compiled in 115ms
+[00:02:13.016] Server  LOG      ✓ Compiled in 108ms

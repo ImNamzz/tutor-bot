@@ -13,20 +13,20 @@ function escapeIcsText(text: string): string {
 }
 
 /**
- * Formats a date to ICS format (YYYYMMDDTHHMMSSZ for UTC or YYYYMMDD for all-day)
+ * Formats a date to ICS format (YYYYMMDDTHHMMSSZ for UTC)
  */
 function formatIcsDate(date: Date, isAllDay: boolean = false): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
   
   if (isAllDay) {
     return `${year}${month}${day}`;
   }
   
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
   
   return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
 }
@@ -134,10 +134,14 @@ function createDeadlineEventIcs(event: DeadlineEvent): string {
   const alarmDate = new Date(event.dateTime.getTime() - 24 * 60 * 60 * 1000);
   
   const dtstart = formatIcsDate(event.dateTime);
+  // Add 1 hour duration to match calendar display
+  const endTime = new Date(event.dateTime.getTime() + 60 * 60 * 1000);
+  const dtend = formatIcsDate(endTime);
   
   return `BEGIN:VEVENT
 UID:${uid}
 DTSTART:${dtstart}
+DTEND:${dtend}
 CREATED:${now}
 LAST-MODIFIED:${now}
 SUMMARY:${escapeIcsText(event.name)}
