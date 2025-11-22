@@ -3020,6 +3020,10 @@
     word-break: break-all;
   }
 
+  .whitespace-normal {
+    white-space: normal;
+  }
+
   .whitespace-nowrap {
     white-space: nowrap;
   }

@@ -251,21 +251,23 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                   onClick={() => setSelectedEvent(ev)}
                   className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
                 >
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <p className="text-sm font-semibold text-gray-800 truncate">
-                      {ev.title}
-                    </p>
-                    {ev.timestamp && (
-                      <span className="text-[10px] text-gray-400 shrink-0">
-                        {ev.timestamp}
-                      </span>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
+                        {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                      </p>
+                      {ev.timestamp && (
+                        <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
+                          {ev.timestamp}
+                        </span>
+                      )}
+                    </div>
+                    {ev.description && (
+                      <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
+                        {ev.description}
+                      </p>
                     )}
                   </div>
-                  {ev.description && (
-                    <p className="text-xs text-gray-500 line-clamp-2 leading-snug">
-                      {ev.description}
-                    </p>
-                  )}
                 </div>
               ))}
             </div>

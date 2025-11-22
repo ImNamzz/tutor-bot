@@ -112,6 +112,20 @@ export default function DashboardPage() {
         console.log('📦 Raw action items from API:', items);
         console.log('📦 Count:', items.length);
         
+        // Log each item in detail
+        items.forEach((item: any, idx: number) => {
+          console.log(`📦 Item ${idx}:`, {
+            id: item.id,
+            content: item.content,
+            title: item.title,
+            type: item.type,
+            completed: item.completed,
+            lecture: item.lecture,
+            created_at: item.created_at,
+            all_keys: Object.keys(item)
+          });
+        });
+        
         // Transform action items to EventItem format
         const eventItems = items.map((item: any) => {
           // Parse the created_at timestamp if it exists
@@ -123,11 +137,17 @@ export default function DashboardPage() {
             hour12: true
           });
 
-          console.log('  Transforming item:', { id: item.id, content: item.content, completed: item.completed });
+          console.log('  Raw item:', item);
+          console.log('  item.content:', item.content, 'type:', typeof item.content);
+          console.log('  item.title:', item.title, 'type:', typeof item.title);
+
+          // Try to get title from content, title field, or type
+          const itemTitle = item.content || item.title || item.type || 'Untitled Action Item';
+          console.log('  Resolved title:', itemTitle);
 
           return {
             id: item.id,
-            title: item.content || 'Untitled Action Item',
+            title: itemTitle,
             description: item.lecture?.title ? `From lecture: ${item.lecture.title}` : 'Action Item',
             timestamp: timeString,
             isSeen: item.completed || false
