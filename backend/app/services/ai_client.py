@@ -164,6 +164,7 @@ class AIService:
         }
 
         output_text = ""
+        
         try:
             with requests.post(url, headers=headers, json=payload, stream=True, timeout=30) as r:
                 r.raise_for_status()
@@ -176,24 +177,33 @@ class AIService:
                                 break
                             try:
                                 data = json.loads(json_str)
+                                if "error" in data:
+                                    print(f"AI Error: {data}")
+                                    return "Error from AI."
+
                                 message = data.get("message", {})
                                 content = message.get("content", "")
+                                
                                 if content:
-                                    if not output_text.endswith(content):
+                                    if len(content) > len(output_text) and content.startswith(output_text):
+                                        output_text = content
+                                    elif content == output_text:
+                                        pass
+
+                                    elif len(content) > 5 and output_text.endswith(content):
+                                        pass
+                                        
+                                    else:
                                         output_text += content
                                         
-                            except json.JSONDecodeError as e:
-                                print(f"JSON decode error: {e}, line: {json_str}")
+                            except json.JSONDecodeError:
                                 continue
                             except Exception as e:
-                                print(f"Error processing stream: {e}")
+                                print(f"Stream Error: {e}")
                                 continue
                                 
-        except requests.exceptions.RequestException as e:
-            print(f"Socratic Chat Error: {e}")
-            return "Yeah bro, I'm dead"
         except Exception as e:
-            print(f"Unexpected error: {e}")
-            return "Yeah that's enough for me, going to my bed"
+            print(f"Connection Error: {e}")
+            return "I'm dead, please contact my boss discord: nam.1353 ."
 
         return output_text.strip()

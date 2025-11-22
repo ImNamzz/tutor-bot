@@ -28,8 +28,8 @@ class Lecture(Base):
     class_id = Column(String(36), ForeignKey("classes.id"), nullable=False)
     class_obj = relationship("Class", back_populates="lectures")
     action_items = relationship("ActionItem", back_populates="lecture", cascade="all, delete-orphan")
-    chat_sessions = relationship("ChatSession", back_populates="lecture")
     external_notes = relationship("ExternalNote", back_populates="lecture", cascade="all, delete-orphan")
+    socratic_chat_sessions = relationship("SocraticChatSession", back_populates="lecture", cascade="all, delete-orphan")
     def __repr__(self):
         return f"<Lecture(id={self.id}, title='{self.title}')>"
 
@@ -48,29 +48,44 @@ class ActionItem(Base):
     def __repr__(self):
         return f"<ActionItem(id={self.id}, type='{self.type}')>"
 
-class ChatSession(Base):
-    __tablename__ = "chat_sessions"
+
+class GeneralChatSession(Base):
+    __tablename__ = "general_chat_sessions"
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    title = Column(String(80), nullable=False)
+    title = Column(String(80), nullable=False, default="General Chat")
     created_at = Column(DateTime, default=func.now())
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
-    lecture_id = Column(String(36), ForeignKey("lectures.id"), nullable=True) 
-    user = relationship("User", back_populates="chat_sessions")
-    lecture = relationship("Lecture", back_populates="chat_sessions")
-    messages = relationship("Message", back_populates="chat_session", cascade="all, delete-orphan")
-    def __repr__(self):
-        return f"<ChatSession(id={self.id}, title='{self.title}')>"
+    user = relationship("User", back_populates="general_chat_sessions")
+    messages = relationship("GeneralMessage", back_populates="session", cascade="all, delete-orphan")
 
-class Message(Base):
-    __tablename__ = "messages"
+class GeneralMessage(Base):
+    __tablename__ = "general_messages"
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    chat_session_id = Column(String(36), ForeignKey("chat_sessions.id"), nullable=False)
+    session_id = Column(String(36), ForeignKey("general_chat_sessions.id"), nullable=False)
     role = Column(String(50), nullable=False) 
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
-    chat_session = relationship("ChatSession", back_populates="messages")
-    def __repr__(self):
-        return f"<Message(id={self.id}, role='{self.role}')>"
+    session = relationship("GeneralChatSession", back_populates="messages")
+
+class SocraticChatSession(Base):
+    __tablename__ = "socratic_chat_sessions"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    title = Column(String(80), nullable=False, default="Socratic Test")
+    created_at = Column(DateTime, default=func.now())
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
+    lecture_id = Column(String(36), ForeignKey("lectures.id"), nullable=False) 
+    user = relationship("User", back_populates="socratic_chat_sessions")
+    lecture = relationship("Lecture", back_populates="socratic_chat_sessions")
+    messages = relationship("SocraticMessage", back_populates="session", cascade="all, delete-orphan")
+
+class SocraticMessage(Base):
+    __tablename__ = "socratic_messages"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    session_id = Column(String(36), ForeignKey("socratic_chat_sessions.id"), nullable=False)
+    role = Column(String(50), nullable=False) 
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+    session = relationship("SocraticChatSession", back_populates="messages")
 
 class User(Base):
     __tablename__ = "users"
@@ -82,8 +97,9 @@ class User(Base):
     created_at = Column(DateTime, default=func.now())
     classes = relationship("Class", back_populates="user", cascade="all, delete-orphan")
     action_items = relationship("ActionItem", back_populates="user", cascade="all, delete-orphan")
-    chat_sessions = relationship("ChatSession", back_populates="user", cascade="all, delete-orphan")
     external_notes = relationship("ExternalNote", back_populates="user", cascade="all, delete-orphan")
+    general_chat_sessions = relationship("GeneralChatSession", back_populates="user", cascade="all, delete-orphan")
+    socratic_chat_sessions = relationship("SocraticChatSession", back_populates="user", cascade="all, delete-orphan")
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}')>"
     
@@ -106,11 +122,10 @@ class ExternalNote(Base):
     type = Column(String(50), nullable=False)
     created_at = Column(DateTime, default=func.now())
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
-    user = relationship("User", back_populates="external_notes")
     class_id = Column(String(36), ForeignKey("classes.id"), nullable=True)
     lecture_id = Column(String(36), ForeignKey("lectures.id"), nullable=True)
+    user = relationship("User", back_populates="external_notes")
     class_obj = relationship("Class", back_populates="external_notes")
     lecture = relationship("Lecture", back_populates="external_notes")
     def __repr__(self):
         return f"<ExternalNote(id={self.id}, title='{self.title}')>"
-    

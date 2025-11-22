@@ -187,16 +187,24 @@ def analyze_lecture(lecture_id):
 
         analysis = AIService.analyze_transcript(lecture.transcript)
         lecture.summary = analysis.get("summary", "")
+        existing_items = db.query(ActionItemModel).filter_by(lecture_id=lecture_id).all()
+        existing_content_set = {item.content.strip().lower() for item in existing_items}
         
-        db.query(ActionItemModel).filter_by(lecture_id=lecture_id).delete()
+        new_items_added = []
         
-        new_items = []
         for item in analysis.get("action_items", []):
+            clean_content = item['content'].strip().lower()
+            
+            if clean_content in existing_content_set:
+                continue
+
             due_date = None
             if item.get('due_date'):
-                try: due_date = date_parse(item['due_date']) 
-                except: due_date = None
-                    
+                try: 
+                    due_date = date_parse(item['due_date']) 
+                except: 
+                    due_date = None
+            
             ai_item = ActionItemModel(
                 type=item['type'], 
                 content=item['content'], 
@@ -205,14 +213,17 @@ def analyze_lecture(lecture_id):
                 user_id=current_user_id
             )
             db.add(ai_item)
-            new_items.append(ai_item)
+            new_items_added.append(ai_item)
             
         db.commit()
         db.refresh(lecture)
         
+        all_items = db.query(ActionItemModel).filter_by(lecture_id=lecture_id).order_by(ActionItemModel.created_at.desc()).all()
+        
         return jsonify({
             "lecture": LectureSchema.model_validate(lecture).model_dump(),
-            "action_items": [ActionItemSchema.model_validate(i).model_dump() for i in new_items]
+            "action_items": [ActionItemSchema.model_validate(i).model_dump() for i in all_items],
+            "new_items_count": len(new_items_added)
         })
     finally:
         db.close()
