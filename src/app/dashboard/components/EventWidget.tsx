@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
 import {
   motion,
   useMotionValue,
@@ -56,6 +57,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   classGroups = [],
   className,
 }) => {
+  const router = useRouter();
   const [expanded, setExpanded] = useState(true);
   const [width, setWidth] = useState<number>(360);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
@@ -240,14 +242,16 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   }, []);
 
   const handleAddToCalendar = async (event: EventItem) => {
-    setSelectedEventForCalendar(event);
     // Try to extract date from title
     const extractedDate = extractDateFromTitle(event.title);
-    setSelectedCalendarDate(extractedDate || new Date());
-    setEventFormTime("");
-    setEventFormLocation("");
-    setUseEventType(true);
-    setCalendarDialogOpen(true);
+    const dateToUse = extractedDate || new Date();
+    
+    // Navigate directly to calendar with the month/year
+    const month = dateToUse.getMonth() + 1;
+    const year = dateToUse.getFullYear();
+    router.push(`/calendar?month=${month}&year=${year}`);
+    
+    toast.success(`Moved to "${event.title}" position in calendar`);
   };
 
   const handleConfirmAddToCalendar = async () => {
@@ -280,10 +284,15 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
 
       setCalendarDialogOpen(false);
       setSelectedEventForCalendar(null);
-      setSelectedCalendarDate(undefined);
       setEventFormTime("");
       setEventFormLocation("");
       setUseEventType(false);
+      
+      // Navigate to calendar page with the month/year of the selected date
+      const month = selectedCalendarDate.getMonth() + 1;
+      const year = selectedCalendarDate.getFullYear();
+      router.push(`/calendar?month=${month}&year=${year}`);
+      setSelectedCalendarDate(undefined);
     } catch (error) {
       console.error("Error adding to calendar:", error);
       toast.error("Failed to add event to calendar");
@@ -456,7 +465,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                                 }}
                               >
                                 <CalendarIcon className="w-3 h-3 mr-1" />
-                                Add to Calendar
+                                Move to Calendar
                               </Button>
                             </div>
                           </div>
@@ -566,7 +575,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                           }}
                         >
                           <CalendarIcon className="w-3 h-3 mr-1" />
-                          Add to Calendar
+                          Move to Calendar
                         </Button>
                       </div>
                     </div>
@@ -605,7 +614,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
         createPortal(
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-card border border-border rounded-lg shadow-lg p-6 max-w-sm w-full max-h-[90vh] overflow-y-auto">
-              <h3 className="text-lg font-semibold mb-4">Add to Calendar</h3>
+              <h3 className="text-lg font-semibold mb-4">Move to Calendar</h3>
               {selectedEventForCalendar && (
                 <p className="text-sm text-muted-foreground mb-4">
                   Event: <strong>{selectedEventForCalendar.title}</strong>
@@ -671,7 +680,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                   onClick={handleConfirmAddToCalendar}
                   disabled={isAddingToCalendar || !selectedCalendarDate}
                 >
-                  {isAddingToCalendar ? "Adding..." : "Add to Calendar"}
+                  {isAddingToCalendar ? "Moving..." : "Move to Calendar"}
                 </Button>
               </div>
             </div>

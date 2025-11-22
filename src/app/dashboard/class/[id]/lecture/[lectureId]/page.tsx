@@ -302,6 +302,9 @@ export default function LectureDetailPage() {
           ...prev,
           actions: actionItems
         }));
+        
+        // Auto-add to calendar
+        await autoAddActionsToCalendar(actionItems);
       } else {
         console.warn('✗ No action items in response or not an array');
         console.log('  result.action_items:', result.action_items);
@@ -372,6 +375,9 @@ export default function LectureDetailPage() {
           ...prev,
           actions: actionItems
         }));
+        
+        // Auto-add to calendar
+        await autoAddActionsToCalendar(actionItems);
       } else {
         console.warn('✗ No action items in response or not an array');
         console.log('  result.action_items:', result.action_items);
@@ -384,6 +390,43 @@ export default function LectureDetailPage() {
       toast.error('Failed to extract action items');
     } finally {
       setIsExtracting(false);
+    }
+  };
+
+  const autoAddActionsToCalendar = async (actionItems: ActionItem[]) => {
+    // Extract dates from action item text and auto-add them to calendar
+    try {
+      for (const item of actionItems) {
+        // Parse date from action item text
+        const dateMatch = item.text.match(/(\w+\s+\d{1,2},?\s*\d{4}|\d{1,2}\/\d{1,2}\/\d{4})/);
+        if (dateMatch) {
+          const dateStr = dateMatch[1];
+          const parsedDate = new Date(dateStr);
+          
+          if (!isNaN(parsedDate.getTime())) {
+            // Add to calendar as event
+            try {
+              await fetch('/api/calendar/events', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${getAccessToken()}`
+                },
+                body: JSON.stringify({
+                  title: item.text,
+                  date: parsedDate.toISOString(),
+                  type: 'event'
+                })
+              });
+              console.log(`✓ Auto-added "${item.text}" to calendar`);
+            } catch (error) {
+              console.error(`Failed to auto-add "${item.text}" to calendar:`, error);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error in autoAddActionsToCalendar:', error);
     }
   };
 

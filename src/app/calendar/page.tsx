@@ -6,10 +6,11 @@ import Topbar from "../components/Topbar";
 import { ClassEvent, DeadlineEvent, CustomEvent } from "./types/schedule";
 import { toast } from "sonner";
 import { actionItemsAPI, ActionItem } from "../lib/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getAccessToken } from "../lib/auth";
 
 export default function CalendarPage() {
+  const searchParams = useSearchParams();
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [classes, setClasses] = useState<ClassEvent[]>([]);
   const [deadlines, setDeadlines] = useState<DeadlineEvent[]>([]);
@@ -20,11 +21,21 @@ export default function CalendarPage() {
 
   // Set initial date and load data
   useEffect(() => {
-    setDate(new Date());
+    // Check for month/year in query params
+    const month = searchParams.get('month');
+    const year = searchParams.get('year');
+    
+    if (month && year) {
+      const initialDate = new Date(parseInt(year), parseInt(month) - 1, 1);
+      setDate(initialDate);
+    } else {
+      setDate(new Date());
+    }
+    
     const token = getAccessToken();
     setCurrentToken(token);
     loadCalendarData();
-  }, []);
+  }, [searchParams]);
 
   // Monitor for account changes and reload data
   useEffect(() => {

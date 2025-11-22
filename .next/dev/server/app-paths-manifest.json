@@ -1,11 +1,10 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/auth-callback/page": "app/auth-callback/page.js",
   "/auth/login/page": "app/auth/login/page.js",
-  "/auth/register/page": "app/auth/register/page.js",
   "/calendar/page": "app/calendar/page.js",
   "/dashboard/class/[id]/lecture/[lectureId]/page": "app/dashboard/class/[id]/lecture/[lectureId]/page.js",
   "/dashboard/class/[id]/page": "app/dashboard/class/[id]/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/page": "app/page.js",
-  "/tutor/page": "app/tutor/page.js"
+  "/page": "app/page.js"
 }
