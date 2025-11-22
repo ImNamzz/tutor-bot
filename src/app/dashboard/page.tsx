@@ -4,7 +4,10 @@ import Topbar from "../components/Topbar";
 import EventWidget from "./components/EventWidget";
 import { AddClassModal } from "./components/AddClassModal";
 import { ClassCard } from "./components/ClassCard";
-import { ClassItem } from "@/app/lib/types/class";
+import ConfirmModal from "./components/ConfirmModal";
+import RenameModal from "./components/RenameModal";
+import { BackgroundUploadModal } from "./components/BackgroundUploadModal";
+import { ClassItem, generateId } from "@/app/lib/types/class";
 import { API_ENDPOINTS } from "@/app/lib/config";
 import { getAccessToken, handleAuthError } from "@/app/lib/auth";
 import { toast } from "sonner";
@@ -20,36 +23,6 @@ const STORAGE_KEY = "eduassist_classes";
 const COLORS_KEY = "eduassist_class_colors";
 
 export default function DashboardPage() {
-  // Mock events for the EventWidget
-  const MOCK_EVENTS = [
-    {
-      id: "evt-1",
-      title: "Meeting with AI Tutor",
-      description:
-        "Discuss progress on recent problem sets and clarify doubts about calculus.",
-      timestamp: new Date().toLocaleTimeString(),
-    },
-    {
-      id: "evt-2",
-      title: "Review Class Notes",
-      description:
-        "Go through week 3 lecture notes on thermodynamics and summarize key formulas.",
-      timestamp: new Date(Date.now() - 60 * 60 * 1000).toLocaleTimeString(),
-    },
-    {
-      id: "evt-3",
-      title: "Physics Assignment Deadline",
-      description: "Submit assignment on projectile motion before midnight.",
-      timestamp: new Date(Date.now() + 2 * 60 * 60 * 1000).toLocaleTimeString(),
-    },
-    {
-      id: "evt-4",
-      title: "Group Study Session",
-      description:
-        "Collaborative session on linear algebra problem set with peers.",
-      timestamp: new Date(Date.now() + 4 * 60 * 60 * 1000).toLocaleTimeString(),
-    },
-  ];
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -61,10 +34,33 @@ export default function DashboardPage() {
   const [actionItems, setActionItems] = useState<any[]>([]);
   const [classGroups, setClassGroups] = useState<any[]>([]);
 
+  const [backgroundModalOpen, setBackgroundModalOpen] = useState(false);
+  const [selectedClassForBackground, setSelectedClassForBackground] =
+    useState<ClassItem | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmData, setConfirmData] = useState<{
+    action: () => void;
+    message: string;
+    title?: string;
+    confirmLabel?: string;
+  } | null>(null);
+  const [openMenuId, setOpenMenuId] = useState<string>("");
+  // Rename modal state for classes
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [renameTarget, setRenameTarget] = useState<{
+    id: string;
+    current: string;
+  } | null>(null);
+
+  const openUploadBackgroundModal = (classItem: ClassItem) => {
+    setSelectedClassForBackground(classItem);
+    setBackgroundModalOpen(true);
+  };
+
   // Load colors from localStorage and then fetch classes
   useEffect(() => {
     setMounted(true);
-    
+
     // Load colors first
     try {
       const savedColors = localStorage.getItem(COLORS_KEY);
@@ -92,15 +88,15 @@ export default function DashboardPage() {
       buildClassGroups(actionItems, classes);
     } else if (classes.length > 0) {
       // Even if no action items, show the class structure
-      const emptyGroups = classes.map(cls => ({
+      const emptyGroups = classes.map((cls) => ({
         id: cls.id,
         name: cls.name,
-        color: classColors[cls.id] || '#8b5cf6',
-        lectures: cls.lectures.map(lec => ({
+        color: classColors[cls.id] || "#8b5cf6",
+        lectures: cls.lectures.map((lec) => ({
           id: lec.id,
           title: lec.title,
-          action_items: []
-        }))
+          action_items: [],
+        })),
       }));
       setClassGroups(emptyGroups);
     }
@@ -119,53 +115,61 @@ export default function DashboardPage() {
 
   const fetchActionItems = async () => {
     try {
-      console.log('📦 Fetching action items from:', API_ENDPOINTS.actionItems);
+      console.log("📦 Fetching action items from:", API_ENDPOINTS.actionItems);
       const response = await fetch(API_ENDPOINTS.actionItems, {
         headers: {
-          'Authorization': `Bearer ${getAccessToken()}`
-        }
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
       });
 
-      console.log('📦 Response status:', response.status);
+      console.log("📦 Response status:", response.status);
 
       if (response.ok) {
         const items = await response.json();
-        console.log('📦 Raw action items from API:', items);
-        
+        console.log("📦 Raw action items from API:", items);
+
         // Transform to flat list for backward compatibility
         const eventItems = items.map((item: any) => {
-          const createdAt = item.created_at ? new Date(item.created_at) : new Date();
-          const timeString = createdAt.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
+          const createdAt = item.created_at
+            ? new Date(item.created_at)
+            : new Date();
+          const timeString = createdAt.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
           });
 
-          const itemTitle = item.content || item.title || item.type || 'Untitled Action Item';
+          const itemTitle =
+            item.content || item.title || item.type || "Untitled Action Item";
 
           return {
             id: item.id,
             title: itemTitle,
-            description: item.lecture?.title ? `From lecture: ${item.lecture.title}` : 'Action Item',
+            description: item.lecture?.title
+              ? `From lecture: ${item.lecture.title}`
+              : "Action Item",
             timestamp: timeString,
             isSeen: item.completed || false,
             lectureId: item.lecture_id,
-            userId: item.user_id
+            userId: item.user_id,
           };
         });
 
         setActionItems(eventItems);
-        
+
         // Build hierarchical structure from classes and action items
         buildClassGroups(eventItems);
       } else {
-        console.error('✗ Failed to fetch action items, status:', response.status);
+        console.error(
+          "✗ Failed to fetch action items, status:",
+          response.status
+        );
         setActionItems([]);
         setClassGroups([]);
       }
     } catch (error) {
-      console.error('✗ Error fetching action items:', error);
+      console.error("✗ Error fetching action items:", error);
       setActionItems([]);
       setClassGroups([]);
     }
@@ -173,20 +177,24 @@ export default function DashboardPage() {
 
   const buildClassGroups = (items: any[], classesData?: ClassItem[]) => {
     const dataToUse = classesData || classes;
-    
-    console.log('🏗️ Building class groups with:', {
+
+    console.log("🏗️ Building class groups with:", {
       itemsCount: items.length,
       classesCount: dataToUse.length,
-      items: items.map(i => ({ id: i.id, lectureId: i.lectureId, title: i.title }))
+      items: items.map((i) => ({
+        id: i.id,
+        lectureId: i.lectureId,
+        title: i.title,
+      })),
     });
 
     // Build a map of lecture_id -> action items
     const itemsByLecture = new Map<string, any[]>();
-    items.forEach(item => {
+    items.forEach((item) => {
       // Try different possible field names for lecture_id
       const lectureId = item.lectureId || item.lecture_id;
       console.log(`  Item "${item.title}": lectureId=${lectureId}`);
-      
+
       if (lectureId) {
         if (!itemsByLecture.has(lectureId)) {
           itemsByLecture.set(lectureId, []);
@@ -196,30 +204,32 @@ export default function DashboardPage() {
           title: item.title,
           description: item.description,
           timestamp: item.timestamp,
-          isSeen: item.isSeen
+          isSeen: item.isSeen,
         });
       }
     });
 
-    console.log('📚 Items by lecture:', Object.fromEntries(itemsByLecture));
+    console.log("📚 Items by lecture:", Object.fromEntries(itemsByLecture));
 
     // Build class groups with lectures
-    const groups = dataToUse.map(cls => {
-      const lectures = cls.lectures.map(lec => ({
-        id: lec.id,
-        title: lec.title,
-        action_items: itemsByLecture.get(lec.id) || []
-      }));
+    const groups = dataToUse
+      .map((cls) => {
+        const lectures = cls.lectures.map((lec) => ({
+          id: lec.id,
+          title: lec.title,
+          action_items: itemsByLecture.get(lec.id) || [],
+        }));
 
-      return {
-        id: cls.id,
-        name: cls.name,
-        color: classColors[cls.id] || '#8b5cf6',
-        lectures
-      };
-    }).filter(cls => cls.lectures.some(l => l.action_items.length > 0));
+        return {
+          id: cls.id,
+          name: cls.name,
+          color: classColors[cls.id] || "#8b5cf6",
+          lectures,
+        };
+      })
+      .filter((cls) => cls.lectures.some((l) => l.action_items.length > 0));
 
-    console.log('🏗️ Built class groups:', groups);
+    console.log("🏗️ Built class groups:", groups);
     setClassGroups(groups);
   };
 
@@ -228,8 +238,8 @@ export default function DashboardPage() {
       setLoading(true);
       const response = await fetch(API_ENDPOINTS.classes, {
         headers: {
-          'Authorization': `Bearer ${getAccessToken()}`
-        }
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
       });
 
       if (!response.ok) {
@@ -237,30 +247,50 @@ export default function DashboardPage() {
           handleAuthError(401);
           return;
         }
-        throw new Error('Failed to fetch classes');
+        throw new Error("Failed to fetch classes");
       }
 
       const data = await response.json();
-      
-      // Transform backend data to match ClassItem interface
-      const transformedClasses = data.map((cls: any) => ({
-        id: cls.id,
-        name: cls.title,
-        code: cls.code || '',
-        color: colors[cls.id] || '#6366f1', // Use saved color or default
-        lectures: cls.lectures?.map((lec: any) => ({
-          id: lec.id,
-          title: lec.title,
-          createdAt: lec.created_at,
-          status: lec.status
-        })) || [],
-        createdAt: cls.created_at
-      }));
+      const storedRaw = localStorage.getItem(STORAGE_KEY);
+      const storedClasses: ClassItem[] = storedRaw ? JSON.parse(storedRaw) : [];
+      console.log("[Dashboard] Fetched backend classes count:", data.length);
+      console.log("[Dashboard] Stored classes found:", storedClasses.length);
 
-      setClasses(transformedClasses);
+      // Map stored by id for quick merge (retain bgImage & color)
+      const storedMap = new Map<string, ClassItem>();
+      storedClasses.forEach((c) => storedMap.set(c.id, c));
+
+      const merged: ClassItem[] = data.map((cls: any) => {
+        const existing = storedMap.get(cls.id);
+        return {
+          id: cls.id,
+          name: cls.title,
+          code: cls.code || existing?.code || "",
+          color: colors[cls.id] || existing?.color || "#6366f1",
+          bgImage: existing?.bgImage, // preserve previously stored background image
+          lectures:
+            cls.lectures?.map((lec: any) => ({
+              id: lec.id,
+              title: lec.title,
+              createdAt: lec.created_at,
+              status: lec.status,
+            })) ||
+            existing?.lectures ||
+            [],
+          createdAt:
+            cls.created_at || existing?.createdAt || new Date().toISOString(),
+        } as ClassItem;
+      });
+
+      setClasses(merged);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      } catch (e) {
+        console.error("[Dashboard] Failed to persist merged classes", e);
+      }
     } catch (error) {
-      console.error('Error fetching classes:', error);
-      toast.error('Failed to load classes');
+      console.error("Error fetching classes:", error);
+      toast.error("Failed to load classes");
     } finally {
       setLoading(false);
     }
@@ -269,14 +299,14 @@ export default function DashboardPage() {
   const handleAddClass = async (item: ClassItem) => {
     try {
       const response = await fetch(API_ENDPOINTS.classes, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAccessToken()}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAccessToken()}`,
         },
         body: JSON.stringify({
-          title: item.name
-        })
+          title: item.name,
+        }),
       });
 
       if (!response.ok) {
@@ -284,43 +314,124 @@ export default function DashboardPage() {
           handleAuthError(401);
           return;
         }
-        throw new Error('Failed to create class');
+        throw new Error("Failed to create class");
       }
 
       const newClass = await response.json();
-      
-      // Save the color choice to localStorage
-      saveColor(newClass.id, item.color || '#6366f1');
-      
-      // Transform and add to local state
+      console.log("[Dashboard] Created class response:", newClass);
+
+      // Use backend-provided id; preserve bgImage & color from item
       const transformedClass: ClassItem = {
         id: newClass.id,
         name: newClass.title,
-        code: item.code || '',
-        color: item.color || '#6366f1',
+        code: item.code || "",
+        color: item.color || "#6366f1",
+        bgImage: item.bgImage, // include base64 if user selected
         lectures: [],
-        createdAt: newClass.created_at
+        createdAt: newClass.created_at || new Date().toISOString(),
       };
 
-      setClasses([transformedClass, ...classes]);
-      toast.success('Class created successfully');
+      const updatedClasses = [transformedClass, ...classes];
+      setClasses(updatedClasses);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedClasses));
+      } catch (e) {
+        console.error("[Dashboard] Failed to persist classes with bgImage", e);
+      }
+      // Save color separately for quick access
+      saveColor(transformedClass.id, transformedClass.color || "#6366f1");
+      toast.success("Class created successfully");
     } catch (error) {
-      console.error('Error creating class:', error);
-      toast.error('Failed to create class');
+      console.error("Error creating class:", error);
+      toast.error("Failed to create class");
     }
+  };
+
+  // Function to handle background image upload
+  const handleUploadBackground = async (classId: string, imageFile: File) => {
+    try {
+      if (!imageFile) {
+        toast.error("No image file provided");
+        return;
+      }
+      const allowed = ["image/jpeg", "image/png", "image/webp"];
+      const maxSize = 5 * 1024 * 1024;
+      console.log("[Dashboard] Upload background start:", {
+        classId,
+        name: imageFile.name,
+        type: imageFile.type,
+        size: imageFile.size,
+      });
+      if (!allowed.includes(imageFile.type)) {
+        toast.error("Unsupported image type");
+        return;
+      }
+      if (imageFile.size > maxSize) {
+        toast.error("Image must be <= 5MB");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const bgImage = e.target?.result as string;
+        console.log(
+          "[Dashboard] Background file read length:",
+          bgImage?.length
+        );
+        const updatedClasses = classes.map((c) =>
+          c.id === classId ? { ...c, bgImage } : c
+        );
+        setClasses(updatedClasses);
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedClasses));
+        } catch (err) {
+          console.error("[Dashboard] Failed to persist bgImage", err);
+        }
+        setBackgroundModalOpen(false);
+        setSelectedClassForBackground(null);
+        toast.success("Background image updated successfully");
+      };
+      reader.onerror = (e) => {
+        console.error("[Dashboard] FileReader error", e);
+        toast.error("Failed to read image");
+      };
+      reader.readAsDataURL(imageFile);
+    } catch (error) {
+      console.error("Error uploading background image:", error);
+      toast.error("Failed to upload background image");
+    }
+  };
+
+  // Function delete background image
+  const performDeleteBackground = (classId: string) => {
+    const updatedClasses = classes.map((c) =>
+      c.id === classId ? { ...c, bgImage: undefined } : c
+    );
+    setClasses(updatedClasses);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedClasses));
+    toast.success("Background image removed");
+  };
+
+  const handleDeleteBackground = (classId: string) => {
+    setConfirmData({
+      action: () => performDeleteBackground(classId),
+      message: "Remove background image?",
+      title: "Confirm",
+      confirmLabel: "Remove",
+    });
+    setConfirmOpen(true);
   };
 
   const handleRenameClass = async (id: string, newName: string) => {
     try {
       const response = await fetch(API_ENDPOINTS.updateClass(id), {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAccessToken()}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAccessToken()}`,
         },
         body: JSON.stringify({
-          title: newName
-        })
+          title: newName,
+        }),
       });
 
       if (!response.ok) {
@@ -328,27 +439,27 @@ export default function DashboardPage() {
           handleAuthError(401);
           return;
         }
-        throw new Error('Failed to update class');
+        throw new Error("Failed to update class");
       }
 
       const next = classes.map((c) =>
         c.id === id ? { ...c, name: newName } : c
       );
       setClasses(next);
-      toast.success('Class renamed successfully');
+      toast.success("Class renamed successfully");
     } catch (error) {
-      console.error('Error renaming class:', error);
-      toast.error('Failed to rename class');
+      console.error("Error renaming class:", error);
+      toast.error("Failed to rename class");
     }
   };
 
-  const handleDeleteClass = async (id: string) => {
+  const performDeleteClass = async (id: string) => {
     try {
       const response = await fetch(API_ENDPOINTS.deleteClass(id), {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${getAccessToken()}`
-        }
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
       });
 
       if (!response.ok) {
@@ -356,16 +467,26 @@ export default function DashboardPage() {
           handleAuthError(401);
           return;
         }
-        throw new Error('Failed to delete class');
+        throw new Error("Failed to delete class");
       }
 
       const next = classes.filter((c) => c.id !== id);
       setClasses(next);
-      toast.success('Class deleted successfully');
+      toast.success("Class deleted successfully");
     } catch (error) {
-      console.error('Error deleting class:', error);
-      toast.error('Failed to delete class');
+      console.error("Error deleting class:", error);
+      toast.error("Failed to delete class");
     }
+  };
+
+  const handleDeleteClass = (id: string) => {
+    setConfirmData({
+      action: () => performDeleteClass(id),
+      message: "Delete this class and all its lectures?",
+      title: "Delete Class",
+      confirmLabel: "Delete",
+    });
+    setConfirmOpen(true);
   };
 
   // Derived helpers
@@ -512,17 +633,64 @@ export default function DashboardPage() {
                 <ClassCard
                   key={c.id}
                   item={c}
-                  onRename={handleRenameClass}
+                  onRename={(id, currentName) => {
+                    setRenameTarget({ id, current: currentName });
+                    setRenameOpen(true);
+                  }}
                   onDelete={handleDeleteClass}
+                  onUploadBackground={openUploadBackgroundModal}
+                  onDeleteBackground={handleDeleteBackground}
+                  isMenuOpen={openMenuId === c.id}
+                  onToggleMenu={(id) => {
+                    setOpenMenuId((prev) => (prev === id ? "" : id));
+                  }}
                 />
               ))}
             </div>
           </div>
         </div>
       </main>
-
+      <BackgroundUploadModal
+        isOpen={backgroundModalOpen}
+        onClose={() => setBackgroundModalOpen(false)}
+        onUpload={handleUploadBackground}
+        classItem={selectedClassForBackground}
+      />
       {/* EventWidget mounted at the root level to allow free dragging */}
       <EventWidget items={actionItems} classGroups={classGroups} />
+      <ConfirmModal
+        open={confirmOpen && !!confirmData}
+        title={confirmData?.title}
+        message={confirmData?.message || ""}
+        confirmLabel={confirmData?.confirmLabel}
+        cancelLabel="Cancel"
+        onCancel={() => {
+          setConfirmOpen(false);
+          setConfirmData(null);
+        }}
+        onConfirm={() => {
+          if (confirmData?.action) confirmData.action();
+          setConfirmOpen(false);
+          setConfirmData(null);
+        }}
+      />
+      <RenameModal
+        open={renameOpen && !!renameTarget}
+        title="Rename Class"
+        initialValue={renameTarget?.current || ""}
+        confirmLabel="Save"
+        onCancel={() => {
+          setRenameOpen(false);
+          setRenameTarget(null);
+        }}
+        onSubmit={(value) => {
+          if (renameTarget) {
+            handleRenameClass(renameTarget.id, value);
+          }
+          setRenameOpen(false);
+          setRenameTarget(null);
+        }}
+      />
     </div>
   );
 }

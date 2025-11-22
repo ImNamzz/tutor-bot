@@ -100,8 +100,41 @@ export const AddClassModal: React.FC<AddClassModalProps> = ({ onAdd }) => {
   const [recentColors, setRecentColors] = useState<string[]>([]);
 
   const onPickImage = (file: File) => {
+    if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "image/webp"];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    console.log("[AddClassModal] Selected file:", {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+    });
+    if (!allowed.includes(file.type)) {
+      console.error("[AddClassModal] Invalid file type", file.type);
+      // optional toast if available globally
+      try {
+        (window as any).toast?.error?.("Unsupported file type");
+      } catch {}
+      return;
+    }
+    if (file.size > maxSize) {
+      console.error("[AddClassModal] File too large", file.size);
+      try {
+        (window as any).toast?.error?.("Image must be <= 5MB");
+      } catch {}
+      return;
+    }
     const reader = new FileReader();
-    reader.onload = (e) => setBgImage(String(e.target?.result || ""));
+    reader.onload = (e) => {
+      const result = String(e.target?.result || "");
+      console.log("[AddClassModal] File read success. Length:", result.length);
+      setBgImage(result);
+    };
+    reader.onerror = (e) => {
+      console.error("[AddClassModal] Error reading file", e);
+      try {
+        (window as any).toast?.error?.("Failed to read image file");
+      } catch {}
+    };
     reader.readAsDataURL(file);
   };
 

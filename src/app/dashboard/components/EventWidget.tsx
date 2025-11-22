@@ -18,7 +18,13 @@ import {
 import { createPortal } from "react-dom";
 import { Button } from "@/app/components/ui/button";
 import { cn } from "@/app/components/ui/utils";
-import { X, ChevronsRight, Bell, Filter as FilterIcon, ChevronDown, Calendar as CalendarIcon } from "lucide-react";
+import {
+  X,
+  ChevronsRight,
+  Bell,
+  Filter as FilterIcon,
+  ChevronDown, Calendar as CalendarIcon,
+} from "lucide-react";
 import { actionItemsAPI } from "@/app/lib/api";
 import { toast } from "sonner";
 
@@ -58,14 +64,19 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   className,
 }) => {
   const router = useRouter();
-  const [expanded, setExpanded] = useState(true);
+  // Start collapsed by default so each dashboard visit shows the compact bell icon
+  const [expanded, setExpanded] = useState(false);
   const [width, setWidth] = useState<number>(360);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const [mounted, setMounted] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [filterDate, setFilterDate] = useState<string>("");
-  const [selectedLectureId, setSelectedLectureId] = useState<string | null>(null);
-  const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
+  const [selectedLectureId, setSelectedLectureId] = useState<string | null>(
+    null
+  );
+  const [expandedClasses, setExpandedClasses] = useState<Set<string>>(
+    new Set()
+  );
   const [calendarDialogOpen, setCalendarDialogOpen] = useState(false);
   const [selectedEventForCalendar, setSelectedEventForCalendar] = useState<EventItem | null>(null);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState<Date | undefined>(new Date());
@@ -138,6 +149,15 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
     setMounted(true);
   }, []);
 
+  // Position the widget below the top bar even when starting collapsed
+  useEffect(() => {
+    if (!expanded) {
+      animate(y, 96, { type: "spring", stiffness: 260, damping: 28 });
+    }
+    // run only on mount for initial positioning
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Resize refs
   const draggingResize = useRef(false);
   const startXRef = useRef(0);
@@ -153,9 +173,9 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   const unseenCount = useMemo(() => {
     if (classGroups.length > 0) {
       let count = 0;
-      classGroups.forEach(cls => {
-        cls.lectures.forEach(lec => {
-          lec.action_items?.forEach(item => {
+      classGroups.forEach((cls) => {
+        cls.lectures.forEach((lec) => {
+          lec.action_items?.forEach((item) => {
             if (!item.isSeen) count++;
           });
         });
@@ -441,7 +461,9 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                               >
                                 <div className="flex items-start justify-between gap-2">
                                   <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
-                                    {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                                    {ev.title && ev.title.length > 0
+                                    ? ev.title
+                                    : "Action Item"}
                                   </p>
                                   {ev.timestamp && (
                                     <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
@@ -498,11 +520,14 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                             {cls.name}
                           </span>
                           <span className="text-xs text-muted-foreground ml-2">
-                            {cls.lectures.reduce((acc, l) => acc + (l.action_items?.length || 0), 0)}
+                            {cls.lectures.reduce(
+                              (acc, l) => acc + (l.action_items?.length || 0),
+                              0
+                            )}
                           </span>
                           <ChevronDown
                             className={`w-4 h-4 transition-transform ml-1 ${
-                              expandedClasses.has(cls.id) ? '' : '-rotate-90'
+                              expandedClasses.has(cls.id) ? "" : "-rotate-90"
                             }`}
                           />
                         </button>
@@ -551,7 +576,9 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                         >
                           <div className="flex items-start justify-between gap-2">
                             <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
-                              {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                              {ev.title && ev.title.length > 0
+                              ? ev.title
+                              : "Action Item"}
                             </p>
                             {ev.timestamp && (
                               <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
