@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token
 from app import bcrypt, oauth
 from app.core.database import SessionLocal
 from app.models.models import User as UserModel
+from flask import url_for
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -40,7 +41,7 @@ def login():
 
 @auth_bp.route("/google/login", methods=["GET"])
 def google_login():
-    redirect_uri = 'http://localhost:8000/api/auth/google/callback'
+    redirect_uri = "http://223.130.141.245.nip.io/api/auth/google/callback"
     return oauth.google.authorize_redirect(redirect_uri)
 
 @auth_bp.route("/google/callback", methods=["GET"])
