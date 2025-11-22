@@ -266,7 +266,39 @@ export default function Home() {
   };
 
   const generateSessionName = async (content: string): Promise<string> => {
-    // Generate a simple title from the first few words of the content
+    try {
+      // Use AI to generate a concise, descriptive title
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          chat_session_id: null,
+          message: `Generate a very short, concise title (max 6 words) for a chat session where the user's first message is: "${content.substring(0, 200)}". Only respond with the title, nothing else.`
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        let title = data.response.trim();
+        
+        // Remove quotes if AI wrapped the title in them
+        title = title.replace(/^["']|["']$/g, '');
+        
+        // Limit length
+        if (title.length > 50) {
+          title = title.substring(0, 47) + "...";
+        }
+        
+        return title;
+      }
+    } catch (error) {
+      console.error('Error generating AI title:', error);
+    }
+
+    // Fallback to simple title generation
     const words = content.trim().split(/\s+/).slice(0, 5);
     let title = words.join(' ');
     

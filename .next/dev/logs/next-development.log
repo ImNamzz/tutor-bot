@@ -119,3 +119,41 @@
 [00:27:25.374] Server  LOG      ✓ Compiled in 516ms
 [00:27:47.368] Server  LOG      ✓ Compiled in 757ms
 [00:27:55.453] Server  LOG      ✓ Compiled in 572ms
+[00:29:40.484] Server  LOG      ✓ Compiled in 829ms
+[00:32:00.490] Server  LOG      ✓ Compiled in 517ms
+[00:33:08.958] Server  LOG      ✓ Compiled in 902ms
+[00:33:59.651] Server  LOG      ✓ Compiled in 702ms
+[00:36:43.235] Server  LOG      ✓ Compiled in 752ms
+[00:38:29.540] Server  LOG      ✓ Compiled in 1751ms
+[00:38:40.059] Server  LOG      ✓ Compiled in 1291ms
+[00:39:05.320] Browser LOG     Adding message: {"contentPreview":"Welcome back! Upload a new lecture transcript to s","id":"17637983717280.2742533936082202","role":"assistant"}
+[00:39:05.320] Browser LOG     Current message count: 0
+[00:39:05.320] Browser LOG     Current message count: 0
+[00:39:08.183] Browser LOG     Adding message: {"contentPreview":"Why","id":"17637983745810.4760004321068396","role":"user"}
+[00:39:08.183] Browser LOG     Current message count: 1
+[00:39:08.183] Browser LOG     Current message count: 1
+[00:39:12.177] Browser LOG     Adding message: {"contentPreview":"Could you clarify your question? It seems quite br","id":"17637983785490.03583777590811599","role":"assistant"}
+[00:39:12.177] Browser LOG     Current message count: 2
+[00:39:12.177] Browser LOG     Current message count: 2
+[00:40:24.834] Browser LOG     Adding message: {"contentPreview":"Welcome back! Upload a new lecture transcript to s","id":"17637984512290.5914634998686789","role":"assistant"}
+[00:40:24.834] Browser LOG     Current message count: 0
+[00:40:24.834] Browser LOG     Current message count: 0
+[00:40:27.824] Browser LOG     Adding message: {"contentPreview":"What is that","id":"17637984542220.6213574985050186","role":"user"}
+[00:40:27.824] Browser LOG     Current message count: 1
+[00:40:27.824] Browser LOG     Current message count: 1
+[00:40:28.412] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:40:33.260] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:40:34.433] Browser LOG     Adding message: {"contentPreview":"Hi! I'm your AI learning assistant. 👋\n\nTo get sta","id":"17637984608290.5751844605643214","role":"assistant"}
+[00:40:34.433] Browser LOG     Current message count: 0
+[00:40:34.433] Browser LOG     Current message count: 0
+[00:40:34.682] Browser ERROR   Error fetching user profile: {}
+[00:40:34.682] Browser ERROR   Error fetching user profile: {}
+[00:40:36.636] Browser LOG     Adding message: {"contentPreview":"What is that","id":"17637984630430.44280294317281865","role":"user"}
+[00:40:36.636] Browser LOG     Current message count: 1
+[00:40:36.636] Browser LOG     Current message count: 1
+[00:40:38.373] Browser LOG     Adding message: {"contentPreview":"Could you please clarify your question? Are you re","id":"17637984647700.8890087352381862","role":"assistant"}
+[00:40:38.373] Browser LOG     Current message count: 2
+[00:40:38.373] Browser LOG     Current message count: 2
+[00:43:00.910] Server  LOG      ✓ Compiled in 793ms
+[00:44:25.550] Server  LOG      ✓ Compiled in 875ms
+[00:45:22.135] Server  LOG      ✓ Compiled in 743ms
