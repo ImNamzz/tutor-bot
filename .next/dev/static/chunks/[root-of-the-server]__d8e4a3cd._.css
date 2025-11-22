@@ -5341,27 +5341,38 @@
       color: var(--accent-foreground);
     }
   }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .glass {
+    background-color: var(--card);
+    --tw-backdrop-blur: blur(var(--blur-sm));
+    -webkit-backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-brightness, ) var(--tw-backdrop-contrast, ) var(--tw-backdrop-grayscale, ) var(--tw-backdrop-hue-rotate, ) var(--tw-backdrop-invert, ) var(--tw-backdrop-opacity, ) var(--tw-backdrop-saturate, ) var(--tw-backdrop-sepia, );
+    backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-brightness, ) var(--tw-backdrop-contrast, ) var(--tw-backdrop-grayscale, ) var(--tw-backdrop-hue-rotate, ) var(--tw-backdrop-invert, ) var(--tw-backdrop-opacity, ) var(--tw-backdrop-saturate, ) var(--tw-backdrop-sepia, );
+  }
 }
 
 :root {
   --font-size: 16px;
-  --background: #fff;
-  --foreground: #0a0a0a;
-  --card: #fff;
-  --card-foreground: #0a0a0a;
+  --background: #fafbfc;
+  --foreground: #1e293b;
+  --card: #fffc;
+  --card-foreground: #1e293b;
   --popover: #fff;
   --popover-foreground: #0a0a0a;
-  --primary: #030213;
+  --primary: #7c3aed;
   --primary-foreground: #fff;
-  --secondary: #eceef2;
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
+  --secondary: #ede9fe;
+  --secondary-foreground: #4338ca;
+  --muted: #e2e8f0;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #334155;
   --destructive: #d4183d;
   --destructive-foreground: #fff;
-  --border: #0000001a;
+  --border: #e2e8f0cc;
   --input: transparent;
   --input-background: #f3f3f5;
   --switch-background: #cbced4;
@@ -5386,12 +5397,9 @@
 
 @supports (color: lab(0% 0 0)) {
   :root {
-    --foreground: lab(2.75381% 0 0);
-    --card-foreground: lab(2.75381% 0 0);
     --popover: lab(100% 0 0);
     --popover-foreground: lab(2.75381% 0 0);
     --primary-foreground: lab(100% 0 0);
-    --secondary: lab(94.1758% -.154376 -2.19269);
     --ring: lab(66.128% -.0000298023 .0000119209);
     --chart-1: lab(57.1026% 64.2584 89.8886);
     --chart-2: lab(55.0223% -41.0774 -3.90277);
@@ -5409,23 +5417,23 @@
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #0a0a0a;
-  --card-foreground: #fafafa;
+  --background: #0f1421;
+  --foreground: #f1f5f9;
+  --card: #1e293bf2;
+  --card-foreground: #f1f5f9;
   --popover: #0a0a0a;
   --popover-foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #171717;
-  --secondary: #262626;
-  --secondary-foreground: #fafafa;
-  --muted: #262626;
-  --muted-foreground: #a1a1a1;
-  --accent: #262626;
-  --accent-foreground: #fafafa;
+  --primary: #a78bfa;
+  --primary-foreground: #1e293b;
+  --secondary: #312e81;
+  --secondary-foreground: #f1f5f9;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
   --destructive: #82181a;
   --destructive-foreground: #fb2c36;
-  --border: #262626;
+  --border: #475569cc;
   --input: #262626;
   --ring: #525252;
   --font-weight-medium: 500;
@@ -5447,23 +5455,10 @@
 
 @supports (color: lab(0% 0 0)) {
   .dark {
-    --background: lab(2.75381% 0 0);
-    --foreground: lab(98.26% 0 0);
-    --card: lab(2.75381% 0 0);
-    --card-foreground: lab(98.26% 0 0);
     --popover: lab(2.75381% 0 0);
     --popover-foreground: lab(98.26% 0 0);
-    --primary: lab(98.26% 0 0);
-    --primary-foreground: lab(7.78201% -.0000149012 0);
-    --secondary: lab(15.204% 0 0);
-    --secondary-foreground: lab(98.26% 0 0);
-    --muted: lab(15.204% 0 0);
-    --muted-foreground: lab(66.128% -.0000298023 .0000119209);
-    --accent: lab(15.204% 0 0);
-    --accent-foreground: lab(98.26% 0 0);
     --destructive: lab(28.5139% 44.5539 29.0463);
     --destructive-foreground: lab(55.4814% 75.0732 48.8528);
-    --border: lab(15.204% 0 0);
     --input: lab(15.204% 0 0);
     --ring: lab(34.924% 0 0);
     --chart-1: lab(36.9089% 35.0961 -85.6872);
@@ -5484,6 +5479,25 @@
 
 html {
   font-size: var(--font-size);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #64748b59 padding-box padding-box;
+  border: 2px solid #0000;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b8c;
 }
 
 @property --tw-translate-x {

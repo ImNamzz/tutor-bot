@@ -8,6 +8,17 @@ import { toast } from "sonner";
 import { actionItemsAPI, ActionItem } from "../lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getAccessToken } from "../lib/auth";
+import { exportCalendarToIcs } from "../lib/icsExport";
+import { Button } from "@/app/components/ui/button";
+import { Download, X } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/app/components/ui/dialog";
 
 export default function CalendarPage() {
   const searchParams = useSearchParams();
@@ -17,6 +28,11 @@ export default function CalendarPage() {
   const [events, setEvents] = useState<CustomEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentToken, setCurrentToken] = useState<string | null>(null);
+  const [showExportDialog, setShowExportDialog] = useState(false);
+  const [exportStartMonth, setExportStartMonth] = useState(1);
+  const [exportStartYear, setExportStartYear] = useState(new Date().getFullYear());
+  const [exportEndMonth, setExportEndMonth] = useState(12);
+  const [exportEndYear, setExportEndYear] = useState(new Date().getFullYear());
   const router = useRouter();
 
   // Set initial date and load data
@@ -221,10 +237,224 @@ export default function CalendarPage() {
     });
   };
 
+  const filterEventsByDateRange = () => {
+    const startDate = new Date(exportStartYear, exportStartMonth - 1, 1);
+    const endDate = new Date(exportEndYear, exportEndMonth, 0, 23, 59, 59);
+
+    const filteredClasses = classes.filter((cls) => {
+      if (cls.type === "one-time" && cls.date) {
+        return cls.date >= startDate && cls.date <= endDate;
+      }
+      // Include all recurring events as they span multiple dates
+      return cls.type === "recurring";
+    });
+
+    const filteredDeadlines = deadlines.filter((dl) => {
+      return dl.dateTime >= startDate && dl.dateTime <= endDate;
+    });
+
+    const filteredEvents = events.filter((evt) => {
+      return evt.dateTime >= startDate && evt.dateTime <= endDate;
+    });
+
+    return { filteredClasses, filteredDeadlines, filteredEvents };
+  };
+
+  const handleExportCalendar = () => {
+    try {
+      const { filteredClasses, filteredDeadlines, filteredEvents } =
+        filterEventsByDateRange();
+
+      const startMonth = String(exportStartMonth).padStart(2, "0");
+      const endMonth = String(exportEndMonth).padStart(2, "0");
+      const fileName = `tutorbot-calendar-${exportStartYear}-${startMonth}-to-${exportEndYear}-${endMonth}.ics`;
+
+      exportCalendarToIcs(
+        filteredClasses,
+        filteredDeadlines,
+        filteredEvents,
+        fileName
+      );
+
+      toast.success("Calendar exported!", {
+        description: `Downloaded as ${fileName}`,
+      });
+
+      setShowExportDialog(false);
+    } catch (error) {
+      console.error("Error exporting calendar:", error);
+      toast.error("Failed to export calendar");
+    }
+  };
+
+  const handleOpenExportDialog = () => {
+    // Set default range to current year
+    const now = new Date();
+    setExportStartMonth(1);
+    setExportStartYear(now.getFullYear());
+    setExportEndMonth(12);
+    setExportEndYear(now.getFullYear());
+    setShowExportDialog(true);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-[#000000] dark:to-[#000000] transition-colors">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 dark:from-[#000000] dark:to-[#000000] transition-colors">
       <Topbar />
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Export Button */}
+        <div className="mb-4 flex justify-end">
+          <Button
+            onClick={handleOpenExportDialog}
+            className="gap-2"
+            variant="default"
+          >
+            <Download className="h-4 w-4" />
+            Export to ICS
+          </Button>
+        </div>
+
+        {/* Export Date Range Dialog */}
+        <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+          <DialogContent className="bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white max-w-md">
+            <DialogHeader>
+              <DialogTitle>Export Calendar</DialogTitle>
+              <DialogDescription className="text-gray-600 dark:text-gray-400">
+                Select the date range for export
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-6 py-4">
+              {/* Start Date */}
+              <div className="space-y-3">
+                <h3 className="font-semibold text-sm">From</h3>
+                <div className="flex gap-3">
+                  {/* Start Month */}
+                  <div className="flex-1">
+                    <label className="text-xs text-gray-600 dark:text-gray-400">
+                      Month
+                    </label>
+                    <select
+                      value={exportStartMonth}
+                      onChange={(e) => setExportStartMonth(Number(e.target.value))}
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {new Date(2024, i).toLocaleString("en-US", {
+                            month: "long",
+                          })}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Start Year */}
+                  <div className="flex-1">
+                    <label className="text-xs text-gray-600 dark:text-gray-400">
+                      Year
+                    </label>
+                    <select
+                      value={exportStartYear}
+                      onChange={(e) => setExportStartYear(Number(e.target.value))}
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      {Array.from({ length: 10 }, (_, i) => {
+                        const year = new Date().getFullYear() - 5 + i;
+                        return (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* End Date */}
+              <div className="space-y-3">
+                <h3 className="font-semibold text-sm">To</h3>
+                <div className="flex gap-3">
+                  {/* End Month */}
+                  <div className="flex-1">
+                    <label className="text-xs text-gray-600 dark:text-gray-400">
+                      Month
+                    </label>
+                    <select
+                      value={exportEndMonth}
+                      onChange={(e) => setExportEndMonth(Number(e.target.value))}
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {new Date(2024, i).toLocaleString("en-US", {
+                            month: "long",
+                          })}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* End Year */}
+                  <div className="flex-1">
+                    <label className="text-xs text-gray-600 dark:text-gray-400">
+                      Year
+                    </label>
+                    <select
+                      value={exportEndYear}
+                      onChange={(e) => setExportEndYear(Number(e.target.value))}
+                      className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      {Array.from({ length: 10 }, (_, i) => {
+                        const year = new Date().getFullYear() - 5 + i;
+                        return (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Date Range Summary */}
+              <div className="pt-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+                <p className="text-xs text-gray-700 dark:text-gray-300">
+                  Exporting events from{" "}
+                  <span className="font-semibold">
+                    {new Date(2024, exportStartMonth - 1).toLocaleString(
+                      "en-US",
+                      { month: "long" }
+                    )}{" "}
+                    {exportStartYear}
+                  </span>{" "}
+                  to{" "}
+                  <span className="font-semibold">
+                    {new Date(2024, exportEndMonth - 1).toLocaleString("en-US", {
+                      month: "long",
+                    })}{" "}
+                    {exportEndYear}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <DialogFooter className="gap-2 flex justify-end">
+              <Button
+                onClick={() => setShowExportDialog(false)}
+                variant="outline"
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleExportCalendar} variant="default">
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         <div className="rounded-xl border bg-card dark:bg-[#1a1a1a] text-card-foreground shadow-lg shadow-black/5 dark:shadow-black/20 overflow-hidden">
           <CalendarView
             date={date}
