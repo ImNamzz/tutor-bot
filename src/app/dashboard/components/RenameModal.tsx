@@ -61,13 +61,13 @@ const RenameModal: React.FC<RenameModalProps> = ({
       }}
     >
       <div
-        className="w-full max-w-md rounded-lg bg-white shadow-lg p-6"
+        className="w-full max-w-md rounded-lg bg-white dark:bg-[#1a1a1a] shadow-lg p-6"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{title}</h2>
         <form onSubmit={handleSubmit}>
           <label
-            className="block text-sm font-medium mb-1"
+            className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
             htmlFor="rename-input"
           >
             {label}
@@ -82,23 +82,23 @@ const RenameModal: React.FC<RenameModalProps> = ({
               setValue(e.target.value);
               if (error) setError(null);
             }}
-            className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-[#212121] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter new name"
           />
-          {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
+          {error && <p className="text-sm text-red-600 dark:text-red-400 mt-1">{error}</p>}
           <div className="flex justify-end gap-3 mt-6">
             <button
               type="button"
               onClick={onCancel}
               disabled={loading}
-              className="px-4 py-2 rounded-md border border-border text-sm hover:bg-muted transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
             >
               {cancelLabel}
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-500 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-md bg-blue-600 dark:bg-blue-600 text-white text-sm hover:bg-blue-500 dark:hover:bg-blue-700 transition-colors disabled:opacity-50"
             >
               {loading ? "Saving..." : confirmLabel}
             </button>

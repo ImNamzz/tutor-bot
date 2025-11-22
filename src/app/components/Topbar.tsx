@@ -34,6 +34,7 @@ export default function Topbar() {
   const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
   // Transcript button removed globally
   
   // Settings state
@@ -62,6 +63,31 @@ export default function Topbar() {
     // Check authentication
     const authenticated = isAuthenticated();
     setIsAuth(authenticated);
+
+    // Fetch username if authenticated
+    if (authenticated) {
+      const fetchUsername = async () => {
+        try {
+          const token = getAccessToken();
+          if (!token) return;
+
+          const response = await fetch(API_ENDPOINTS.getCurrentUser, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setUsername(data.username || null);
+          }
+        } catch (error) {
+          console.error("Error fetching username:", error);
+        }
+      };
+
+      fetchUsername();
+    }
 
     const savedTheme = localStorage.getItem("theme");
     const prefersDark =
@@ -598,15 +624,22 @@ export default function Topbar() {
             </Button>
 
             {isAuth ? (
-              <Button
-                onClick={handleLogout}
-                variant="ghost"
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline">Logout</span>
-              </Button>
+              <>
+                {username && (
+                  <span className="text-sm text-gray-700 dark:text-gray-300 px-3 py-2">
+                    {username}
+                  </span>
+                )}
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Logout</span>
+                </Button>
+              </>
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/auth/login">
