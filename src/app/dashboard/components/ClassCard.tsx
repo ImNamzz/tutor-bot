@@ -18,7 +18,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <Link href={`/dashboard/class/${item.id}`} className="group">
-      <div className="group relative rounded-xl shadow-sm border border-border/50 overflow-hidden bg-card hover:ring-2 ring-indigo-400 transition">
+      <div className="group relative rounded-xl shadow-sm border border-border/50 overflow-hidden bg-card dark:bg-[#0f0f0f] hover:ring-2 ring-indigo-400 transition">
         {item.bgImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -47,7 +47,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </button>
         {menuOpen && (
           <div
-            className="absolute top-10 right-2 z-10 w-36 rounded-md border bg-card shadow-md"
+            className="absolute top-10 right-2 z-10 w-36 rounded-md border bg-card dark:bg-[#0f0f0f] shadow-md"
             onClick={(e) => e.preventDefault()}
           >
             <button

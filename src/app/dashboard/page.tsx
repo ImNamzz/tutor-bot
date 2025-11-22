@@ -411,9 +411,9 @@ export default function DashboardPage() {
   }, [classes]);
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background transition-colors">
+    <div className="min-h-screen bg-background dark:bg-[#000000] transition-colors">
       {/* Fixed Topbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-[#000000]/80 backdrop-blur-sm border-b border-border dark:border-border">
         <Topbar />
       </nav>
       {/* Main content offset by topbar height */}
@@ -426,7 +426,7 @@ export default function DashboardPage() {
             </div>
             {/* Quick Stats Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
-              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-card dark:bg-[#0f0f0f] p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-secondary text-primary flex items-center justify-center dark:bg-indigo-950/40">
                     <CalendarDays className="h-5 w-5" />
@@ -439,7 +439,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-card dark:bg-[#0f0f0f] p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-red-100 dark:bg-red-950/40 flex items-center justify-center">
                     <AlarmClock className="h-5 w-5 text-red-600" />
@@ -454,7 +454,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="rounded-xl border border-border bg-card dark:bg-[#0f0f0f] p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-green-100 dark:bg-green-950/40 flex items-center justify-center">
                     <Activity className="h-5 w-5 text-green-600" />
@@ -479,13 +479,13 @@ export default function DashboardPage() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search classes..."
-                  className="w-full rounded-lg border border-border bg-background dark:bg-card pl-9 pr-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                  className="w-full rounded-lg border border-border bg-background dark:bg-[#0f0f0f] pl-9 pr-3 py-2 text-sm outline-none transition-all focus:ring-2 focus:ring-primary/30 focus:border-primary"
                 />
               </div>
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-gray-400" />
                 <select
-                  className="rounded-lg border border-border bg-background dark:bg-card px-2 py-2 text-sm"
+                  className="rounded-lg border border-border bg-background dark:bg-[#0f0f0f] px-2 py-2 text-sm"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
                 >

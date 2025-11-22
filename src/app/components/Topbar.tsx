@@ -257,7 +257,7 @@ export default function Topbar() {
   };
 
   return (
-    <nav className="bg-card dark:bg-card shadow-sm border-b border-border dark:border-border transition-colors">
+    <nav className="bg-card dark:bg-[#000000] shadow-sm border-b border-border dark:border-border transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
