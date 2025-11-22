@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -64,10 +64,16 @@ export default function LectureDetailPage() {
   const [isExtracting, setIsExtracting] = useState(false);
   const [lectureStatus, setLectureStatus] = useState<string>('COMPLETED');
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
+  const [savedSessions, setSavedSessions] = useState<any[]>([]);
 
   useEffect(() => {
     fetchLecture();
   }, [classId, lectureId]);
+
+  useEffect(() => {
+    // Load saved chat sessions for this lecture from localStorage
+    loadSavedSessions();
+  }, [lectureId]);
 
   const fetchLecture = async () => {
     if (!lectureId) return;
@@ -134,7 +140,7 @@ export default function LectureDetailPage() {
 
   const fetchActionItems = async () => {
     try {
-      const response = await fetch(`${API_ENDPOINTS.actionItems}?lecture_id=${lectureId}`, {
+      const response = await fetch(API_ENDPOINTS.actionItems, {
         headers: {
           'Authorization': `Bearer ${getAccessToken()}`
         }
@@ -142,11 +148,14 @@ export default function LectureDetailPage() {
 
       if (response.ok) {
         const items = await response.json();
-        const actionItems: ActionItem[] = items.map((item: any) => ({
+        // Filter items by lecture_id since backend returns all action items for the user
+        const filteredItems = items.filter((item: any) => item.lecture_id === lectureId);
+        const actionItems: ActionItem[] = filteredItems.map((item: any) => ({
           id: item.id,
           text: item.content,
           done: item.completed || false
         }));
+        console.log('Fetched action items for lecture:', lectureId, actionItems);
         setData(prev => ({
           ...prev,
           actions: actionItems
@@ -220,6 +229,7 @@ export default function LectureDetailPage() {
       }
 
       const result = await response.json();
+      console.log('Analyze response:', result);
       
       // Update summary from the returned lecture object
       if (result.lecture?.summary) {
@@ -229,20 +239,24 @@ export default function LectureDetailPage() {
         }));
       }
       
-      // Update action items
-      if (result.action_items) {
+      // Update action items from response
+      if (result.action_items && Array.isArray(result.action_items)) {
+        console.log('Processing action items:', result.action_items);
         const actionItems: ActionItem[] = result.action_items.map((item: any) => ({
           id: item.id,
           text: item.content,
           done: item.completed || false
         }));
+        console.log('Mapped action items:', actionItems);
         setData(prev => ({
           ...prev,
           actions: actionItems
         }));
+      } else {
+        console.warn('No action items in response or not an array');
       }
       
-      toast.success('Summary and action items generated successfully');
+      toast.success('Summary generated successfully');
     } catch (error) {
       console.error('Error generating summary:', error);
       toast.error('Failed to generate summary');
@@ -388,6 +402,32 @@ export default function LectureDetailPage() {
     }
   };
 
+  const loadSavedSessions = () => {
+    try {
+      const sessions: any[] = [];
+      // Iterate through localStorage to find chat sessions for this lecture
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith('chat_session_')) {
+          const sessionData = JSON.parse(localStorage.getItem(key) || '{}');
+          // Only include sessions for this lecture
+          if (sessionData.lectureId === lectureId) {
+            sessions.push(sessionData);
+          }
+        }
+      }
+      // Sort by timestamp (newest first)
+      sessions.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      setSavedSessions(sessions);
+    } catch (error) {
+      console.error('Error loading saved sessions:', error);
+    }
+  };
+
+  const resumeSession = (sessionId: string) => {
+    router.push(`/tutor?classId=${classId}&lectureId=${lectureId}&sessionId=${sessionId}`);
+  };
+
   if (!classId || !lectureId) return null;
 
   // --- Derived progress (placeholder): percent actions done ---
@@ -440,7 +480,6 @@ export default function LectureDetailPage() {
                     </Badge>
                   )}
                 </div>
-                <ProgressRing percent={progressPct} label={`${progressPct}%`} />
               </div>
             </div>
             <div className="flex gap-2 shrink-0">
@@ -454,19 +493,6 @@ export default function LectureDetailPage() {
                   {isCheckingStatus ? 'Checking...' : 'Check Status'}
                 </Button>
               )}
-              <Button
-                variant="outline"
-                onClick={resetAll}
-                className="border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 transition-transform hover:scale-[1.03]"
-              >
-                Reset
-              </Button>
-              <Button
-                onClick={rerunAll}
-                className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-sm transition-transform hover:scale-[1.04]"
-              >
-                Re-run
-              </Button>
             </div>
           </div>
         </div>
@@ -476,7 +502,7 @@ export default function LectureDetailPage() {
         <div className="grid grid-cols-12 gap-6">
           {/* Left column (span 8) */}
           <div className="col-span-12 lg:col-span-8 space-y-6">
-            {/* Summary */}
+            {/* Summary Only */}
             <Card className="p-6 space-y-4 bg-violet-50/30 dark:bg-violet-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-violet-200/60 dark:border-violet-800/60 border-l-4 border-violet-400 hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -484,7 +510,7 @@ export default function LectureDetailPage() {
                     📝
                   </span>
                   <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
-                    Summary
+                    Summarize and Extract Events
                   </h3>
                 </div>
                 <Button
@@ -493,134 +519,14 @@ export default function LectureDetailPage() {
                   disabled={isGenerating}
                   className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
                 >
-                  {isGenerating ? 'Generating...' : 'Generate'}
+                  {isGenerating ? 'Analyzing...' : 'Analyze'}
                 </Button>
               </div>
+
+              {/* Summary Section */}
               <p className="text-sm text-foreground dark:text-white leading-relaxed break-words">
                 {data.summary}
               </p>
-            </Card>
-
-            {/* Action Items */}
-            <Card className="p-6 space-y-4 bg-blue-50/30 dark:bg-blue-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-blue-200/60 dark:border-blue-800/60 border-l-4 border-blue-400 hover:shadow-md transition-all duration-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span aria-hidden className="text-lg">
-                    ✅
-                  </span>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
-                    Action Items
-                  </h3>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={extractActions}
-                  disabled={isExtracting}
-                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
-                >
-                  {isExtracting ? 'Extracting...' : 'Extract'}
-                </Button>
-              </div>
-              {/* Statistics */}
-              <div
-                className="text-xs text-slate-600 dark:text-slate-300 flex justify-between items-center px-1 mb-2"
-                aria-live="polite"
-              >
-                <span>
-                  Total: {data.actions.length} item
-                  {data.actions.length !== 1 && "s"}
-                </span>
-                <span>
-                  Completed: {completedCount}/{data.actions.length || 0}
-                </span>
-              </div>
-              {/* Scrollable Action Items List */}
-              <ScrollArea className="h-64 max-h-96 overflow-y-auto pr-2">
-                <div className="space-y-2">
-                  {data.actions.map((a) => (
-                    <div
-                      key={a.id}
-                      className="flex items-start justify-between gap-3 text-sm group rounded-lg px-3 py-2 hover:bg-slate-100/60 dark:hover:bg-slate-700/50 transition-all duration-200"
-                    >
-                      <label className="flex items-start gap-3 flex-1">
-                        <Checkbox
-                          checked={!!a.done}
-                          onCheckedChange={(v) => toggleAction(a.id, !!v)}
-                          className="mt-0.5 h-5 w-5 border-2 border-gray-400 dark:border-slate-500 data-[state=checked]:bg-violet-500 data-[state=checked]:border-violet-600 data-[state=checked]:text-white transition-colors duration-200 focus:ring-2 focus:ring-violet-300 focus:ring-offset-1"
-                        />
-                        {editingId === a.id ? (
-                          <Input
-                            value={editingText}
-                            onChange={(e) => setEditingText(e.target.value)}
-                            autoFocus
-                            className="text-sm"
-                          />
-                        ) : (
-                          <span
-                            className={`leading-relaxed break-words ${
-                              a.done
-                                ? "line-through text-slate-600 dark:text-slate-400"
-                                : ""
-                            }`}
-                          >
-                            {a.text}
-                          </span>
-                        )}
-                      </label>
-                      <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition">
-                        {editingId === a.id ? (
-                          <>
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={saveEditAction}
-                              aria-label="Save"
-                            >
-                              <Check className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={cancelEditAction}
-                              aria-label="Cancel"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </>
-                        ) : (
-                          <>
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={() => beginEditAction(a.id, a.text)}
-                              aria-label="Edit"
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={() => deleteAction(a.id)}
-                              aria-label="Delete"
-                            >
-                              <Trash2 className="h-4 w-4 text-red-500" />
-                            </Button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-              <div className="flex gap-2 pt-1">
-                <Input
-                  placeholder="Add action..."
-                  value={newActionText}
-                  onChange={(e) => setNewActionText(e.target.value)}
-                  className="text-sm"
-                />
-                <Button onClick={addAction}>Add</Button>
-              </div>
             </Card>
 
             {/* Socratic Chat */}
@@ -648,28 +554,40 @@ export default function LectureDetailPage() {
                   Copy Link
                 </Button>
               </div>
+
+              {/* Saved Sessions List */}
+              {savedSessions.length > 0 && (
+                <div className="pt-4 border-t border-emerald-200/40 dark:border-emerald-800/40">
+                  <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-600 mb-3">
+                    Previous Sessions ({savedSessions.length})
+                  </h4>
+                  <ScrollArea className="h-[220px] pr-4">
+                    <div className="space-y-2">
+                      {savedSessions.map((session) => (
+                        <button
+                          key={session.id}
+                          onClick={() => resumeSession(session.id)}
+                          className="w-full text-left p-3 rounded-md border border-emerald-200/50 dark:border-emerald-800/50 bg-white/40 dark:bg-emerald-950/20 hover:bg-emerald-100/40 dark:hover:bg-emerald-900/30 transition-colors"
+                        >
+                          <div className="text-sm font-medium text-foreground truncate">
+                            {session.title}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {session.messages?.length || 0} messages • {new Date(session.timestamp).toLocaleDateString()}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
             </Card>
           </div>
 
           {/* Right column (span 4) */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
-            {/* Audio Player Card */}
-            <Card className="p-6 space-y-4 bg-amber-50/30 dark:bg-amber-950/30 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-amber-200/60 dark:border-amber-800/60 border-l-4 border-amber-400 hover:shadow-md transition-all duration-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span aria-hidden className="text-lg">
-                    🎧
-                  </span>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600">
-                    Audio Player
-                  </h3>
-                </div>
-              </div>
-              <AudioPlayer transcript={transcriptDraft} />
-            </Card>
-
             {/* Transcript */}
-            <Card className="p-6 space-y-4 bg-background/30 dark:bg-background/30 border border-border shadow-[0_2px_8px_rgba(0,0,0,0.05)] border-l-4 border-muted hover:shadow-md transition-all duration-200 min-h-[548px] md:min-h-[648px]">
+            <Card className="p-6 space-y-4 bg-background/30 dark:bg-background/30 border border-border shadow-[0_2px_8px_rgba(0,0,0,0.05)] border-l-4 border-muted hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span aria-hidden className="text-lg">
@@ -702,7 +620,7 @@ export default function LectureDetailPage() {
                 </Dialog>
               </div>
               <Textarea
-                className="h-72 max-h-[420px] overflow-y-auto resize-y bg-background/50 dark:bg-card/40 border border-border rounded-md px-3 py-2 scrollbar-thin"
+                className="h-57 max-h-[420px] overflow-y-auto resize-y bg-background/50 dark:bg-card/40 border border-border rounded-md px-3 py-2 scrollbar-thin"
                 value={transcriptDraft}
                 onChange={(e) => setTranscriptDraft(e.target.value)}
               />
@@ -839,6 +757,16 @@ function PersonalNotes() {
   const [inputUrl, setInputUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notebookContent, setNotebookContent] = useState<string>("");
+  const [notebookId, setNotebookId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [savedNotes, setSavedNotes] = useState<any[]>([]);
+  const [isShowingSaved, setIsShowingSaved] = useState(false);
+  const [noteTitle, setNoteTitle] = useState("Notes");
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const params = useParams<{ id: string; lectureId: string }>();
+  const lectureId = params?.lectureId;
 
   // Mock backend for link metadata
   async function mockFetchMetadata(url: string): Promise<{
@@ -856,6 +784,181 @@ function PersonalNotes() {
     }
     return { title: "External Resource", source: "Website" };
   }
+
+  // Notebook functions
+  const loadNotebook = async () => {
+    if (!lectureId) return;
+    
+    try {
+      const response = await fetch(API_ENDPOINTS.getNotebook(lectureId), {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setNotebookId(data.id);
+        setNotebookContent(data.content || "");
+      } else {
+        toast.error('Failed to load notebook');
+      }
+    } catch (error) {
+      console.error('Error loading notebook:', error);
+      toast.error('Failed to load notebook');
+    }
+  };
+
+  const saveNotebook = async (content: string) => {
+    if (!notebookId) {
+      // Create new notebook first
+      try {
+        const response = await fetch(API_ENDPOINTS.getNotebook(lectureId!), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: JSON.stringify({ content })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setNotebookId(data.id);
+          setSaveStatus("saved");
+          setTimeout(() => setSaveStatus("idle"), 2000);
+        }
+      } catch (error) {
+        console.error('Error creating notebook:', error);
+        setSaveStatus("idle");
+      }
+      return;
+    }
+
+    try {
+      setSaveStatus("saving");
+      const response = await fetch(API_ENDPOINTS.updateNotebook(notebookId), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({ content })
+      });
+
+      if (response.ok) {
+        setSaveStatus("saved");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } else {
+        setSaveStatus("idle");
+        toast.error('Failed to save notebook');
+      }
+    } catch (error) {
+      console.error('Error saving notebook:', error);
+      setSaveStatus("idle");
+      toast.error('Failed to save notebook');
+    }
+  };
+
+  const debouncedSave = (content: string) => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      saveNotebook(content);
+    }, 1000);
+  };
+
+  const handleNotebookChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const content = e.target.value;
+    setNotebookContent(content);
+    debouncedSave(content);
+  };
+
+  // Load notebook on mount
+  useEffect(() => {
+    loadNotebook();
+    loadSavedNotes();
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [lectureId]);
+
+  const loadSavedNotes = () => {
+    try {
+      const notes: any[] = [];
+      // Iterate through localStorage to find saved notes for this lecture
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith('lecture_notes_')) {
+          const noteData = JSON.parse(localStorage.getItem(key) || '{}');
+          // Only include notes for this lecture
+          if (noteData.lectureId === lectureId) {
+            notes.push(noteData);
+          }
+        }
+      }
+      // Sort by timestamp (newest first)
+      notes.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      setSavedNotes(notes);
+    } catch (error) {
+      console.error('Error loading saved notes:', error);
+    }
+  };
+
+  const saveCurrentNotes = () => {
+    if (!notebookContent.trim()) {
+      toast.error('Cannot save empty notes');
+      return;
+    }
+
+    try {
+      const timestamp = new Date().toLocaleString();
+      const title = noteTitle || `Notes - ${timestamp}`;
+      const noteKey = `lecture_notes_${Date.now()}`;
+      
+      localStorage.setItem(noteKey, JSON.stringify({
+        id: noteKey,
+        title,
+        lectureId,
+        content: notebookContent,
+        timestamp: new Date().toISOString()
+      }));
+
+      toast.success(`Notes saved as "${title}"`);
+      
+      // Refresh saved notes list
+      loadSavedNotes();
+      
+      // Reset current notes
+      setNotebookContent("");
+      setNoteTitle("Notes");
+      setNotebookId(null);
+    } catch (error) {
+      console.error('Error saving notes:', error);
+      toast.error('Failed to save notes');
+    }
+  };
+
+  const resumeNote = (noteData: any) => {
+    setNotebookContent(noteData.content);
+    setNoteTitle(noteData.title);
+    setIsShowingSaved(false);
+  };
+
+  const deleteNote = (noteKey: string) => {
+    try {
+      localStorage.removeItem(noteKey);
+      loadSavedNotes();
+      toast.success('Note deleted');
+    } catch (error) {
+      console.error('Error deleting note:', error);
+      toast.error('Failed to delete note');
+    }
+  };
 
   const onAddResource = async () => {
     setError(null);
@@ -930,11 +1033,81 @@ function PersonalNotes() {
       )}
 
       <Textarea
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        placeholder="Write your personal notes or markdown here..."
+        value={notebookContent}
+        onChange={handleNotebookChange}
+        placeholder="Write your lecture notes or markdown here... (auto-saves)"
         className="min-h-[220px]"
       />
+
+      {/* Note title and save section */}
+      <div className="space-y-2">
+        <div className="flex gap-2">
+          <Input
+            type="text"
+            value={noteTitle}
+            onChange={(e) => setNoteTitle(e.target.value)}
+            placeholder="Note title (optional)..."
+            className="flex-1"
+          />
+          <Button
+            size="sm"
+            onClick={saveCurrentNotes}
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white"
+          >
+            💾 Save Note
+          </Button>
+        </div>
+      </div>
+
+      {/* Saved notes section */}
+      {savedNotes.length > 0 && (
+        <div className="pt-4 border-t space-y-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsShowingSaved(!isShowingSaved)}
+            className="w-full justify-between"
+          >
+            <span>📋 Saved Notes ({savedNotes.length})</span>
+            <span>{isShowingSaved ? "▼" : "▶"}</span>
+          </Button>
+          
+          {isShowingSaved && (
+            <ScrollArea className="h-[180px] border rounded-md p-2">
+              <div className="space-y-2">
+                {savedNotes.map((note) => (
+                  <div
+                    key={note.id}
+                    className="p-3 rounded-md border border-blue-200/50 dark:border-blue-800/50 bg-blue-50/40 dark:bg-blue-950/20 hover:bg-blue-100/40 dark:hover:bg-blue-900/30 transition-colors cursor-pointer group"
+                    onClick={() => resumeNote(note)}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-foreground truncate">
+                          {note.title}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {note.content.length} chars • {new Date(note.timestamp).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteNote(note.id);
+                        }}
+                        className="text-xs text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label="Delete note"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          )}
+        </div>
+      )}
 
       {/* Footer toolbar */}
       <div className="flex justify-between items-center gap-2">
@@ -950,13 +1123,23 @@ function PersonalNotes() {
             </span>
             Add Resource
           </Button>
+          {/* Save status indicator */}
+          <div className="text-xs text-muted-foreground">
+            {saveStatus === "saving" && "Saving..."}
+            {saveStatus === "saved" && "✓ Saved"}
+          </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setNotes("")}>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => {
+              setNotebookContent("");
+              setNoteTitle("Notes");
+              setNotebookId(null);
+            }}
+          >
             Clear
-          </Button>
-          <Button size="sm" disabled>
-            Save (placeholder)
           </Button>
         </div>
       </div>

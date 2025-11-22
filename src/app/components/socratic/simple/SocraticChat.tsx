@@ -10,24 +10,20 @@ export type ChatMessage =
 
 interface Props {
   messages: ChatMessage[];
-  confidence: number;
-  onConfidence: (v: number) => void;
   input: string;
   onInput: (v: string) => void;
   onSubmit: () => void;
-  onHint: () => void;
-  onNote: () => void;
+  onSaveSession?: () => void;
+  onReturn?: () => void;
 }
 
 export const SocraticChat: React.FC<Props> = ({
   messages,
-  confidence,
-  onConfidence,
   input,
   onInput,
   onSubmit,
-  onHint,
-  onNote,
+  onSaveSession,
+  onReturn,
 }) => {
   return (
     <div className="flex flex-col h-full">
@@ -59,7 +55,6 @@ export const SocraticChat: React.FC<Props> = ({
         ))}
       </div>
       <div className="border-t p-4 space-y-3">
-        <ConfidenceSlider value={confidence} onChange={onConfidence} />
         <Textarea
           placeholder="Share your thinking process..."
           value={input}
@@ -67,12 +62,16 @@ export const SocraticChat: React.FC<Props> = ({
         />
         <div className="flex gap-2">
           <Button onClick={onSubmit}>Submit Answer</Button>
-          <Button variant="outline" onClick={onHint}>
-            💡 Get Hint
-          </Button>
-          <Button variant="outline" onClick={onNote}>
-            📝 Add Note
-          </Button>
+          {onSaveSession && (
+            <Button variant="outline" onClick={onSaveSession}>
+              💾 Save Session
+            </Button>
+          )}
+          {onReturn && (
+            <Button variant="outline" onClick={onReturn}>
+              ← Return to Lecture
+            </Button>
+          )}
         </div>
       </div>
     </div>

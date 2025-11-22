@@ -1,34 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Topbar from "@/app/components/Topbar";
-import { FloatingScratchpad } from "@/app/components/socratic/FloatingScratchpad";
-import { SessionOverview } from "@/app/components/socratic/simple/SessionOverview";
-import { LearningDashboard } from "@/app/components/socratic/simple/LearningDashboard";
-import {
-  SocraticChat,
-  type ChatMessage,
-} from "@/app/components/socratic/simple/SocraticChat";
+import { SocraticChat, type ChatMessage } from "@/app/components/socratic/simple/SocraticChat";
 import { API_ENDPOINTS } from "@/app/lib/config";
 import { getAccessToken, handleAuthError } from "@/app/lib/auth";
 import { toast } from "sonner";
 
 export default function TutorPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const lectureId = searchParams?.get('lectureId');
+  const classId = searchParams?.get('classId');
   
   // Must-have state
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [confidence, setConfidence] = useState(0.7);
   const [sessionProgress, setSessionProgress] = useState({
     currentQuestion: 1,
     totalQuestions: 12,
   });
-  const [scratchpad, setScratchpad] = useState("");
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [lectureTranscript, setLectureTranscript] = useState<string>("");
+  const [sessionTitle, setSessionTitle] = useState<string>("Chat Session");
 
   // Fetch lecture transcript if lectureId is provided
   useEffect(() => {
@@ -155,7 +150,7 @@ export default function TutorPage() {
     if (!input.trim() || isLoading) return;
     
     const text = input.trim();
-    setMessages((m) => [...m, { type: "user", content: text, confidence }]);
+    setMessages((m) => [...m, { type: "user", content: text }]);
     setInput("");
     setSessionProgress((p) => ({
       ...p,
@@ -208,97 +203,65 @@ export default function TutorPage() {
     }
   };
 
-  const requestHint = async () => {
-    if (isLoading) return;
-    
-    try {
-      setIsLoading(true);
-      const response = await fetch(API_ENDPOINTS.chat, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAccessToken()}`
-        },
-        body: JSON.stringify({
-          message: "Can you provide a hint to help me answer the previous question?",
-          session_id: currentSessionId
-        })
-      });
+  const saveSession = async () => {
+    // Check if there are any user messages (conversations to save)
+    const userMessages = messages.filter(m => m.type === 'user');
+    if (!userMessages.length) {
+      toast.error('Nothing to save');
+      return;
+    }
 
-      if (response.ok) {
-        const data = await response.json();
-        
-        if (data.session_id) {
-          setCurrentSessionId(data.session_id);
-        }
-        
-        setMessages((m) => [
-          ...m,
-          {
-            type: "ai",
-            content: data.response || "Think about enzymatic specificity and binding domains.",
-            questionType: "clarification",
-          },
-        ]);
-      } else {
-        // Fallback hint
-        setMessages((m) => [
-          ...m,
-          {
-            type: "ai",
-            content: "Think about enzymatic specificity and binding domains.",
-            questionType: "clarification",
-          },
-        ]);
-      }
+    try {
+      // Use current session ID or generate a new one
+      const sessionId = currentSessionId || `session_${Date.now()}`;
+      
+      // Update session title in localStorage with timestamp
+      const timestamp = new Date().toLocaleString();
+      const updatedTitle = `${sessionTitle || 'Chat Session'} - ${timestamp}`;
+      
+      // Store session locally for quick access
+      const sessionKey = `chat_session_${sessionId}`;
+      localStorage.setItem(sessionKey, JSON.stringify({
+        id: sessionId,
+        title: updatedTitle,
+        lectureId,
+        classId,
+        messages,
+        timestamp: new Date().toISOString()
+      }));
+
+      toast.success('Session saved successfully');
     } catch (error) {
-      console.error('Error requesting hint:', error);
-      // Fallback hint
-      setMessages((m) => [
-        ...m,
-        {
-          type: "ai",
-          content: "Think about enzymatic specificity and binding domains.",
-          questionType: "clarification",
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
+      console.error('Error saving session:', error);
+      toast.error('Failed to save session');
     }
   };
 
-  const addNote = () =>
-    setScratchpad(
-      (s) => s + (s ? "\n" : "") + `Note ${new Date().toLocaleTimeString()}: `
-    );
+  const returnToLecture = () => {
+    if (classId && lectureId) {
+      router.push(`/dashboard/class/${classId}/lecture/${lectureId}`);
+    } else if (classId) {
+      router.push(`/dashboard/class/${classId}`);
+    } else {
+      router.push('/dashboard');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Topbar />
-      <div className="flex h-[calc(100vh-4rem)] bg-background">
-        {/* Left: Session Overview (25%) */}
-        <div className="w-1/4 border-r border-border overflow-auto">
-          <SessionOverview />
-        </div>
-        {/* Center: Learning Dashboard (35%) */}
-        <div className="w-2/5 border-r border-border overflow-auto">
-          <LearningDashboard />
-        </div>
-        {/* Right: Socratic Dialogue (40%) */}
-        <div className="w-2/5 overflow-hidden">
+      <div className="flex items-center justify-center p-4 h-[calc(100vh-4rem)]">
+        <div className="w-full max-w-2xl h-full">
           <SocraticChat
             messages={messages}
-            confidence={confidence}
-            onConfidence={setConfidence}
             input={input}
             onInput={setInput}
             onSubmit={submitAnswer}
-            onHint={requestHint}
-            onNote={addNote}
+            onSaveSession={saveSession}
+            onReturn={returnToLecture}
           />
         </div>
       </div>
-      <FloatingScratchpad notes={scratchpad} onChange={setScratchpad} />
     </div>
   );
 }

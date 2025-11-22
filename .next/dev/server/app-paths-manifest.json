@@ -6,5 +6,6 @@
   "/dashboard/class/[id]/lecture/[lectureId]/page": "app/dashboard/class/[id]/lecture/[lectureId]/page.js",
   "/dashboard/class/[id]/page": "app/dashboard/class/[id]/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/tutor/page": "app/tutor/page.js"
 }
