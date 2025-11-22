@@ -14,6 +14,8 @@ export type DeadlineEvent = {
   name: string;
   dateTime: Date; // Date and time of deadline
   priority: "urgent" | "normal" | "early"; // Priority level
+  actionItemId?: string; // Reference to backend ActionItem ID
+  type?: string; // Action item type from backend
 };
 
 export type ScheduleState = {

@@ -262,6 +262,10 @@ export default function AddEventDialog({
                   onChange={(e) => setDeadlineName(e.target.value)}
                   required
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Note: Deadlines are managed through action items from lectures.
+                  New deadlines should be created by analyzing lecture content.
+                </p>
               </div>
 
               <div className="space-y-1.5">
