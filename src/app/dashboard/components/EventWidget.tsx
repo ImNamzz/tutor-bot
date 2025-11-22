@@ -17,7 +17,7 @@ import {
 import { createPortal } from "react-dom";
 import { Button } from "@/app/components/ui/button";
 import { cn } from "@/app/components/ui/utils";
-import { X, ChevronsRight, Bell, Filter as FilterIcon } from "lucide-react";
+import { X, ChevronsRight, Bell, Filter as FilterIcon, ChevronDown } from "lucide-react";
 
 export interface EventItem {
   id: string;
@@ -27,8 +27,22 @@ export interface EventItem {
   isSeen?: boolean;
 }
 
+export interface Lecture {
+  id: string;
+  title: string;
+  action_items?: EventItem[];
+}
+
+export interface ClassGroup {
+  id: string;
+  name: string;
+  color: string;
+  lectures: Lecture[];
+}
+
 export interface EventWidgetProps {
   items?: EventItem[];
+  classGroups?: ClassGroup[];
   className?: string;
 }
 
@@ -37,6 +51,7 @@ const MAX_WIDTH = 500;
 
 export const EventWidget: React.FC<EventWidgetProps> = ({
   items = [],
+  classGroups = [],
   className,
 }) => {
   const [expanded, setExpanded] = useState(true);
@@ -45,6 +60,8 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   const [mounted, setMounted] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [filterDate, setFilterDate] = useState<string>("");
+  const [selectedLectureId, setSelectedLectureId] = useState<string | null>(null);
+  const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setMounted(true);
@@ -62,14 +79,24 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
   const y = useMotionValue(0);
   const dragControls = useDragControls();
 
-  const unseenCount = useMemo(
-    () => items.reduce((acc, ev) => acc + (!ev.isSeen ? 1 : 0), 0),
-    [items]
-  );
+  const unseenCount = useMemo(() => {
+    if (classGroups.length > 0) {
+      let count = 0;
+      classGroups.forEach(cls => {
+        cls.lectures.forEach(lec => {
+          lec.action_items?.forEach(item => {
+            if (!item.isSeen) count++;
+          });
+        });
+      });
+      return count;
+    }
+    return items.reduce((acc, ev) => acc + (!ev.isSeen ? 1 : 0), 0);
+  }, [items, classGroups]);
 
   const filteredItems = useMemo(() => {
     if (!filterDate) return items;
-    const matchDate = filterDate; // yyyy-mm-dd
+    const matchDate = filterDate;
     return items.filter((ev) => {
       if (!ev.timestamp) return false;
       const d = new Date(ev.timestamp);
@@ -78,6 +105,18 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
       return iso === matchDate;
     });
   }, [items, filterDate]);
+
+  const getSelectedLectureItems = () => {
+    if (!selectedLectureId || classGroups.length === 0) return [];
+    for (const cls of classGroups) {
+      for (const lec of cls.lectures) {
+        if (lec.id === selectedLectureId) {
+          return lec.action_items || [];
+        }
+      }
+    }
+    return [];
+  };
 
   // Snap logic: return to right edge (x=0) on drag end
   const handleDragEnd = useCallback(() => {
@@ -238,38 +277,148 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
 
             {/* Content List */}
             <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-background dark:bg-card/40">
-              {items.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <p className="text-xs text-gray-400">
-                    No items captured yet.
-                  </p>
-                </div>
-              )}
-              {filteredItems.map((ev) => (
-                <div
-                  key={ev.id}
-                  onClick={() => setSelectedEvent(ev)}
-                  className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
-                >
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
-                        {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
-                      </p>
-                      {ev.timestamp && (
-                        <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
-                          {ev.timestamp}
-                        </span>
+              {/* Show hierarchical view if classGroups provided */}
+              {classGroups.length > 0 ? (
+                <>
+                  {selectedLectureId ? (
+                    // Show action items for selected lecture
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full mb-2 text-left text-xs"
+                        onClick={() => setSelectedLectureId(null)}
+                      >
+                        ← Back to Classes
+                      </Button>
+                      {getSelectedLectureItems().length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-8 text-center">
+                          <p className="text-xs text-muted-foreground">
+                            No action items for this lecture.
+                          </p>
+                        </div>
+                      ) : (
+                        getSelectedLectureItems().map((ev) => (
+                          <div
+                            key={ev.id}
+                            onClick={() => setSelectedEvent(ev)}
+                            className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
+                          >
+                            <div className="flex flex-col gap-1">
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
+                                  {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                                </p>
+                                {ev.timestamp && (
+                                  <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
+                                    {ev.timestamp}
+                                  </span>
+                                )}
+                              </div>
+                              {ev.description && (
+                                <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
+                                  {ev.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))
                       )}
-                    </div>
-                    {ev.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
-                        {ev.description}
+                    </>
+                  ) : (
+                    // Show classes and lectures
+                    classGroups.map((cls) => (
+                      <div key={cls.id} className="space-y-1">
+                        <button
+                          onClick={() =>
+                            setExpandedClasses((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(cls.id)) {
+                                next.delete(cls.id);
+                              } else {
+                                next.add(cls.id);
+                              }
+                              return next;
+                            })
+                          }
+                          className="w-full text-left px-2.5 py-2 rounded-lg border border-border bg-card hover:bg-card/80 transition-all flex items-center justify-between"
+                        >
+                          <span
+                            className="w-2 h-2 rounded-full mr-2 flex-shrink-0"
+                            style={{ backgroundColor: cls.color }}
+                          />
+                          <span className="text-sm font-semibold text-foreground flex-1 truncate">
+                            {cls.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground ml-2">
+                            {cls.lectures.reduce((acc, l) => acc + (l.action_items?.length || 0), 0)}
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform ml-1 ${
+                              expandedClasses.has(cls.id) ? '' : '-rotate-90'
+                            }`}
+                          />
+                        </button>
+
+                        {expandedClasses.has(cls.id) && (
+                          <div className="ml-3 space-y-1 border-l border-border/50 pl-2">
+                            {cls.lectures.map((lec) => (
+                              <button
+                                key={lec.id}
+                                onClick={() => setSelectedLectureId(lec.id)}
+                                className="w-full text-left px-2 py-1.5 rounded text-xs bg-card/50 hover:bg-card border border-border/30 hover:border-border transition-all flex items-center justify-between"
+                              >
+                                <span className="text-foreground/80 truncate flex-1">
+                                  {lec.title}
+                                </span>
+                                <span className="text-[11px] text-muted-foreground ml-1 flex-shrink-0">
+                                  {lec.action_items?.length || 0}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </>
+              ) : (
+                // Show flat list if classGroups not provided
+                <>
+                  {items.length === 0 && (
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                      <p className="text-xs text-gray-400">
+                        No items captured yet.
                       </p>
-                    )}
-                  </div>
-                </div>
-              ))}
+                    </div>
+                  )}
+                  {filteredItems.map((ev) => (
+                    <div
+                      key={ev.id}
+                      onClick={() => setSelectedEvent(ev)}
+                      className="rounded-lg border border-border bg-card p-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all cursor-pointer"
+                    >
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-sm font-semibold text-foreground dark:text-white flex-1 whitespace-normal">
+                            {ev.title && ev.title.length > 0 ? ev.title : 'Action Item'}
+                          </p>
+                          {ev.timestamp && (
+                            <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
+                              {ev.timestamp}
+                            </span>
+                          )}
+                        </div>
+                        {ev.description && (
+                          <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">
+                            {ev.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </>
         ) : (

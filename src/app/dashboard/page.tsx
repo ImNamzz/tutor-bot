@@ -59,6 +59,7 @@ export default function DashboardPage() {
   >("all");
   const [classColors, setClassColors] = useState<Record<string, string>>({});
   const [actionItems, setActionItems] = useState<any[]>([]);
+  const [classGroups, setClassGroups] = useState<any[]>([]);
 
   // Load colors from localStorage and then fetch classes
   useEffect(() => {
@@ -85,6 +86,26 @@ export default function DashboardPage() {
     fetchActionItems();
   }, []);
 
+  // Rebuild class groups when either classes or actionItems change
+  useEffect(() => {
+    if (classes.length > 0 && actionItems.length > 0) {
+      buildClassGroups(actionItems, classes);
+    } else if (classes.length > 0) {
+      // Even if no action items, show the class structure
+      const emptyGroups = classes.map(cls => ({
+        id: cls.id,
+        name: cls.name,
+        color: classColors[cls.id] || '#8b5cf6',
+        lectures: cls.lectures.map(lec => ({
+          id: lec.id,
+          title: lec.title,
+          action_items: []
+        }))
+      }));
+      setClassGroups(emptyGroups);
+    }
+  }, [classes, actionItems]);
+
   // Save colors to localStorage whenever they change
   const saveColor = (classId: string, color: string) => {
     const newColors = { ...classColors, [classId]: color };
@@ -110,25 +131,9 @@ export default function DashboardPage() {
       if (response.ok) {
         const items = await response.json();
         console.log('📦 Raw action items from API:', items);
-        console.log('📦 Count:', items.length);
         
-        // Log each item in detail
-        items.forEach((item: any, idx: number) => {
-          console.log(`📦 Item ${idx}:`, {
-            id: item.id,
-            content: item.content,
-            title: item.title,
-            type: item.type,
-            completed: item.completed,
-            lecture: item.lecture,
-            created_at: item.created_at,
-            all_keys: Object.keys(item)
-          });
-        });
-        
-        // Transform action items to EventItem format
+        // Transform to flat list for backward compatibility
         const eventItems = items.map((item: any) => {
-          // Parse the created_at timestamp if it exists
           const createdAt = item.created_at ? new Date(item.created_at) : new Date();
           const timeString = createdAt.toLocaleTimeString('en-US', {
             hour: '2-digit',
@@ -137,34 +142,85 @@ export default function DashboardPage() {
             hour12: true
           });
 
-          console.log('  Raw item:', item);
-          console.log('  item.content:', item.content, 'type:', typeof item.content);
-          console.log('  item.title:', item.title, 'type:', typeof item.title);
-
-          // Try to get title from content, title field, or type
           const itemTitle = item.content || item.title || item.type || 'Untitled Action Item';
-          console.log('  Resolved title:', itemTitle);
 
           return {
             id: item.id,
             title: itemTitle,
             description: item.lecture?.title ? `From lecture: ${item.lecture.title}` : 'Action Item',
             timestamp: timeString,
-            isSeen: item.completed || false
+            isSeen: item.completed || false,
+            lectureId: item.lecture_id,
+            userId: item.user_id
           };
         });
 
-        console.log('📦 Transformed event items:', eventItems);
         setActionItems(eventItems);
+        
+        // Build hierarchical structure from classes and action items
+        buildClassGroups(eventItems);
       } else {
         console.error('✗ Failed to fetch action items, status:', response.status);
-        console.error('✗ Response:', response);
         setActionItems([]);
+        setClassGroups([]);
       }
     } catch (error) {
       console.error('✗ Error fetching action items:', error);
       setActionItems([]);
+      setClassGroups([]);
     }
+  };
+
+  const buildClassGroups = (items: any[], classesData?: ClassItem[]) => {
+    const dataToUse = classesData || classes;
+    
+    console.log('🏗️ Building class groups with:', {
+      itemsCount: items.length,
+      classesCount: dataToUse.length,
+      items: items.map(i => ({ id: i.id, lectureId: i.lectureId, title: i.title }))
+    });
+
+    // Build a map of lecture_id -> action items
+    const itemsByLecture = new Map<string, any[]>();
+    items.forEach(item => {
+      // Try different possible field names for lecture_id
+      const lectureId = item.lectureId || item.lecture_id;
+      console.log(`  Item "${item.title}": lectureId=${lectureId}`);
+      
+      if (lectureId) {
+        if (!itemsByLecture.has(lectureId)) {
+          itemsByLecture.set(lectureId, []);
+        }
+        itemsByLecture.get(lectureId)!.push({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          timestamp: item.timestamp,
+          isSeen: item.isSeen
+        });
+      }
+    });
+
+    console.log('📚 Items by lecture:', Object.fromEntries(itemsByLecture));
+
+    // Build class groups with lectures
+    const groups = dataToUse.map(cls => {
+      const lectures = cls.lectures.map(lec => ({
+        id: lec.id,
+        title: lec.title,
+        action_items: itemsByLecture.get(lec.id) || []
+      }));
+
+      return {
+        id: cls.id,
+        name: cls.name,
+        color: classColors[cls.id] || '#8b5cf6',
+        lectures
+      };
+    }).filter(cls => cls.lectures.some(l => l.action_items.length > 0));
+
+    console.log('🏗️ Built class groups:', groups);
+    setClassGroups(groups);
   };
 
   const fetchClasses = async (colors: Record<string, string> = classColors) => {
@@ -466,7 +522,7 @@ export default function DashboardPage() {
       </main>
 
       {/* EventWidget mounted at the root level to allow free dragging */}
-      <EventWidget items={actionItems} />
+      <EventWidget items={actionItems} classGroups={classGroups} />
     </div>
   );
 }
