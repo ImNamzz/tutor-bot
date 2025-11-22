@@ -1,85 +1,1614 @@
-[00:00:15.091] Server  LOG      ✓ Ready in 11.8s
-[00:00:18.140] Server  LOG      ○ Compiling / ...
-[00:00:28.534] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:28.893] Browser ERROR   Error fetching user profile: {}
-[00:01:24.530] Server  LOG      ○ Compiling /dashboard ...
-[00:01:25.215] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
-[00:01:25.215] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
-[00:01:25.715] Browser LOG     📦 Response status: 200
-[00:01:25.715] Browser LOG     📦 Raw action items from API: [{"content":"Draft training handbook due September 28, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Sun, 28 Sep 2025 23:59:00 GMT","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final version due October 15, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Wed, 15 Oct 2025 23:59:00 GMT","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Evaluation report due October 20, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Mon, 20 Oct 2025 23:59:00 GMT","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Second round of user testing on April 15, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 15 Apr 2025 23:59:00 GMT","id":"9769651a-6611-4610-a3a0-1e9969cff71c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final deliverable submission on May 30, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Fri, 30 May 2025 23:59:00 GMT","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"First deliverable submission on April 1, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 01 Apr 2025 23:59:00 GMT","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Stakeholder presentation slides completion by March 20, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Thu, 20 Mar 2025 23:59:00 GMT","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Internal progress report due March 5, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Wed, 05 Mar 2025 23:59:00 GMT","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"}]
-[00:01:25.715] Browser LOG     📦 Built class groups: []
-[00:01:25.716] Browser LOG     📦 Built class groups: []
-[00:01:25.945] Browser LOG     📦 Response status: 200
-[00:01:25.945] Browser LOG     📦 Raw action items from API: [{"content":"Draft training handbook due September 28, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Sun, 28 Sep 2025 23:59:00 GMT","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final version due October 15, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Wed, 15 Oct 2025 23:59:00 GMT","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Evaluation report due October 20, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Mon, 20 Oct 2025 23:59:00 GMT","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Second round of user testing on April 15, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 15 Apr 2025 23:59:00 GMT","id":"9769651a-6611-4610-a3a0-1e9969cff71c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final deliverable submission on May 30, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Fri, 30 May 2025 23:59:00 GMT","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"First deliverable submission on April 1, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 01 Apr 2025 23:59:00 GMT","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Stakeholder presentation slides completion by March 20, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Thu, 20 Mar 2025 23:59:00 GMT","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Internal progress report due March 5, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Wed, 05 Mar 2025 23:59:00 GMT","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"}]
-[00:01:25.945] Browser LOG     📦 Built class groups: []
-[00:01:25.945] Browser LOG     📦 Built class groups: []
-[00:02:20.473] Server  LOG      ✓ Compiled in 370ms
-[00:02:20.612] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
-[00:02:20.892] Browser LOG     📦 Response status: 200
-[00:02:20.892] Browser LOG     📦 Raw action items from API: [{"content":"Draft training handbook due September 28, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Sun, 28 Sep 2025 23:59:00 GMT","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final version due October 15, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Wed, 15 Oct 2025 23:59:00 GMT","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Evaluation report due October 20, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Mon, 20 Oct 2025 23:59:00 GMT","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Second round of user testing on April 15, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 15 Apr 2025 23:59:00 GMT","id":"9769651a-6611-4610-a3a0-1e9969cff71c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final deliverable submission on May 30, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Fri, 30 May 2025 23:59:00 GMT","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"First deliverable submission on April 1, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 01 Apr 2025 23:59:00 GMT","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Stakeholder presentation slides completion by March 20, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Thu, 20 Mar 2025 23:59:00 GMT","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Internal progress report due March 5, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Wed, 05 Mar 2025 23:59:00 GMT","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"}]
-[00:02:20.892] Browser LOG     📦 Built class groups: []
-[00:02:21.046] Browser LOG     📦 Built class groups: []
-[00:02:21.046] Browser LOG     📦 Built class groups: [{"color":"bg-indigo-500","id":"d9297c79-d2ac-4ffa-8770-5a79250dc820","lectures":[{"action_items":[],"id":"3ba547a5-5460-45db-b9be-dc05faad7417","title":"Message"},{"action_items":["[Object]","[Object]","[Object]","[Object]","[Object]"],"id":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Date"}],"name":"Scream"},{"color":"#AD1D1D","id":"6740e72d-b9ba-490e-84c3-96bd8233021f","lectures":[{"action_items":[],"id":"01381501-cbe5-445e-af5a-d26750e8a77c","title":"Janet"},{"action_items":[],"id":"9688144d-0b9b-4236-875e-e91d84ac39e7","title":"UML"},{"action_items":["[Object]","[Object]","[Object]"],"id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"2nd Date"}],"name":"Red"}]
-[00:02:41.576] Server  LOG      ✓ Compiled in 375ms
-[00:02:48.608] Server  LOG      ✓ Compiled in 259ms
-[00:02:55.645] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
-[00:02:55.645] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
-[00:02:56.206] Browser LOG     📦 Response status: 200
-[00:02:56.207] Browser LOG     📦 Raw action items from API: [{"content":"Draft training handbook due September 28, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Sun, 28 Sep 2025 23:59:00 GMT","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final version due October 15, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Wed, 15 Oct 2025 23:59:00 GMT","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Evaluation report due October 20, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Mon, 20 Oct 2025 23:59:00 GMT","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Second round of user testing on April 15, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 15 Apr 2025 23:59:00 GMT","id":"9769651a-6611-4610-a3a0-1e9969cff71c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final deliverable submission on May 30, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Fri, 30 May 2025 23:59:00 GMT","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"First deliverable submission on April 1, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 01 Apr 2025 23:59:00 GMT","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Stakeholder presentation slides completion by March 20, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Thu, 20 Mar 2025 23:59:00 GMT","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Internal progress report due March 5, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Wed, 05 Mar 2025 23:59:00 GMT","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"}]
-[00:02:56.207] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[{"id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Draft training handbook due September 28, 2025"},{"id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Final version due October 15, 2025"},{"id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Evaluation report due October 20, 2025"},{"id":"9769651a-6611-4610-a3a0-1e9969cff71c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Second round of user testing on April 15, 2025"},{"id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Final deliverable submission on May 30, 2025"},{"id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"First deliverable submission on April 1, 2025"},{"id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Stakeholder presentation slides completion by March 20, 2025"},{"id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Internal progress report due March 5, 2025"}],"itemsCount":8}
-[00:02:56.207] Browser LOG       Item "Draft training handbook due September 28, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Final version due October 15, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Evaluation report due October 20, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Second round of user testing on April 15, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Final deliverable submission on May 30, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "First deliverable submission on April 1, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Stakeholder presentation slides completion by March 20, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Internal progress report due March 5, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG     📚 Items by lecture: {"6f031edc-f709-483c-9ef0-234990cc238e":[{"description":"Action Item","id":"9769651a-6611-4610-a3a0-1e9969cff71c","isSeen":false,"timestamp":"12:37:53 AM","title":"Second round of user testing on April 15, 2025"},{"description":"Action Item","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","isSeen":false,"timestamp":"12:37:53 AM","title":"Final deliverable submission on May 30, 2025"},{"description":"Action Item","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","isSeen":false,"timestamp":"12:37:53 AM","title":"First deliverable submission on April 1, 2025"},{"description":"Action Item","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","isSeen":false,"timestamp":"12:37:53 AM","title":"Stakeholder presentation slides completion by March 20, 2025"},{"description":"Action Item","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","isSeen":false,"timestamp":"12:37:53 AM","title":"Internal progress report due March 5, 2025"}],"9ce1de86-b4d8-4484-b0fb-786dc2d59636":[{"description":"Action Item","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","isSeen":false,"timestamp":"12:39:27 AM","title":"Draft training handbook due September 28, 2025"},{"description":"Action Item","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","isSeen":false,"timestamp":"12:39:27 AM","title":"Final version due October 15, 2025"},{"description":"Action Item","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","isSeen":false,"timestamp":"12:39:27 AM","title":"Evaluation report due October 20, 2025"}]}
-[00:02:56.207] Browser LOG     🏗️ Built class groups: []
-[00:02:56.207] Browser LOG     🏗️ Building class groups with: {"classesCount":2,"items":[{"id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Draft training handbook due September 28, 2025"},{"id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Final version due October 15, 2025"},{"id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Evaluation report due October 20, 2025"},{"id":"9769651a-6611-4610-a3a0-1e9969cff71c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Second round of user testing on April 15, 2025"},{"id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Final deliverable submission on May 30, 2025"},{"id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"First deliverable submission on April 1, 2025"},{"id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Stakeholder presentation slides completion by March 20, 2025"},{"id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Internal progress report due March 5, 2025"}],"itemsCount":8}
-[00:02:56.207] Browser LOG       Item "Draft training handbook due September 28, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Final version due October 15, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Evaluation report due October 20, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Second round of user testing on April 15, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Final deliverable submission on May 30, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "First deliverable submission on April 1, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Stakeholder presentation slides completion by March 20, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Internal progress report due March 5, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG     📚 Items by lecture: {"6f031edc-f709-483c-9ef0-234990cc238e":[{"description":"Action Item","id":"9769651a-6611-4610-a3a0-1e9969cff71c","isSeen":false,"timestamp":"12:37:53 AM","title":"Second round of user testing on April 15, 2025"},{"description":"Action Item","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","isSeen":false,"timestamp":"12:37:53 AM","title":"Final deliverable submission on May 30, 2025"},{"description":"Action Item","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","isSeen":false,"timestamp":"12:37:53 AM","title":"First deliverable submission on April 1, 2025"},{"description":"Action Item","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","isSeen":false,"timestamp":"12:37:53 AM","title":"Stakeholder presentation slides completion by March 20, 2025"},{"description":"Action Item","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","isSeen":false,"timestamp":"12:37:53 AM","title":"Internal progress report due March 5, 2025"}],"9ce1de86-b4d8-4484-b0fb-786dc2d59636":[{"description":"Action Item","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","isSeen":false,"timestamp":"12:39:27 AM","title":"Draft training handbook due September 28, 2025"},{"description":"Action Item","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","isSeen":false,"timestamp":"12:39:27 AM","title":"Final version due October 15, 2025"},{"description":"Action Item","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","isSeen":false,"timestamp":"12:39:27 AM","title":"Evaluation report due October 20, 2025"}]}
-[00:02:56.207] Browser LOG     🏗️ Built class groups: [{"color":"bg-indigo-500","id":"d9297c79-d2ac-4ffa-8770-5a79250dc820","lectures":[{"action_items":[],"id":"3ba547a5-5460-45db-b9be-dc05faad7417","title":"Message"},{"action_items":["[Object]","[Object]","[Object]","[Object]","[Object]"],"id":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Date"}],"name":"Scream"},{"color":"#AD1D1D","id":"6740e72d-b9ba-490e-84c3-96bd8233021f","lectures":[{"action_items":[],"id":"01381501-cbe5-445e-af5a-d26750e8a77c","title":"Janet"},{"action_items":[],"id":"9688144d-0b9b-4236-875e-e91d84ac39e7","title":"UML"},{"action_items":["[Object]","[Object]","[Object]"],"id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"2nd Date"}],"name":"Red"}]
-[00:02:56.207] Browser LOG     🏗️ Building class groups with: {"classesCount":2,"items":[{"id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Draft training handbook due September 28, 2025"},{"id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Final version due October 15, 2025"},{"id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Evaluation report due October 20, 2025"},{"id":"9769651a-6611-4610-a3a0-1e9969cff71c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Second round of user testing on April 15, 2025"},{"id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Final deliverable submission on May 30, 2025"},{"id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"First deliverable submission on April 1, 2025"},{"id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Stakeholder presentation slides completion by March 20, 2025"},{"id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Internal progress report due March 5, 2025"}],"itemsCount":8}
-[00:02:56.207] Browser LOG       Item "Draft training handbook due September 28, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Final version due October 15, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Evaluation report due October 20, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Second round of user testing on April 15, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Final deliverable submission on May 30, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "First deliverable submission on April 1, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Stakeholder presentation slides completion by March 20, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Internal progress report due March 5, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG     📚 Items by lecture: {"6f031edc-f709-483c-9ef0-234990cc238e":[{"description":"Action Item","id":"9769651a-6611-4610-a3a0-1e9969cff71c","isSeen":false,"timestamp":"12:37:53 AM","title":"Second round of user testing on April 15, 2025"},{"description":"Action Item","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","isSeen":false,"timestamp":"12:37:53 AM","title":"Final deliverable submission on May 30, 2025"},{"description":"Action Item","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","isSeen":false,"timestamp":"12:37:53 AM","title":"First deliverable submission on April 1, 2025"},{"description":"Action Item","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","isSeen":false,"timestamp":"12:37:53 AM","title":"Stakeholder presentation slides completion by March 20, 2025"},{"description":"Action Item","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","isSeen":false,"timestamp":"12:37:53 AM","title":"Internal progress report due March 5, 2025"}],"9ce1de86-b4d8-4484-b0fb-786dc2d59636":[{"description":"Action Item","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","isSeen":false,"timestamp":"12:39:27 AM","title":"Draft training handbook due September 28, 2025"},{"description":"Action Item","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","isSeen":false,"timestamp":"12:39:27 AM","title":"Final version due October 15, 2025"},{"description":"Action Item","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","isSeen":false,"timestamp":"12:39:27 AM","title":"Evaluation report due October 20, 2025"}]}
-[00:02:56.207] Browser LOG     🏗️ Built class groups: [{"color":"bg-indigo-500","id":"d9297c79-d2ac-4ffa-8770-5a79250dc820","lectures":[{"action_items":[],"id":"3ba547a5-5460-45db-b9be-dc05faad7417","title":"Message"},{"action_items":["[Object]","[Object]","[Object]","[Object]","[Object]"],"id":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Date"}],"name":"Scream"},{"color":"#AD1D1D","id":"6740e72d-b9ba-490e-84c3-96bd8233021f","lectures":[{"action_items":[],"id":"01381501-cbe5-445e-af5a-d26750e8a77c","title":"Janet"},{"action_items":[],"id":"9688144d-0b9b-4236-875e-e91d84ac39e7","title":"UML"},{"action_items":["[Object]","[Object]","[Object]"],"id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"2nd Date"}],"name":"Red"}]
-[00:02:56.207] Browser LOG     📦 Response status: 200
-[00:02:56.207] Browser LOG     📦 Raw action items from API: [{"content":"Draft training handbook due September 28, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Sun, 28 Sep 2025 23:59:00 GMT","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final version due October 15, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Wed, 15 Oct 2025 23:59:00 GMT","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Evaluation report due October 20, 2025","created_at":"Sat, 22 Nov 2025 17:39:27 GMT","due_date":"Mon, 20 Oct 2025 23:59:00 GMT","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lecture_id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Second round of user testing on April 15, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 15 Apr 2025 23:59:00 GMT","id":"9769651a-6611-4610-a3a0-1e9969cff71c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Final deliverable submission on May 30, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Fri, 30 May 2025 23:59:00 GMT","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"First deliverable submission on April 1, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Tue, 01 Apr 2025 23:59:00 GMT","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Stakeholder presentation slides completion by March 20, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Thu, 20 Mar 2025 23:59:00 GMT","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"},{"content":"Internal progress report due March 5, 2025","created_at":"Sat, 22 Nov 2025 17:37:53 GMT","due_date":"Wed, 05 Mar 2025 23:59:00 GMT","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lecture_id":"6f031edc-f709-483c-9ef0-234990cc238e","type":"DEADLINE","user_id":"aaf18a2c-a683-4eb2-8347-69b93a4f036d"}]
-[00:02:56.207] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[{"id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Draft training handbook due September 28, 2025"},{"id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Final version due October 15, 2025"},{"id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Evaluation report due October 20, 2025"},{"id":"9769651a-6611-4610-a3a0-1e9969cff71c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Second round of user testing on April 15, 2025"},{"id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Final deliverable submission on May 30, 2025"},{"id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"First deliverable submission on April 1, 2025"},{"id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Stakeholder presentation slides completion by March 20, 2025"},{"id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Internal progress report due March 5, 2025"}],"itemsCount":8}
-[00:02:56.207] Browser LOG       Item "Draft training handbook due September 28, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Final version due October 15, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Evaluation report due October 20, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Second round of user testing on April 15, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Final deliverable submission on May 30, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "First deliverable submission on April 1, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Stakeholder presentation slides completion by March 20, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Internal progress report due March 5, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG     📚 Items by lecture: {"6f031edc-f709-483c-9ef0-234990cc238e":[{"description":"Action Item","id":"9769651a-6611-4610-a3a0-1e9969cff71c","isSeen":false,"timestamp":"12:37:53 AM","title":"Second round of user testing on April 15, 2025"},{"description":"Action Item","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","isSeen":false,"timestamp":"12:37:53 AM","title":"Final deliverable submission on May 30, 2025"},{"description":"Action Item","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","isSeen":false,"timestamp":"12:37:53 AM","title":"First deliverable submission on April 1, 2025"},{"description":"Action Item","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","isSeen":false,"timestamp":"12:37:53 AM","title":"Stakeholder presentation slides completion by March 20, 2025"},{"description":"Action Item","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","isSeen":false,"timestamp":"12:37:53 AM","title":"Internal progress report due March 5, 2025"}],"9ce1de86-b4d8-4484-b0fb-786dc2d59636":[{"description":"Action Item","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","isSeen":false,"timestamp":"12:39:27 AM","title":"Draft training handbook due September 28, 2025"},{"description":"Action Item","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","isSeen":false,"timestamp":"12:39:27 AM","title":"Final version due October 15, 2025"},{"description":"Action Item","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","isSeen":false,"timestamp":"12:39:27 AM","title":"Evaluation report due October 20, 2025"}]}
-[00:02:56.207] Browser LOG     🏗️ Built class groups: []
-[00:02:56.207] Browser LOG     🏗️ Building class groups with: {"classesCount":2,"items":[{"id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Draft training handbook due September 28, 2025"},{"id":"81e5dcaa-418b-499a-b703-582f92cd59e8","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Final version due October 15, 2025"},{"id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","lectureId":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"Evaluation report due October 20, 2025"},{"id":"9769651a-6611-4610-a3a0-1e9969cff71c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Second round of user testing on April 15, 2025"},{"id":"9cd40279-cb19-43d7-a03b-e52db7873df5","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Final deliverable submission on May 30, 2025"},{"id":"a32926f5-b3b6-4306-99b4-c6800693c44c","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"First deliverable submission on April 1, 2025"},{"id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Stakeholder presentation slides completion by March 20, 2025"},{"id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","lectureId":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Internal progress report due March 5, 2025"}],"itemsCount":8}
-[00:02:56.207] Browser LOG       Item "Draft training handbook due September 28, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Final version due October 15, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Evaluation report due October 20, 2025": lectureId=9ce1de86-b4d8-4484-b0fb-786dc2d59636
-[00:02:56.207] Browser LOG       Item "Second round of user testing on April 15, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Final deliverable submission on May 30, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "First deliverable submission on April 1, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Stakeholder presentation slides completion by March 20, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG       Item "Internal progress report due March 5, 2025": lectureId=6f031edc-f709-483c-9ef0-234990cc238e
-[00:02:56.207] Browser LOG     📚 Items by lecture: {"6f031edc-f709-483c-9ef0-234990cc238e":[{"description":"Action Item","id":"9769651a-6611-4610-a3a0-1e9969cff71c","isSeen":false,"timestamp":"12:37:53 AM","title":"Second round of user testing on April 15, 2025"},{"description":"Action Item","id":"9cd40279-cb19-43d7-a03b-e52db7873df5","isSeen":false,"timestamp":"12:37:53 AM","title":"Final deliverable submission on May 30, 2025"},{"description":"Action Item","id":"a32926f5-b3b6-4306-99b4-c6800693c44c","isSeen":false,"timestamp":"12:37:53 AM","title":"First deliverable submission on April 1, 2025"},{"description":"Action Item","id":"b27ddf5d-1f6b-43e4-abcc-6707885e74ce","isSeen":false,"timestamp":"12:37:53 AM","title":"Stakeholder presentation slides completion by March 20, 2025"},{"description":"Action Item","id":"c5f45cdd-e477-4c2f-b85e-6e5c460a1fb1","isSeen":false,"timestamp":"12:37:53 AM","title":"Internal progress report due March 5, 2025"}],"9ce1de86-b4d8-4484-b0fb-786dc2d59636":[{"description":"Action Item","id":"23bf70de-29c7-4856-ab07-a8f22d7d84b1","isSeen":false,"timestamp":"12:39:27 AM","title":"Draft training handbook due September 28, 2025"},{"description":"Action Item","id":"81e5dcaa-418b-499a-b703-582f92cd59e8","isSeen":false,"timestamp":"12:39:27 AM","title":"Final version due October 15, 2025"},{"description":"Action Item","id":"ee9762c4-bcd8-415c-80ca-cbf02d1b62a4","isSeen":false,"timestamp":"12:39:27 AM","title":"Evaluation report due October 20, 2025"}]}
-[00:02:56.207] Browser LOG     🏗️ Built class groups: [{"color":"bg-indigo-500","id":"d9297c79-d2ac-4ffa-8770-5a79250dc820","lectures":[{"action_items":[],"id":"3ba547a5-5460-45db-b9be-dc05faad7417","title":"Message"},{"action_items":["[Object]","[Object]","[Object]","[Object]","[Object]"],"id":"6f031edc-f709-483c-9ef0-234990cc238e","title":"Date"}],"name":"Scream"},{"color":"#AD1D1D","id":"6740e72d-b9ba-490e-84c3-96bd8233021f","lectures":[{"action_items":[],"id":"01381501-cbe5-445e-af5a-d26750e8a77c","title":"Janet"},{"action_items":[],"id":"9688144d-0b9b-4236-875e-e91d84ac39e7","title":"UML"},{"action_items":["[Object]","[Object]","[Object]"],"id":"9ce1de86-b4d8-4484-b0fb-786dc2d59636","title":"2nd Date"}],"name":"Red"}]
+[00:00:01.822] Server  LOG      ✓ Ready in 1304ms
+[00:00:07.470] Server  LOG      ○ Compiling / ...
+[00:00:11.825] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:12.529] Browser ERROR   Error fetching user profile: {}
+[00:00:16.963] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:00:16.963] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:00:17.504] Browser ERROR   Error fetching classes: {}
+[00:00:17.504] Browser ERROR   ✗ Error fetching action items: {}
+[00:00:17.504] Browser ERROR   Error fetching classes: {}
+[00:00:17.504] Browser ERROR   ✗ Error fetching action items: {}
+[00:00:20.522] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:20.522] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:23.272] Browser ERROR   Error creating class: {}
+[00:00:34.915] Browser ERROR   Error fetching user profile: {}
+[00:00:34.915] Browser ERROR   Error fetching user profile: {}
+[00:00:39.664] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:00:39.664] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:00:40.192] Browser ERROR   Error fetching classes: {}
+[00:00:40.192] Browser ERROR   ✗ Error fetching action items: {}
+[00:00:40.192] Browser ERROR   Error fetching classes: {}
+[00:00:40.192] Browser ERROR   ✗ Error fetching action items: {}
+[00:01:06.065] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:06.268] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:01:07.011] Browser LOG     📦 Response status: 401
+[00:01:07.011] Browser ERROR   ✗ Failed to fetch action items, status: 401
+[00:01:07.513] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:09.641] Browser ERROR   Error fetching user profile: {}
+[00:01:09.641] Browser ERROR   Error fetching user profile: {}
+[00:01:10.838] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:01:10.838] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:01:11.292] Browser LOG     📦 Response status: 200
+[00:01:11.292] Browser LOG     📦 Raw action items from API: []
+[00:01:11.292] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:01:11.292] Browser LOG     📚 Items by lecture: {}
+[00:01:11.292] Browser LOG     🏗️ Built class groups: []
+[00:01:11.573] Browser LOG     📦 Response status: 200
+[00:01:11.573] Browser LOG     📦 Raw action items from API: []
+[00:01:11.573] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:01:11.573] Browser LOG     📚 Items by lecture: {}
+[00:01:11.573] Browser LOG     🏗️ Built class groups: []
+[00:01:11.573] Browser LOG     [Dashboard] Fetched backend classes count: 5
+[00:01:11.573] Browser LOG     [Dashboard] Stored classes found: 5
+[00:01:11.985] Browser LOG     [Dashboard] Fetched backend classes count: 5
+[00:01:11.985] Browser LOG     [Dashboard] Stored classes found: 5
+[00:01:15.137] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:15.137] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:18.457] Browser LOG     [Dashboard] Created class response: {"created_at":"Sat, 22 Nov 2025 21:08:02 GMT","external_notes":[],"id":"5d1f792f-1c6d-4807-8ecb-8399a6d56274","lectures":[],"title":"trtre","user_id":"51326a22-3a06-4f71-92e7-0179dfbe595a"}
+[00:01:28.767] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:01:28.768] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:01:29.333] Browser LOG     📦 Response status: 200
+[00:01:29.333] Browser LOG     📦 Raw action items from API: []
+[00:01:29.333] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:01:29.333] Browser LOG     📚 Items by lecture: {}
+[00:01:29.333] Browser LOG     🏗️ Built class groups: []
+[00:01:29.668] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:01:29.668] Browser LOG     [Dashboard] Stored classes found: 6
+[00:01:29.668] Browser LOG     📦 Response status: 200
+[00:01:29.668] Browser LOG     📦 Raw action items from API: []
+[00:01:29.668] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:01:29.668] Browser LOG     📚 Items by lecture: {}
+[00:01:29.668] Browser LOG     🏗️ Built class groups: []
+[00:01:29.906] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:01:29.906] Browser LOG     [Dashboard] Stored classes found: 6
+[00:02:53.330] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:02:53.330] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:02:53.806] Browser LOG     📦 Response status: 200
+[00:02:53.806] Browser LOG     📦 Raw action items from API: []
+[00:02:53.806] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:02:53.806] Browser LOG     📚 Items by lecture: {}
+[00:02:53.806] Browser LOG     🏗️ Built class groups: []
+[00:02:54.109] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:02:54.109] Browser LOG     [Dashboard] Stored classes found: 6
+[00:02:54.109] Browser LOG     📦 Response status: 200
+[00:02:54.109] Browser LOG     📦 Raw action items from API: []
+[00:02:54.109] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:02:54.109] Browser LOG     📚 Items by lecture: {}
+[00:02:54.109] Browser LOG     🏗️ Built class groups: []
+[00:02:54.293] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:02:54.293] Browser LOG     [Dashboard] Stored classes found: 6
+[00:02:59.582] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:00.367] Browser LOG     Notebook does not exist yet, will create on save
+[00:03:00.828] Browser LOG     Fetched action items for lecture: 02d956b3-20be-4b4e-b078-eb9091dc746d []
+[00:03:02.120] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:13.426] Server  LOG      ✓ Compiled in 398ms
+[00:05:13.526] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:112:5
+Parsing ecmascript source code failed
+  110 |         setCls(null);
+  111 |       }
+> 112 |     } catch (error) {
+      |     ^
+  113 |       console.error('Error fetching class:', error);
+  114 |       toast.error('Failed to load class details');
+  115 |       setCls(null);
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:05:47.103] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:39:5
+Parsing ecmascript source code failed
+  37 |         setCls(null);
+  38 |       }
+> 39 |     } catch (error) {
+     |     ^
+  40 |       console.error('Error fetching class:', error);
+  41 |       toast.error('Failed to load class details');
+  42 |       setCls(null);
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:06:25.178] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:143:7
+Parsing ecmascript source code failed
+  141 |         setCls(null);
+  142 |       }
+> 143 |     } catch (error) {
+      |       ^^^^^
+  144 |       console.error('Error fetching class:', error);
+  145 |       toast.error('Failed to load class details');
+  146 |       setCls(null);
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:06:25.179] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:117:20
+Parsing ecmascript source code failed
+  115 |   };
+  116 |
+> 117 |       const data = await response.json();
+      |                    ^^^^^
+  118 |       
+  119 |       // Find the specific class
+  120 |       const found = data.find((c: any) => c.id === classId);
+
+await isn't allowed in non-async function
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:07:03.521] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:129:7
+Parsing ecmascript source code failed
+  127 |         setCls(null);
+  128 |       }
+> 129 |     } catch (error) {
+      |       ^^^^^
+  130 |       console.error('Error fetching class:', error);
+  131 |       toast.error('Failed to load class details');
+  132 |       setCls(null);
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:07:03.521] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:103:20
+Parsing ecmascript source code failed
+  101 |   };
+  102 |
+> 103 |       const data = await response.json();
+      |                    ^^^^^
+  104 |       
+  105 |       // Find the specific class
+  106 |       const found = data.find((c: any) => c.id === classId);
+
+await isn't allowed in non-async function
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:07:33.921] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:82:25
+Parsing ecmascript source code failed
+  80 |           color: found.color || "#6366f1",
+  81 |           lectures:
+> 82 |             "use client";
+     |                         ^
+  83 |             import { useEffect, useState } from "react";
+  84 |             import { useParams, useRouter } from "next/navigation";
+  85 |             import Link from "next/link";
+
+Expected ',', got ';'
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:08:53.948] Browser ERROR   ./src/app/dashboard/class/[id]/page.tsx:787:25
+Parsing ecmascript source code failed
+  785 |           color: found.color || "#6366f1",
+  786 |           lectures:
+> 787 |             "use client";
+      |                         ^
+  788 |             import { useEffect, useState } from "react";
+  789 |             import { useParams, useRouter } from "next/navigation";
+  790 |             import Link from "next/link";
+
+Expected ',', got ';'
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component Browser]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/class/[id]/page.tsx [Client Component SSR]
+    ./src/app/dashboard/class/[id]/page.tsx [Server Component]
+[00:09:16.583] Server  LOG      ✓ Compiled in 415ms
+[00:09:20.592] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:09:20.592] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:09:21.317] Browser LOG     📦 Response status: 200
+[00:09:21.317] Browser LOG     📦 Raw action items from API: []
+[00:09:21.317] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:09:21.317] Browser LOG     📚 Items by lecture: {}
+[00:09:21.317] Browser LOG     🏗️ Built class groups: []
+[00:09:21.591] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:09:21.591] Browser LOG     [Dashboard] Stored classes found: 6
+[00:09:21.591] Browser LOG     📦 Response status: 200
+[00:09:21.591] Browser LOG     📦 Raw action items from API: []
+[00:09:21.591] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:09:21.591] Browser LOG     📚 Items by lecture: {}
+[00:09:21.591] Browser LOG     🏗️ Built class groups: []
+[00:09:21.777] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:09:21.777] Browser LOG     [Dashboard] Stored classes found: 6
+[00:09:33.711] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:09:33.711] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:09:36.989] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:09:36.989] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:09:37.692] Browser LOG     📦 Response status: 200
+[00:09:37.692] Browser LOG     📦 Raw action items from API: []
+[00:09:37.692] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:09:37.692] Browser LOG     📚 Items by lecture: {}
+[00:09:37.692] Browser LOG     🏗️ Built class groups: []
+[00:09:37.976] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:09:37.976] Browser LOG     [Dashboard] Stored classes found: 6
+[00:09:37.976] Browser LOG     📦 Response status: 200
+[00:09:37.976] Browser LOG     📦 Raw action items from API: []
+[00:09:37.976] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:09:37.976] Browser LOG     📚 Items by lecture: {}
+[00:09:37.976] Browser LOG     🏗️ Built class groups: []
+[00:09:38.187] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:09:38.188] Browser LOG     [Dashboard] Stored classes found: 6
+[00:09:43.116] Browser LOG     Notebook does not exist yet, will create on save
+[00:09:43.343] Browser LOG     Notebook does not exist yet, will create on save
+[00:09:43.642] Browser LOG     Fetched action items for lecture: 165dafb9-fe06-45e9-a301-9488b4a698b2 []
+[00:09:43.879] Browser LOG     Fetched action items for lecture: 165dafb9-fe06-45e9-a301-9488b4a698b2 []
+[00:09:51.154] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:09:51.154] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:09:51.619] Browser LOG     📦 Response status: 200
+[00:09:51.619] Browser LOG     📦 Raw action items from API: []
+[00:09:51.619] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:09:51.619] Browser LOG     📚 Items by lecture: {}
+[00:09:51.619] Browser LOG     🏗️ Built class groups: []
+[00:09:51.619] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:09:51.619] Browser LOG     [Dashboard] Stored classes found: 6
+[00:09:51.825] Browser LOG     📦 Response status: 200
+[00:09:51.825] Browser LOG     📦 Raw action items from API: []
+[00:09:51.825] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:09:51.825] Browser LOG     📚 Items by lecture: {}
+[00:09:51.825] Browser LOG     🏗️ Built class groups: []
+[00:09:52.049] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:09:52.049] Browser LOG     [Dashboard] Stored classes found: 6
+[00:09:55.779] Browser LOG     Notebook does not exist yet, will create on save
+[00:09:56.025] Browser LOG     Notebook does not exist yet, will create on save
+[00:09:56.025] Browser LOG     Fetched action items for lecture: 20465b4b-9745-4c11-a1f6-f5349c25f262 []
+[00:09:56.250] Browser LOG     Fetched action items for lecture: 20465b4b-9745-4c11-a1f6-f5349c25f262 []
+[00:09:58.900] Browser LOG     === ANALYZE RESPONSE === {"action_items":[],"lecture":{"action_items":[],"class_id":"65d11d9a-1d31-48dd-b7be-30d99e66b47c","created_at":"Sat, 22 Nov 2025 18:09:54 GMT","external_notes":[],"id":"20465b4b-9745-4c11-a1f6-f5349c25f262","status":"COMPLETED","summary":"","title":"rưqẻwq","transcript":"ewqewqewq"},"new_items_count":0}
+[00:09:58.900] Browser LOG     Response keys: ["action_items","lecture","new_items_count"]
+[00:09:58.900] Browser LOG     Lecture object: {"action_items":[],"class_id":"65d11d9a-1d31-48dd-b7be-30d99e66b47c","created_at":"Sat, 22 Nov 2025 18:09:54 GMT","external_notes":[],"id":"20465b4b-9745-4c11-a1f6-f5349c25f262","status":"COMPLETED","summary":"","title":"rưqẻwq","transcript":"ewqewqewq"}
+[00:09:58.900] Browser LOG     Action items raw: []
+[00:09:58.900] Browser LOG     Action items is array? true
+[00:09:58.900] Browser LOG     Action items length: 0
+[00:09:58.900] Browser WARN    ✗ No summary in lecture object
+[00:09:58.900] Browser LOG     ✓ Found action items: []
+[00:09:58.900] Browser LOG     Action items count: 0
+[00:09:58.900] Browser WARN    ⚠️ Action items array is EMPTY - AI did not generate any items
+[00:09:58.900] Browser LOG     Mapped action items: []
+[00:10:09.938] Browser LOG     === ANALYZE RESPONSE === {"action_items":[],"lecture":{"action_items":[],"class_id":"65d11d9a-1d31-48dd-b7be-30d99e66b47c","created_at":"Sat, 22 Nov 2025 18:09:54 GMT","external_notes":[],"id":"20465b4b-9745-4c11-a1f6-f5349c25f262","status":"COMPLETED","summary":"","title":"rưqẻwq","transcript":"ewqewqewq"},"new_items_count":0}
+[00:10:09.938] Browser LOG     Response keys: ["action_items","lecture","new_items_count"]
+[00:10:09.938] Browser LOG     Lecture object: {"action_items":[],"class_id":"65d11d9a-1d31-48dd-b7be-30d99e66b47c","created_at":"Sat, 22 Nov 2025 18:09:54 GMT","external_notes":[],"id":"20465b4b-9745-4c11-a1f6-f5349c25f262","status":"COMPLETED","summary":"","title":"rưqẻwq","transcript":"ewqewqewq"}
+[00:10:09.938] Browser LOG     Action items raw: []
+[00:10:09.938] Browser LOG     Action items is array? true
+[00:10:09.938] Browser LOG     Action items length: 0
+[00:10:09.938] Browser WARN    ✗ No summary in lecture object
+[00:10:09.938] Browser LOG     ✓ Found action items: []
+[00:10:09.938] Browser LOG     Action items count: 0
+[00:10:09.938] Browser WARN    ⚠️ Action items array is EMPTY - AI did not generate any items
+[00:10:09.938] Browser LOG     Mapped action items: []
+[00:10:14.078] Browser LOG     === ANALYZE RESPONSE === {"action_items":[],"lecture":{"action_items":[],"class_id":"65d11d9a-1d31-48dd-b7be-30d99e66b47c","created_at":"Sat, 22 Nov 2025 18:09:54 GMT","external_notes":[],"id":"20465b4b-9745-4c11-a1f6-f5349c25f262","status":"COMPLETED","summary":"","title":"rưqẻwq","transcript":"ewqewqewq"},"new_items_count":0}
+[00:10:14.078] Browser LOG     Response keys: ["action_items","lecture","new_items_count"]
+[00:10:14.078] Browser LOG     Lecture object: {"action_items":[],"class_id":"65d11d9a-1d31-48dd-b7be-30d99e66b47c","created_at":"Sat, 22 Nov 2025 18:09:54 GMT","external_notes":[],"id":"20465b4b-9745-4c11-a1f6-f5349c25f262","status":"COMPLETED","summary":"","title":"rưqẻwq","transcript":"ewqewqewq"}
+[00:10:14.078] Browser LOG     Action items raw: []
+[00:10:14.078] Browser LOG     Action items is array? true
+[00:10:14.078] Browser LOG     Action items length: 0
+[00:10:14.078] Browser WARN    ✗ No summary in lecture object
+[00:10:14.078] Browser LOG     ✓ Found action items: []
+[00:10:14.078] Browser LOG     Action items count: 0
+[00:10:14.078] Browser WARN    ⚠️ Action items array is EMPTY - AI did not generate any items
+[00:10:14.078] Browser LOG     Mapped action items: []
+[00:11:26.620] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:11:26.620] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:11:27.289] Browser LOG     📦 Response status: 200
+[00:11:27.289] Browser LOG     📦 Raw action items from API: []
+[00:11:27.289] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:11:27.289] Browser LOG     📚 Items by lecture: {}
+[00:11:27.289] Browser LOG     🏗️ Built class groups: []
+[00:11:27.529] Browser LOG     📦 Response status: 200
+[00:11:27.529] Browser LOG     📦 Raw action items from API: []
+[00:11:27.529] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:11:27.529] Browser LOG     📚 Items by lecture: {}
+[00:11:27.529] Browser LOG     🏗️ Built class groups: []
+[00:11:27.529] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:11:27.529] Browser LOG     [Dashboard] Stored classes found: 6
+[00:11:27.801] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:11:27.801] Browser LOG     [Dashboard] Stored classes found: 6
+[00:11:39.224] Server  LOG      ✓ Compiled in 1040ms
+[00:12:04.954] Server  LOG      ✓ Compiled in 604ms
+[00:12:49.474] Server  LOG      ✓ Compiled in 917ms
+[00:13:24.851] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:13:24.851] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:13:25.553] Browser LOG     📦 Response status: 200
+[00:13:25.553] Browser LOG     📦 Raw action items from API: []
+[00:13:25.553] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:13:25.553] Browser LOG     📚 Items by lecture: {}
+[00:13:25.553] Browser LOG     🏗️ Built class groups: []
+[00:13:25.825] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:13:25.825] Browser LOG     [Dashboard] Stored classes found: 6
+[00:13:25.825] Browser LOG     📦 Response status: 200
+[00:13:25.825] Browser LOG     📦 Raw action items from API: []
+[00:13:25.825] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:13:25.825] Browser LOG     📚 Items by lecture: {}
+[00:13:25.825] Browser LOG     🏗️ Built class groups: []
+[00:13:26.028] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:13:26.028] Browser LOG     [Dashboard] Stored classes found: 6
+[00:13:40.062] Browser LOG     [Dashboard] Upload background start: {"classId":"94373543-02fc-46cd-b83e-18b66ce62a81","name":"Screenshot 2025-11-23 023855.png","size":1336614,"type":"image/png"}
+[00:13:40.062] Browser LOG     [Dashboard] Background file read length: 1782174
+[00:13:46.861] Browser LOG     [Dashboard] Upload background start: {"classId":"94373543-02fc-46cd-b83e-18b66ce62a81","name":"Screenshot 2025-11-23 024205.png","size":10320,"type":"image/png"}
+[00:13:46.861] Browser LOG     [Dashboard] Background file read length: 13782
+[00:16:12.435] Browser ERROR   Failed to check transcription status
+[00:16:12.668] Browser ERROR   Failed to check transcription status
+[00:16:54.882] Server  LOG      ✓ Compiled in 296ms
+[00:17:13.352] Server  LOG      ✓ Compiled in 874ms
+[00:17:13.466] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:17:14.244] Browser LOG     📦 Response status: 401
+[00:17:14.244] Browser ERROR   ✗ Failed to fetch action items, status: 401
+[00:17:14.575] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:43.832] Browser ERROR   Error fetching user profile: {}
+[00:18:44.032] Browser ERROR   Error fetching user profile: {}
+[00:18:46.182] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:18:46.182] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:18:46.931] Browser LOG     📦 Response status: 200
+[00:18:46.931] Browser LOG     📦 Raw action items from API: []
+[00:18:46.931] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:18:46.931] Browser LOG     📚 Items by lecture: {}
+[00:18:46.931] Browser LOG     🏗️ Built class groups: []
+[00:18:47.189] Browser LOG     📦 Response status: 200
+[00:18:47.189] Browser LOG     📦 Raw action items from API: []
+[00:18:47.189] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:18:47.189] Browser LOG     📚 Items by lecture: {}
+[00:18:47.189] Browser LOG     🏗️ Built class groups: []
+[00:18:47.189] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:18:47.189] Browser LOG     [Dashboard] Stored classes found: 6
+[00:18:47.528] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:18:47.528] Browser LOG     [Dashboard] Stored classes found: 6
+[00:18:50.636] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:18:50.636] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:18:50.897] Browser LOG     📦 Response status: 200
+[00:18:50.897] Browser LOG     📦 Raw action items from API: []
+[00:18:50.897] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:18:50.897] Browser LOG     📚 Items by lecture: {}
+[00:18:50.897] Browser LOG     🏗️ Built class groups: []
+[00:18:51.189] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:18:51.189] Browser LOG     [Dashboard] Stored classes found: 6
+[00:18:51.189] Browser LOG     📦 Response status: 200
+[00:18:51.189] Browser LOG     📦 Raw action items from API: []
+[00:18:51.189] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:18:51.189] Browser LOG     📚 Items by lecture: {}
+[00:18:51.189] Browser LOG     🏗️ Built class groups: []
+[00:18:51.404] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:18:51.404] Browser LOG     [Dashboard] Stored classes found: 6
+[00:19:24.037] Browser ERROR   Error fetching user profile: {}
+[00:19:24.037] Browser ERROR   Error fetching user profile: {}
+[00:19:27.089] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:19:27.089] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:19:27.557] Browser ERROR   Error fetching user profile: {}
+[00:19:33.982] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:19:33.982] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:19:46.831] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:19:46.831] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:19:47.507] Browser LOG     📦 Response status: 200
+[00:19:47.507] Browser LOG     📦 Raw action items from API: []
+[00:19:47.507] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:19:47.507] Browser LOG     📚 Items by lecture: {}
+[00:19:47.507] Browser LOG     🏗️ Built class groups: []
+[00:19:47.757] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:19:47.757] Browser LOG     [Dashboard] Stored classes found: 6
+[00:19:47.757] Browser LOG     📦 Response status: 200
+[00:19:47.757] Browser LOG     📦 Raw action items from API: []
+[00:19:47.757] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:19:47.757] Browser LOG     📚 Items by lecture: {}
+[00:19:47.757] Browser LOG     🏗️ Built class groups: []
+[00:19:48.010] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:19:48.010] Browser LOG     [Dashboard] Stored classes found: 6
+[00:20:48.842] Server  LOG      ✓ Compiled in 544ms
+[00:20:52.552] Server  LOG      ✓ Compiled in 481ms
+[00:21:42.710] Server  LOG      ✓ Compiled in 393ms
+[00:23:29.084] Server  LOG      ✓ Compiled in 325ms
+[00:24:33.943] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:24:33.943] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:24:34.619] Browser LOG     📦 Response status: 200
+[00:24:34.619] Browser LOG     📦 Raw action items from API: []
+[00:24:34.619] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:24:34.619] Browser LOG     📚 Items by lecture: {}
+[00:24:34.619] Browser LOG     🏗️ Built class groups: []
+[00:24:34.872] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:24:34.872] Browser LOG     [Dashboard] Stored classes found: 6
+[00:24:34.872] Browser LOG     📦 Response status: 200
+[00:24:34.872] Browser LOG     📦 Raw action items from API: []
+[00:24:34.872] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:24:34.872] Browser LOG     📚 Items by lecture: {}
+[00:24:34.872] Browser LOG     🏗️ Built class groups: []
+[00:24:35.153] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:24:35.153] Browser LOG     [Dashboard] Stored classes found: 6
+[00:24:45.264] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:24:45.264] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:25:56.423] Browser ERROR   Error uploading audio lecture: {}
+[00:26:07.468] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:26:07.468] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:27:07.831] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:27:07.831] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:27:47.733] Browser ERROR   Error uploading audio lecture: {}
+[00:27:59.699] Server  LOG      ✓ Compiled in 890ms
+[00:28:37.119] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:28:37.119] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:28:37.871] Browser LOG     📦 Response status: 200
+[00:28:37.871] Browser LOG     📦 Raw action items from API: []
+[00:28:37.871] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:28:37.871] Browser LOG     📚 Items by lecture: {}
+[00:28:37.871] Browser LOG     🏗️ Built class groups: []
+[00:28:38.120] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:28:38.120] Browser LOG     [Dashboard] Stored classes found: 6
+[00:28:38.120] Browser LOG     📦 Response status: 200
+[00:28:38.120] Browser LOG     📦 Raw action items from API: []
+[00:28:38.120] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:28:38.120] Browser LOG     📚 Items by lecture: {}
+[00:28:38.120] Browser LOG     🏗️ Built class groups: []
+[00:28:38.402] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:28:38.402] Browser LOG     [Dashboard] Stored classes found: 6
+[00:28:47.987] Browser ERROR   Error uploading audio lecture: {}
+[00:28:49.468] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:28:49.468] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:28:49.678] Browser ERROR   Error fetching user profile: {}
+[00:29:32.774] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:29:32.774] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:29:33.221] Browser LOG     📦 Response status: 200
+[00:29:33.221] Browser LOG     📦 Raw action items from API: []
+[00:29:33.221] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:29:33.221] Browser LOG     📚 Items by lecture: {}
+[00:29:33.221] Browser LOG     🏗️ Built class groups: []
+[00:29:33.447] Browser LOG     📦 Response status: 200
+[00:29:33.447] Browser LOG     📦 Raw action items from API: []
+[00:29:33.447] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:29:33.447] Browser LOG     📚 Items by lecture: {}
+[00:29:33.447] Browser LOG     🏗️ Built class groups: []
+[00:29:33.600] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:29:33.600] Browser LOG     [Dashboard] Stored classes found: 6
+[00:29:33.806] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:29:33.806] Browser LOG     [Dashboard] Stored classes found: 6
+[00:34:27.304] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.320] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.326] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.334] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.355] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.363] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.366] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.371] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.379] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.386] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.394] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.399] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:27.417] Server  LOG      ✓ Compiled in 1062ms
+[00:34:27.946] Browser ERROR   ./src/app/dashboard/components/BackgroundUploadModal.tsx:4:1
+Module not found: Can't resolve 'react-easy-crop'
+  2 | import React, { useState, useRef, useCallback } from "react";
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+> 4 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { toast } from "sonner";
+  6 | import { ClassItem } from "@/app/lib/types/class";
+  7 |
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:34:36.157] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.159] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.163] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.165] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.168] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.170] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.173] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.177] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.182] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.184] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.187] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.190] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:34:36.193] Server  LOG      ✓ Compiled in 174ms
+[00:34:36.944] Browser ERROR   ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:35:26.884] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.887] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.890] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.893] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.896] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.900] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.905] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.907] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.911] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.913] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.918] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.920] Server  ERROR    ⨯ ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:35:26.923] Server  LOG      ✓ Compiled in 396ms
+[00:35:27.944] Browser ERROR   ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:36:48.840] Browser ERROR   ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:36:58.424] Browser ERROR   ./src/app/dashboard/components/BackgroundUploadModal.tsx:5:1
+Module not found: Can't resolve 'react-easy-crop'
+  3 | import { X, Upload, Image as ImageIcon } from "lucide-react";
+  4 | // @ts-ignore - types may not be present until dependency is installed
+> 5 | import Cropper from "react-easy-crop";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { toast } from "sonner";
+  7 | import { ClassItem } from "@/app/lib/types/class";
+  8 |
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Client Component Browser]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/components/BackgroundUploadModal.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Client Component SSR]
+    ./src/app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:37:59.128] Server  LOG      ✓ Compiled in 711ms
+[00:39:15.190] Browser LOG     [Dashboard] Upload background start: {"classId":"94373543-02fc-46cd-b83e-18b66ce62a81","name":"Screenshot 2025-11-23 023855.png","size":1336614,"type":"image/png"}
+[00:39:15.190] Browser LOG     [Dashboard] Background file read length: 1782174
+[00:40:34.677] Server  LOG      ✓ Compiled in 401ms
+[00:41:37.240] Browser LOG     [Dashboard] Upload background start: {"classId":"31956457-efa5-478f-9b11-31f3d8a8a547","name":"Untitled Diagram.drawio.png","size":69406,"type":"image/png"}
+[00:41:37.240] Browser LOG     [Dashboard] Background file read length: 92566
+[00:41:43.721] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:41:46.715] Browser ERROR   Error fetching user profile: {}
+[00:41:46.715] Browser ERROR   Error fetching user profile: {}
+[00:41:49.586] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:41:49.586] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:41:50.038] Browser LOG     📦 Response status: 200
+[00:41:50.038] Browser LOG     📦 Raw action items from API: []
+[00:41:50.038] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:41:50.038] Browser LOG     📚 Items by lecture: {}
+[00:41:50.038] Browser LOG     🏗️ Built class groups: []
+[00:41:50.356] Browser LOG     📦 Response status: 200
+[00:41:50.356] Browser LOG     📦 Raw action items from API: []
+[00:41:50.356] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:41:50.356] Browser LOG     📚 Items by lecture: {}
+[00:41:50.356] Browser LOG     🏗️ Built class groups: []
+[00:41:50.356] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:41:50.356] Browser LOG     [Dashboard] Stored classes found: 6
+[00:41:50.565] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:41:50.565] Browser LOG     [Dashboard] Stored classes found: 6
+[00:41:54.816] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:41:54.816] Browser LOG     📦 Fetching action items from: http://223.130.141.245.nip.io//api/action_items
+[00:41:55.052] Browser LOG     📦 Response status: 200
+[00:41:55.052] Browser LOG     📦 Raw action items from API: []
+[00:41:55.052] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:41:55.052] Browser LOG     📚 Items by lecture: {}
+[00:41:55.052] Browser LOG     🏗️ Built class groups: []
+[00:41:55.273] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:41:55.273] Browser LOG     [Dashboard] Stored classes found: 6
+[00:41:55.535] Browser LOG     📦 Response status: 200
+[00:41:55.535] Browser LOG     📦 Raw action items from API: []
+[00:41:55.535] Browser LOG     🏗️ Building class groups with: {"classesCount":0,"items":[],"itemsCount":0}
+[00:41:55.535] Browser LOG     📚 Items by lecture: {}
+[00:41:55.535] Browser LOG     🏗️ Built class groups: []
+[00:41:55.535] Browser LOG     [Dashboard] Fetched backend classes count: 6
+[00:41:55.535] Browser LOG     [Dashboard] Stored classes found: 6
+[00:42:07.609] Browser LOG     [Dashboard] Upload background start: {"classId":"31956457-efa5-478f-9b11-31f3d8a8a547","name":"Screenshot 2025-11-23 024205.png","size":7632,"type":"image/png"}
+[00:42:07.609] Browser LOG     [Dashboard] Background file read length: 10198
+[00:42:16.623] Browser LOG     [Dashboard] Upload background start: {"classId":"31956457-efa5-478f-9b11-31f3d8a8a547","name":"Screenshot 2025-11-23 024205.png","size":2216,"type":"image/png"}
+[00:42:16.623] Browser LOG     [Dashboard] Background file read length: 2978
+[00:44:03.068] Server  LOG      ✓ Compiled in 321ms
+[00:46:37.258] Server  LOG      ✓ Compiled in 581ms
+[00:47:22.536] Browser LOG     [Dashboard] Upload background start: {"classId":"5d1f792f-1c6d-4807-8ecb-8399a6d56274","name":"test.png","size":30481,"type":"image/png"}
+[00:47:22.536] Browser LOG     [Dashboard] Background file read length: 40666
+[00:48:00.206] Server  LOG      ✓ Compiled in 450ms
+[00:48:30.310] Server  LOG      ✓ Compiled in 188ms
+[00:51:30.966] Server  LOG      ✓ Compiled in 879ms
+[00:52:54.205] Browser LOG     Notebook does not exist yet, will create on save
+[00:52:54.452] Browser LOG     Notebook does not exist yet, will create on save
+[00:52:54.693] Browser LOG     Fetched action items for lecture: 20465b4b-9745-4c11-a1f6-f5349c25f262 []
+[00:52:54.934] Browser LOG     Fetched action items for lecture: 20465b4b-9745-4c11-a1f6-f5349c25f262 []
+[00:53:09.818] Browser LOG     Notebook does not exist yet, will create on save
+[00:53:10.048] Browser LOG     Notebook does not exist yet, will create on save
+[00:53:10.317] Browser LOG     Fetched action items for lecture: 20465b4b-9745-4c11-a1f6-f5349c25f262 []
+[00:53:10.543] Browser LOG     Fetched action items for lecture: 20465b4b-9745-4c11-a1f6-f5349c25f262 []

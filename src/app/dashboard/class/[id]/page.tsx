@@ -34,6 +34,8 @@ import {
   Star,
   X,
 } from "lucide-react";
+import ConfirmModal from "@/app/dashboard/components/ConfirmModal";
+import RenameModal from "@/app/dashboard/components/RenameModal";
 
 export default function ClassDetailPage() {
   const params = useParams();
@@ -58,6 +60,20 @@ export default function ClassDetailPage() {
   const [actualFile, setActualFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [audioLanguage, setAudioLanguage] = useState<string>("en-US");
+  // Confirm delete modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmData, setConfirmData] = useState<{
+    action: () => void;
+    message: string;
+    title?: string;
+    confirmLabel?: string;
+  } | null>(null);
+  // Rename modal state for lectures
+  const [lectureRenameTarget, setLectureRenameTarget] = useState<{
+    id: string;
+    current: string;
+  } | null>(null);
+  const [lectureRenameOpen, setLectureRenameOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -69,8 +85,8 @@ export default function ClassDetailPage() {
       setLoading(true);
       const response = await fetch(API_ENDPOINTS.classes, {
         headers: {
-          'Authorization': `Bearer ${getAccessToken()}`
-        }
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
       });
 
       if (!response.ok) {
@@ -78,38 +94,39 @@ export default function ClassDetailPage() {
           handleAuthError(401);
           return;
         }
-        throw new Error('Failed to fetch class');
+        throw new Error("Failed to fetch class");
       }
 
       const data = await response.json();
-      
+
       // Find the specific class
       const found = data.find((c: any) => c.id === classId);
-      
+
       if (found) {
         // Transform to match ClassItem interface
         const transformedClass: ClassItem = {
           id: found.id,
           name: found.title,
-          code: found.code || '',
-          color: found.color || '#6366f1',
-          lectures: found.lectures?.map((lec: any) => ({
-            id: lec.id,
-            title: lec.title,
-            type: lec.type || 'text',
-            content: lec.transcript || lec.content || '',
-            createdAt: lec.created_at,
-            status: lec.status
-          })) || [],
-          createdAt: found.created_at
+          code: found.code || "",
+          color: found.color || "#6366f1",
+          lectures:
+            found.lectures?.map((lec: any) => ({
+              id: lec.id,
+              title: lec.title,
+              type: lec.type || "text",
+              content: lec.transcript || lec.content || "",
+              createdAt: lec.created_at,
+              status: lec.status,
+            })) || [],
+          createdAt: found.created_at,
         };
         setCls(transformedClass);
       } else {
         setCls(null);
       }
     } catch (error) {
-      console.error('Error fetching class:', error);
-      toast.error('Failed to load class details');
+      console.error("Error fetching class:", error);
+      toast.error("Failed to load class details");
       setCls(null);
     } finally {
       setLoading(false);
@@ -124,35 +141,35 @@ export default function ClassDetailPage() {
   const handleAddLecture = async () => {
     if (!cls) return;
     if (!lectureTitle.trim()) {
-      toast.error('Please enter a lecture title');
+      toast.error("Please enter a lecture title");
       return;
     }
 
     if (lectureType === "text") {
       // Text lecture - either from file or textarea
       const content = lectureContentText.trim() || uploadedText || "";
-      
+
       if (!content && !actualFile) {
-        toast.error('Please provide text content or upload a file');
+        toast.error("Please provide text content or upload a file");
         return;
       }
 
       try {
         setIsUploading(true);
-        
+
         if (actualFile) {
           // Upload file to backend
           const formData = new FormData();
-          formData.append('file', actualFile);
-          formData.append('class_id', classId);
-          formData.append('title', lectureTitle.trim());
+          formData.append("file", actualFile);
+          formData.append("class_id", classId);
+          formData.append("title", lectureTitle.trim());
 
           const response = await fetch(API_ENDPOINTS.uploadText, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Authorization': `Bearer ${getAccessToken()}`
+              Authorization: `Bearer ${getAccessToken()}`,
             },
-            body: formData
+            body: formData,
           });
 
           if (!response.ok) {
@@ -160,30 +177,32 @@ export default function ClassDetailPage() {
               handleAuthError(401);
               return;
             }
-            throw new Error('Failed to upload text file');
+            throw new Error("Failed to upload text file");
           }
 
           const newLecture = await response.json();
-          toast.success('Text lecture uploaded successfully');
-          
+          toast.success("Text lecture uploaded successfully");
+
           // Refresh the class to get updated lectures
           await fetchClass();
         } else {
           // Create text file from textarea content and upload
-          const blob = new Blob([content], { type: 'text/plain' });
-          const file = new File([blob], `${lectureTitle.trim()}.txt`, { type: 'text/plain' });
-          
+          const blob = new Blob([content], { type: "text/plain" });
+          const file = new File([blob], `${lectureTitle.trim()}.txt`, {
+            type: "text/plain",
+          });
+
           const formData = new FormData();
-          formData.append('file', file);
-          formData.append('class_id', classId);
-          formData.append('title', lectureTitle.trim());
+          formData.append("file", file);
+          formData.append("class_id", classId);
+          formData.append("title", lectureTitle.trim());
 
           const response = await fetch(API_ENDPOINTS.uploadText, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Authorization': `Bearer ${getAccessToken()}`
+              Authorization: `Bearer ${getAccessToken()}`,
             },
-            body: formData
+            body: formData,
           });
 
           if (!response.ok) {
@@ -191,16 +210,16 @@ export default function ClassDetailPage() {
               handleAuthError(401);
               return;
             }
-            throw new Error('Failed to upload text lecture');
+            throw new Error("Failed to upload text lecture");
           }
 
           const newLecture = await response.json();
-          toast.success('Text lecture created successfully');
-          
+          toast.success("Text lecture created successfully");
+
           // Refresh the class to get updated lectures
           await fetchClass();
         }
-        
+
         // Reset form
         setLectureTitle("");
         setLectureContentText("");
@@ -211,34 +230,34 @@ export default function ClassDetailPage() {
         setActualFile(null);
         setAudioLanguage("en-US");
       } catch (error) {
-        console.error('Error uploading text lecture:', error);
-        toast.error('Failed to upload text lecture');
+        console.error("Error uploading text lecture:", error);
+        toast.error("Failed to upload text lecture");
       } finally {
         setIsUploading(false);
       }
     } else if (lectureType === "audio") {
       // Audio lecture - upload audio file
       if (!actualFile) {
-        toast.error('Please upload an audio file');
+        toast.error("Please upload an audio file");
         return;
       }
 
       try {
         setIsUploading(true);
-        
+
         // Upload audio file to backend
         const formData = new FormData();
-        formData.append('media', actualFile);
-        formData.append('class_id', classId);
-        formData.append('title', lectureTitle.trim());
-        formData.append('language', audioLanguage);
+        formData.append("media", actualFile);
+        formData.append("class_id", classId);
+        formData.append("title", lectureTitle.trim());
+        formData.append("language", audioLanguage);
 
         const response = await fetch(API_ENDPOINTS.uploadAudio, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Authorization': `Bearer ${getAccessToken()}`
+            Authorization: `Bearer ${getAccessToken()}`,
           },
-          body: formData
+          body: formData,
         });
 
         if (!response.ok) {
@@ -246,16 +265,20 @@ export default function ClassDetailPage() {
             handleAuthError(401);
             return;
           }
-          const errorData = await response.json().catch(() => ({ detail: 'Failed to upload audio' }));
-          throw new Error(errorData.detail || 'Failed to upload audio');
+          const errorData = await response
+            .json()
+            .catch(() => ({ detail: "Failed to upload audio" }));
+          throw new Error(errorData.detail || "Failed to upload audio");
         }
 
         const newLecture = await response.json();
-        toast.success('Audio lecture uploaded successfully! Transcription is being processed.');
-        
+        toast.success(
+          "Audio lecture uploaded successfully! Transcription is being processed."
+        );
+
         // Refresh the class to get updated lectures
         await fetchClass();
-        
+
         // Reset form
         setLectureTitle("");
         setLectureContentText("");
@@ -266,8 +289,8 @@ export default function ClassDetailPage() {
         setActualFile(null);
         setAudioLanguage("en-US");
       } catch (error: any) {
-        console.error('Error uploading audio lecture:', error);
-        toast.error(error.message || 'Failed to upload audio lecture');
+        console.error("Error uploading audio lecture:", error);
+        toast.error(error.message || "Failed to upload audio lecture");
       } finally {
         setIsUploading(false);
       }
@@ -280,14 +303,27 @@ export default function ClassDetailPage() {
     setFileError("");
     if (lectureType === "audio") {
       // Validate audio file type
-      const validAudioTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/m4a', 'audio/mp4', 'audio/ogg', 'audio/webm'];
-      const isValidAudio = validAudioTypes.includes(file.type) || /\.(mp3|wav|m4a|ogg|webm)$/i.test(file.name);
-      
+      const validAudioTypes = [
+        "audio/mpeg",
+        "audio/mp3",
+        "audio/wav",
+        "audio/x-wav",
+        "audio/m4a",
+        "audio/mp4",
+        "audio/ogg",
+        "audio/webm",
+      ];
+      const isValidAudio =
+        validAudioTypes.includes(file.type) ||
+        /\.(mp3|wav|m4a|ogg|webm)$/i.test(file.name);
+
       if (!isValidAudio) {
-        setFileError("Please upload a valid audio file (MP3, WAV, M4A, OGG, or WebM)");
+        setFileError(
+          "Please upload a valid audio file (MP3, WAV, M4A, OGG, or WebM)"
+        );
         return;
       }
-      
+
       // Store file meta for display and actual file for upload
       setUploadedFile({
         name: file.name,
@@ -324,19 +360,27 @@ export default function ClassDetailPage() {
       ...cls,
       lectures: cls.lectures.map((l) =>
         l.id === lectureId ? { ...l, title } : l
-      )
+      ),
     };
     persist(updated);
   };
 
   const handleDeleteLecture = (lectureId: string) => {
     if (!cls) return;
-    if (!window.confirm("Delete this lecture? This cannot be undone.")) return;
-    const updated: ClassItem = {
-      ...cls,
-      lectures: cls.lectures.filter((l) => l.id !== lectureId)
-    };
-    persist(updated);
+    setConfirmData({
+      action: () => {
+        const updated: ClassItem = {
+          ...cls,
+          lectures: cls.lectures.filter((l) => l.id !== lectureId),
+        };
+        persist(updated);
+        toast.success("Lecture deleted successfully");
+      },
+      message: "Delete this lecture? This cannot be undone.",
+      title: "Delete Lecture",
+      confirmLabel: "Delete",
+    });
+    setConfirmOpen(true);
   };
 
   if (loading) {
@@ -489,7 +533,9 @@ export default function ClassDetailPage() {
                   </div>
                   {lectureType === "audio" && (
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Audio Language</label>
+                      <label className="text-sm font-medium">
+                        Audio Language
+                      </label>
                       <select
                         value={audioLanguage}
                         onChange={(e) => setAudioLanguage(e.target.value)}
@@ -505,7 +551,8 @@ export default function ClassDetailPage() {
                         <option value="de-DE">German</option>
                       </select>
                       <p className="text-xs text-muted-foreground">
-                        Select the language spoken in the audio for accurate transcription
+                        Select the language spoken in the audio for accurate
+                        transcription
                       </p>
                     </div>
                   )}
@@ -568,9 +615,35 @@ export default function ClassDetailPage() {
                     onClick={handleAddLecture}
                   >
                     {isUploading ? (
-                      lectureType === 'audio' ? 'Uploading & Processing...' : 'Uploading...'
+                      lectureType === "audio" ? (
+                        <span className="inline-flex items-center gap-2">
+                          <svg
+                            className="h-4 w-4 animate-spin text-blue-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                            />
+                          </svg>
+                          Uploading & Processing...
+                        </span>
+                      ) : (
+                        "Uploading..."
+                      )
                     ) : (
-                      'Save Lecture'
+                      "Save Lecture"
                     )}
                   </Button>
                 </div>
@@ -671,9 +744,13 @@ export default function ClassDetailPage() {
                                 {lec.type}
                               </span>
                               <LectureActions
-                                onRename={(newTitle: string) =>
-                                  handleRenameLecture(lec.id, newTitle)
-                                }
+                                onRename={() => {
+                                  setLectureRenameTarget({
+                                    id: lec.id,
+                                    current: lec.title,
+                                  });
+                                  setLectureRenameOpen(true);
+                                }}
                                 onDelete={() => handleDeleteLecture(lec.id)}
                               />
                             </div>
@@ -688,6 +765,39 @@ export default function ClassDetailPage() {
           )}
         </Card>
       </main>
+      <ConfirmModal
+        open={confirmOpen && !!confirmData}
+        title={confirmData?.title}
+        message={confirmData?.message || ""}
+        confirmLabel={confirmData?.confirmLabel}
+        cancelLabel="Cancel"
+        onCancel={() => {
+          setConfirmOpen(false);
+          setConfirmData(null);
+        }}
+        onConfirm={() => {
+          if (confirmData?.action) confirmData.action();
+          setConfirmOpen(false);
+          setConfirmData(null);
+        }}
+      />
+      <RenameModal
+        open={lectureRenameOpen && !!lectureRenameTarget}
+        title="Rename Lecture"
+        initialValue={lectureRenameTarget?.current || ""}
+        confirmLabel="Save"
+        onCancel={() => {
+          setLectureRenameOpen(false);
+          setLectureRenameTarget(null);
+        }}
+        onSubmit={(value) => {
+          if (lectureRenameTarget) {
+            handleRenameLecture(lectureRenameTarget.id, value);
+          }
+          setLectureRenameOpen(false);
+          setLectureRenameTarget(null);
+        }}
+      />
     </div>
   );
 }
@@ -700,12 +810,20 @@ type LectureActionsProps = {
 function LectureActions({ onRename, onDelete }: LectureActionsProps) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onClick={(e) => {
+        // prevent anchor navigation
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <button
         className="p-1 rounded-md hover:bg-muted"
         aria-label="Lecture actions"
         type="button"
         onClick={(e) => {
+          e.preventDefault();
           e.stopPropagation();
           setOpen((v) => !v);
         }}
@@ -715,13 +833,17 @@ function LectureActions({ onRename, onDelete }: LectureActionsProps) {
       {open && (
         <div
           className="absolute right-0 z-10 mt-2 w-32 rounded-md border bg-card shadow-md"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <button
             className="w-full text-left px-3 py-2 text-sm hover:bg-muted"
-            onClick={() => {
-              const name = window.prompt("Rename lecture", "");
-              if (name !== null) onRename(name);
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onRename("");
               setOpen(false);
             }}
           >
@@ -729,7 +851,9 @@ function LectureActions({ onRename, onDelete }: LectureActionsProps) {
           </button>
           <button
             className="w-full text-left px-3 py-2 text-sm hover:bg-muted text-red-600"
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               onDelete();
               setOpen(false);
             }}

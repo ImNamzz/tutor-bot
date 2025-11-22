@@ -16,6 +16,16 @@ export interface ClassItem {
   createdAt: string;
 }
 
+export interface ClassCardProps {
+  item: ClassItem;
+  onRename?: (id: string, newName: string) => void;
+  onDelete?: (id: string) => void;
+  onUploadBackground?: (item: ClassItem) => void;
+  onDeleteBackground?: (id: string) => void;
+  isMenuOpen?: boolean;
+  onToggleMenu?: (id: string) => void;
+}
+
 export const CLASS_COLORS: string[] = [
   "bg-indigo-500",
   "bg-emerald-500",
@@ -30,7 +40,6 @@ export const CLASS_COLORS: string[] = [
 export const generateId = () =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-// --- Lecture Detail dummy data contracts ---
 export type ActionItem = {
   id: string;
   text: string;

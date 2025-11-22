@@ -123,7 +123,7 @@ export default function LectureDetailPage() {
       } else {
         setData(prev => ({
           ...prev,
-          summary: 'No summary generated yet. Click "Generate" to create a summary from the transcript.'
+          summary: 'No summary generated yet. Click "Analyze" to create a summary from the transcript.'
         }));
       }
       
