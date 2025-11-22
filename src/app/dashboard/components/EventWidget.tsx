@@ -246,7 +246,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
     setSelectedCalendarDate(extractedDate || new Date());
     setEventFormTime("");
     setEventFormLocation("");
-    setUseEventType(false);
+    setUseEventType(true);
     setCalendarDialogOpen(true);
   };
 
@@ -612,33 +612,6 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                 </p>
               )}
 
-              {/* Type Toggle */}
-              <div className="mb-4 flex items-center gap-3">
-                <span className="text-sm font-medium">Type:</span>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setUseEventType(false)}
-                    className={`px-3 py-1.5 rounded-md font-medium text-sm transition-all ${
-                      !useEventType
-                        ? "bg-foreground text-background"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    Deadline
-                  </button>
-                  <button
-                    onClick={() => setUseEventType(true)}
-                    className={`px-3 py-1.5 rounded-md font-medium text-sm transition-all ${
-                      useEventType
-                        ? "bg-foreground text-background"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    Event
-                  </button>
-                </div>
-              </div>
-
               {/* Date Field */}
               <div className="mb-4">
                 <label className="text-sm font-medium mb-2 block">Select Date</label>
@@ -655,30 +628,29 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
               </div>
 
               {/* Event-specific fields */}
-              {useEventType && (
-                <>
-                  <div className="mb-4">
-                    <label className="text-sm font-medium mb-2 block">Time (Optional)</label>
-                    <input
-                      type="time"
-                      placeholder="e.g., 14:30"
-                      value={eventFormTime}
-                      onChange={(e) => setEventFormTime(e.target.value)}
-                      className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="text-sm font-medium mb-2 block">Location (Optional)</label>
-                    <input
-                      type="text"
-                      placeholder="e.g., Conference room B"
-                      value={eventFormLocation}
-                      onChange={(e) => setEventFormLocation(e.target.value)}
-                      className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-                    />
-                  </div>
-                </>
-              )}
+              <>
+                <div className="mb-4">
+                  <label className="text-sm font-medium mb-2 block">Time (Optional)</label>
+                  <input
+                    type="time"
+                    placeholder="e.g., 14:30"
+                    value={eventFormTime}
+                    onChange={(e) => setEventFormTime(e.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="text-sm font-medium mb-2 block">Location (Optional)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Conference room B"
+                    value={eventFormLocation}
+                    onChange={(e) => setEventFormLocation(e.target.value)}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  />
+                </div>
+              </>
+
 
               <div className="flex gap-2 justify-end">
                 <Button
@@ -689,7 +661,7 @@ export const EventWidget: React.FC<EventWidgetProps> = ({
                     setSelectedEventForCalendar(null);
                     setEventFormTime("");
                     setEventFormLocation("");
-                    setUseEventType(false);
+                    setUseEventType(true);
                   }}
                 >
                   Cancel

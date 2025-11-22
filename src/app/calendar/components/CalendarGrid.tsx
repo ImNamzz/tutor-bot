@@ -130,6 +130,10 @@ export default function CalendarGrid({
     );
   };
 
+  const goToMonth = (month: number, year: number) => {
+    setCurrentMonth(new Date(year, month, 1));
+  };
+
   const handleDateClick = (day: CalendarDay) => {
     // Just select the date, don't open dialog
     onDateChange?.(day.date);
@@ -224,7 +228,45 @@ export default function CalendarGrid({
         >
           <ChevronLeft className="size-4" />
         </Button>
-        <h2 className="text-lg font-bold text-foreground">{monthName}</h2>
+        
+        <div className="flex items-center gap-3">
+          {/* Month Dropdown */}
+          <select
+            value={currentMonth.getMonth()}
+            onChange={(e) => goToMonth(parseInt(e.target.value), currentMonth.getFullYear())}
+            className="px-3 py-1.5 rounded-md border border-border bg-card text-foreground text-sm font-semibold hover:border-primary/40 transition-colors"
+          >
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+          </select>
+
+          {/* Year Dropdown */}
+          <select
+            value={currentMonth.getFullYear()}
+            onChange={(e) => goToMonth(currentMonth.getMonth(), parseInt(e.target.value))}
+            className="px-3 py-1.5 rounded-md border border-border bg-card text-foreground text-sm font-semibold hover:border-primary/40 transition-colors"
+          >
+            {Array.from({ length: 10 }, (_, i) => {
+              const year = new Date().getFullYear() - 5 + i;
+              return (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        
         <Button
           variant="outline"
           size="icon"
