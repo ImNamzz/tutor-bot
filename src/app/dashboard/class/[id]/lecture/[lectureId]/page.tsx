@@ -800,12 +800,22 @@ function PersonalNotes() {
         const data = await response.json();
         setNotebookId(data.id);
         setNotebookContent(data.content || "");
+      } else if (response.status === 404) {
+        // Notebook doesn't exist yet, which is fine - it will be created on first save
+        console.log('Notebook does not exist yet, will create on save');
+        setNotebookContent("");
+        setNotebookId(null);
       } else {
-        toast.error('Failed to load notebook');
+        console.error('Unexpected error loading notebook:', response.status);
+        // Don't show error toast on load failure - just initialize empty
+        setNotebookContent("");
+        setNotebookId(null);
       }
     } catch (error) {
       console.error('Error loading notebook:', error);
-      toast.error('Failed to load notebook');
+      // Don't show error toast - just initialize empty and ready for new content
+      setNotebookContent("");
+      setNotebookId(null);
     }
   };
 
