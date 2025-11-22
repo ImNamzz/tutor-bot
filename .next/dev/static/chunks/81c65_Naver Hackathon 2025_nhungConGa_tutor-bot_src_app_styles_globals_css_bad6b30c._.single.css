@@ -1537,16 +1537,8 @@
     min-width: calc(var(--spacing) * 0);
   }
 
-  .min-w-20 {
-    min-width: calc(var(--spacing) * 20);
-  }
-
   .min-w-\[8rem\] {
     min-width: 8rem;
-  }
-
-  .min-w-\[80px\] {
-    min-width: 80px;
   }
 
   .min-w-\[140px\] {
@@ -3061,6 +3053,10 @@
 
   .whitespace-pre-wrap {
     white-space: pre-wrap;
+  }
+
+  .\!text-\[\#7c86ff\], .text-\[\#7c86ff\]\! {
+    color: #7c86ff !important;
   }
 
   .text-accent-foreground {
@@ -5053,6 +5049,14 @@
     color: var(--color-indigo-400);
   }
 
+  .dark\:text-indigo-600:is(.dark *) {
+    color: var(--color-indigo-600);
+  }
+
+  .dark\:text-indigo-700:is(.dark *) {
+    color: var(--color-indigo-700);
+  }
+
   .dark\:text-orange-300:is(.dark *) {
     color: var(--color-orange-300);
   }
@@ -5250,6 +5254,12 @@
   @media (hover: hover) {
     .dark\:hover\:text-indigo-400:is(.dark *):hover {
       color: var(--color-indigo-400);
+    }
+  }
+
+  @media (hover: hover) {
+    .dark\:hover\:text-indigo-700:is(.dark *):hover {
+      color: var(--color-indigo-700);
     }
   }
 
