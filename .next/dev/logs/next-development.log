@@ -1,179 +1,19 @@
-[00:00:02.209] Server  LOG      ✓ Ready in 1611ms
-[00:00:11.968] Server  LOG      ○ Compiling / ...
-[00:00:14.692] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:15.333] Browser ERROR   Error fetching user profile: {}
-[00:00:39.364] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:39.364] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:39.364] Browser ERROR   Error fetching user profile: {}
-[00:00:44.079] Server  LOG      ○ Compiling /dashboard ...
-[00:00:55.042] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:55.042] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:56.936] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:56.936] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:58.889] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:58.889] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:55.619] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:55.619] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:19:29.739] Server  LOG      ✓ Compiled in 892ms
-[00:19:54.631] Server  LOG      ✓ Compiled in 624ms
-[00:20:05.474] Server  LOG      ✓ Compiled in 248ms
-[00:20:55.693] Browser ERROR   Error fetching classes: {}
-[00:20:56.214] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:21:02.089] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:21:03.423] Browser ERROR   Error fetching user profile: {}
-[00:21:03.423] Browser ERROR   Error fetching user profile: {}
-[00:21:07.928] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:21:07.928] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:21:10.989] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:21:10.989] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:22:18.963] Server  LOG      ✓ Compiled in 1487ms
-[00:22:35.890] Server  LOG      ✓ Compiled in 194ms
-[00:22:51.578] Server  LOG      ✓ Compiled in 613ms
-[00:23:05.555] Server  LOG      ✓ Compiled in 524ms
-[00:23:34.025] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:23:34.025] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:23:38.724] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:23:38.725] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:23:44.304] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:23:44.304] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:24:36.268] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:24:36.268] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:24:48.035] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:24:48.035] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:25:05.237] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:25:05.238] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:25:07.112] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:25:07.112] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:25:35.627] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:26:34.084] Server  LOG      ✓ Compiled in 606ms
-[00:26:46.835] Server  LOG      ✓ Compiled in 684ms
-[00:27:01.713] Server  LOG      ✓ Compiled in 400ms
-[00:29:15.132] Server  LOG      ✓ Compiled in 324ms
-[00:29:45.315] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:29:45.315] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:29:47.081] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:29:47.081] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:29:51.488] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:29:51.661] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <SegmentViewNode type="page" pagePath="/OneDrive/...">
-      <SegmentTrieNode>
-      <ClientPageRoot Component={function DashboardPage} serverProvidedParams={{...}}>
-        <DashboardPage params={Promise} searchParams={Promise}>
-          <div className="min-h-scre...">
-            <nav>
-            <main>
-            <EventWidget items={[...]}>
-              <motion.div drag={true} dragControls={{...}} dragListener={false} dragMomentum={false} ...>
-                <MeasureLayout>
-                <div className="fixed righ..." style={{width:360, ...}} ref={function useMotionRef.useCallback}>
-                  <div className="relative b..." style={{width:360}}>
-                    <div>
-                    <div>
-                    <div className="flex-1 ove...">
-                      <div onClick={function onClick} className="rounded-lg...">
-                        <div className="flex items...">
-                          <p>
-                          <span className="text-[10px] text-gray-400 shrink-0">
-+                           5:13:01 PM
--                           5:13:00 PM
-                        ...
-                      ...
-    ...
-
-[00:30:44.194] Server  LOG      ✓ Compiled in 529ms
-[00:30:55.249] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:30:55.421] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <SegmentViewNode type="page" pagePath="/OneDrive/...">
-      <SegmentTrieNode>
-      <ClientPageRoot Component={function DashboardPage} serverProvidedParams={{...}}>
-        <DashboardPage params={Promise} searchParams={Promise}>
-          <div className="min-h-scre...">
-            <nav>
-            <main>
-            <EventWidget items={[...]}>
-              <motion.div drag={true} dragControls={{...}} dragListener={false} dragMomentum={false} ...>
-                <MeasureLayout>
-                <div className="fixed righ..." style={{width:360, ...}} ref={function useMotionRef.useCallback}>
-                  <div className="relative b..." style={{width:360}}>
-                    <div>
-                    <div>
-                    <div className="flex-1 ove...">
-                      <div onClick={function onClick} className="rounded-lg...">
-                        <div className="flex items...">
-                          <p>
-                          <span className="text-[10px] text-gray-400 shrink-0">
-+                           5:14:05 PM
--                           5:14:04 PM
-                        ...
-                      ...
-    ...
-
-[00:31:11.796] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:31:11.797] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:32:57.360] Server  LOG      ✓ Compiled in 349ms
-[00:33:12.696] Server  LOG      ✓ Compiled in 619ms
-[00:33:26.922] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:33:26.923] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:35:37.085] Server  LOG      ✓ Compiled in 710ms
-[00:36:01.212] Server  LOG      ✓ Compiled in 797ms
-[00:36:51.171] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:36:56.422] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:36:57.358] Browser ERROR   Error fetching user profile: {}
-[00:36:57.466] Browser ERROR   Error fetching user profile: {}
-[00:40:14.305] Browser ERROR   Error fetching user profile: {}
-[00:40:14.415] Browser ERROR   Error fetching user profile: {}
-[00:45:47.505] Server  LOG      ✓ Compiled in 264ms
-[00:46:27.988] Server  LOG      ✓ Compiled in 1098ms
-[00:47:03.872] Browser ERROR   Error fetching user profile: {}
-[00:47:03.872] Browser ERROR   Error fetching user profile: {}
-[00:47:08.801] Browser LOG     Skipping save: no valid session ID from backend
-[00:47:41.931] Browser LOG     Skipping save: no valid session ID from backend
-[00:49:28.765] Server  LOG      ✓ Compiled in 1016ms
-[00:49:29.182] Browser ERROR   Error fetching user profile: {}
-[00:51:22.040] Server  LOG      ✓ Compiled in 1035ms
-[00:53:10.721] Server  LOG      ✓ Compiled in 522ms
-[00:53:11.619] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:54:51.512] Server  LOG      ✓ Compiled in 1327ms
-[00:56:06.897] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:56:08.388] Browser ERROR   Error fetching user profile: {}
-[00:56:08.571] Browser ERROR   Error fetching user profile: {}
-[00:58:40.973] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:59:56.475] Server  LOG      ✓ Compiled in 311ms
-[01:01:27.738] Server  LOG      ✓ Compiled in 744ms
-[01:20:14.111] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[01:20:14.111] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[01:22:48.197] Server  LOG      ✓ Compiled in 673ms
-[01:22:58.652] Server  LOG      ✓ Compiled in 297ms
-[01:22:59.633] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:24:57.692] Server  LOG      ✓ Compiled in 423ms
-[01:30:08.570] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:30:09.680] Browser ERROR   Error fetching user profile: {}
-[01:30:09.804] Browser ERROR   Error fetching user profile: {}
-[01:30:15.940] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[01:30:15.940] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[01:30:29.185] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[01:30:29.185] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:10.381] Server  LOG      ✓ Ready in 9.7s
+[00:02:52.270] Server  LOG      ○ Compiling / ...
+[00:03:00.128] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:00.557] Browser ERROR   Error fetching user profile: {}
+[00:05:20.674] Server  LOG      ○ Compiling /dashboard ...
+[00:05:23.103] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:29.982] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:31.061] Browser ERROR   Error fetching user profile: {}
+[00:05:31.217] Browser ERROR   Error fetching user profile: {}
+[00:05:46.404] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:05:46.404] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:06:57.946] Server  LOG      ✓ Compiled in 774ms
+[00:07:23.861] Server  LOG      ✓ Compiled in 266ms
+[00:07:39.573] Server  LOG      ✓ Compiled in 521ms
+[00:08:00.097] Server  LOG      ✓ Compiled in 628ms
+[00:11:10.504] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:11:10.504] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:14:40.330] Server  LOG      ✓ Compiled in 817ms
+[00:15:07.097] Server  LOG      ✓ Compiled in 774ms

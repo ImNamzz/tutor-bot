@@ -57,6 +57,7 @@ export default function ClassDetailPage() {
   const [uploadedText, setUploadedText] = useState<string>("");
   const [actualFile, setActualFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [audioLanguage, setAudioLanguage] = useState<string>("en-US");
 
   useEffect(() => {
     setMounted(true);
@@ -208,6 +209,7 @@ export default function ClassDetailPage() {
         setUploadedFile(null);
         setUploadedText("");
         setActualFile(null);
+        setAudioLanguage("en-US");
       } catch (error) {
         console.error('Error uploading text lecture:', error);
         toast.error('Failed to upload text lecture');
@@ -215,8 +217,60 @@ export default function ClassDetailPage() {
         setIsUploading(false);
       }
     } else if (lectureType === "audio") {
-      // Audio type - placeholder for future implementation
-      toast.info('Audio upload will be implemented next');
+      // Audio lecture - upload audio file
+      if (!actualFile) {
+        toast.error('Please upload an audio file');
+        return;
+      }
+
+      try {
+        setIsUploading(true);
+        
+        // Upload audio file to backend
+        const formData = new FormData();
+        formData.append('media', actualFile);
+        formData.append('class_id', classId);
+        formData.append('title', lectureTitle.trim());
+        formData.append('language', audioLanguage);
+
+        const response = await fetch(API_ENDPOINTS.uploadAudio, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            handleAuthError(401);
+            return;
+          }
+          const errorData = await response.json().catch(() => ({ detail: 'Failed to upload audio' }));
+          throw new Error(errorData.detail || 'Failed to upload audio');
+        }
+
+        const newLecture = await response.json();
+        toast.success('Audio lecture uploaded successfully! Transcription is being processed.');
+        
+        // Refresh the class to get updated lectures
+        await fetchClass();
+        
+        // Reset form
+        setLectureTitle("");
+        setLectureContentText("");
+        setLectureType("text");
+        setOpenLectureModal(false);
+        setUploadedFile(null);
+        setUploadedText("");
+        setActualFile(null);
+        setAudioLanguage("en-US");
+      } catch (error: any) {
+        console.error('Error uploading audio lecture:', error);
+        toast.error(error.message || 'Failed to upload audio lecture');
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -225,6 +279,15 @@ export default function ClassDetailPage() {
     if (!file) return;
     setFileError("");
     if (lectureType === "audio") {
+      // Validate audio file type
+      const validAudioTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/m4a', 'audio/mp4', 'audio/ogg', 'audio/webm'];
+      const isValidAudio = validAudioTypes.includes(file.type) || /\.(mp3|wav|m4a|ogg|webm)$/i.test(file.name);
+      
+      if (!isValidAudio) {
+        setFileError("Please upload a valid audio file (MP3, WAV, M4A, OGG, or WebM)");
+        return;
+      }
+      
       // Store file meta for display and actual file for upload
       setUploadedFile({
         name: file.name,
@@ -424,6 +487,28 @@ export default function ClassDetailPage() {
                       </Button>
                     </div>
                   </div>
+                  {lectureType === "audio" && (
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Audio Language</label>
+                      <select
+                        value={audioLanguage}
+                        onChange={(e) => setAudioLanguage(e.target.value)}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      >
+                        <option value="en-US">English (US)</option>
+                        <option value="en-GB">English (UK)</option>
+                        <option value="ko-KR">Korean</option>
+                        <option value="ja-JP">Japanese</option>
+                        <option value="zh-CN">Chinese (Simplified)</option>
+                        <option value="es-ES">Spanish</option>
+                        <option value="fr-FR">French</option>
+                        <option value="de-DE">German</option>
+                      </select>
+                      <p className="text-xs text-muted-foreground">
+                        Select the language spoken in the audio for accurate transcription
+                      </p>
+                    </div>
+                  )}
                   <div className="space-y-2">
                     <label className="text-sm font-medium">
                       {lectureType === "audio"
@@ -482,7 +567,11 @@ export default function ClassDetailPage() {
                     className="w-full"
                     onClick={handleAddLecture}
                   >
-                    {isUploading ? 'Uploading...' : 'Save Lecture'}
+                    {isUploading ? (
+                      lectureType === 'audio' ? 'Uploading & Processing...' : 'Uploading...'
+                    ) : (
+                      'Save Lecture'
+                    )}
                   </Button>
                 </div>
               </DialogContent>

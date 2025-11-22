@@ -62,6 +62,8 @@ export default function LectureDetailPage() {
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isExtracting, setIsExtracting] = useState(false);
+  const [lectureStatus, setLectureStatus] = useState<string>('COMPLETED');
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
 
   useEffect(() => {
     fetchLecture();
@@ -88,18 +90,34 @@ export default function LectureDetailPage() {
 
       const lecture = await response.json();
       
-      setLectureTitle(lecture.title);
+      setLectureTitle(lecture.title || "Lecture");
+      setLectureStatus(lecture.status || 'COMPLETED');
       
-      // Set transcript
-      if (lecture.transcript?.trim()) {
+      // Set transcript - this is where the transcribed audio content appears
+      if (lecture.transcript && lecture.transcript.trim()) {
         setTranscriptDraft(lecture.transcript);
+        setData(prev => ({
+          ...prev,
+          transcript: lecture.transcript
+        }));
+      } else if (lecture.status === 'PROCESSING') {
+        setTranscriptDraft('Audio is being transcribed. Please check back in a moment...');
+        // Start polling for status updates
+        checkTranscriptionStatus();
+      } else {
+        setTranscriptDraft('No transcript available yet.');
       }
       
       // Set summary if available
-      if (lecture.summary) {
+      if (lecture.summary && lecture.summary.trim()) {
         setData(prev => ({
           ...prev,
           summary: lecture.summary
+        }));
+      } else {
+        setData(prev => ({
+          ...prev,
+          summary: 'No summary generated yet. Click "Generate" to create a summary from the transcript.'
         }));
       }
       
@@ -139,6 +157,43 @@ export default function LectureDetailPage() {
     }
   };
 
+  const checkTranscriptionStatus = async () => {
+    if (!lectureId || isCheckingStatus) return;
+    
+    try {
+      setIsCheckingStatus(true);
+      const response = await fetch(API_ENDPOINTS.getLectureStatus(lectureId), {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        console.error('Failed to check transcription status');
+        return;
+      }
+
+      const lecture = await response.json();
+      
+      if (lecture.status === 'COMPLETED' && lecture.transcript) {
+        setLectureStatus('COMPLETED');
+        setTranscriptDraft(lecture.transcript);
+        setData(prev => ({
+          ...prev,
+          transcript: lecture.transcript
+        }));
+        toast.success('Transcription completed!');
+      } else if (lecture.status === 'PROCESSING') {
+        // Continue polling every 5 seconds
+        setTimeout(() => checkTranscriptionStatus(), 5000);
+      }
+    } catch (error) {
+      console.error('Error checking transcription status:', error);
+    } finally {
+      setIsCheckingStatus(false);
+    }
+  };
+
   // Actions
   const regenerateSummary = async () => {
     if (!lectureId) return;
@@ -166,7 +221,7 @@ export default function LectureDetailPage() {
 
       const result = await response.json();
       
-      // Update summary
+      // Update summary from the returned lecture object
       if (result.lecture?.summary) {
         setData(prev => ({
           ...prev,
@@ -374,16 +429,31 @@ export default function LectureDetailPage() {
                 </span>
               </div>
               <div className="flex items-center gap-5 flex-wrap">
-                <div className="relative py-1">
+                <div className="relative py-1 flex items-center gap-3">
                   <div className="pointer-events-none absolute -inset-x-8 -inset-y-4 -z-10 rounded-full bg-violet-400/10 blur-3xl" />
                   <h1 className="text-3xl font-bold tracking-tight leading-tight relative text-slate-800 dark:text-slate-100">
                     {lectureTitle || "Lecture"}
                   </h1>
+                  {lectureStatus === 'PROCESSING' && (
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+                      Transcribing...
+                    </Badge>
+                  )}
                 </div>
                 <ProgressRing percent={progressPct} label={`${progressPct}%`} />
               </div>
             </div>
             <div className="flex gap-2 shrink-0">
+              {lectureStatus === 'PROCESSING' && (
+                <Button
+                  variant="outline"
+                  onClick={checkTranscriptionStatus}
+                  disabled={isCheckingStatus}
+                  className="border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-200 dark:hover:bg-blue-900/30"
+                >
+                  {isCheckingStatus ? 'Checking...' : 'Check Status'}
+                </Button>
+              )}
               <Button
                 variant="outline"
                 onClick={resetAll}
