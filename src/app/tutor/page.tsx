@@ -12,6 +12,7 @@ export default function TutorPage() {
   const router = useRouter();
   const lectureId = searchParams?.get('lectureId');
   const classId = searchParams?.get('classId');
+  const sessionId = searchParams?.get('sessionId');
   
   // Must-have state
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -27,13 +28,47 @@ export default function TutorPage() {
 
   // Fetch lecture transcript if lectureId is provided
   useEffect(() => {
-    if (lectureId) {
+    // First, try to load a saved session if sessionId is provided
+    if (sessionId) {
+      loadSavedSession(sessionId);
+    } else if (lectureId) {
       fetchLectureTranscript(lectureId);
     } else {
       // Initialize with generic first question if no lecture context
       initializeGenericChat();
     }
-  }, [lectureId]);
+  }, [lectureId, sessionId]);
+
+  const loadSavedSession = (id: string) => {
+    try {
+      const sessionKey = `chat_session_${id}`;
+      const sessionData = localStorage.getItem(sessionKey);
+      
+      if (sessionData) {
+        const parsed = JSON.parse(sessionData);
+        setMessages(parsed.messages || []);
+        setSessionTitle(parsed.title || "Chat Session");
+        setCurrentSessionId(parsed.id);
+        // Update progress based on message count
+        const userMessages = (parsed.messages || []).filter((m: any) => m.type === 'user');
+        setSessionProgress({
+          currentQuestion: userMessages.length + 1,
+          totalQuestions: 12,
+        });
+      } else {
+        toast.error('Session not found');
+        // Fall back to initializing a new chat
+        if (lectureId) {
+          fetchLectureTranscript(lectureId);
+        } else {
+          initializeGenericChat();
+        }
+      }
+    } catch (error) {
+      console.error('Error loading saved session:', error);
+      toast.error('Failed to load session');
+    }
+  };
 
   const fetchLectureTranscript = async (id: string) => {
     try {

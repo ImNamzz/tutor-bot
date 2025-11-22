@@ -251,3 +251,62 @@ Incoming: %s useEffect [] [, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6Zm
 [02:10:27.298] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
 [02:11:14.182] Server  LOG      ✓ Compiled in 1200ms
 [02:11:23.081] Server  LOG      ✓ Compiled in 240ms
+[02:14:27.062] Browser ERROR   Error fetching user profile: {}
+[02:14:27.171] Browser ERROR   Error fetching user profile: {}
+[02:14:37.480] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:14:38.526] Browser ERROR   Error fetching user profile: {}
+[02:14:38.651] Browser ERROR   Error fetching user profile: {}
+[02:14:45.768] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:14:45.877] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:15:22.404] Browser ERROR   Error fetching user profile: {}
+[02:15:22.521] Browser ERROR   Error fetching user profile: {}
+[02:16:00.039] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:00.301] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:01.174] Browser ERROR   uncaughtError: ReferenceError: loadSavedSessions is not defined
+[02:16:01.824] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[02:16:01.832] Server  LOG      ✓ Compiled in 241ms
+[02:16:02.672] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:16:09.469] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:09.592] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:21.887] Server  LOG      ✓ Compiled in 228ms
+[02:16:33.749] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:33.749] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:36.700] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:36.700] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:39.070] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:39.401] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:40.850] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:40.850] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:46.750] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:16:46.880] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:09.712] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:09.712] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:12.128] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:12.128] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:14.559] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:14.559] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:22.704] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:22.829] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:24.686] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:24.828] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:27.523] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:27.523] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[02:17:31.626] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:31.750] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:17:46.829] Server  LOG      ✓ Compiled in 114ms
+[02:18:38.693] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:18:38.820] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:18:42.608] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:18:42.608] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:18:46.734] Server  LOG      ✓ Compiled in 124ms
+[02:18:56.360] Server  LOG      ✓ Compiled in 242ms
+[02:18:57.597] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:18:58.949] Browser ERROR   Error fetching user profile: {}
+[02:18:59.168] Browser ERROR   Error fetching user profile: {}
+[02:19:31.457] Server  LOG      ✓ Compiled in 397ms
+[02:19:58.664] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:19:58.776] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:20:00.983] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:20:01.130] Browser LOG     Fetched action items for lecture: 9688144d-0b9b-4236-875e-e91d84ac39e7 []
+[02:20:03.015] Browser ERROR   Error fetching user profile: {}
+[02:20:03.141] Browser ERROR   Error fetching user profile: {}

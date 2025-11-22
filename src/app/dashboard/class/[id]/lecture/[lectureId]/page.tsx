@@ -566,7 +566,7 @@ export default function LectureDetailPage() {
                       {savedSessions.map((session) => (
                         <button
                           key={session.id}
-                          onClick={() => resumeSession(session.id)}
+                          onClick={() => resumeSession(session.id.replace('chat_session_', ''))}
                           className="w-full text-left p-3 rounded-md border border-emerald-200/50 dark:border-emerald-800/50 bg-white/40 dark:bg-emerald-950/20 hover:bg-emerald-100/40 dark:hover:bg-emerald-900/30 transition-colors"
                         >
                           <div className="text-sm font-medium text-foreground truncate">
