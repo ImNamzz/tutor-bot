@@ -6,6 +6,9 @@ import Topbar from "@/app/components/Topbar";
 import { Button } from "@/app/components/ui/button";
 import { Card } from "@/app/components/ui/card";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
+import { API_ENDPOINTS } from "@/app/lib/config";
+import { getAccessToken, handleAuthError } from "@/app/lib/auth";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -32,15 +35,13 @@ import {
   X,
 } from "lucide-react";
 
-const STORAGE_KEY = "eduassist_classes";
-
 export default function ClassDetailPage() {
   const params = useParams();
   const router = useRouter();
   const classId = params?.id as string;
   const [cls, setCls] = useState<ClassItem | null>(null);
-  const [allClasses, setAllClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Lecture modal state
   const [openLectureModal, setOpenLectureModal] = useState(false);
@@ -57,24 +58,64 @@ export default function ClassDetailPage() {
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed: ClassItem[] = JSON.parse(raw);
-        setAllClasses(parsed);
-        const found = parsed.find((c) => c.id === classId);
-        setCls(found || null);
-      }
-    } catch (e) {
-      console.error("Failed to load class", e);
-    }
+    fetchClass();
   }, [classId]);
 
-  const persist = (next: ClassItem[]) => {
-    setAllClasses(next);
+  const fetchClass = async () => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch {}
+      setLoading(true);
+      const response = await fetch(API_ENDPOINTS.classes, {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error('Failed to fetch class');
+      }
+
+      const data = await response.json();
+      
+      // Find the specific class
+      const found = data.find((c: any) => c.id === classId);
+      
+      if (found) {
+        // Transform to match ClassItem interface
+        const transformedClass: ClassItem = {
+          id: found.id,
+          name: found.title,
+          code: found.code || '',
+          color: found.color || '#6366f1',
+          lectures: found.lectures?.map((lec: any) => ({
+            id: lec.id,
+            title: lec.title,
+            type: lec.type || 'text',
+            content: lec.transcript || lec.content || '',
+            createdAt: lec.created_at,
+            status: lec.status
+          })) || [],
+          createdAt: found.created_at
+        };
+        setCls(transformedClass);
+      } else {
+        setCls(null);
+      }
+    } catch (error) {
+      console.error('Error fetching class:', error);
+      toast.error('Failed to load class details');
+      setCls(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const persist = async (updated: ClassItem) => {
+    // No longer need to persist all classes, just update this one
+    setCls(updated);
   };
 
   const handleAddLecture = () => {
@@ -98,11 +139,11 @@ export default function ClassDetailPage() {
       content,
       createdAt: new Date().toISOString(),
     };
-    const updated = allClasses.map((c) =>
-      c.id === cls.id ? { ...c, lectures: [newLecture, ...c.lectures] } : c
-    );
+    const updated: ClassItem = {
+      ...cls,
+      lectures: [newLecture, ...cls.lectures]
+    };
     persist(updated);
-    setCls(updated.find((c) => c.id === cls.id) || null);
     setLectureTitle("");
     setLectureContentText("");
     setLectureType("text");
@@ -146,34 +187,32 @@ export default function ClassDetailPage() {
     if (!cls) return;
     const title = newTitle.trim();
     if (!title) return;
-    const updated = allClasses.map((c) =>
-      c.id === cls.id
-        ? {
-            ...c,
-            lectures: c.lectures.map((l) =>
-              l.id === lectureId ? { ...l, title } : l
-            ),
-          }
-        : c
-    );
+    const updated: ClassItem = {
+      ...cls,
+      lectures: cls.lectures.map((l) =>
+        l.id === lectureId ? { ...l, title } : l
+      )
+    };
     persist(updated);
-    setCls(updated.find((c) => c.id === cls.id) || null);
   };
 
   const handleDeleteLecture = (lectureId: string) => {
     if (!cls) return;
     if (!window.confirm("Delete this lecture? This cannot be undone.")) return;
-    const updated = allClasses.map((c) =>
-      c.id === cls.id
-        ? {
-            ...c,
-            lectures: c.lectures.filter((l) => l.id !== lectureId),
-          }
-        : c
-    );
+    const updated: ClassItem = {
+      ...cls,
+      lectures: cls.lectures.filter((l) => l.id !== lectureId)
+    };
     persist(updated);
-    setCls(updated.find((c) => c.id === cls.id) || null);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-muted-foreground">Loading class...</p>
+      </div>
+    );
+  }
 
   if (mounted && !cls) {
     return (

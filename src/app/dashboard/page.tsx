@@ -5,6 +5,9 @@ import EventWidget from "./components/EventWidget";
 import { AddClassModal } from "./components/AddClassModal";
 import { ClassCard } from "./components/ClassCard";
 import { ClassItem } from "@/app/lib/types/class";
+import { API_ENDPOINTS } from "@/app/lib/config";
+import { getAccessToken, handleAuthError } from "@/app/lib/auth";
+import { toast } from "sonner";
 import {
   CalendarDays,
   Activity,
@@ -14,6 +17,7 @@ import {
 } from "lucide-react";
 
 const STORAGE_KEY = "eduassist_classes";
+const COLORS_KEY = "eduassist_class_colors";
 
 export default function DashboardPage() {
   // Mock events for the EventWidget
@@ -48,44 +52,189 @@ export default function DashboardPage() {
   ];
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "upcoming" | "ended"
   >("all");
+  const [classColors, setClassColors] = useState<Record<string, string>>({});
 
+  // Load colors from localStorage and then fetch classes
   useEffect(() => {
     setMounted(true);
+    
+    // Load colors first
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setClasses(JSON.parse(raw));
+      const savedColors = localStorage.getItem(COLORS_KEY);
+      if (savedColors) {
+        const colors = JSON.parse(savedColors);
+        setClassColors(colors);
+        // Fetch classes with the loaded colors
+        fetchClasses(colors);
+      } else {
+        // No saved colors, just fetch classes
+        fetchClasses({});
+      }
     } catch (e) {
-      console.error("Failed to load classes", e);
+      console.error("Failed to load class colors", e);
+      fetchClasses({});
     }
   }, []);
 
-  const persist = (next: ClassItem[]) => {
-    setClasses(next);
+  // Save colors to localStorage whenever they change
+  const saveColor = (classId: string, color: string) => {
+    const newColors = { ...classColors, [classId]: color };
+    setClassColors(newColors);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      localStorage.setItem(COLORS_KEY, JSON.stringify(newColors));
     } catch (e) {
-      console.error("Failed to save classes", e);
+      console.error("Failed to save class colors", e);
     }
   };
 
-  const handleAddClass = (item: ClassItem) => {
-    persist([item, ...classes]);
+  const fetchClasses = async (colors: Record<string, string> = classColors) => {
+    try {
+      setLoading(true);
+      const response = await fetch(API_ENDPOINTS.classes, {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error('Failed to fetch classes');
+      }
+
+      const data = await response.json();
+      
+      // Transform backend data to match ClassItem interface
+      const transformedClasses = data.map((cls: any) => ({
+        id: cls.id,
+        name: cls.title,
+        code: cls.code || '',
+        color: colors[cls.id] || '#6366f1', // Use saved color or default
+        lectures: cls.lectures?.map((lec: any) => ({
+          id: lec.id,
+          title: lec.title,
+          createdAt: lec.created_at,
+          status: lec.status
+        })) || [],
+        createdAt: cls.created_at
+      }));
+
+      setClasses(transformedClasses);
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+      toast.error('Failed to load classes');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRenameClass = (id: string, newName: string) => {
-    const next = classes.map((c) =>
-      c.id === id ? { ...c, name: newName } : c
-    );
-    persist(next);
+  const handleAddClass = async (item: ClassItem) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.classes, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          title: item.name
+        })
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error('Failed to create class');
+      }
+
+      const newClass = await response.json();
+      
+      // Save the color choice to localStorage
+      saveColor(newClass.id, item.color || '#6366f1');
+      
+      // Transform and add to local state
+      const transformedClass: ClassItem = {
+        id: newClass.id,
+        name: newClass.title,
+        code: item.code || '',
+        color: item.color || '#6366f1',
+        lectures: [],
+        createdAt: newClass.created_at
+      };
+
+      setClasses([transformedClass, ...classes]);
+      toast.success('Class created successfully');
+    } catch (error) {
+      console.error('Error creating class:', error);
+      toast.error('Failed to create class');
+    }
   };
 
-  const handleDeleteClass = (id: string) => {
-    const next = classes.filter((c) => c.id !== id);
-    persist(next);
+  const handleRenameClass = async (id: string, newName: string) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.updateClass(id), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          title: newName
+        })
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error('Failed to update class');
+      }
+
+      const next = classes.map((c) =>
+        c.id === id ? { ...c, name: newName } : c
+      );
+      setClasses(next);
+      toast.success('Class renamed successfully');
+    } catch (error) {
+      console.error('Error renaming class:', error);
+      toast.error('Failed to rename class');
+    }
+  };
+
+  const handleDeleteClass = async (id: string) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.deleteClass(id), {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error('Failed to delete class');
+      }
+
+      const next = classes.filter((c) => c.id !== id);
+      setClasses(next);
+      toast.success('Class deleted successfully');
+    } catch (error) {
+      console.error('Error deleting class:', error);
+      toast.error('Failed to delete class');
+    }
   };
 
   // Derived helpers
@@ -217,9 +366,14 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {mounted && filteredClasses.length === 0 && (
+            {mounted && filteredClasses.length === 0 && !loading && (
               <p className="text-sm text-muted-foreground">
                 No classes match your filters.
+              </p>
+            )}
+            {loading && (
+              <p className="text-sm text-muted-foreground">
+                Loading classes...
               </p>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">

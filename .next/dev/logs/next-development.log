@@ -1,14 +1,134 @@
-[00:00:14.043] Server  LOG      ✓ Ready in 8.5s
-[00:00:19.934] Server  LOG      ○ Compiling / ...
-[00:00:27.533] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:28.189] Browser ERROR   Error fetching user profile: {}
-[00:01:16.086] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:23.418] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:24.528] Browser ERROR   Error fetching user profile: {}
-[00:01:24.528] Browser ERROR   Error fetching user profile: {}
-[00:02:36.559] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:36.559] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:36.559] Browser ERROR   Error fetching user profile: {}
-[00:04:13.658] Server  LOG      ✓ Compiled in 897ms
-[00:07:07.886] Server  LOG      ✓ Compiled in 7.4s
-[00:07:41.129] Server  LOG      ✓ Compiled in 7.8s
+[00:00:02.209] Server  LOG      ✓ Ready in 1611ms
+[00:00:11.968] Server  LOG      ○ Compiling / ...
+[00:00:14.692] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:15.333] Browser ERROR   Error fetching user profile: {}
+[00:00:39.364] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:39.364] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:39.364] Browser ERROR   Error fetching user profile: {}
+[00:00:44.079] Server  LOG      ○ Compiling /dashboard ...
+[00:00:55.042] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:55.042] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:56.936] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:56.936] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:58.889] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:58.889] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:55.619] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:01:55.619] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:19:29.739] Server  LOG      ✓ Compiled in 892ms
+[00:19:54.631] Server  LOG      ✓ Compiled in 624ms
+[00:20:05.474] Server  LOG      ✓ Compiled in 248ms
+[00:20:55.693] Browser ERROR   Error fetching classes: {}
+[00:20:56.214] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:21:02.089] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:21:03.423] Browser ERROR   Error fetching user profile: {}
+[00:21:03.423] Browser ERROR   Error fetching user profile: {}
+[00:21:07.928] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:21:07.928] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:21:10.989] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:21:10.989] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:22:18.963] Server  LOG      ✓ Compiled in 1487ms
+[00:22:35.890] Server  LOG      ✓ Compiled in 194ms
+[00:22:51.578] Server  LOG      ✓ Compiled in 613ms
+[00:23:05.555] Server  LOG      ✓ Compiled in 524ms
+[00:23:34.025] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:23:34.025] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:23:38.724] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:23:38.725] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:23:44.304] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:23:44.304] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:24:36.268] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:24:36.268] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:24:48.035] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:24:48.035] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:25:05.237] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:25:05.238] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:25:07.112] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:25:07.112] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:25:35.627] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:26:34.084] Server  LOG      ✓ Compiled in 606ms
+[00:26:46.835] Server  LOG      ✓ Compiled in 684ms
+[00:27:01.713] Server  LOG      ✓ Compiled in 400ms
+[00:29:15.132] Server  LOG      ✓ Compiled in 324ms
+[00:29:45.315] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:45.315] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:47.081] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:47.081] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:29:51.488] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:29:51.661] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <SegmentViewNode type="page" pagePath="/OneDrive/...">
+      <SegmentTrieNode>
+      <ClientPageRoot Component={function DashboardPage} serverProvidedParams={{...}}>
+        <DashboardPage params={Promise} searchParams={Promise}>
+          <div className="min-h-scre...">
+            <nav>
+            <main>
+            <EventWidget items={[...]}>
+              <motion.div drag={true} dragControls={{...}} dragListener={false} dragMomentum={false} ...>
+                <MeasureLayout>
+                <div className="fixed righ..." style={{width:360, ...}} ref={function useMotionRef.useCallback}>
+                  <div className="relative b..." style={{width:360}}>
+                    <div>
+                    <div>
+                    <div className="flex-1 ove...">
+                      <div onClick={function onClick} className="rounded-lg...">
+                        <div className="flex items...">
+                          <p>
+                          <span className="text-[10px] text-gray-400 shrink-0">
++                           5:13:01 PM
+-                           5:13:00 PM
+                        ...
+                      ...
+    ...
+
+[00:30:44.194] Server  LOG      ✓ Compiled in 529ms
+[00:30:55.249] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:30:55.421] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <SegmentViewNode type="page" pagePath="/OneDrive/...">
+      <SegmentTrieNode>
+      <ClientPageRoot Component={function DashboardPage} serverProvidedParams={{...}}>
+        <DashboardPage params={Promise} searchParams={Promise}>
+          <div className="min-h-scre...">
+            <nav>
+            <main>
+            <EventWidget items={[...]}>
+              <motion.div drag={true} dragControls={{...}} dragListener={false} dragMomentum={false} ...>
+                <MeasureLayout>
+                <div className="fixed righ..." style={{width:360, ...}} ref={function useMotionRef.useCallback}>
+                  <div className="relative b..." style={{width:360}}>
+                    <div>
+                    <div>
+                    <div className="flex-1 ove...">
+                      <div onClick={function onClick} className="rounded-lg...">
+                        <div className="flex items...">
+                          <p>
+                          <span className="text-[10px] text-gray-400 shrink-0">
++                           5:14:05 PM
+-                           5:14:04 PM
+                        ...
+                      ...
+    ...
+
