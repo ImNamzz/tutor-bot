@@ -118,7 +118,9 @@ def get_current_user_profile():
             "id": user.id,
             "username": user.username,
             "email": user.email,
-            "google_id": user.google_id
+            "google_id": user.google_id,
+            "has_password": bool(user.hashed_password),
+            "is_google_account": bool(user.google_id)
         }), 200
     finally:
         db.close()

@@ -118,7 +118,7 @@ export default function Home() {
     
     // Fetch user profile to get userId
     if (authenticated) {
-      fetch(API_ENDPOINTS.getUserProfile, {
+      fetch(API_ENDPOINTS.getCurrentUser, {
         headers: {
           'Authorization': `Bearer ${getAccessToken()}`
         }
@@ -155,7 +155,7 @@ export default function Home() {
     const fetchUserProfile = async () => {
       if (isSettingsOpen && isAuth) {
         try {
-          const response = await fetch(API_ENDPOINTS.getUserProfile, {
+          const response = await fetch(API_ENDPOINTS.getCurrentUser, {
             headers: {
               'Authorization': `Bearer ${getAccessToken()}`
             }

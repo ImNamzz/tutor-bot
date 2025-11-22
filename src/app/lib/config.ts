@@ -10,15 +10,18 @@ export const API_ENDPOINTS = {
   login: `${config.apiUrl}/api/auth/login`,
   googleLogin: `${config.apiUrl}/api/auth/google/login`,
   googleCallback: `${config.apiUrl}/api/auth/google/callback`,
+  verifyEmail: (token: string) => `${config.apiUrl}/api/auth/verify-email/${token}`,
   
-  // User Profile - /api/user/*
+  // User Profile - /api/user/* or /api/users/*
   getUserProfile: `${config.apiUrl}/api/user/profile`,
+  getCurrentUser: `${config.apiUrl}/api/users/me`,
   updateUsername: `${config.apiUrl}/api/user/username`,
   updateEmail: `${config.apiUrl}/api/user/email`,
   updatePassword: `${config.apiUrl}/api/user/password`,
   
   // Chat - /api/chat/*
   chat: `${config.apiUrl}/api/chat`,
+  startSession: `${config.apiUrl}/api/chat/start-session`,
   
   // Classes - /api/classes/*
   classes: `${config.apiUrl}/api/classes`,
