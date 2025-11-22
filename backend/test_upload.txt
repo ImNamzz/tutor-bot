@@ -1,1 +1,8 @@
-Hello Naver Cloud
+Meeting Minutes: Project Alpha
+Date: 2025-11-20
+
+Discussion:
+We need to fix the server latency issue by next Tuesday.
+John is assigned to update the database schema.
+Sarah will handle the frontend migration.
+Remember to backup the data before deployment.
