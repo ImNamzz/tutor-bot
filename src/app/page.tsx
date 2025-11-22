@@ -85,6 +85,7 @@ export default function Home() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [settingsData, setSettingsData] = useState({
     username: '',
+    newUsername: '',
     email: '',
     newEmail: '',
     currentPassword: '',
@@ -1786,11 +1787,11 @@ export default function Home() {
                                   Username
                                 </Label>
                                 <Input
-                                  id="username"
+                                  id="new-username"
                                   type="text"
-                                  placeholder="Enter username"
-                                  value={settingsData.username}
-                                  onChange={(e) => setSettingsData({...settingsData, username: e.target.value})}
+                                  placeholder="Enter new username"
+                                  value={settingsData.newUsername}
+                                  onChange={(e) => setSettingsData({...settingsData, newUsername: e.target.value})}
                                   className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
                                 />
                               </div>
@@ -1826,6 +1827,7 @@ export default function Home() {
                                 onClick={() => {
                                   setIsSettingsOpen(false)
                                   setTempTheme(isDarkMode) // Reset temp theme on cancel
+                                  setSettingsData(prev => ({ ...prev, newUsername: '' }))
                                 }}
                                 className="border-gray-300 dark:border-gray-700"
                               >
@@ -1834,6 +1836,7 @@ export default function Home() {
                               <Button
                                 onClick={async () => {
                                   try {
+                                    let hasChanges = false;
                                     // Apply theme change
                                     if (tempTheme !== isDarkMode) {
                                       setIsDarkMode(tempTheme)
@@ -1845,15 +1848,15 @@ export default function Home() {
                                       }
                                     }
 
-                                    // Update username if changed
-                                    if (settingsData.username) {
+                                    // Update username if provided (newUsername)
+                                    if (settingsData.newUsername) {
                                       const response = await fetch(API_ENDPOINTS.updateUsername, {
                                         method: 'PATCH',
                                         headers: {
                                           'Content-Type': 'application/json',
                                           'Authorization': `Bearer ${getAccessToken()}`
                                         },
-                                        body: JSON.stringify({ username: settingsData.username })
+                                        body: JSON.stringify({ username: settingsData.newUsername })
                                       })
 
                                       if (!response.ok) {
@@ -1865,6 +1868,9 @@ export default function Home() {
                                         toast.error(data.detail || 'Failed to update username')
                                         return
                                       }
+                                      // update local copy and clear newUsername
+                                      setSettingsData(prev => ({ ...prev, username: prev.newUsername, newUsername: '' }))
+                                      hasChanges = true
                                     }
 
                                     toast.success('Profile updated successfully!')
@@ -1890,19 +1896,17 @@ export default function Home() {
                               {/* Email Section */}
                               <div className="space-y-2 mb-6">
                                 <Label htmlFor="current-email" className="text-sm font-medium">
-                                  Current Email
+                                  Email
                                 </Label>
                                 {!isChangingEmail ? (
                                   <div className="flex items-center gap-2">
                                     <Input
                                       id="current-email"
                                       type="email"
-                                      value={settingsData.email}
-                                      readOnly={!settingsData.isGoogleAccount}
-                                      disabled={settingsData.isGoogleAccount}
-                                      className={settingsData.isGoogleAccount 
-                                        ? "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 cursor-not-allowed text-gray-500 dark:text-gray-400" 
-                                        : "bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default"}
+                                      value={settingsData.newEmail}
+                                      placeholder=""
+                                      disabled
+                                      className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default opacity-80"
                                     />
                                     {!settingsData.isGoogleAccount && (
                                       <Button
@@ -1916,9 +1920,6 @@ export default function Home() {
                                   </div>
                                 ) : (
                                   <div className="space-y-2">
-                                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                      Current: {settingsData.email}
-                                    </div>
                                     <Input
                                       id="new-email"
                                       type="email"
@@ -2096,7 +2097,8 @@ export default function Home() {
                                     newEmail: '',
                                     currentPassword: '',
                                     newPassword: '',
-                                    confirmPassword: ''
+                                    confirmPassword: '',
+                                    newUsername: ''
                                   }))
                                 }}
                                 className="border-gray-300 dark:border-gray-700"

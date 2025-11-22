@@ -41,6 +41,7 @@ export default function Topbar() {
   const [settingsData, setSettingsData] = useState({
     username: "",
     email: "",
+    newUsername: "",
     newEmail: "",
     currentPassword: "",
     newPassword: "",
@@ -150,15 +151,15 @@ export default function Topbar() {
           }
         }
 
-        // Save username if changed
-        if (settingsData.username) {
+        // Save new username if provided
+        if (settingsData.newUsername) {
           const response = await fetch(API_ENDPOINTS.updateUsername, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ username: settingsData.username }),
+            body: JSON.stringify({ username: settingsData.newUsername }),
           });
 
           if (!response.ok) {
@@ -170,6 +171,9 @@ export default function Topbar() {
             toast.error(data.detail || "Failed to update username");
             return;
           }
+
+          // Update local copy and clear newUsername
+          setSettingsData((prev) => ({ ...prev, username: prev.newUsername, newUsername: "" }));
         }
 
         toast.success("Profile updated successfully!");
@@ -349,11 +353,11 @@ export default function Topbar() {
                                 Username
                               </Label>
                               <Input
-                                id="username"
+                                id="new-username"
                                 type="text"
-                                placeholder="Enter username"
-                                value={settingsData.username}
-                                onChange={(e) => setSettingsData({...settingsData, username: e.target.value})}
+                                placeholder="Enter new username"
+                                value={settingsData.newUsername}
+                                onChange={(e) => setSettingsData({...settingsData, newUsername: e.target.value})}
                                 className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700"
                               />
                             </div>
@@ -389,6 +393,7 @@ export default function Topbar() {
                               onClick={() => {
                                 setIsSettingsOpen(false)
                                 setTempTheme(isDarkMode) // Reset temp theme on cancel
+                                setSettingsData(prev => ({ ...prev, newUsername: '' }))
                               }}
                               className="border-gray-300 dark:border-gray-700"
                             >
@@ -412,19 +417,17 @@ export default function Topbar() {
                             {/* Email Section */}
                             <div className="space-y-2 mb-6">
                               <Label htmlFor="current-email" className="text-sm font-medium">
-                                Current Email
+                                Email
                               </Label>
                               {!isChangingEmail ? (
                                 <div className="flex items-center gap-2">
                                   <Input
                                     id="current-email"
                                     type="email"
-                                    value={settingsData.email}
-                                    readOnly={!settingsData.isGoogleAccount}
-                                    disabled={settingsData.isGoogleAccount}
-                                    className={settingsData.isGoogleAccount 
-                                      ? "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 cursor-not-allowed text-gray-500 dark:text-gray-400" 
-                                      : "bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default"}
+                                    value={settingsData.newEmail}
+                                    placeholder=""
+                                    disabled
+                                    className="bg-gray-50 dark:bg-[#212121] border-gray-300 dark:border-gray-700 cursor-default opacity-80"
                                   />
                                   {!settingsData.isGoogleAccount && (
                                     <Button
@@ -438,9 +441,6 @@ export default function Topbar() {
                                 </div>
                               ) : (
                                 <div className="space-y-2">
-                                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                    Current: {settingsData.email}
-                                  </div>
                                   <Input
                                     id="new-email"
                                     type="email"
