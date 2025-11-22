@@ -327,8 +327,9 @@ export default function LectureDetailPage() {
     try {
       const link = `${window.location.origin}/tutor?classId=${classId}&lectureId=${lectureId}`;
       await navigator.clipboard.writeText(link);
+      toast.success('Link copied to clipboard');
     } catch (e) {
-      // no-op
+      toast.error('Failed to copy link');
     }
   };
 
