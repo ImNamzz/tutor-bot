@@ -3,56 +3,22 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Button } from "@/app/components/ui/button";
-import { Card } from "@/app/components/ui/card";
-import { Input } from "@/app/components/ui/input";
-import { Textarea } from "@/app/components/ui/textarea";
-import { ScrollArea } from "@/app/components/ui/scroll-area";
-import { Badge } from "@/app/components/ui/badge";
+import { useState, useRef, useEffect } from 'react'
+import { Button } from '@/app/components/ui/button'
+import { Card } from '@/app/components/ui/card'
+import { Input } from '@/app/components/ui/input'
+import { Textarea } from '@/app/components/ui/textarea'
+import { ScrollArea } from '@/app/components/ui/scroll-area'
+import { Badge } from '@/app/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog'
 import { Label } from '@/app/components/ui/label'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/components/ui/tooltip'
-import {
-  Upload,
-  Send,
-  Loader2,
-  Bot,
-  User,
-  FileText,
-  Sparkles,
-  Clock,
-  MessageSquare,
-  Trash2,
-  PanelLeftClose,
-  PanelLeftOpen,
-  BookOpen,
-  Moon,
-  Sun,
-  Calendar,
-  CheckSquare,
-  LogOut,
-  UserCircle,
-  Plus,
-  ChevronRight,
-  Paperclip,
-  Image,
-  Lock,
-  MoreVertical,
-  Pin,
-  Edit2,
-  ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info, Check,
-} from "lucide-react";
-import { toast } from "sonner";
-import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import {
-  isAuthenticated,
-  removeAccessToken,
-  getAccessToken,
-  handleAuthError,
-} from "@/app/lib/auth";
-import { API_ENDPOINTS } from "@/app/lib/config";
+import { Upload, Send, Loader2, Bot, User, FileText, Sparkles, Clock, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, BookOpen, Moon, Sun, Calendar, LogOut, UserCircle, Plus, ChevronRight, Paperclip, Image, Lock, MoreVertical, Pin, Edit2, ArrowDown, Music, File, X, Settings, Eye, EyeOff, Info, Check } from 'lucide-react'
+import { toast } from 'sonner'
+import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
+import { isAuthenticated, removeAccessToken, getAccessToken, handleAuthError } from '@/app/lib/auth'
+import { API_ENDPOINTS } from '@/app/lib/config'
 import { validatePassword, checkPasswordRequirements } from '@/app/lib/passwordValidation'
 
 interface Message {
@@ -81,36 +47,34 @@ export default function Home() {
   const pathname = usePathname();
 
   // Theme state
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
-
+  
   // Chat state
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [chatState, setChatState] = useState<ChatState>("idle");
-  const [fileName, setFileName] = useState<string>("");
-  const [transcriptContent, setTranscriptContent] = useState<string>("");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [totalQuestions, setTotalQuestions] = useState(3);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [keyPoints, setKeyPoints] = useState<string[]>([]);
-  const [sessions, setSessions] = useState<TranscriptSession[]>([]);
-  const [currentSessionId, setCurrentSessionId] = useState<string>("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [mounted, setMounted] = useState(false);
-  const [showUploadMenu, setShowUploadMenu] = useState(false);
-  const [openSessionMenu, setOpenSessionMenu] = useState<string | null>(null);
-  const [renamingSessionId, setRenamingSessionId] = useState<string | null>(
-    null
-  );
-  const [newSessionName, setNewSessionName] = useState("");
-  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
-  const [editedMessageContent, setEditedMessageContent] = useState("");
-  const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null);
-  const [showScrollButton, setShowScrollButton] = useState(false);
-const [attachedFile, setAttachedFile] = useState<File | null>(null)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [inputMessage, setInputMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [chatState, setChatState] = useState<ChatState>('idle')
+  const [fileName, setFileName] = useState<string>('')
+  const [transcriptContent, setTranscriptContent] = useState<string>('')
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [totalQuestions, setTotalQuestions] = useState(3)
+  const [correctAnswers, setCorrectAnswers] = useState(0)
+  const [keyPoints, setKeyPoints] = useState<string[]>([])
+  const [sessions, setSessions] = useState<TranscriptSession[]>([])
+  const [currentSessionId, setCurrentSessionId] = useState<string>('')
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [mounted, setMounted] = useState(false)
+  const [showUploadMenu, setShowUploadMenu] = useState(false)
+  const [openSessionMenu, setOpenSessionMenu] = useState<string | null>(null)
+  const [renamingSessionId, setRenamingSessionId] = useState<string | null>(null)
+  const [newSessionName, setNewSessionName] = useState('')
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
+  const [editedMessageContent, setEditedMessageContent] = useState('')
+  const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null)
+  const [showScrollButton, setShowScrollButton] = useState(false)
+  const [attachedFile, setAttachedFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [settingsTab, setSettingsTab] = useState<'customization' | 'security'>('customization')
@@ -130,14 +94,14 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
     isGoogleAccount: false
   })
   
-  const audioInputRef = useRef<HTMLInputElement>(null);
-  const textInputRef = useRef<HTMLInputElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const uploadMenuRef = useRef<HTMLDivElement>(null);
-  const sessionMenuRef = useRef<HTMLDivElement>(null);
-  const editTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const audioInputRef = useRef<HTMLInputElement>(null)
+  const textInputRef = useRef<HTMLInputElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const uploadMenuRef = useRef<HTMLDivElement>(null)
+  const sessionMenuRef = useRef<HTMLDivElement>(null)
+  const editTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Helper function to get user-specific localStorage key
   const getChatSessionsKey = () => {
@@ -281,15 +245,15 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
   };
 
   const handleLogout = () => {
-    removeAccessToken();
+    removeAccessToken()
     setUserId(null)
     setSessions([])
     setMessages([])
     setChatState('idle')
     setCurrentSessionId('')
-    toast.success("Signed out successfully");
-    router.push("/auth/login");
-  };
+    toast.success('Signed out successfully')
+    router.push('/auth/login')
+  }
 
   const addMessage = (role: "user" | "assistant", content: string) => {
     const newMessage: Message = {
@@ -302,39 +266,19 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
   };
 
   const generateSessionName = async (content: string): Promise<string> => {
-    try {
-      // Generate a concise session name based on content
-      const response = await fetch(API_ENDPOINTS.chat, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-        body: JSON.stringify({
-          chat_session_id: null,
-          message: `Generate a very short, concise title (3-5 words max) for a chat session based on this content: "${content.substring(0, 200)}...". Only respond with the title, nothing else.`
-        })
-      })
-
-      if (response.ok) {
-        const data = await response.json();
-        // Clean up the response and limit length
-        let title = data.response.replace(/['"]/g, "").trim();
-        if (title.length > 50) {
-          title = title.substring(0, 47) + "...";
-        }
-        // Store the session ID if returned
-        if (data.chat_session_id) {
-          setCurrentSessionId(data.chat_session_id.toString())
-        }
-        return title
-      }
-    } catch (error) {
-      console.error("Error generating session name:", error);
+    // Generate a simple title from the first few words of the content
+    const words = content.trim().split(/\s+/).slice(0, 5);
+    let title = words.join(' ');
+    
+    // Capitalize first letter
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+    
+    // Limit length
+    if (title.length > 50) {
+      title = title.substring(0, 47) + "...";
     }
-
-    // Fallback to a default name with timestamp
-    return `Chat Session ${new Date().toLocaleString("en-US", {
+    
+    return title || `Chat Session ${new Date().toLocaleString("en-US", {
       month: "short",
       day: "numeric",
       hour: "2-digit",
@@ -358,20 +302,8 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
       return;
     }
 
-    // Save current session before starting new one
-    if (chatState !== "idle") {
-      saveCurrentSession();
-    }
-
-    // Reset for new session
-    setMessages([]);
-    setCurrentQuestionIndex(0);
-    setCorrectAnswers(0);
-    setFileName(file.name);
-    setIsLoading(true);
-
-    addMessage("user", `📎 Uploaded: ${file.name}`);
-
+    setIsLoading(true)
+    
     // For .doc and .docx files, send directly to backend for processing
     if (fileExtension === ".doc" || fileExtension === ".docx") {
       try {
@@ -583,15 +515,18 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
     // Handle audio files
     if (validAudioExtensions.includes(fileExtension)) {
       try {
+        console.log('Starting audio upload process...')
         // Get or create a default class for the upload
         const classId = await getOrCreateDefaultClass()
+        console.log('Got class ID:', classId)
         
         const formData = new FormData()
-        formData.append('media', file)
+        formData.append('media', file)  // Backend expects 'media' for audio files
         formData.append('class_id', classId)
         formData.append('title', file.name)
         formData.append('language', 'en-US') // Default to English
         
+        console.log('Uploading audio to:', API_ENDPOINTS.uploadAudio)
         const response = await fetch(API_ENDPOINTS.uploadAudio, {
           method: 'POST',
           headers: {
@@ -600,15 +535,155 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
           body: formData
         })
 
+        console.log('Upload response status:', response.status)
+        
         if (!response.ok) {
           if (response.status === 401) {
             handleAuthError(401);
+            setIsLoading(false);
             return;
           }
-          throw new Error('Failed to process audio')
+          const errorData = await response.json().catch(() => ({ detail: 'Failed to process audio' }))
+          console.error('Audio upload error:', errorData)
+          setIsLoading(false)
+          toast.error(errorData.detail || 'Failed to process audio')
+          addMessage('assistant', `❌ Failed to upload audio: ${errorData.detail || 'Unknown error'}`)
+          return
         }
 
         const data = await response.json()
+        console.log('Upload response data:', data)
+        const lectureId = data.id
+        const status = data.status || 'PROCESSING'
+        
+        if (!lectureId) {
+          console.error('No lecture ID returned from backend')
+          setIsLoading(false)
+          toast.error('Invalid response from server')
+          addMessage('assistant', '❌ Server did not return a valid lecture ID')
+          return
+        }
+        
+        console.log('Lecture ID:', lectureId, 'Status:', status)
+        
+        // Show processing message
+        if (status === 'PROCESSING') {
+          addMessage('assistant', '🎙️ Audio uploaded! Transcription is in progress... This may take a few minutes.')
+          
+          // Poll for completion
+          const pollForTranscript = async () => {
+            const maxAttempts = 60 // 5 minutes with 5-second intervals
+            let attempts = 0
+            let success = false
+            
+            console.log('Starting transcript polling loop, lectureId:', lectureId)
+            
+            while (attempts < maxAttempts) {
+              await new Promise(resolve => setTimeout(resolve, 5000)) // Wait 5 seconds
+              
+              console.log(`Poll attempt ${attempts + 1}/${maxAttempts}...`)
+              
+              try {
+                const statusResponse = await fetch(API_ENDPOINTS.getLectureStatus(lectureId), {
+                  headers: {
+                    'Authorization': `Bearer ${getAccessToken()}`
+                  }
+                })
+                
+                console.log('Status response code:', statusResponse.status)
+                
+                if (statusResponse.ok) {
+                  const statusData = await statusResponse.json()
+                  console.log('Status data:', statusData)
+                  
+                  if (statusData.status === 'COMPLETED' && statusData.transcript) {
+                    console.log('Transcription completed successfully!')
+                    const transcript = statusData.transcript
+                    setTranscriptContent(transcript)
+                    addMessage('assistant', '✅ Transcription complete! Analyzing content...')
+                    
+                    // Now analyze the lecture
+                    try {
+                      const analysisResponse = await fetch(API_ENDPOINTS.analyzeLecture(lectureId), {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${getAccessToken()}`
+                        }
+                      })
+                      
+                      if (analysisResponse.ok) {
+                        const analysisData = await analysisResponse.json()
+                        console.log('Lecture analyzed:', analysisData)
+                        if (analysisData.action_items && analysisData.action_items.length > 0) {
+                          toast.success(`Analysis complete! Found ${analysisData.action_items.length} action items.`)
+                        }
+                      }
+                    } catch (analysisError) {
+                      console.error('Failed to analyze lecture:', analysisError)
+                    }
+                    
+                    // Start chat session
+                    const initialMessage = `I've uploaded an audio file titled "${file.name}". Here's the transcript:\n\n${transcript}\n\nPlease help me understand this content by asking me questions.`
+                    
+                    const chatResponse = await fetch(API_ENDPOINTS.chat, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAccessToken()}`
+                      },
+                      body: JSON.stringify({ message: initialMessage })
+                    })
+                    
+                    if (chatResponse.ok) {
+                      const chatData = await chatResponse.json()
+                      setCurrentSessionId(chatData.chat_session_id.toString())
+                      generateSessionName(file.name).then(generatedName => {
+                        setFileName(generatedName)
+                      })
+                      addMessage('assistant', chatData.response)
+                      setChatState('quizzing')
+                      toast.success('Audio transcribed successfully!')
+                    }
+                    
+                    success = true
+                    break // Success, exit polling
+                  } else if (statusData.status === 'FAILED') {
+                    console.error('Transcription failed on backend')
+                    addMessage('assistant', '❌ Transcription failed. Please try again with a different audio file.')
+                    toast.error('Audio transcription failed')
+                    break
+                  } else {
+                    console.log('Transcription still processing, status:', statusData.status)
+                  }
+                } else {
+                  console.error('Status check request failed with code:', statusResponse.status)
+                }
+              } catch (error) {
+                console.error('Error polling transcription status:', error)
+              }
+              
+              attempts++
+            }
+            
+            if (!success && attempts >= maxAttempts) {
+              // Timeout reached
+              console.error('Polling timeout reached after', maxAttempts, 'attempts')
+              addMessage('assistant', '⚠️ Transcription is taking longer than expected. Please check back later.')
+              toast.error('Transcription timeout. Please try again.')
+            } else if (!success) {
+              console.error('Polling ended without success, attempts:', attempts)
+            }
+            
+            setIsLoading(false)
+          }
+          
+          // Start polling and await it
+          await pollForTranscript()
+          return // Exit early, polling handled everything
+        }
+        
+        // If already completed (shouldn't happen with audio, but handle it)
         const transcript = data.transcript || ''
         setTranscriptContent(transcript)
         
@@ -910,6 +985,56 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
   const handleCopyMessage = (content: string) => {
     navigator.clipboard.writeText(content);
     toast.success("Message copied to clipboard!");
+  };
+
+  const handleRegenerateMessage = async (messageId: string) => {
+    // Find the message index
+    const messageIndex = messages.findIndex((m) => m.id === messageId);
+    if (messageIndex === -1 || messageIndex === 0) return;
+
+    // Get the previous user message
+    const previousUserMessage = messages[messageIndex - 1];
+    if (previousUserMessage.role !== 'user') return;
+
+    // Remove the current assistant message and all messages after it
+    const messagesToKeep = messages.slice(0, messageIndex);
+    setMessages(messagesToKeep);
+    setIsLoading(true);
+
+    // Regenerate AI response
+    try {
+      const response = await fetch(API_ENDPOINTS.chat, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+        body: JSON.stringify({
+          chat_session_id: currentSessionId ? Number(currentSessionId) : null,
+          message: previousUserMessage.content
+        })
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error("Failed to regenerate message");
+      }
+
+      const data = await response.json();
+      addMessage("assistant", data.response);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error regenerating message:", error);
+      toast.error("Failed to regenerate message. Please try again.");
+      addMessage(
+        "assistant",
+        "Sorry, I encountered an error regenerating the response. Please try again."
+      );
+      setIsLoading(false);
+    }
   };
 
   const handleStartEditMessage = (messageId: string, content: string) => {
@@ -1346,7 +1471,7 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] transition-colors">
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-card/95 dark:bg-card/95 backdrop-blur-sm border-r border-border dark:border-border ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-[#000000] dark:bg-[#000000] border-r border-gray-800 dark:border-gray-800 ${
           isSidebarOpen ? "w-[280px]" : "w-16"
         }`}
       >
@@ -1374,7 +1499,7 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
         </div>
 
         {/* New Chat Button */}
-        <div className="p-3 border-b border-gray-100 dark:border-gray-800 shrink-0">
+        <div className="p-3 shrink-0">
           <Button
             onClick={handleReset}
             className={`w-full justify-start gap-2 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 ${
@@ -1398,148 +1523,127 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                     <p className="text-xs">No chat history</p>
                   </div>
                 ) : (
-                  Object.entries(categorizeSessionsByTime()).map(
-                    ([category, categorySessions]) => (
-                      <div key={category} className="space-y-2">
-                        <h4 className="text-xs font-medium text-gray-600 dark:text-gray-500 px-2">
-                          {category}
-                        </h4>
-                        {categorySessions.map((session) => {
-                          const isActive = session.id === currentSessionId;
-
-                          return (
-                            <div
-                              key={session.id}
-                              className={`group relative p-2.5 rounded-lg cursor-pointer transition-all ${
-                                isActive
-                                  ? "bg-gray-200 dark:bg-gray-800"
-                                  : "hover:bg-gray-100 dark:hover:bg-gray-800/50"
-                              }`}
-                              onClick={() => handleLoadSession(session)}
-                            >
-                              <div className="flex items-start gap-2">
-                                <MessageSquare className="h-4 w-4 shrink-0 text-gray-600 dark:text-gray-400 mt-0.5" />
-                                <div className="flex-1 min-w-0 pr-8">
-                                  {renamingSessionId === session.id ? (
-                                    <input
-                                      type="text"
-                                      value={newSessionName}
-                                      onChange={(e) =>
-                                        setNewSessionName(e.target.value)
-                                      }
-                                      onKeyDown={(e) => {
-                                        if (e.key === "Enter")
-                                          saveRename(session.id);
-                                        if (e.key === "Escape") cancelRename();
-                                      }}
-                                      onBlur={() => saveRename(session.id)}
-                                      onClick={(e) => e.stopPropagation()}
-                                      className="w-full text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:border-gray-400"
-                                      autoFocus
-                                    />
-                                  ) : (
-                                    <div className="flex items-center gap-1">
-                                      {session.pinned && (
-                                        <Pin className="h-3 w-3 text-gray-600 dark:text-gray-400" />
-                                      )}
-                                      <p className="text-sm text-gray-900 dark:text-gray-200 break-words">
-                                        {session.fileName}
-                                      </p>
-                                    </div>
-                                  )}
+                  Object.entries(categorizeSessionsByTime()).map(([category, categorySessions]) => (
+                    <div key={category} className="space-y-2">
+                      <h4 className="text-xs font-medium text-gray-600 dark:text-gray-500 px-2">{category}</h4>
+                      {categorySessions.map((session) => {
+                        const isActive = session.id === currentSessionId
+                        
+                        return (
+                          <div
+                            key={session.id}
+                            className={`group relative p-2.5 rounded-lg cursor-pointer transition-all ${
+                              isActive 
+                                ? 'bg-gray-200 dark:bg-gray-800' 
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                            }`}
+                          onClick={() => handleLoadSession(session)}
+                        >
+                          <div className="flex items-start gap-2">
+                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-600 dark:text-gray-400 mt-0.5" />
+                            <div className="flex-1 min-w-0 pr-8">
+                              {renamingSessionId === session.id ? (
+                                <input
+                                  type="text"
+                                  value={newSessionName}
+                                  onChange={(e) => setNewSessionName(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') saveRename(session.id)
+                                    if (e.key === 'Escape') cancelRename()
+                                  }}
+                                  onBlur={() => saveRename(session.id)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="w-full text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:border-indigo-500"
+                                  autoFocus
+                                />
+                              ) : (
+                                <div className="flex items-center gap-1">
+                                  {session.pinned && <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
+                                  <p className="text-sm text-gray-900 dark:text-gray-200 wrap-break-word">
+                                    {session.fileName}
+                                  </p>
                                 </div>
-                                <div className="relative">
-                                  <Button
-                                    onClick={(e: React.MouseEvent) => {
-                                      e.stopPropagation();
-                                      setOpenSessionMenu(
-                                        openSessionMenu === session.id
-                                          ? null
-                                          : session.id
-                                      );
-                                    }}
-                                    variant="ghost"
-                                    size="sm"
-                                    className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-200 dark:hover:bg-gray-700 absolute right-0 top-0"
-                                  >
-                                    <MoreVertical className="h-3 w-3 text-gray-600 dark:text-gray-400" />
-                                  </Button>
-
-                                  {/* Dropdown Menu */}
-                                  {openSessionMenu === session.id && (
-                                    <div
-                                      ref={sessionMenuRef}
-                                      className="absolute right-0 top-6 bg-card dark:bg-card border border-border dark:border-border rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
-                                      onClick={(e) => e.stopPropagation()}
-                                    >
-                                      <button
-                                        onClick={(e) =>
-                                          handlePinSession(e, session.id)
-                                        }
-                                        className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
-                                      >
-                                        <Pin className="h-3 w-3" />
-                                        <span>
-                                          {session.pinned ? "Unpin" : "Pin"}
-                                        </span>
-                                      </button>
-                                      <button
-                                        onClick={(e) =>
-                                          handleRenameSession(e, session.id)
-                                        }
-                                        className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
-                                      >
-                                        <Edit2 className="h-3 w-3" />
-                                        <span>Rename</span>
-                                      </button>
-                                      <button
-                                        onClick={(e) =>
-                                          handleDeleteSession(e, session.id)
-                                        }
-                                        className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-red-600 dark:text-red-400"
-                                      >
-                                        <Trash2 className="h-3 w-3" />
-                                        <span>Delete</span>
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
+                              )}
                             </div>
-                          );
-                        })}
-                      </div>
-                    )
-                  )
-                )}
-              </div>
-            ) : (
-              // Minimized view - just icons
-              <div className="p-2 space-y-2">
-                {sessions.slice(0, 5).map((session) => {
-                  const isActive = session.id === currentSessionId;
-                  return (
-                    <div
-                      key={session.id}
-                      className={`p-2 rounded-lg cursor-pointer transition-all ${
-                        isActive ? "bg-gray-800" : "hover:bg-gray-800/50"
-                      }`}
-                      onClick={() => handleLoadSession(session)}
-                      title={session.fileName}
-                    >
-                      <MessageSquare className="h-4 w-4 text-gray-400 mx-auto" />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                            <div className="relative">
+                              <Button
+                                onClick={(e: React.MouseEvent) => {
+                                  e.stopPropagation()
+                                  setOpenSessionMenu(openSessionMenu === session.id ? null : session.id)
+                                }}
+                                variant="ghost"
+                                size="sm"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-gray-200 dark:hover:bg-gray-700 absolute right-0 top-0"
+                              >
+                                <MoreVertical className="h-3 w-3 text-gray-600 dark:text-gray-400" />
+                              </Button>
+                              
+                              {/* Dropdown Menu */}
+                              {openSessionMenu === session.id && (
+                                <div 
+                                  ref={sessionMenuRef}
+                                  className="absolute right-0 top-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <button
+                                    onClick={(e) => handlePinSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
+                                  >
+                                    <Pin className="h-3 w-3" />
+                                    <span>{session.pinned ? 'Unpin' : 'Pin'}</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleRenameSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-gray-900 dark:text-gray-200"
+                                  >
+                                    <Edit2 className="h-3 w-3" />
+                                    <span>Rename</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleDeleteSession(e, session.id)}
+                                    className="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left text-sm text-red-600 dark:text-red-400"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                    <span>Delete</span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                ))
+              )}
+            </div>
+          ) : (
+            // Minimized view - just icons
+            <div className="p-2 space-y-2">
+              {sessions.slice(0, 5).map((session) => {
+                const isActive = session.id === currentSessionId
+                return (
+                  <div
+                    key={session.id}
+                    className={`p-2 rounded-lg cursor-pointer transition-all ${
+                      isActive ? 'bg-gray-800' : 'hover:bg-gray-800/50'
+                    }`}
+                    onClick={() => handleLoadSession(session)}
+                    title={session.fileName}
+                  >
+                    <MessageSquare className="h-4 w-4 text-gray-400 mx-auto" />
+                  </div>
+                )
+              })}
+            </div>
+          )}
           </ScrollArea>
         </div>
       </div>
 
       {/* Fixed Topbar aligned with sidebar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-b border-border dark:border-border transition-colors ${
+        className={`fixed top-0 left-0 right-0 z-50 bg-[#000000] dark:bg-[#000000] border-b border-gray-800 dark:border-gray-800 transition-colors ${
           isSidebarOpen ? "ml-[280px]" : "ml-16"
         }`}
       >
@@ -1547,7 +1651,7 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <Link
-                href="/dashboard"
+                href="/"
                 className="flex items-center hover:opacity-80 transition-opacity"
               >
                 <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
@@ -1557,9 +1661,9 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
               {/* Navigation Links */}
               <div className="hidden md:flex items-center gap-6">
                 <Link
-                  href="/"
+                  href="/tutor"
                   className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
-                    pathname === "/" ? "font-medium" : "font-normal"
+                    pathname === "/tutor" ? "font-medium" : "font-normal"
                   }`}
                 >
                   <BookOpen className="h-4 w-4" />
@@ -1573,15 +1677,6 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                 >
                   <Calendar className="h-4 w-4" />
                   Calendar
-                </Link>
-                <Link
-                  href="/todo"
-                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
-                    pathname === "/todo" ? "font-medium" : "font-normal"
-                  }`}
-                >
-                  <CheckSquare className="h-4 w-4" />
-                  Todo
                 </Link>
               </div>
             </div>
@@ -2126,7 +2221,7 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
       <div
         className={`transition-all duration-300 ${
           isSidebarOpen ? "ml-[280px]" : "ml-16"
-        } pt-16 pb-24`}
+        } pt-16 pb-6`}
       >
         {/* Page Content */}
         <main className="px-4 sm:px-6 lg:px-8 py-8">
@@ -2158,88 +2253,67 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
               id="audio-upload"
             />
 
-              {/* Chat Messages */}
-              <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-                <div className="space-y-6 pb-4">
-                  {messages.map((message, index) => (
-                    <div
-                      key={message.id}
-                      className={`group relative ${
-                        message.role === "user"
-                          ? "flex justify-end"
-                          : "flex justify-start"
-                      }`}
-                      onMouseEnter={() => setHoveredMessageId(message.id)}
-                      onMouseLeave={() => setHoveredMessageId(null)}
-                    >
-                      {editingMessageId === message.id ? (
-                        // Edit mode
-                        <div className="w-full">
-                          <Textarea
-                            ref={editTextareaRef}
-                            value={editedMessageContent}
-                            onChange={(e) =>
-                              setEditedMessageContent(e.target.value)
-                            }
-                            className="w-full resize-none min-h-[100px] bg-card dark:bg-card border-2 border-primary/50 text-foreground dark:text-foreground"
-                            autoFocus
-                          />
-                          <div className="flex gap-2 mt-2 justify-end">
-                            <Button
-                              onClick={handleCancelEdit}
-                              variant="outline"
-                              size="sm"
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              onClick={() => handleSaveEdit(message.id)}
-                              size="sm"
-                            >
-                              Save & Submit
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        // Display mode
-                        <>
-                          <div
-                            className={
-                              message.role === "user"
-                                ? "flex flex-col items-end gap-1"
-                                : ""
-                            }
+            {/* Chat Messages */}
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+              <div className="space-y-6">
+                {messages.map((message, index) => (
+                  <div
+                    key={message.id}
+                    className={`group relative ${message.role === 'user' ? 'flex justify-end' : 'flex justify-start'}`}
+                    onMouseEnter={() => setHoveredMessageId(message.id)}
+                    onMouseLeave={() => setHoveredMessageId(null)}
+                  >
+                    {editingMessageId === message.id ? (
+                      // Edit mode
+                      <div className="w-full">
+                        <Textarea
+                          ref={editTextareaRef}
+                          value={editedMessageContent}
+                          onChange={(e) => setEditedMessageContent(e.target.value)}
+                          className="w-full resize-none min-h-[100px] bg-white dark:bg-[#212121] border-2 border-indigo-500 text-gray-900 dark:text-white"
+                          autoFocus
+                        />
+                        <div className="flex gap-2 mt-2 justify-end">
+                          <Button
+                            onClick={handleCancelEdit}
+                            variant="outline"
+                            size="sm"
                           >
-                            <div
-                              className={`px-4 py-3 max-w-[85%] rounded-xl ${
-                                message.role === "user"
-                                  ? "bg-gray-900 text-white"
-                                  : "text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
-                              }`}
-                            >
-                              <p className="whitespace-pre-line break-normal">
-                                {message.content}
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={() => handleSaveEdit(message.id)}
+                            size="sm"
+                          >
+                            Save & Submit
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      // Display mode
+                      <>
+                        <div className={message.role === 'user' ? 'flex flex-col items-end gap-1' : 'flex flex-col items-start gap-1'}>
+                          <div
+                            className={`px-4 py-3 ${
+                              message.role === 'user'
+                                ? 'bg-[#2c2c2e] text-white rounded-2xl max-w-[85%] min-w-[200px] overflow-wrap-break-word'
+                                : 'text-gray-900 dark:text-gray-100 max-w-[85%]'
+                            }`}
+                          >
+                            <p className="whitespace-pre-wrap overflow-wrap-break-word">{message.content}</p>
+                            {message.role === 'assistant' && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                {message.timestamp instanceof Date 
+                                  ? message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                  : new Date(message.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                                }
                               </p>
-                              {message.role === "assistant" && (
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                                  {message.timestamp instanceof Date
-                                    ? message.timestamp.toLocaleTimeString(
-                                        "en-US",
-                                        { hour: "2-digit", minute: "2-digit" }
-                                      )
-                                    : new Date(
-                                        message.timestamp
-                                      ).toLocaleTimeString("en-US", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })}
-                                </p>
-                              )}
-                            </div>
+                            )}
+                          </div>
 
                             {/* Action buttons below user messages */}
                             {message.role === "user" && (
-                              <div className="flex gap-2 px-2">
+                              <div className="flex gap-2 px-2">{/* ... existing user buttons ... */}
                                 <button
                                   onClick={() =>
                                     handleCopyMessage(message.content)
@@ -2298,25 +2372,21 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                                 </button>
                               </div>
                             )}
-                          </div>
 
-                          {/* Action buttons on hover for AI messages */}
-                          {message.role === "assistant" &&
-                            hoveredMessageId === message.id && (
-                              <div className="absolute top-0 left-0 -translate-x-full mr-2 pr-2 flex gap-1 transition-opacity opacity-100">
-                                <Button
+                          {/* Action buttons below assistant messages */}
+                          {message.role === "assistant" && (
+                              <div className="flex gap-2 px-4">
+                                <button
                                   onClick={() =>
                                     handleCopyMessage(message.content)
                                   }
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0 hover:bg-gray-200 dark:hover:bg-gray-700"
+                                  className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
                                   title="Copy"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
+                                    width="12"
+                                    height="12"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
@@ -2334,9 +2404,34 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                                     ></rect>
                                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                   </svg>
-                                </Button>
+                                  Copy
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleRegenerateMessage(message.id)
+                                  }
+                                  className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+                                  title="Regenerate"
+                                  disabled={isLoading}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                                  </svg>
+                                  Regenerate
+                                </button>
                               </div>
                             )}
+                          </div>
                         </>
                       )}
                     </div>
@@ -2354,128 +2449,122 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                 </div>
               </ScrollArea>
 
-              {/* Input moved to fixed bottom bar */}
-            </Card>
-          </div>
-        </main>
-      </div>
-
-      {/* Fixed Input Area aligned with sidebar */}
-      <div
-        className={`fixed bottom-0 left-0 right-0 bg-card/80 dark:bg-card/80 backdrop-blur-sm border-t border-border dark:border-border transition-colors ${
-          isSidebarOpen ? "ml-[280px]" : "ml-16"
-        }`}
-      >
-        <div className="p-4">
-          <div className="max-w-[1200px] mx-auto">
-            {/* Scroll to bottom button */}
-            {messages.length > 0 && (
-              <div className="flex justify-end mb-2">
-                <Button
-                  onClick={scrollToBottom}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs"
-                  title="Scroll to latest message"
-                >
-                  <ArrowDown className="h-4 w-4" />
-                  Latest message
-                </Button>
-              </div>
-            )}
-
-            <div className="flex gap-2 max-w-3xl mx-auto">
-              {/* Upload button with menu or Lock icon */}
-              <div className="relative" ref={uploadMenuRef}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
+              {/* Input Area */}
+              <div className="sticky bottom-0 p-4 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
+              {/* Scroll to bottom button - positioned in input area */}
+              {messages.length > 0 && (
+                <div className="flex justify-end mb-2">
+                  <Button
+                    onClick={scrollToBottom}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 text-xs"
+                    title="Scroll to latest message"
+                  >
+                    <ArrowDown className="h-4 w-4" />
+                    Latest message
+                  </Button>
+                </div>
+              )}
+              
+              {/* Attached file indicator */}
+              {attachedFile && (
+                <div className="max-w-3xl mx-auto mb-2">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg">
+                    {attachedFile.name.match(/\.(mp3|m4a|wav|ogg|flac|aac|wma)$/i) ? (
+                      <Music className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    ) : (
+                      <File className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    )}
+                    <span className="flex-1 text-sm text-indigo-900 dark:text-indigo-100 truncate">{attachedFile.name}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={removeAttachedFile}
+                      className="h-6 w-6 p-0 hover:bg-indigo-100 dark:hover:bg-indigo-900/40"
+                    >
+                      <X className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex gap-2 max-w-3xl mx-auto">
+                {/* Upload button with menu or Lock icon */}
+                <div className="relative" ref={uploadMenuRef}>
+                  <Button 
+                    type="button"
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => isAuth && setShowUploadMenu(!showUploadMenu)}
+                    disabled={!isAuth}
+                    className={`min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
+                  >
+                    {isAuth ? <Plus className="h-4 w-4" /> : <Lock className="h-5 w-5" />}
+                  </Button>
+                  
+                  {/* Upload menu */}
+                  {showUploadMenu && isAuth && (
+                    <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[200px]">
+                      <button
+                        onClick={() => {
+                          audioInputRef.current?.click()
+                          setShowUploadMenu(false)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <Music className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload audio transcript</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          textInputRef.current?.click()
+                          setShowUploadMenu(false)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <File className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Upload text transcript</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+                
+                <Textarea
+                  ref={textareaRef}
+                  value={inputMessage}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyPress}
+                  placeholder={
+                    !isAuth
+                      ? "You need to sign in to use the chatbot."
+                      : chatState === 'quizzing' 
+                      ? "Type your answer or ask a question..." 
+                      : chatState === 'completed'
+                      ? "Ask me anything about the material..."
+                      : "Type a message..."
+                  }
+                  rows={1}
                   disabled={!isAuth}
-                  className={`min-h-11 h-11 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 ${
+                  className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-white dark:bg-[#212121] border-2 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white ${
                     !isAuth ? "cursor-not-allowed opacity-50" : ""
                   }`}
+                />
+                <Button 
+                  onClick={handleSendMessage} 
+                  disabled={!isAuth || !inputMessage.trim() || isLoading}
+                  className={`shrink-0 min-h-11 h-11 ${!isAuth ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                  {isAuth ? (
-                    <Plus className="h-4 w-4" />
-                  ) : (
-                    <Lock className="h-5 w-5" />
-                  )}
+                  {isAuth ? <Send className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
                 </Button>
-
-                {/* Upload menu */}
-                {showUploadMenu && isAuth && (
-                  <div className="absolute bottom-full left-0 mb-2 bg-card dark:bg-card border border-border dark:border-border rounded-lg shadow-lg overflow-hidden z-50 min-w-[180px]">
-                    <button
-                      onClick={() => {
-                        textInputRef.current?.click();
-                        setShowUploadMenu(false);
-                      }}
-                      className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                    >
-                      <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
-                        Upload file
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        audioInputRef.current?.click();
-                        setShowUploadMenu(false);
-                      }}
-                      className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                    >
-                      <Image className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
-                        Upload image
-                      </span>
-                    </button>
-                  </div>
-                )}
               </div>
-
-              <Textarea
-                ref={textareaRef}
-                value={inputMessage}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyPress}
-                placeholder={
-                  !isAuth
-                    ? "You need to sign in to use the chatbot."
-                    : chatState === "quizzing"
-                    ? "Type your answer or ask a question..."
-                    : chatState === "completed"
-                    ? "Ask me anything about the material..."
-                    : "Type a message..."
-                }
-                rows={1}
-                disabled={!isAuth}
-                className={`resize-none min-h-11 max-h-32 overflow-y-auto bg-card dark:bg-card border-2 border-border text-foreground dark:text-foreground ${
-                  !isAuth ? "cursor-not-allowed opacity-50" : ""
-                }`}
-              />
-              <Button
-                onClick={handleSendMessage}
-                disabled={!isAuth || !inputMessage.trim() || isLoading}
-                className={`shrink-0 min-h-11 h-11 ${
-                  !isAuth ? "cursor-not-allowed opacity-50" : ""
-                }`}
-              >
-                {isAuth ? (
-                  <Send className="h-4 w-4" />
-                ) : (
-                  <Lock className="h-4 w-4" />
-                )}
-              </Button>
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
+                {isAuth ? "Press Enter to send, Shift+Enter for new line" : "Please sign in to start chatting"}
+              </p>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-              {isAuth
-                ? "Press Enter to send, Shift+Enter for new line"
-                : "Please sign in to start chatting"}
-            </p>
-          </div>
+          </Card>
         </div>
+        </main>
       </div>
     </div>
   );
