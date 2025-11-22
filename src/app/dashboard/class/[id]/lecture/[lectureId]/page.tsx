@@ -229,19 +229,37 @@ export default function LectureDetailPage() {
       }
 
       const result = await response.json();
-      console.log('Analyze response:', result);
+      console.log('=== ANALYZE RESPONSE ===', result);
+      console.log('Response keys:', Object.keys(result));
+      console.log('Lecture object:', result.lecture);
+      console.log('Action items raw:', result.action_items);
+      console.log('Action items is array?', Array.isArray(result.action_items));
+      console.log('Action items length:', result.action_items?.length);
       
       // Update summary from the returned lecture object
       if (result.lecture?.summary) {
+        console.log('✓ Found summary:', result.lecture.summary);
         setData(prev => ({
           ...prev,
           summary: result.lecture.summary
         }));
+      } else {
+        console.warn('✗ No summary in lecture object');
       }
       
       // Update action items from response
       if (result.action_items && Array.isArray(result.action_items)) {
-        console.log('Processing action items:', result.action_items);
+        console.log('✓ Found action items:', result.action_items);
+        console.log('Action items count:', result.action_items.length);
+        if (result.action_items.length > 0) {
+          result.action_items.forEach((item: any, idx: number) => {
+            console.log(`  [${idx}]`, { id: item.id, content: item.content, completed: item.completed });
+          });
+        } else {
+          console.warn('⚠️ Action items array is EMPTY - AI did not generate any items');
+        }
+
+        
         const actionItems: ActionItem[] = result.action_items.map((item: any) => ({
           id: item.id,
           text: item.content,
@@ -253,7 +271,9 @@ export default function LectureDetailPage() {
           actions: actionItems
         }));
       } else {
-        console.warn('No action items in response or not an array');
+        console.warn('✗ No action items in response or not an array');
+        console.log('  result.action_items:', result.action_items);
+        console.log('  is array?:', Array.isArray(result.action_items));
       }
       
       toast.success('Summary generated successfully');
@@ -290,9 +310,12 @@ export default function LectureDetailPage() {
       }
 
       const result = await response.json();
+      console.log('=== EXTRACT ACTIONS RESPONSE ===', result);
+      console.log('Response keys:', Object.keys(result));
       
       // Update summary
       if (result.lecture?.summary) {
+        console.log('✓ Found summary:', result.lecture.summary);
         setData(prev => ({
           ...prev,
           summary: result.lecture.summary
@@ -300,16 +323,27 @@ export default function LectureDetailPage() {
       }
       
       // Update action items
-      if (result.action_items) {
+      if (result.action_items && Array.isArray(result.action_items)) {
+        console.log('✓ Found action items:', result.action_items);
+        console.log('Action items count:', result.action_items.length);
+        result.action_items.forEach((item: any, idx: number) => {
+          console.log(`  [${idx}]`, { id: item.id, content: item.content, completed: item.completed });
+        });
+        
         const actionItems: ActionItem[] = result.action_items.map((item: any) => ({
           id: item.id,
           text: item.content,
           done: item.completed || false
         }));
+        console.log('Mapped action items:', actionItems);
         setData(prev => ({
           ...prev,
           actions: actionItems
         }));
+      } else {
+        console.warn('✗ No action items in response or not an array');
+        console.log('  result.action_items:', result.action_items);
+        console.log('  is array?:', Array.isArray(result.action_items));
       }
       
       toast.success('Action items extracted successfully');

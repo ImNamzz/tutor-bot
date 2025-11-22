@@ -58,6 +58,7 @@ export default function DashboardPage() {
     "all" | "active" | "upcoming" | "ended"
   >("all");
   const [classColors, setClassColors] = useState<Record<string, string>>({});
+  const [actionItems, setActionItems] = useState<any[]>([]);
 
   // Load colors from localStorage and then fetch classes
   useEffect(() => {
@@ -79,6 +80,9 @@ export default function DashboardPage() {
       console.error("Failed to load class colors", e);
       fetchClasses({});
     }
+
+    // Fetch action items for the Events widget
+    fetchActionItems();
   }, []);
 
   // Save colors to localStorage whenever they change
@@ -89,6 +93,57 @@ export default function DashboardPage() {
       localStorage.setItem(COLORS_KEY, JSON.stringify(newColors));
     } catch (e) {
       console.error("Failed to save class colors", e);
+    }
+  };
+
+  const fetchActionItems = async () => {
+    try {
+      console.log('📦 Fetching action items from:', API_ENDPOINTS.actionItems);
+      const response = await fetch(API_ENDPOINTS.actionItems, {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      console.log('📦 Response status:', response.status);
+
+      if (response.ok) {
+        const items = await response.json();
+        console.log('📦 Raw action items from API:', items);
+        console.log('📦 Count:', items.length);
+        
+        // Transform action items to EventItem format
+        const eventItems = items.map((item: any) => {
+          // Parse the created_at timestamp if it exists
+          const createdAt = item.created_at ? new Date(item.created_at) : new Date();
+          const timeString = createdAt.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+          });
+
+          console.log('  Transforming item:', { id: item.id, content: item.content, completed: item.completed });
+
+          return {
+            id: item.id,
+            title: item.content || 'Untitled Action Item',
+            description: item.lecture?.title ? `From lecture: ${item.lecture.title}` : 'Action Item',
+            timestamp: timeString,
+            isSeen: item.completed || false
+          };
+        });
+
+        console.log('📦 Transformed event items:', eventItems);
+        setActionItems(eventItems);
+      } else {
+        console.error('✗ Failed to fetch action items, status:', response.status);
+        console.error('✗ Response:', response);
+        setActionItems([]);
+      }
+    } catch (error) {
+      console.error('✗ Error fetching action items:', error);
+      setActionItems([]);
     }
   };
 
@@ -391,7 +446,7 @@ export default function DashboardPage() {
       </main>
 
       {/* EventWidget mounted at the root level to allow free dragging */}
-      <EventWidget items={MOCK_EVENTS} />
+      <EventWidget items={actionItems} />
     </div>
   );
 }
