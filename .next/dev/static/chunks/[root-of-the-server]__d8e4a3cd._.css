@@ -1035,10 +1035,6 @@
     margin-block: calc(var(--spacing) * 1);
   }
 
-  .my-2 {
-    margin-block: calc(var(--spacing) * 2);
-  }
-
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
@@ -2101,10 +2097,6 @@
     border-color: var(--color-blue-400);
   }
 
-  .border-blue-800 {
-    border-color: var(--color-blue-800);
-  }
-
   .border-border {
     border-color: var(--border);
   }
@@ -2161,10 +2153,6 @@
 
   .border-gray-400 {
     border-color: var(--color-gray-400);
-  }
-
-  .border-gray-700 {
-    border-color: var(--color-gray-700);
   }
 
   .border-gray-800 {
@@ -2289,24 +2277,12 @@
     border-left-color: #0000;
   }
 
-  .bg-\[\#0f0f0f\] {
-    background-color: #0f0f0f;
-  }
-
   .bg-\[\#000000\] {
     background-color: #000;
   }
 
-  .bg-\[\#1a1a1a\] {
-    background-color: #1a1a1a;
-  }
-
   .bg-\[\#2c2c2e\] {
     background-color: #2c2c2e;
-  }
-
-  .bg-\[\#212121\] {
-    background-color: #212121;
   }
 
   .bg-accent {
@@ -2411,16 +2387,6 @@
 
   .bg-blue-600 {
     background-color: var(--color-blue-600);
-  }
-
-  .bg-blue-900\/20 {
-    background-color: #1c398e33;
-  }
-
-  @supports (color: color-mix(in lab, red, red)) {
-    .bg-blue-900\/20 {
-      background-color: color-mix(in oklab, var(--color-blue-900) 20%, transparent);
-    }
   }
 
   .bg-border {
@@ -2567,16 +2533,6 @@
 
   .bg-indigo-600 {
     background-color: var(--color-indigo-600);
-  }
-
-  .bg-indigo-900\/20 {
-    background-color: #312c8533;
-  }
-
-  @supports (color: color-mix(in lab, red, red)) {
-    .bg-indigo-900\/20 {
-      background-color: color-mix(in oklab, var(--color-indigo-900) 20%, transparent);
-    }
   }
 
   .bg-input-background {
@@ -3200,10 +3156,6 @@
     color: var(--color-black);
   }
 
-  .text-blue-200 {
-    color: var(--color-blue-200);
-  }
-
   .text-blue-600 {
     color: var(--color-blue-600);
   }
@@ -3292,10 +3244,6 @@
 
   .text-green-800 {
     color: var(--color-green-800);
-  }
-
-  .text-indigo-400 {
-    color: var(--color-indigo-400);
   }
 
   .text-indigo-500 {
@@ -3873,12 +3821,6 @@
   }
 
   @media (hover: hover) {
-    .hover\:bg-gray-800:hover {
-      background-color: var(--color-gray-800);
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:bg-gray-800\/50:hover {
       background-color: #1e293980;
     }
@@ -4045,12 +3987,6 @@
   @media (hover: hover) {
     .hover\:text-foreground:hover {
       color: var(--foreground);
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:text-gray-200:hover {
-      color: var(--color-gray-200);
     }
   }
 

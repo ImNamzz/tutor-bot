@@ -568,7 +568,7 @@ export default function Home() {
         
         // Show processing message
         if (status === 'PROCESSING') {
-          addMessage('assistant', '🎙️ Audio uploaded! Transcription is in progress... This may take a few minutes.')
+          toast.info('🎙️ Audio uploaded! Transcription is in progress... This may take a few minutes.')
           
           // Poll for completion
           const pollForTranscript = async () => {
@@ -600,7 +600,7 @@ export default function Home() {
                     console.log('Transcription completed successfully!')
                     const transcript = statusData.transcript
                     setTranscriptContent(transcript)
-                    addMessage('assistant', '✅ Transcription complete! Analyzing content...')
+                    toast.success('✅ Transcription complete! Analyzing content...')
                     
                     // Now analyze the lecture
                     try {
@@ -1112,13 +1112,19 @@ export default function Home() {
     if (!mounted || chatState === "idle" || !fileName || messages.length <= 1)
       return;
 
+    // Don't save if there's no valid session ID from backend
+    if (!currentSessionId) {
+      console.log('Skipping save: no valid session ID from backend')
+      return;
+    }
+
     const score =
       chatState === "completed"
         ? Math.round((correctAnswers / totalQuestions) * 100)
         : undefined;
 
     const session: TranscriptSession = {
-      id: currentSessionId || `session_${Date.now()}`,
+      id: currentSessionId,
       fileName,
       content: transcriptContent,
       keyPoints,
@@ -1132,15 +1138,17 @@ export default function Home() {
     };
 
     const existingSessions = JSON.parse(
-      localStorage.getItem("chatSessions") || "[]"
+      localStorage.getItem(getChatSessionsKey()) || "[]"
     );
     const sessionIndex = existingSessions.findIndex(
       (s: TranscriptSession) => s.id === session.id
     );
 
     if (sessionIndex >= 0) {
+      // Update existing session
       existingSessions[sessionIndex] = session;
     } else {
+      // Add new session at the beginning
       existingSessions.unshift(session);
     }
 
@@ -1478,10 +1486,13 @@ export default function Home() {
         {/* Sidebar Header with Toggle */}
         <div className="h-16 px-4 flex items-center justify-between shrink-0">
           {isSidebarOpen && (
-            <div className="flex items-center gap-2">
+            <button 
+              onClick={() => router.push('/dashboard')}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+            >
               <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
-            </div>
+            </button>
           )}
           <Button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -1651,7 +1662,7 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <Link
-                href="/"
+                href="/dashboard"
                 className="flex items-center hover:opacity-80 transition-opacity"
               >
                 <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
@@ -1661,9 +1672,11 @@ export default function Home() {
               {/* Navigation Links */}
               <div className="hidden md:flex items-center gap-6">
                 <Link
-                  href="/tutor"
-                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
-                    pathname === "/tutor" ? "font-medium" : "font-normal"
+                  href="/"
+                  className={`transition-colors flex items-center gap-2 ${
+                    pathname === "/" || pathname === "/tutor" 
+                      ? "text-white dark:text-white font-medium" 
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 font-normal"
                   }`}
                 >
                   <BookOpen className="h-4 w-4" />
