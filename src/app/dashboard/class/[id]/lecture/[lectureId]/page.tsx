@@ -396,14 +396,43 @@ export default function LectureDetailPage() {
   const autoAddActionsToCalendar = async (actionItems: ActionItem[]) => {
     // Extract dates from action item text and auto-add them to calendar
     try {
+      const monthNames = [
+        "january", "february", "march", "april", "may", "june",
+        "july", "august", "september", "october", "november", "december"
+      ];
+
       for (const item of actionItems) {
         // Parse date from action item text
         const dateMatch = item.text.match(/(\w+\s+\d{1,2},?\s*\d{4}|\d{1,2}\/\d{1,2}\/\d{4})/);
         if (dateMatch) {
           const dateStr = dateMatch[1];
-          const parsedDate = new Date(dateStr);
+          let parsedDate: Date | null = null;
+
+          // Try parsing "Month Day, Year" format (e.g., "June 16, 2025")
+          const monthDayYearMatch = dateStr.match(/(\w+)\s+(\d{1,2}),?\s*(\d{4})/i);
+          if (monthDayYearMatch) {
+            const monthIdx = monthNames.indexOf(monthDayYearMatch[1].toLowerCase());
+            if (monthIdx !== -1) {
+              const day = parseInt(monthDayYearMatch[2]);
+              const year = parseInt(monthDayYearMatch[3]);
+              // Create date in local timezone (no UTC conversion)
+              parsedDate = new Date(year, monthIdx, day);
+            }
+          }
+
+          // Try parsing "MM/DD/YYYY" format
+          if (!parsedDate) {
+            const slashMatch = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+            if (slashMatch) {
+              const month = parseInt(slashMatch[1]);
+              const day = parseInt(slashMatch[2]);
+              const year = parseInt(slashMatch[3]);
+              // Create date in local timezone
+              parsedDate = new Date(year, month - 1, day);
+            }
+          }
           
-          if (!isNaN(parsedDate.getTime())) {
+          if (parsedDate && !isNaN(parsedDate.getTime())) {
             // Add to calendar as event
             try {
               await fetch('/api/calendar/events', {
@@ -418,7 +447,7 @@ export default function LectureDetailPage() {
                   type: 'event'
                 })
               });
-              console.log(`✓ Auto-added "${item.text}" to calendar`);
+              console.log(`✓ Auto-added "${item.text}" to calendar on ${parsedDate.toDateString()}`);
             } catch (error) {
               console.error(`Failed to auto-add "${item.text}" to calendar:`, error);
             }
