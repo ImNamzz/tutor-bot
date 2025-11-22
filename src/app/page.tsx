@@ -1511,7 +1511,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] transition-colors">
       {/* Session History Sidebar - Fixed Left Side, Full Height */}
       <div
-        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-[#000000] dark:bg-[#000000] border-r border-gray-800 dark:border-gray-800 ${
+        className={`fixed left-0 top-0 h-screen z-50 transition-all duration-300 ease-in-out flex flex-col bg-white dark:bg-[#000000] border-r border-gray-200 dark:border-gray-800 ${
           isSidebarOpen ? "w-[280px]" : "w-16"
         }`}
       >
@@ -1523,7 +1523,7 @@ export default function Home() {
               className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
             >
               <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-gray-900 dark:text-white font-medium text-sm">EduAssist</span>
+              <span className="text-gray-800 dark:text-white font-medium text-sm">EduAssist</span>
             </button>
           )}
           <Button
@@ -1545,7 +1545,7 @@ export default function Home() {
         <div className="p-3 shrink-0">
           <Button
             onClick={handleReset}
-            className={`w-full justify-start gap-2 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 ${
+            className={`w-full justify-start gap-2 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 bg-white dark:bg-transparent ${
               !isSidebarOpen ? "px-2" : ""
             }`}
             variant="outline"
@@ -1577,13 +1577,13 @@ export default function Home() {
                             key={session.id}
                             className={`group relative p-2.5 rounded-lg cursor-pointer transition-all ${
                               isActive 
-                                ? 'bg-gray-200 dark:bg-gray-800' 
-                                : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                                ? 'bg-gray-100 dark:bg-gray-800' 
+                                : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
                             }`}
                           onClick={() => handleLoadSession(session)}
                         >
                           <div className="flex items-start gap-2">
-                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-600 dark:text-gray-400 mt-0.5" />
+                            <MessageSquare className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400 mt-0.5" />
                             <div className="flex-1 min-w-0 pr-8">
                               {renamingSessionId === session.id ? (
                                 <input
@@ -1602,7 +1602,7 @@ export default function Home() {
                               ) : (
                                 <div className="flex items-center gap-1">
                                   {session.pinned && <Pin className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />}
-                                  <p className="text-sm text-gray-900 dark:text-gray-200 wrap-break-word">
+                                  <p className="text-sm text-gray-700 dark:text-gray-200 wrap-break-word">
                                     {session.fileName}
                                   </p>
                                 </div>
@@ -1686,7 +1686,7 @@ export default function Home() {
 
       {/* Fixed Topbar aligned with sidebar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 bg-[#000000] dark:bg-[#000000] border-b border-gray-800 dark:border-gray-800 transition-colors ${
+        className={`fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#000000] border-b border-gray-200 dark:border-gray-800 transition-colors ${
           isSidebarOpen ? "ml-[280px]" : "ml-16"
         }`}
       >
@@ -1698,7 +1698,7 @@ export default function Home() {
                 className="flex items-center hover:opacity-80 transition-opacity"
               >
                 <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-                <span className="ml-2 dark:text-white">EduAssist</span>
+                <span className="ml-2 text-gray-800 dark:text-white">EduAssist</span>
               </Link>
 
               {/* Navigation Links */}
@@ -1707,8 +1707,8 @@ export default function Home() {
                   href="/"
                   className={`transition-colors flex items-center gap-2 ${
                     pathname === "/" || pathname === "/tutor" 
-                      ? "text-white dark:text-white font-medium" 
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 font-normal"
+                      ? "text-indigo-600 dark:text-white font-medium" 
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-normal"
                   }`}
                 >
                   <BookOpen className="h-4 w-4" />
@@ -1716,8 +1716,10 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/calendar"
-                  className={`transition-colors flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 ${
-                    pathname === "/calendar" ? "font-medium" : "font-normal"
+                  className={`transition-colors flex items-center gap-2 ${
+                    pathname === "/calendar" 
+                      ? "text-indigo-600 dark:text-white font-medium" 
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-normal"
                   }`}
                 >
                   <Calendar className="h-4 w-4" />
@@ -1736,7 +1738,7 @@ export default function Home() {
                       className="rounded-full w-9 h-9 p-0"
                       aria-label="Settings"
                     >
-                      <Settings className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                      <Settings className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-hidden bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
@@ -2231,7 +2233,7 @@ export default function Home() {
                 {isDarkMode ? (
                   <Sun className="h-5 w-5 text-gray-300" />
                 ) : (
-                  <Moon className="h-5 w-5 text-gray-600" />
+                  <Moon className="h-5 w-5 text-gray-700" />
                 )}
               </Button>
 
