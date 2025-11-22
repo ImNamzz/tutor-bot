@@ -110,3 +110,75 @@ Import traces:
 [01:27:33.198] Server  LOG      ✓ Compiled in 117ms
 [01:27:37.264] Server  LOG      ✓ Compiled in 103ms
 [01:27:47.982] Server  LOG      ✓ Compiled in 125ms
+[00:09:45.909] Server  LOG      ✓ Compiled in 639ms
+[00:10:41.513] Server  LOG      ✓ Compiled in 1933ms
+[00:11:39.932] Server  LOG      ✓ Compiled in 1708ms
+[00:14:26.189] Server  LOG      ✓ Compiled in 494ms
+[00:14:26.286] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:2177:78
+Parsing ecmascript source code failed
+  2175 |                       {editingMessageId === message.id ? (
+  2176 |                         // Edit mode
+> 2177 |                             addMessage("user", `📎 Uploaded: ${file.name}`);
+       |                                                                              ^
+  2178 |
+  2179 |                             try {
+  2180 |                               // Use chat endpoint directly with the transcript content
+
+Expected '</', got ';'
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+[00:14:51.996] Server  LOG      ✓ Compiled in 500ms
+[00:14:52.790] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:2167:23
+Parsing ecmascript source code failed
+  2165 |                     <div
+  2166 |                       key={message.id}
+> 2167 |                       <div
+       |                       ^
+  2168 |                         key={message.id}
+  2169 |                         className={`group relative ${
+  2170 |                           message.role === "user"
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+[00:15:09.082] Browser ERROR   ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx:2216:26
+Parsing ecmascript source code failed
+  2214 |                       )}
+  2215 |                     </div>
+> 2216 |                     <div className="flex justify-start">
+       |                          ^^^^^^^^^
+  2217 |                       <div className="px-4 py-3">
+  2218 |                         <Loader2 className="h-5 w-5 text-gray-600 dark:text-gray-400 animate-spin" />
+  2219 |                       </div>
+
+Expected '</', got 'className'
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component Browser]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Client Component SSR]
+    ./OneDrive/Documents/College/miscellaneous/VS Code Miscs/Naver Hackathon 2025/nhungConGa/tutor-bot/src/app/page.tsx [Server Component]
+[00:15:27.286] Server  LOG      ✓ Compiled in 2.2s
+[00:15:27.772] Server  ERROR    ⨯ Error: Failed to load chunk server/chunks/ssr/node_modules_next_dist_8021386d._.js from runtime for chunk server/app/page.js
+[00:15:28.351] Browser ERROR   uncaughtError: ReferenceError: React is not defined
+[00:15:48.404] Server  LOG      ✓ Compiled in 631ms
+[00:15:48.408] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:15:48.584] Server  ERROR    ⨯ Error: Failed to load chunk server/chunks/ssr/node_modules_next_dist_8021386d._.js from runtime for chunk server/app/page.js
+[00:15:50.673] Browser ERROR   uncaughtError: Error: Failed to load chunk server/chunks/ssr/node_modules_next_dist_8021386d._.js from runtime for chunk server/app/page.js

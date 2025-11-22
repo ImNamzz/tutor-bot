@@ -2211,13 +2211,13 @@ const [attachedFile, setAttachedFile] = useState<File | null>(null)
                             }
                           >
                             <div
-                              className={`px-4 py-3 max-w-[85%] break-all rounded-xl ${
+                              className={`px-4 py-3 max-w-[85%] rounded-xl ${
                                 message.role === "user"
                                   ? "bg-gray-900 text-white"
                                   : "text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
                               }`}
                             >
-                              <p className="whitespace-pre-wrap">
+                              <p className="whitespace-pre-line break-normal">
                                 {message.content}
                               </p>
                               {message.role === "assistant" && (

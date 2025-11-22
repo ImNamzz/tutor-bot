@@ -1,6 +1,6 @@
 // Environment configuration
 export const config = {
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://223.130.141.245.nip.io/',
+  apiUrl: 'http://223.130.141.245.nip.io/',
 }
 
 // API endpoints
@@ -28,7 +28,13 @@ export const API_ENDPOINTS = {
   
   // Lectures - /api/lectures/*
   uploadAudio: `${config.apiUrl}/api/lectures/upload-audio`,
+  uploadText: `${config.apiUrl}/api/lectures/upload-text`,
+  getLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}`,
+  getLectureStatus: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}/status`,
   analyzeLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}/analyze`,
+  updateLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}`,
+  deleteLecture: (lectureId: string) => `${config.apiUrl}/api/lectures/${lectureId}`,
+  searchLectures: `${config.apiUrl}/api/lectures/search`,
   
   // Action Items - /api/action_items/*
   actionItems: `${config.apiUrl}/api/action_items`,
