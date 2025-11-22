@@ -4,6 +4,7 @@ from app.core.database import SessionLocal
 from app.core.config import Config
 from app.models.models import GeneralChatSession, GeneralMessage, SocraticChatSession, SocraticMessage, Lecture
 from app.services.ai_client import AIService
+from app.schemas.schemas import GeneralChatSession as GeneralSchema, SocraticChatSession as SocraticSchema
 
 chat_bp = Blueprint('chat', __name__)
 
@@ -89,5 +90,96 @@ def chat_socratic():
         db.commit()
 
         return jsonify({"response": ai_text, "session_id": session_id})
+    finally:
+        db.close()
+
+@chat_bp.route("/sessions", methods=["GET"])
+@jwt_required()
+def get_sessions():
+    user_id = get_jwt_identity()
+    mode = request.args.get('mode', 'GENERAL').upper()
+    
+    db = SessionLocal()
+    try:
+        if mode == 'SOCRATIC':
+            sessions = db.query(SocraticChatSession).filter_by(user_id=user_id)\
+                .order_by(SocraticChatSession.created_at.desc()).all()
+            return jsonify([SocraticSchema.model_validate(s).model_dump() for s in sessions]), 200
+        else:
+            sessions = db.query(GeneralChatSession).filter_by(user_id=user_id)\
+                .order_by(GeneralChatSession.created_at.desc()).all()
+            return jsonify([GeneralSchema.model_validate(s).model_dump() for s in sessions]), 200
+    finally:
+        db.close()
+
+@chat_bp.route("/sessions/<string:session_id>", methods=["GET"])
+@jwt_required()
+def get_session_history(session_id):
+    user_id = get_jwt_identity()
+    mode = request.args.get('mode', 'GENERAL').upper()
+    
+    db = SessionLocal()
+    try:
+        if mode == 'SOCRATIC':
+            session = db.query(SocraticChatSession).filter_by(id=session_id, user_id=user_id).first()
+            if not session: return jsonify({"detail": "Session not found"}), 404
+            
+            return jsonify(SocraticSchema.model_validate(session).model_dump()), 200
+        else:
+            session = db.query(GeneralChatSession).filter_by(id=session_id, user_id=user_id).first()
+            if not session: return jsonify({"detail": "Session not found"}), 404
+            
+            return jsonify(GeneralSchema.model_validate(session).model_dump()), 200
+    finally:
+        db.close()
+
+@chat_bp.route("/sessions/<string:session_id>", methods=["PATCH"])
+@jwt_required()
+def rename_session(session_id):
+    user_id = get_jwt_identity()
+    data = request.json
+    new_title = data.get('title')
+    mode = data.get('mode', 'GENERAL').upper()
+    
+    if not new_title:
+        return jsonify({"detail": "Title is required"}), 400
+
+    db = SessionLocal()
+    try:
+        if mode == 'SOCRATIC':
+            session = db.query(SocraticChatSession).filter_by(id=session_id, user_id=user_id).first()
+        else:
+            session = db.query(GeneralChatSession).filter_by(id=session_id, user_id=user_id).first()
+            
+        if not session:
+            return jsonify({"detail": "Session not found"}), 404
+            
+        session.title = new_title
+        db.commit()
+        db.refresh(session)
+        
+        return jsonify({"id": session.id, "title": session.title}), 200
+    finally:
+        db.close()
+
+@chat_bp.route("/sessions/<string:session_id>", methods=["DELETE"])
+@jwt_required()
+def delete_session(session_id):
+    user_id = get_jwt_identity()
+    mode = request.args.get('mode', 'GENERAL').upper()
+    
+    db = SessionLocal()
+    try:
+        if mode == 'SOCRATIC':
+            session = db.query(SocraticChatSession).filter_by(id=session_id, user_id=user_id).first()
+        else:
+            session = db.query(GeneralChatSession).filter_by(id=session_id, user_id=user_id).first()
+            
+        if not session:
+            return jsonify({"detail": "Session not found"}), 404
+            
+        db.delete(session)
+        db.commit()
+        return jsonify({"message": "Session deleted"}), 200
     finally:
         db.close()
