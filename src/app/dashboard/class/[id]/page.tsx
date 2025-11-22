@@ -55,6 +55,8 @@ export default function ClassDetailPage() {
     type: string;
   } | null>(null);
   const [uploadedText, setUploadedText] = useState<string>("");
+  const [actualFile, setActualFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -118,38 +120,104 @@ export default function ClassDetailPage() {
     setCls(updated);
   };
 
-  const handleAddLecture = () => {
+  const handleAddLecture = async () => {
     if (!cls) return;
-    if (!lectureTitle.trim()) return;
-
-    // Determine content based on type and inputs
-    let content = "";
-    if (lectureType === "text") {
-      content = lectureContentText.trim() || uploadedText || "";
-    } else if (lectureType === "audio") {
-      content = uploadedFile
-        ? `Audio file: ${uploadedFile.name}`
-        : lectureContentText.trim();
+    if (!lectureTitle.trim()) {
+      toast.error('Please enter a lecture title');
+      return;
     }
-    // For audio type currently placeholder; future: process audio file
-    const newLecture: Lecture = {
-      id: generateId(),
-      title: lectureTitle.trim(),
-      type: lectureType,
-      content,
-      createdAt: new Date().toISOString(),
-    };
-    const updated: ClassItem = {
-      ...cls,
-      lectures: [newLecture, ...cls.lectures]
-    };
-    persist(updated);
-    setLectureTitle("");
-    setLectureContentText("");
-    setLectureType("text");
-    setOpenLectureModal(false);
-    setUploadedFile(null);
-    setUploadedText("");
+
+    if (lectureType === "text") {
+      // Text lecture - either from file or textarea
+      const content = lectureContentText.trim() || uploadedText || "";
+      
+      if (!content && !actualFile) {
+        toast.error('Please provide text content or upload a file');
+        return;
+      }
+
+      try {
+        setIsUploading(true);
+        
+        if (actualFile) {
+          // Upload file to backend
+          const formData = new FormData();
+          formData.append('file', actualFile);
+          formData.append('class_id', classId);
+          formData.append('title', lectureTitle.trim());
+
+          const response = await fetch(API_ENDPOINTS.uploadText, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${getAccessToken()}`
+            },
+            body: formData
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              handleAuthError(401);
+              return;
+            }
+            throw new Error('Failed to upload text file');
+          }
+
+          const newLecture = await response.json();
+          toast.success('Text lecture uploaded successfully');
+          
+          // Refresh the class to get updated lectures
+          await fetchClass();
+        } else {
+          // Create text file from textarea content and upload
+          const blob = new Blob([content], { type: 'text/plain' });
+          const file = new File([blob], `${lectureTitle.trim()}.txt`, { type: 'text/plain' });
+          
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('class_id', classId);
+          formData.append('title', lectureTitle.trim());
+
+          const response = await fetch(API_ENDPOINTS.uploadText, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${getAccessToken()}`
+            },
+            body: formData
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              handleAuthError(401);
+              return;
+            }
+            throw new Error('Failed to upload text lecture');
+          }
+
+          const newLecture = await response.json();
+          toast.success('Text lecture created successfully');
+          
+          // Refresh the class to get updated lectures
+          await fetchClass();
+        }
+        
+        // Reset form
+        setLectureTitle("");
+        setLectureContentText("");
+        setLectureType("text");
+        setOpenLectureModal(false);
+        setUploadedFile(null);
+        setUploadedText("");
+        setActualFile(null);
+      } catch (error) {
+        console.error('Error uploading text lecture:', error);
+        toast.error('Failed to upload text lecture');
+      } finally {
+        setIsUploading(false);
+      }
+    } else if (lectureType === "audio") {
+      // Audio type - placeholder for future implementation
+      toast.info('Audio upload will be implemented next');
+    }
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,12 +225,13 @@ export default function ClassDetailPage() {
     if (!file) return;
     setFileError("");
     if (lectureType === "audio") {
-      // Store only file meta for display
+      // Store file meta for display and actual file for upload
       setUploadedFile({
         name: file.name,
         size: file.size,
         type: file.type || "audio",
       });
+      setActualFile(file);
       // keep textarea untouched
     } else {
       if (!file.name.toLowerCase().endsWith(".txt")) {
@@ -174,6 +243,7 @@ export default function ClassDetailPage() {
         size: file.size,
         type: file.type || "text/plain",
       });
+      setActualFile(file);
       const reader = new FileReader();
       reader.onload = (ev) => {
         // keep content internally but do not populate textarea
@@ -402,6 +472,7 @@ export default function ClassDetailPage() {
                   </div>
                   <Button
                     disabled={
+                      isUploading ||
                       !lectureTitle.trim() ||
                       (lectureType === "text" &&
                         !lectureContentText.trim() &&
@@ -411,7 +482,7 @@ export default function ClassDetailPage() {
                     className="w-full"
                     onClick={handleAddLecture}
                   >
-                    Save Lecture
+                    {isUploading ? 'Uploading...' : 'Save Lecture'}
                   </Button>
                 </div>
               </DialogContent>

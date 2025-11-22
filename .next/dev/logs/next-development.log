@@ -132,3 +132,15 @@ https://react.dev/link/hydration-mismatch
                       ...
     ...
 
+[00:31:11.796] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:31:11.797] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:57.360] Server  LOG      ✓ Compiled in 349ms
+[00:33:12.696] Server  LOG      ✓ Compiled in 619ms
+[00:33:26.922] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:33:26.923] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:35:37.085] Server  LOG      ✓ Compiled in 710ms
+[00:36:01.212] Server  LOG      ✓ Compiled in 797ms
+[00:36:51.171] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:36:56.422] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:36:57.358] Browser ERROR   Error fetching user profile: {}
+[00:36:57.466] Browser ERROR   Error fetching user profile: {}

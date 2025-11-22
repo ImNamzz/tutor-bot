@@ -23,6 +23,9 @@ import {
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { Pencil, Trash2, Check, X } from "lucide-react";
 import { Input } from "@/app/components/ui/input";
+import { API_ENDPOINTS } from "@/app/lib/config";
+import { getAccessToken, handleAuthError } from "@/app/lib/auth";
+import { toast } from "sonner";
 
 type StoredClass = {
   id: string;
@@ -56,45 +59,197 @@ export default function LectureDetailPage() {
   const [newActionText, setNewActionText] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingText, setEditingText] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isExtracting, setIsExtracting] = useState(false);
 
   useEffect(() => {
-    const raw = localStorage.getItem("eduassist_classes");
-    if (!raw) return;
-    try {
-      const arr: StoredClass[] = JSON.parse(raw);
-      const found = arr.find((c) => c.id === classId);
-      if (!found) return;
-      setCls(found);
-      const lec = found.lectures.find((l) => l.id === lectureId);
-      if (lec) {
-        setLectureTitle(lec.title);
-        // Initialize transcript from lecture content when present
-        if (lec.content?.trim()) {
-          setTranscriptDraft(lec.content);
-        }
-      }
-    } catch {}
+    fetchLecture();
   }, [classId, lectureId]);
 
-  // Actions
-  const regenerateSummary = () => {
-    // Dummy: make a small variation to show change
-    setData((prev) => ({
-      ...prev,
-      summary: prev.summary.endsWith(".")
-        ? prev.summary + " Emphasis on intuition."
-        : prev.summary + ". Emphasis on intuition.",
-    }));
+  const fetchLecture = async () => {
+    if (!lectureId) return;
+    
+    try {
+      setLoading(true);
+      const response = await fetch(API_ENDPOINTS.getLecture(lectureId), {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        throw new Error('Failed to fetch lecture');
+      }
+
+      const lecture = await response.json();
+      
+      setLectureTitle(lecture.title);
+      
+      // Set transcript
+      if (lecture.transcript?.trim()) {
+        setTranscriptDraft(lecture.transcript);
+      }
+      
+      // Set summary if available
+      if (lecture.summary) {
+        setData(prev => ({
+          ...prev,
+          summary: lecture.summary
+        }));
+      }
+      
+      // Fetch associated action items
+      await fetchActionItems();
+      
+    } catch (error) {
+      console.error('Error fetching lecture:', error);
+      toast.error('Failed to load lecture details');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const extractActions = () => {
-    // Dummy: add an action derived from transcript length
-    const extra: ActionItem = {
-      id: `${Date.now()}`,
-      text: `Skim transcript (${transcriptDraft.length} chars) for key terms`,
-      done: false,
-    };
-    setData((prev) => ({ ...prev, actions: [...prev.actions, extra] }));
+  const fetchActionItems = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINTS.actionItems}?lecture_id=${lectureId}`, {
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (response.ok) {
+        const items = await response.json();
+        const actionItems: ActionItem[] = items.map((item: any) => ({
+          id: item.id,
+          text: item.content,
+          done: item.completed || false
+        }));
+        setData(prev => ({
+          ...prev,
+          actions: actionItems
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching action items:', error);
+    }
+  };
+
+  // Actions
+  const regenerateSummary = async () => {
+    if (!lectureId) return;
+    
+    try {
+      setIsGenerating(true);
+      const response = await fetch(API_ENDPOINTS.analyzeLecture(lectureId), {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        if (response.status === 400) {
+          toast.error('Transcript not ready or empty');
+          return;
+        }
+        throw new Error('Failed to generate summary');
+      }
+
+      const result = await response.json();
+      
+      // Update summary
+      if (result.lecture?.summary) {
+        setData(prev => ({
+          ...prev,
+          summary: result.lecture.summary
+        }));
+      }
+      
+      // Update action items
+      if (result.action_items) {
+        const actionItems: ActionItem[] = result.action_items.map((item: any) => ({
+          id: item.id,
+          text: item.content,
+          done: item.completed || false
+        }));
+        setData(prev => ({
+          ...prev,
+          actions: actionItems
+        }));
+      }
+      
+      toast.success('Summary and action items generated successfully');
+    } catch (error) {
+      console.error('Error generating summary:', error);
+      toast.error('Failed to generate summary');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const extractActions = async () => {
+    if (!lectureId) return;
+    
+    try {
+      setIsExtracting(true);
+      const response = await fetch(API_ENDPOINTS.analyzeLecture(lectureId), {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleAuthError(401);
+          return;
+        }
+        if (response.status === 400) {
+          toast.error('Transcript not ready or empty');
+          return;
+        }
+        throw new Error('Failed to extract action items');
+      }
+
+      const result = await response.json();
+      
+      // Update summary
+      if (result.lecture?.summary) {
+        setData(prev => ({
+          ...prev,
+          summary: result.lecture.summary
+        }));
+      }
+      
+      // Update action items
+      if (result.action_items) {
+        const actionItems: ActionItem[] = result.action_items.map((item: any) => ({
+          id: item.id,
+          text: item.content,
+          done: item.completed || false
+        }));
+        setData(prev => ({
+          ...prev,
+          actions: actionItems
+        }));
+      }
+      
+      toast.success('Action items extracted successfully');
+    } catch (error) {
+      console.error('Error extracting action items:', error);
+      toast.error('Failed to extract action items');
+    } finally {
+      setIsExtracting(false);
+    }
   };
 
   const resetAll = () => {
@@ -264,9 +419,10 @@ export default function LectureDetailPage() {
                 <Button
                   size="sm"
                   onClick={regenerateSummary}
+                  disabled={isGenerating}
                   className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
                 >
-                  Generate
+                  {isGenerating ? 'Generating...' : 'Generate'}
                 </Button>
               </div>
               <p className="text-sm text-foreground dark:text-white leading-relaxed break-words">
@@ -288,9 +444,10 @@ export default function LectureDetailPage() {
                 <Button
                   size="sm"
                   onClick={extractActions}
+                  disabled={isExtracting}
                   className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-sm hover:brightness-110 hover:shadow transition"
                 >
-                  Extract
+                  {isExtracting ? 'Extracting...' : 'Extract'}
                 </Button>
               </div>
               {/* Statistics */}
